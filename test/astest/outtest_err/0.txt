@@ -1,0 +1,10 @@
+
+Assemble ../../../as/outtest_err.casl (0)
+../../../as/outtest_err.casl:1:OTEST START
+../../../as/outtest_err.casl:2:	OUT IOBUF,IOLEN
+../../../as/outtest_err.casl:3:	RET
+../../../as/outtest_err.casl:4:	 ; Memory
+../../../as/outtest_err.casl:5:IOBUF 5
+Assemble error - 112: 5: not command of no operand
+ ../../../as/outtest_err.casl:5: IOBUF 5
+

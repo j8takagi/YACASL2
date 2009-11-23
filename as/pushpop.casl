@@ -1,0 +1,11 @@
+OTEST START
+	LD GR1,=1
+    LD GR2,=2
+    PUSH 0,GR1
+    PUSH 0,GR2
+    LAD GR1,0
+    LAD GR2,0
+    POP GR2
+    POP GR1
+	RET
+	END

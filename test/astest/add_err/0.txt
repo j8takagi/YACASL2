@@ -1,0 +1,8 @@
+
+Assemble ../../../as/add_err.casl (0)
+../../../as/add_err.casl:1:MAIN	START	BEGIN
+../../../as/add_err.casl:2:BEGIN	LD	GR1,A
+../../../as/add_err.casl:3:	ADEA	GR1,B
+Assemble error - 110: ADEA: not command of operand "r,adr[,x]"
+ ../../../as/add_err.casl:3: 	ADEA	GR1,B
+

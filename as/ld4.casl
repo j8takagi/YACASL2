@@ -1,0 +1,9 @@
+; LDコマンド
+MAIN	START	BEGIN
+BEGIN	LD  GR1,A
+        LD  GR2,B
+        ADDL  GR1,GR2
+        RET
+A	DC  32767
+B   DC  32675
+	END

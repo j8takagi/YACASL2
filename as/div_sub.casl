@@ -1,0 +1,12 @@
+; GR0に格納された内容とGR1に格納された内容の、
+; 商をGR2、剰余をGR3に格納する
+DIV	START
+    LAD GR2,0
+	LD	GR3,GR0
+LOOP	SUBA	GR3,GR1
+    LAD	GR2,1,GR2
+    CPA	GR3,GR1
+	JPL	LOOP
+    JZE LOOP
+	RET
+    END

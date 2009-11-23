@@ -1,0 +1,55 @@
+
+Assemble ../../../as/literal_spc.casl (0)
+../../../as/literal_spc.casl:1:; リテラルに「=' '」を指定した場合のテスト
+../../../as/literal_spc.casl:2:MAIN    START
+../../../as/literal_spc.casl:3:        LD  GR1,=' '
+../../../as/literal_spc.casl:4:        ST  GR1,BUF      
+../../../as/literal_spc.casl:5:        OUT BUF,LEN
+../../../as/literal_spc.casl:6:        RET
+../../../as/literal_spc.casl:7:BUF		DS	1
+../../../as/literal_spc.casl:8:LEN		DC	1
+../../../as/literal_spc.casl:9:        END
+
+Label::::
+BUF ---> #0017
+MAIN ---> #0000
+LEN ---> #0018
+
+Assemble ../../../as/literal_spc.casl (1)
+../../../as/literal_spc.casl:1:; リテラルに「=' '」を指定した場合のテスト
+../../../as/literal_spc.casl:2:MAIN    START
+../../../as/literal_spc.casl:3:        LD  GR1,=' '
+	#0019	#0020
+	#0000	#1010
+	#0001	#0019
+../../../as/literal_spc.casl:4:        ST  GR1,BUF      
+	#0002	#1110
+	#0003	#0017
+../../../as/literal_spc.casl:5:        OUT BUF,LEN
+	#0004	#7001
+	#0005	#0000
+	#0006	#7002
+	#0007	#0000
+	#0008	#1210
+	#0009	#0017
+	#000A	#1020
+	#000B	#0018
+	#000C	#F000
+	#000D	#0002
+	#000E	#1210
+	#000F	#001A
+	#001A	#000A
+	#0010	#1220
+	#0011	#0001
+	#0012	#F000
+	#0013	#0002
+	#0014	#7120
+	#0015	#7110
+../../../as/literal_spc.casl:6:        RET
+	#0016	#8100
+../../../as/literal_spc.casl:7:BUF		DS	1
+	#0017	#0000
+../../../as/literal_spc.casl:8:LEN		DC	1
+	#0018	#0001
+../../../as/literal_spc.casl:9:        END
+ 

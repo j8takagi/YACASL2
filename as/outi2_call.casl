@@ -1,0 +1,8 @@
+; need outi.casl
+MAIN	START
+	LAD GR1,A
+    LAD	GR2,5
+    CALL OUTI
+FIN	RET
+A	DC	12,67891,20,12,23
+	END

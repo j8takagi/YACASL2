@@ -1,0 +1,6 @@
+MAIN    START
+        LAD     GR1,10
+        LAD     GR2,5
+        CALL    PTN4
+        RET
+        END

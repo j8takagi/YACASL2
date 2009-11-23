@@ -1,0 +1,46 @@
+
+Assemble ../../../as/dc_spc.casl (0)
+../../../as/dc_spc.casl:1:; DC命令で空白を指定した場合のテスト 
+../../../as/dc_spc.casl:2:MAIN    START
+../../../as/dc_spc.casl:3:        OUT BUF,LEN
+../../../as/dc_spc.casl:4:        RET
+../../../as/dc_spc.casl:5:BUF		DC	' '
+../../../as/dc_spc.casl:6:LEN		DC	1
+../../../as/dc_spc.casl:7:        END
+
+Label::::
+BUF ---> #0013
+MAIN ---> #0000
+LEN ---> #0014
+
+Assemble ../../../as/dc_spc.casl (1)
+../../../as/dc_spc.casl:1:; DC命令で空白を指定した場合のテスト 
+../../../as/dc_spc.casl:2:MAIN    START
+../../../as/dc_spc.casl:3:        OUT BUF,LEN
+	#0000	#7001
+	#0001	#0000
+	#0002	#7002
+	#0003	#0000
+	#0004	#1210
+	#0005	#0013
+	#0006	#1020
+	#0007	#0014
+	#0008	#F000
+	#0009	#0002
+	#000A	#1210
+	#000B	#0015
+	#0015	#000A
+	#000C	#1220
+	#000D	#0001
+	#000E	#F000
+	#000F	#0002
+	#0010	#7120
+	#0011	#7110
+../../../as/dc_spc.casl:4:        RET
+	#0012	#8100
+../../../as/dc_spc.casl:5:BUF		DC	' '
+	#0013	#0020
+../../../as/dc_spc.casl:6:LEN		DC	1
+	#0014	#0001
+../../../as/dc_spc.casl:7:        END
+ 

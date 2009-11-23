@@ -1,0 +1,381 @@
+
+Assemble ../../../as/summary_call.casl (0)
+
+Assemble ../../../as/summary_lderr.casl (0)
+
+Label::::
+PBUF ---> #00AD
+LOOP1 ---> #0021
+LOOP2 ---> #0033
+LOOP3 ---> #0037
+LOOP4 ---> #005A
+LOOP5 ---> #005E
+COUNTR ---> #009C
+CNT ---> #000A
+OFF ---> #004B
+SUMMARY ---> #000B
+FOOTER ---> #00DD
+PLEN ---> #00AC
+DATA ---> #0007
+NOTSET ---> #0064
+CHANGE ---> #004A
+MAIN ---> #0000
+NEXTW ---> #004F
+ON ---> #003F
+FIN ---> #0082
+
+Assemble ../../../as/summary_call.casl (1)
+../../../as/summary_call.casl:1:MAIN    START
+../../../as/summary_call.casl:2:        LAD GR1,DATA
+	#0000	#1210
+	#0001	#0007
+../../../as/summary_call.casl:3:        LD  GR0,CNT
+	#0002	#1000
+	#0003	#000A
+../../../as/summary_call.casl:4:        CALL SUMMARY
+	#0004	#8000
+	#0005	#000B
+../../../as/summary_call.casl:5:        RET
+	#0006	#8100
+../../../as/summary_call.casl:6:DATA    DC  #9600,#F000,#A400
+	#0007	#9600
+	#0008	#F000
+	#0009	#A400
+../../../as/summary_call.casl:7:CNT     DC  3
+	#000A	#0003
+../../../as/summary_call.casl:8:        END
+
+Assemble ../../../as/summary_lderr.casl (1)
+../../../as/summary_lderr.casl:1:SUMMARY START
+../../../as/summary_lderr.casl:2:        RPUSH
+	#000B	#7001
+	#000C	#0000
+	#000D	#7002
+	#000E	#0000
+	#000F	#7003
+	#0010	#0000
+	#0011	#7004
+	#0012	#0000
+	#0013	#7005
+	#0014	#0000
+	#0015	#7006
+	#0016	#0000
+	#0017	#7007
+	#0018	#0000
+../../../as/summary_lderr.casl:3:; カウンタ領域と出力バッファを初期化
+../../../as/summary_lderr.casl:4:        LD    GR2,=0
+	#010D	#0000
+	#0019	#1020
+	#001A	#010D
+../../../as/summary_lderr.casl:5:        LD    GR3,=' '
+	#010E	#0020
+	#001B	#1030
+	#001C	#010E
+../../../as/summary_lderr.casl:6:        LD    GR4,=0          ; ループカウンタ
+	#010F	#0000
+	#001D	#1040
+	#001E	#010F
+../../../as/summary_lderr.casl:7:        LAD   GR5,PBUF        ; 出力バッファのポインタ
+	#001F	#1250
+	#0020	#00AD
+../../../as/summary_lderr.casl:8:LOOP1   ST    GR2,COUNTR,GR4  ; カウンタ領域を初期化
+	#0021	#1124
+	#0022	#009C
+../../../as/summary_lderr.casl:9:        ST    GR3,0,GR5       ; 出力バッファを空白で初期化
+	#0023	#1135
+	#0024	#0000
+../../../as/summary_lderr.casl:10:        ST    GR3,1,GR5
+	#0025	#1135
+	#0026	#0001
+../../../as/summary_lderr.casl:11:        ST    GR3,2,GR5
+	#0027	#1135
+	#0028	#0002
+../../../as/summary_lderr.casl:12:        LAD   GR5,3,GR5       ; 出力バッファのポインタを更新
+	#0029	#1255
+	#002A	#0003
+../../../as/summary_lderr.casl:13:        LAD   GR4,1,GR4       ; ループカウンタを更新
+	#002B	#1244
+	#002C	#0001
+../../../as/summary_lderr.casl:14:        CPA   GR4,=16
+	#0110	#0010
+	#002D	#4040
+	#002E	#0110
+../../../as/summary_lderr.casl:15:        JMI   LOOP1
+	#002F	#6100
+	#0030	#0021
+../../../as/summary_lderr.casl:16:; 項目ごとに "はい" と答えた人数を集計
+../../../as/summary_lderr.casl:17:        LD    GR5,=0          ; GR5: "はい" の人数の最大値
+	#0111	#0000
+	#0031	#1050
+	#0032	#0111
+../../../as/summary_lderr.casl:18:LOOP2   LD    GR4,=0          ; カウンタ領域のポインタ
+	#0112	#0000
+	#0033	#1040
+	#0034	#0112
+../../../as/summary_lderr.casl:19:        LD    GR2,0,GR1       ; GR2 ←１人分の回答
+	#0035	#1021
+	#0036	#0000
+../../../as/summary_lderr.casl:20:LOOP3   SLL   GR2,1           ; 回答は "はい" ？
+	#0037	#5220
+	#0038	#0001
+../../../as/summary_lderr.casl:21:        JOV   ON
+	#0039	#6600
+	#003A	#003F
+../../../as/summary_lderr.casl:22:        JZE   NEXTW           ; 残りの項目はすべて "いいえ"
+	#003B	#6300
+	#003C	#004F
+../../../as/summary_lderr.casl:23:        JUMP  OFF
+	#003D	#6400
+	#003E	#004B
+../../../as/summary_lderr.casl:24:ON      LD    GR3,COUNTR,GR4  ; カウンタに１を加算
+	#003F	#1034
+	#0040	#009C
+../../../as/summary_lderr.casl:25:        ADDA  GR3,=1
+	#0113	#0001
+	#0041	#2030
+	#0042	#0113
+../../../as/summary_lderr.casl:26:        ST    GR3,COUNTR,GR4
+	#0043	#1134
+	#0044	#009C
+../../../as/summary_lderr.casl:27:        CPA   GR3,GR5         ; 最大値と比較
+	#0045	#4435
+../../../as/summary_lderr.casl:28:        JPL   CHANGE
+	#0046	#6500
+	#0047	#004A
+../../../as/summary_lderr.casl:29:        JUMP  OFF
+	#0048	#6400
+	#0049	#004B
+../../../as/summary_lderr.casl:30:CHANGE  LD    GR5,GR3         ; 最大値を入替え
+	#004A	#1453
+../../../as/summary_lderr.casl:31:OFF     LAD   GR4,1,GR4       ; 次の項目
+	#004B	#1244
+	#004C	#0001
+../../../as/summary_lderr.casl:32:        JUMP  LOOP3
+	#004D	#6400
+	#004E	#0037
+../../../as/summary_lderr.casl:33:NEXTW   LAD   GR1,1,GR1
+	#004F	#1211
+	#0050	#0001
+../../../as/summary_lderr.casl:34:        SUBA  GR0,=1          ; 全回答処理済？
+	#0114	#0001
+	#0051	#2100
+	#0052	#0114
+../../../as/summary_lderr.casl:35:        JPL   LOOP2
+	#0053	#6500
+	#0054	#0033
+../../../as/summary_lderr.casl:36:; 集計結果を棒グラフで出力
+../../../as/summary_lderr.casl:37:        LD    GR5,GR5
+	#0055	#1455
+../../../as/summary_lderr.casl:38:        JZE   FIN
+	#0056	#6300
+	#0057	#0082
+../../../as/summary_lderr.casl:39:        LD    GR0,='*'
+	#0115	#002A
+	#0058	#1000
+	#0059	#0115
+../../../as/summary_lderr.casl:40:LOOP4   LD    GR3,=1          ; 出力バッファのポインタ
+	#0116	#0001
+	#005A	#1030
+	#005B	#0116
+../../../as/summary_lderr.casl:41:        LD    GR4,0           ; カウンタ領域のポインタ
+	#005C	#1040
+	#005D	#0000
+../../../as/summary_lderr.casl:42:LOOP5   CPA   GR5,COUNTR,GR4  ; "はい" の人数と比較
+	#005E	#4054
+	#005F	#009C
+../../../as/summary_lderr.casl:43:        JNZ   NOTSET
+	#0060	#6200
+	#0061	#0064
+../../../as/summary_lderr.casl:44:        ST    GR0,PBUF,GR3    ; 出力バッファに "*" を設定
+	#0062	#1103
+	#0063	#00AD
+../../../as/summary_lderr.casl:45:NOTSET  LAD   GR3,3,GR3       ; 出力バッファのポインタを更新
+	#0064	#1233
+	#0065	#0003
+../../../as/summary_lderr.casl:46:        LAD   GR4,1,GR4       ; カウンタ領域のポインタを更新
+	#0066	#1244
+	#0067	#0001
+../../../as/summary_lderr.casl:47:        CPA   GR4,=16
+	#0117	#0010
+	#0068	#4040
+	#0069	#0117
+../../../as/summary_lderr.casl:48:        JMI   LOOP5
+	#006A	#6100
+	#006B	#005E
+../../../as/summary_lderr.casl:49:        OUT   PBUF,PLEN
+	#006C	#7001
+	#006D	#0000
+	#006E	#7002
+	#006F	#0000
+	#0070	#1210
+	#0071	#00AD
+	#0072	#1020
+	#0073	#00AC
+	#0074	#F000
+	#0075	#0002
+	#0076	#1210
+	#0077	#0118
+	#0118	#000A
+	#0078	#1220
+	#0079	#0001
+	#007A	#F000
+	#007B	#0002
+	#007C	#7120
+	#007D	#7110
+../../../as/summary_lderr.casl:50:        SUBA  GR5,=1
+	#0119	#0001
+	#007E	#2150
+	#007F	#0119
+../../../as/summary_lderr.casl:51:        JPL   LOOP4
+	#0080	#6500
+	#0081	#005A
+../../../as/summary_lderr.casl:52:FIN     OUT   FOOTER,PLEN
+	#0082	#7001
+	#0083	#0000
+	#0084	#7002
+	#0085	#0000
+	#0086	#1210
+	#0087	#00DD
+	#0088	#1020
+	#0089	#00AC
+	#008A	#F000
+	#008B	#0002
+	#008C	#1210
+	#008D	#011A
+	#011A	#000A
+	#008E	#1220
+	#008F	#0001
+	#0090	#F000
+	#0091	#0002
+	#0092	#7120
+	#0093	#7110
+../../../as/summary_lderr.casl:53:        RPOP
+	#0094	#7170
+	#0095	#7160
+	#0096	#7150
+	#0097	#7140
+	#0098	#7130
+	#0099	#7120
+	#009A	#7110
+../../../as/summary_lderr.casl:54:        RET
+	#009B	#8100
+../../../as/summary_lderr.casl:55:COUNTR  DS    16              ; カウンタ領域
+	#009C	#0000
+	#009D	#0000
+	#009E	#0000
+	#009F	#0000
+	#00A0	#0000
+	#00A1	#0000
+	#00A2	#0000
+	#00A3	#0000
+	#00A4	#0000
+	#00A5	#0000
+	#00A6	#0000
+	#00A7	#0000
+	#00A8	#0000
+	#00A9	#0000
+	#00AA	#0000
+	#00AB	#0000
+../../../as/summary_lderr.casl:56:PLEN    DC    48
+	#00AC	#0030
+../../../as/summary_lderr.casl:57:PBUF    DS    48              ; 出力バッファ
+	#00AD	#0000
+	#00AE	#0000
+	#00AF	#0000
+	#00B0	#0000
+	#00B1	#0000
+	#00B2	#0000
+	#00B3	#0000
+	#00B4	#0000
+	#00B5	#0000
+	#00B6	#0000
+	#00B7	#0000
+	#00B8	#0000
+	#00B9	#0000
+	#00BA	#0000
+	#00BB	#0000
+	#00BC	#0000
+	#00BD	#0000
+	#00BE	#0000
+	#00BF	#0000
+	#00C0	#0000
+	#00C1	#0000
+	#00C2	#0000
+	#00C3	#0000
+	#00C4	#0000
+	#00C5	#0000
+	#00C6	#0000
+	#00C7	#0000
+	#00C8	#0000
+	#00C9	#0000
+	#00CA	#0000
+	#00CB	#0000
+	#00CC	#0000
+	#00CD	#0000
+	#00CE	#0000
+	#00CF	#0000
+	#00D0	#0000
+	#00D1	#0000
+	#00D2	#0000
+	#00D3	#0000
+	#00D4	#0000
+	#00D5	#0000
+	#00D6	#0000
+	#00D7	#0000
+	#00D8	#0000
+	#00D9	#0000
+	#00DA	#0000
+	#00DB	#0000
+	#00DC	#0000
+../../../as/summary_lderr.casl:58:FOOTER  DC    '01 02 03 04 05 06 07 08 09 10 11 12 13 '
+	#00DD	#0030
+	#00DE	#0031
+	#00DF	#0020
+	#00E0	#0030
+	#00E1	#0032
+	#00E2	#0020
+	#00E3	#0030
+	#00E4	#0033
+	#00E5	#0020
+	#00E6	#0030
+	#00E7	#0034
+	#00E8	#0020
+	#00E9	#0030
+	#00EA	#0035
+	#00EB	#0020
+	#00EC	#0030
+	#00ED	#0036
+	#00EE	#0020
+	#00EF	#0030
+	#00F0	#0037
+	#00F1	#0020
+	#00F2	#0030
+	#00F3	#0038
+	#00F4	#0020
+	#00F5	#0030
+	#00F6	#0039
+	#00F7	#0020
+	#00F8	#0031
+	#00F9	#0030
+	#00FA	#0020
+	#00FB	#0031
+	#00FC	#0031
+	#00FD	#0020
+	#00FE	#0031
+	#00FF	#0032
+	#0100	#0020
+	#0101	#0031
+	#0102	#0033
+	#0103	#0020
+../../../as/summary_lderr.casl:59:        DC    '14 15 16 '
+	#0104	#0031
+	#0105	#0034
+	#0106	#0020
+	#0107	#0031
+	#0108	#0035
+	#0109	#0020
+	#010A	#0031
+	#010B	#0036
+	#010C	#0020
+../../../as/summary_lderr.casl:60:        END
+Execute error - 206: PR:#005F: Address - out of COMET II memory

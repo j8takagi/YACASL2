@@ -1,0 +1,101 @@
+
+Assemble ../../../as/summary_call.casl (0)
+../../../as/summary_call.casl:1:MAIN    START
+../../../as/summary_call.casl:2:        LAD GR1,DATA
+../../../as/summary_call.casl:3:        LD  GR0,CNT
+../../../as/summary_call.casl:4:        CALL SUMMARY
+../../../as/summary_call.casl:5:        RET
+../../../as/summary_call.casl:6:DATA    DC  #9600,#F000,#A400
+../../../as/summary_call.casl:7:CNT     DC  3
+../../../as/summary_call.casl:8:        END
+
+Assemble ../../../as/summary.casl (0)
+../../../as/summary.casl:1:SUMMARY START
+../../../as/summary.casl:2:        RPUSH
+../../../as/summary.casl:3:; カウンタ領域と出力バッファを初期化
+../../../as/summary.casl:4:        LD    GR2,=0
+../../../as/summary.casl:5:        LD    GR3,=' '
+../../../as/summary.casl:6:        LD    GR4,=0          ; ループカウンタ
+../../../as/summary.casl:7:        LAD   GR5,PBUF        ; 出力バッファのポインタ
+../../../as/summary.casl:8:LOOP1   ST    GR2,COUNTR,GR4  ; カウンタ領域を初期化
+../../../as/summary.casl:9:        ST    GR3,0,GR5       ; 出力バッファを空白で初期化
+../../../as/summary.casl:10:        ST    GR3,1,GR5
+../../../as/summary.casl:11:        ST    GR3,2,GR5
+../../../as/summary.casl:12:        LAD   GR5,3,GR5       ; 出力バッファのポインタを更新
+../../../as/summary.casl:13:        LAD   GR4,1,GR4       ; ループカウンタを更新
+../../../as/summary.casl:14:        CPA   GR4,=16
+../../../as/summary.casl:15:        JMI   LOOP1
+../../../as/summary.casl:16:; 項目ごとに "はい" と答えた人数を集計
+../../../as/summary.casl:17:        LD    GR5,=0          ; GR5: "はい" の人数の最大値
+../../../as/summary.casl:18:LOOP2   LD    GR4,=0          ; カウンタ領域のポインタ
+../../../as/summary.casl:19:        LD    GR2,0,GR1       ; GR2 ←１人分の回答
+../../../as/summary.casl:20:LOOP3   SLL   GR2,1           ; 回答は "はい" ？
+../../../as/summary.casl:21:        JOV   ON
+../../../as/summary.casl:22:        JZE   NEXTW           ; 残りの項目はすべて "いいえ"
+../../../as/summary.casl:23:        JUMP  OFF
+../../../as/summary.casl:24:ON      LD    GR3,COUNTR,GR4  ; カウンタに１を加算
+../../../as/summary.casl:25:        ADDA  GR3,=1
+../../../as/summary.casl:26:        ST    GR3,COUNTR,GR4
+../../../as/summary.casl:27:        CPA   GR3,GR5         ; 最大値と比較
+../../../as/summary.casl:28:        JPL   CHANGE
+../../../as/summary.casl:29:        JUMP  OFF
+../../../as/summary.casl:30:CHANGE  LD    GR5,GR3         ; 最大値を入替え
+../../../as/summary.casl:31:OFF     LAD   GR4,1,GR4       ; 次の項目
+../../../as/summary.casl:32:        JUMP  LOOP3
+../../../as/summary.casl:33:NEXTW   LAD   GR1,1,GR1
+../../../as/summary.casl:34:        SUBA  GR0,=1          ; 全回答処理済？
+../../../as/summary.casl:35:        JPL   LOOP2
+../../../as/summary.casl:36:; 集計結果を棒グラフで出力
+../../../as/summary.casl:37:        LD    GR5,GR5
+../../../as/summary.casl:38:        JZE   FIN
+../../../as/summary.casl:39:        LD    GR0,='*'
+../../../as/summary.casl:40:LOOP4   LD    GR3,=1          ; 出力バッファのポインタ
+../../../as/summary.casl:41:        LD    GR4,=0          ; カウンタ領域のポインタ
+../../../as/summary.casl:42:LOOP5   CPA   GR5,COUNTR,GR4  ; "はい" の人数と比較
+../../../as/summary.casl:43:        JNZ   NOTSET
+../../../as/summary.casl:44:        ST    GR0,PBUF,GR3    ; 出力バッファに "*" を設定
+../../../as/summary.casl:45:NOTSET  LAD   GR3,3,GR3       ; 出力バッファのポインタを更新
+../../../as/summary.casl:46:        LAD   GR4,1,GR4       ; カウンタ領域のポインタを更新
+../../../as/summary.casl:47:        CPA   GR4,=16
+../../../as/summary.casl:48:        JMI   LOOP5
+../../../as/summary.casl:49:        OUT   PBUF,PLEN
+../../../as/summary.casl:50:        SUBA  GR5,=1
+../../../as/summary.casl:51:        JPL   LOOP4
+../../../as/summary.casl:52:FIN     OUT   FOOTER,PLEN
+../../../as/summary.casl:53:        RPOP
+../../../as/summary.casl:54:        RET
+../../../as/summary.casl:55:COUNTR  DS    16              ; カウンタ領域
+../../../as/summary.casl:56:PLEN    DC    48
+../../../as/summary.casl:57:PBUF    DS    48              ; 出力バッファ
+../../../as/summary.casl:58:FOOTER  DC    '01 02 03 04 05 06 07 08 09 10 11 12 13 '
+../../../as/summary.casl:59:        DC    '14 15 16 '
+../../../as/summary.casl:60:        END
+
+Label::::
+PBUF ---> #00AD
+LOOP1 ---> #0021
+LOOP2 ---> #0033
+LOOP3 ---> #0037
+LOOP4 ---> #005A
+LOOP5 ---> #005E
+COUNTR ---> #009C
+CNT ---> #000A
+OFF ---> #004B
+SUMMARY ---> #000B
+FOOTER ---> #00DD
+PLEN ---> #00AC
+DATA ---> #0007
+NOTSET ---> #0064
+CHANGE ---> #004A
+MAIN ---> #0000
+NEXTW ---> #004F
+ON ---> #003F
+FIN ---> #0082
+
+Assemble ../../../as/summary_call.casl (1)
+
+Assemble ../../../as/summary.casl (1)
+ *                                              
+ *     *  *     *                               
+ *  *  *  *     *  *                            
+01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 
