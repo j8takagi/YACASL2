@@ -1,0 +1,15 @@
+; ./casl2 as/svctest.casl as/div10.casl
+MAIN	START
+BEGIN	LAD	GR0,91
+	CALL	DIV10
+    ST	GR3,A
+    LD	GR1,A
+    ADDA	GR1,Z
+    LAD	GR2,1
+    SVC	2
+    LAD GR1,=#A
+    SVC 2
+	RET
+D	DC	'0'
+A	DS	1
+    END

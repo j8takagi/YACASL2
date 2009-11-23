@@ -1,0 +1,8 @@
+; LDコマンド
+MAIN	START	BEGIN
+BEGIN	LD	GR1,A
+    ST GR1,B
+	RET
+A	DC	-2
+B	DS	1
+	END

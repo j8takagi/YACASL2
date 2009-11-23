@@ -1,0 +1,7 @@
+; DC命令で空白を指定した場合のテスト 
+MAIN    START
+        OUT BUF,LEN
+        RET
+BUF		DC	' '
+LEN		DC	1
+        END

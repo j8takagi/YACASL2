@@ -1,0 +1,395 @@
+
+Assemble ../../../as/add_p.casl (0)
+../../../as/add_p.casl:1:MAIN	START
+../../../as/add_p.casl:2:BEGIN	LD	GR1,A
+../../../as/add_p.casl:3:	ADDA	GR1,B
+../../../as/add_p.casl:4:    CALL	ITOA
+../../../as/add_p.casl:5:    RET
+../../../as/add_p.casl:6:A	DC	999
+../../../as/add_p.casl:7:B	DC	998
+../../../as/add_p.casl:8:C	DS	1
+../../../as/add_p.casl:9:	END
+
+Assemble ../../../as/itoa.casl (0)
+../../../as/itoa.casl:1:;GR1に格納された数値を表示
+../../../as/itoa.casl:2:ITOA	START
+../../../as/itoa.casl:3:	PUSH 0,GR2
+../../../as/itoa.casl:4:	PUSH 0,GR3
+../../../as/itoa.casl:5:	PUSH 0,GR4
+../../../as/itoa.casl:6:    LAD	GR0,0
+../../../as/itoa.casl:7:    LAD	GR2,0
+../../../as/itoa.casl:8:    AND GR1,GR1
+../../../as/itoa.casl:9:    JPL ILOOP
+../../../as/itoa.casl:10:    JZE ILOOP
+../../../as/itoa.casl:11:    LAD GR0,1
+../../../as/itoa.casl:12:    CALL INV
+../../../as/itoa.casl:13:ILOOP	CPA	GR1,TEN
+../../../as/itoa.casl:14:	JMI	INEXT
+../../../as/itoa.casl:15:	CALL	DIV
+../../../as/itoa.casl:16:    ADDA	GR4,ZCHAR
+../../../as/itoa.casl:17:    ST	GR4,STR,GR2
+../../../as/itoa.casl:18:    LAD	GR2,1,GR2
+../../../as/itoa.casl:19:    LD	GR1,GR3
+../../../as/itoa.casl:20:    JUMP	ILOOP
+../../../as/itoa.casl:21:INEXT	ADDA	GR1,ZCHAR
+../../../as/itoa.casl:22:	ST	GR1,STR,GR2
+../../../as/itoa.casl:23:	LAD	GR2,1,GR2
+../../../as/itoa.casl:24:    CPA GR0,=1
+../../../as/itoa.casl:25:    JPL	PRT
+../../../as/itoa.casl:26:    JMI	PRT
+../../../as/itoa.casl:27:    LD	GR1,MINUS
+../../../as/itoa.casl:28:	ST	GR1,STR,GR2
+../../../as/itoa.casl:29:	LAD	GR2,1,GR2
+../../../as/itoa.casl:30:PRT	ST	GR2,LEN
+../../../as/itoa.casl:31:	LAD	GR1,STR
+../../../as/itoa.casl:32:    LD	GR2,LEN
+../../../as/itoa.casl:33:    CALL REV
+../../../as/itoa.casl:34:	OUT	STR,LEN
+../../../as/itoa.casl:35:	POP GR4
+../../../as/itoa.casl:36:	POP GR3
+../../../as/itoa.casl:37:	POP GR2
+../../../as/itoa.casl:38:	RET
+../../../as/itoa.casl:39:TEN	DC	10
+../../../as/itoa.casl:40:ZCHAR DC '0'
+../../../as/itoa.casl:41:MINUS DC '-'
+../../../as/itoa.casl:42:STR	DS	6
+../../../as/itoa.casl:43:LEN	DS	1
+../../../as/itoa.casl:44:    END
+../../../as/itoa.casl:45:;GR1を10で割ったときの商をGR3、剰余をGR4に格納
+../../../as/itoa.casl:46:DIV	LD	GR4,GR1
+../../../as/itoa.casl:47:	LAD	GR3,0
+../../../as/itoa.casl:48:DLOOP	CPA	GR4,TEN
+../../../as/itoa.casl:49:	JMI	DFIN
+../../../as/itoa.casl:50:    SUBL GR4,TEN
+../../../as/itoa.casl:51:    LAD	GR3,1,GR3
+../../../as/itoa.casl:52:    JUMP	DLOOP
+../../../as/itoa.casl:53:DFIN RET
+../../../as/itoa.casl:54:	END
+../../../as/itoa.casl:55:;アドレスがGR1、長さがGR2の文字列を逆順に並べ替える
+../../../as/itoa.casl:56:;例: 12345 -> 54321
+../../../as/itoa.casl:57:REV	START
+../../../as/itoa.casl:58:	PUSH	0,GR3
+../../../as/itoa.casl:59:    PUSH	0,GR4
+../../../as/itoa.casl:60:    PUSH	0,GR5
+../../../as/itoa.casl:61:	LAD	GR3,1
+../../../as/itoa.casl:62:RPU	CPA	GR2,GR3
+../../../as/itoa.casl:63:	JMI	RNEXT
+../../../as/itoa.casl:64:    LD	GR4,GR1
+../../../as/itoa.casl:65:    ADDA	GR4,GR3
+../../../as/itoa.casl:66:    LD	GR4,-1,GR4
+../../../as/itoa.casl:67:	PUSH 0,GR4
+../../../as/itoa.casl:68:    LAD	GR3,1,GR3
+../../../as/itoa.casl:69:    JUMP	RPU
+../../../as/itoa.casl:70:RNEXT    LAD	GR3,1
+../../../as/itoa.casl:71:RPO	CPA	GR2,GR3
+../../../as/itoa.casl:72:	JMI	RFIN
+../../../as/itoa.casl:73:    POP GR4
+../../../as/itoa.casl:74:    LD GR5,GR1
+../../../as/itoa.casl:75:    ADDA GR5,GR3
+../../../as/itoa.casl:76:    ST GR4,-1,GR5
+../../../as/itoa.casl:77:    LAD	GR3,1,GR3
+../../../as/itoa.casl:78:    JUMP RPO
+../../../as/itoa.casl:79:RFIN POP GR5
+../../../as/itoa.casl:80:	POP	GR4
+../../../as/itoa.casl:81:    POP	GR3
+../../../as/itoa.casl:82:	RET
+../../../as/itoa.casl:83:	END
+../../../as/itoa.casl:84:;GR1の内容をマイナス値にする
+../../../as/itoa.casl:85:;例: 10 -> -10, -20 -> 20
+../../../as/itoa.casl:86:INV	START
+../../../as/itoa.casl:87:	XOR	GR1,=#FFFF
+../../../as/itoa.casl:88:    LAD	GR1,1,GR1
+../../../as/itoa.casl:89:    RET
+../../../as/itoa.casl:90:	END
+
+Label::::
+STR ---> #005F
+DFIN ---> #0073
+ITOA ---> #000A
+A ---> #0007
+B ---> #0008
+C ---> #0009
+RNEXT ---> #0089
+MINUS ---> #005E
+RFIN ---> #0097
+ILOOP ---> #001D
+DIV ---> #0066
+REV ---> #0074
+BEGIN ---> #0000
+PRT ---> #003E
+ZCHAR ---> #005D
+MAIN ---> #0000
+INEXT ---> #002C
+INV ---> #009B
+RPO ---> #008B
+RPU ---> #007C
+DLOOP ---> #0069
+LEN ---> #0065
+TEN ---> #005C
+
+Assemble ../../../as/add_p.casl (1)
+../../../as/add_p.casl:1:MAIN	START
+../../../as/add_p.casl:2:BEGIN	LD	GR1,A
+	#0000	#1010
+	#0001	#0007
+../../../as/add_p.casl:3:	ADDA	GR1,B
+	#0002	#2010
+	#0003	#0008
+../../../as/add_p.casl:4:    CALL	ITOA
+	#0004	#8000
+	#0005	#000A
+../../../as/add_p.casl:5:    RET
+	#0006	#8100
+../../../as/add_p.casl:6:A	DC	999
+	#0007	#03E7
+../../../as/add_p.casl:7:B	DC	998
+	#0008	#03E6
+../../../as/add_p.casl:8:C	DS	1
+	#0009	#0000
+../../../as/add_p.casl:9:	END
+
+Assemble ../../../as/itoa.casl (1)
+../../../as/itoa.casl:1:;GR1に格納された数値を表示
+../../../as/itoa.casl:2:ITOA	START
+../../../as/itoa.casl:3:	PUSH 0,GR2
+	#000A	#7002
+	#000B	#0000
+../../../as/itoa.casl:4:	PUSH 0,GR3
+	#000C	#7003
+	#000D	#0000
+../../../as/itoa.casl:5:	PUSH 0,GR4
+	#000E	#7004
+	#000F	#0000
+../../../as/itoa.casl:6:    LAD	GR0,0
+	#0010	#1200
+	#0011	#0000
+../../../as/itoa.casl:7:    LAD	GR2,0
+	#0012	#1220
+	#0013	#0000
+../../../as/itoa.casl:8:    AND GR1,GR1
+	#0014	#3411
+../../../as/itoa.casl:9:    JPL ILOOP
+	#0015	#6500
+	#0016	#001D
+../../../as/itoa.casl:10:    JZE ILOOP
+	#0017	#6300
+	#0018	#001D
+../../../as/itoa.casl:11:    LAD GR0,1
+	#0019	#1200
+	#001A	#0001
+../../../as/itoa.casl:12:    CALL INV
+	#001B	#8000
+	#001C	#009B
+../../../as/itoa.casl:13:ILOOP	CPA	GR1,TEN
+	#001D	#4010
+	#001E	#005C
+../../../as/itoa.casl:14:	JMI	INEXT
+	#001F	#6100
+	#0020	#002C
+../../../as/itoa.casl:15:	CALL	DIV
+	#0021	#8000
+	#0022	#0066
+../../../as/itoa.casl:16:    ADDA	GR4,ZCHAR
+	#0023	#2040
+	#0024	#005D
+../../../as/itoa.casl:17:    ST	GR4,STR,GR2
+	#0025	#1142
+	#0026	#005F
+../../../as/itoa.casl:18:    LAD	GR2,1,GR2
+	#0027	#1222
+	#0028	#0001
+../../../as/itoa.casl:19:    LD	GR1,GR3
+	#0029	#1413
+../../../as/itoa.casl:20:    JUMP	ILOOP
+	#002A	#6400
+	#002B	#001D
+../../../as/itoa.casl:21:INEXT	ADDA	GR1,ZCHAR
+	#002C	#2010
+	#002D	#005D
+../../../as/itoa.casl:22:	ST	GR1,STR,GR2
+	#002E	#1112
+	#002F	#005F
+../../../as/itoa.casl:23:	LAD	GR2,1,GR2
+	#0030	#1222
+	#0031	#0001
+../../../as/itoa.casl:24:    CPA GR0,=1
+	#00A0	#0001
+	#0032	#4000
+	#0033	#00A0
+../../../as/itoa.casl:25:    JPL	PRT
+	#0034	#6500
+	#0035	#003E
+../../../as/itoa.casl:26:    JMI	PRT
+	#0036	#6100
+	#0037	#003E
+../../../as/itoa.casl:27:    LD	GR1,MINUS
+	#0038	#1010
+	#0039	#005E
+../../../as/itoa.casl:28:	ST	GR1,STR,GR2
+	#003A	#1112
+	#003B	#005F
+../../../as/itoa.casl:29:	LAD	GR2,1,GR2
+	#003C	#1222
+	#003D	#0001
+../../../as/itoa.casl:30:PRT	ST	GR2,LEN
+	#003E	#1120
+	#003F	#0065
+../../../as/itoa.casl:31:	LAD	GR1,STR
+	#0040	#1210
+	#0041	#005F
+../../../as/itoa.casl:32:    LD	GR2,LEN
+	#0042	#1020
+	#0043	#0065
+../../../as/itoa.casl:33:    CALL REV
+	#0044	#8000
+	#0045	#0074
+../../../as/itoa.casl:34:	OUT	STR,LEN
+	#0046	#7001
+	#0047	#0000
+	#0048	#7002
+	#0049	#0000
+	#004A	#1210
+	#004B	#005F
+	#004C	#1020
+	#004D	#0065
+	#004E	#F000
+	#004F	#0002
+	#0050	#1210
+	#0051	#00A1
+	#00A1	#000A
+	#0052	#1220
+	#0053	#0001
+	#0054	#F000
+	#0055	#0002
+	#0056	#7120
+	#0057	#7110
+../../../as/itoa.casl:35:	POP GR4
+	#0058	#7140
+../../../as/itoa.casl:36:	POP GR3
+	#0059	#7130
+../../../as/itoa.casl:37:	POP GR2
+	#005A	#7120
+../../../as/itoa.casl:38:	RET
+	#005B	#8100
+../../../as/itoa.casl:39:TEN	DC	10
+	#005C	#000A
+../../../as/itoa.casl:40:ZCHAR DC '0'
+	#005D	#0030
+../../../as/itoa.casl:41:MINUS DC '-'
+	#005E	#002D
+../../../as/itoa.casl:42:STR	DS	6
+	#005F	#0000
+	#0060	#0000
+	#0061	#0000
+	#0062	#0000
+	#0063	#0000
+	#0064	#0000
+../../../as/itoa.casl:43:LEN	DS	1
+	#0065	#0000
+../../../as/itoa.casl:44:    END
+../../../as/itoa.casl:45:;GR1を10で割ったときの商をGR3、剰余をGR4に格納
+../../../as/itoa.casl:46:DIV	LD	GR4,GR1
+	#0066	#1441
+../../../as/itoa.casl:47:	LAD	GR3,0
+	#0067	#1230
+	#0068	#0000
+../../../as/itoa.casl:48:DLOOP	CPA	GR4,TEN
+	#0069	#4040
+	#006A	#005C
+../../../as/itoa.casl:49:	JMI	DFIN
+	#006B	#6100
+	#006C	#0073
+../../../as/itoa.casl:50:    SUBL GR4,TEN
+	#006D	#2340
+	#006E	#005C
+../../../as/itoa.casl:51:    LAD	GR3,1,GR3
+	#006F	#1233
+	#0070	#0001
+../../../as/itoa.casl:52:    JUMP	DLOOP
+	#0071	#6400
+	#0072	#0069
+../../../as/itoa.casl:53:DFIN RET
+	#0073	#8100
+../../../as/itoa.casl:54:	END
+../../../as/itoa.casl:55:;アドレスがGR1、長さがGR2の文字列を逆順に並べ替える
+../../../as/itoa.casl:56:;例: 12345 -> 54321
+../../../as/itoa.casl:57:REV	START
+../../../as/itoa.casl:58:	PUSH	0,GR3
+	#0074	#7003
+	#0075	#0000
+../../../as/itoa.casl:59:    PUSH	0,GR4
+	#0076	#7004
+	#0077	#0000
+../../../as/itoa.casl:60:    PUSH	0,GR5
+	#0078	#7005
+	#0079	#0000
+../../../as/itoa.casl:61:	LAD	GR3,1
+	#007A	#1230
+	#007B	#0001
+../../../as/itoa.casl:62:RPU	CPA	GR2,GR3
+	#007C	#4423
+../../../as/itoa.casl:63:	JMI	RNEXT
+	#007D	#6100
+	#007E	#0089
+../../../as/itoa.casl:64:    LD	GR4,GR1
+	#007F	#1441
+../../../as/itoa.casl:65:    ADDA	GR4,GR3
+	#0080	#2443
+../../../as/itoa.casl:66:    LD	GR4,-1,GR4
+	#0081	#1044
+	#0082	#FFFF
+../../../as/itoa.casl:67:	PUSH 0,GR4
+	#0083	#7004
+	#0084	#0000
+../../../as/itoa.casl:68:    LAD	GR3,1,GR3
+	#0085	#1233
+	#0086	#0001
+../../../as/itoa.casl:69:    JUMP	RPU
+	#0087	#6400
+	#0088	#007C
+../../../as/itoa.casl:70:RNEXT    LAD	GR3,1
+	#0089	#1230
+	#008A	#0001
+../../../as/itoa.casl:71:RPO	CPA	GR2,GR3
+	#008B	#4423
+../../../as/itoa.casl:72:	JMI	RFIN
+	#008C	#6100
+	#008D	#0097
+../../../as/itoa.casl:73:    POP GR4
+	#008E	#7140
+../../../as/itoa.casl:74:    LD GR5,GR1
+	#008F	#1451
+../../../as/itoa.casl:75:    ADDA GR5,GR3
+	#0090	#2453
+../../../as/itoa.casl:76:    ST GR4,-1,GR5
+	#0091	#1145
+	#0092	#FFFF
+../../../as/itoa.casl:77:    LAD	GR3,1,GR3
+	#0093	#1233
+	#0094	#0001
+../../../as/itoa.casl:78:    JUMP RPO
+	#0095	#6400
+	#0096	#008B
+../../../as/itoa.casl:79:RFIN POP GR5
+	#0097	#7150
+../../../as/itoa.casl:80:	POP	GR4
+	#0098	#7140
+../../../as/itoa.casl:81:    POP	GR3
+	#0099	#7130
+../../../as/itoa.casl:82:	RET
+	#009A	#8100
+../../../as/itoa.casl:83:	END
+../../../as/itoa.casl:84:;GR1の内容をマイナス値にする
+../../../as/itoa.casl:85:;例: 10 -> -10, -20 -> 20
+../../../as/itoa.casl:86:INV	START
+../../../as/itoa.casl:87:	XOR	GR1,=#FFFF
+	#00A2	#FFFF
+	#009B	#3210
+	#009C	#00A2
+../../../as/itoa.casl:88:    LAD	GR1,1,GR1
+	#009D	#1211
+	#009E	#0001
+../../../as/itoa.casl:89:    RET
+	#009F	#8100
+../../../as/itoa.casl:90:	END
+1997

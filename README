@@ -1,0 +1,70 @@
+このファイルは、YACASL2（仮称）のREADMEファイルである。
+
+■機能概要
+YACASL2は、Linux上で動作するオープンソースのCASL II処理系。
+CASL IIは、情報処理試験で用いられるアセンブラ言語。
+仕様は、次の資料「試験で使用する情報処理用語・プログラム言語など」（2008年10月版）の
+中にある「別紙 1 アセンブラ言語の仕様」参照。
+    http://www.jitec.ipa.go.jp/1_00topic/topic_20081027_hani_yougo.pdf （PDFファイル）
+
+■要件
+Linux（Ubuntu Linux 9.04とVine Linux 4.2で動作確認）
+インストールに、gcc、makeが必要
+
+■インストール
+yacasl2.tar.gz をダウンロードし、シェルで次のコマンド実行
+
+ $ tar xvzf yacasl2.tar.gz
+ $ cd casl2
+ $ make
+ gcc -o ../casl2 -g -Wall struct.c cmd.c cerr.c dump.c exec.c label.c parseline.c macro.c assemble.c casl2.c
+ gcc -o ../comet2 -g -Wall struct.c cmd.c cerr.c dump.c exec.c comet2.c
+ make[1]: Leaving directory `/home/kazubito/casl2/src'
+
+■実行方法
+※asディレクトリに、サンプルのcaslファイルを格納
+1. アセンブラファイルをアセンブルし、仮想システムCOMET II上で実行
+
+ $ ./casl as/hello.casl
+ $ ./casl as/add.casl
+
+2. アセンブラファイルの、ラベルの解析結果とアセンブル詳細結果を出力。
+   実行はしない
+
+ $ ./casl -Al as/add.casl
+
+3. アセンブラファイルの、ラベルの解析結果とアセンブル詳細結果を
+   出力してから、仮想システムCOMET II上で実行
+
+ $ ./casl -al as/add.casl
+
+4. アセンブラファイルの、ラベルの解析結果とアセンブル詳細結果を
+   出力してから、仮想システムCOMET II上で実行。
+   実行時に、レジスタの内容を出力
+
+ $ ./casl -alt as/add.casl
+
+5. アセンブラファイルの、ラベルの解析結果とアセンブル詳細結果を
+   出力してから、仮想システムCOMET II上で実行。
+   実行時に、レジスタとメモリの内容を出力
+
+ $ ./casl -altd as/add.casl
+
+6. アセンブラファイルのアセンブラ結果をオブジェクトファイルadd.oに出力し、
+   comet2コマンドでadd.oを仮想システムCOMET II上で実行。
+
+ $ ./casl -oadd.o as/add.casl
+ $ ./comet2 -td add.o
+
+7. オプションの確認
+
+ $ ./casl2 --help
+ Usage: ./casl2 [-tdslaAh] [-o <OUTFILE>] FILE ...
+ $ ./comet2 --help
+ Usage: ./comet2 [-tdh] FILE
+
+詳細は、チュートリアル（作成予定）参照。
+
+■ライセンス    
+Copyright (C) 2009 j8takagi (j8takagi@nifty.com)
+（未定。GPL or 修正BSDの予定）

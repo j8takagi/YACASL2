@@ -1,0 +1,60 @@
+
+Assemble ../../../as/hanoi.casl (0)
+../../../as/hanoi.casl:1:; ハノイの塔を解くプログラム
+../../../as/hanoi.casl:2:MAIN   START
+../../../as/hanoi.casl:3:       LD      GR0,N
+../../../as/hanoi.casl:4:       LD      GR1,A
+../../../as/hanoi.casl:5:       LD      GR2,B
+../../../as/hanoi.casl:6:       LD      GR3,C
+../../../as/hanoi.casl:7:       CALL    HANOI
+../../../as/hanoi.casl:8:       RET
+../../../as/hanoi.casl:9:
+../../../as/hanoi.casl:10:HANOI  CPA     GR0,=1
+../../../as/hanoi.casl:11:       JZE     DISP
+../../../as/hanoi.casl:12:       SUBA    GR0,=1
+../../../as/hanoi.casl:13:       PUSH    0,GR2
+../../../as/hanoi.casl:14:       PUSH    0,GR3
+../../../as/hanoi.casl:15:       POP     GR2
+../../../as/hanoi.casl:16:       POP     GR3
+../../../as/hanoi.casl:17:       CALL    HANOI
+../../../as/hanoi.casl:18:       PUSH    0,GR2
+../../../as/hanoi.casl:19:       PUSH    0,GR3
+../../../as/hanoi.casl:20:       POP     GR2
+../../../as/hanoi.casl:21:       POP     GR3
+../../../as/hanoi.casl:22:       CALL    DISP
+../../../as/hanoi.casl:23:       PUSH    0,GR1
+../../../as/hanoi.casl:24:       PUSH    0,GR2
+../../../as/hanoi.casl:25:       POP     GR1
+../../../as/hanoi.casl:26:       POP     GR2
+../../../as/hanoi.casl:27:       CALL    HANOI
+../../../as/hanoi.casl:28:       PUSH    0,GR1
+../../../as/hanoi.casl:29:       PUSH    0,GR2
+../../../as/hanoi.casl:30:       POP     GR1
+../../../as/hanoi.casl:31:       POP     GR2
+../../../as/hanoi.casl:32:       ADDA    GR0,=1
+../../../as/hanoi.casl:33:       RET
+../../../as/hanoi.casl:34:
+../../../as/hanoi.casl:35:DISP   ST      GR1,MSG1
+../../../as/hanoi.casl:36:       ST      GR3,MSG2
+../../../as/hanoi.casl:37:       OUT     MSG,LNG
+../../../as/hanoi.casl:38:       RET
+../../../as/hanoi.casl:39:
+../../../as/hanoi.casl:40:N      DC      3	;輪の総数
+../../../as/hanoi.casl:41:LNG    DC      11	;メッセージの長さ
+../../../as/hanoi.casl:42:A      DC      'A'
+../../../as/hanoi.casl:43:B      DC      'B'
+../../../as/hanoi.casl:44:C      DC      'C'
+../../../as/hanoi.casl:45:MSG    DC      'from '
+../../../as/hanoi.casl:46:MSG1   DS      1
+../../../as/hanoi.casl:47:       DC      ' to '
+../../../as/hanoi.casl:48:MSG2   DS      1
+../../../as/hanoi.casl:49:       END
+
+Assemble ../../../as/hanoi.casl (1)
+from A to C
+from A to B
+from C to B
+from A to C
+from B to A
+from B to C
+from A to C

@@ -1,0 +1,6 @@
+LADTEST	START
+	LAD	GR1,1
+	LAD	GR2,2
+    LAD	GR3,3
+    RET
+    END

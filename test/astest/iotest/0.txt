@@ -1,0 +1,280 @@
+
+Assemble ../../../as/iotest.casl (0)
+../../../as/iotest.casl:1:IOTEST START
+../../../as/iotest.casl:2:	OUT OBUF1,OLEN1
+../../../as/iotest.casl:3:LOOP IN IOBUF,IOLEN
+../../../as/iotest.casl:4:	LD	GR1,IOLEN
+../../../as/iotest.casl:5:    JZE	RETURN
+../../../as/iotest.casl:6:	OUT OBUF2,OLEN2
+../../../as/iotest.casl:7:	OUT IOBUF,IOLEN
+../../../as/iotest.casl:8:	OUT OBUF3,OLEN3
+../../../as/iotest.casl:9:	JUMP LOOP
+../../../as/iotest.casl:10:RETURN	RET
+../../../as/iotest.casl:11:; Memory
+../../../as/iotest.casl:12:OBUF1 DC 'LET''S START. TYPE IN'
+../../../as/iotest.casl:13:OLEN1 DC 20
+../../../as/iotest.casl:14:OBUF2 DC 'YOU TYPED'
+../../../as/iotest.casl:15:OLEN2 DC 9
+../../../as/iotest.casl:16:OBUF3 DC 'WHAT''S NEXT?'
+../../../as/iotest.casl:17:OLEN3 DC 12
+../../../as/iotest.casl:18:IOBUF DS 64
+../../../as/iotest.casl:19:IOLEN DS 1
+../../../as/iotest.casl:20:	END
+
+Label::::
+OBUF1 ---> #005B
+OBUF2 ---> #0070
+IOLEN ---> #00C7
+OBUF3 ---> #007A
+RETURN ---> #005A
+IOBUF ---> #0087
+LOOP ---> #0012
+OLEN1 ---> #006F
+OLEN2 ---> #0079
+OLEN3 ---> #0086
+IOTEST ---> #0000
+
+Assemble ../../../as/iotest.casl (1)
+../../../as/iotest.casl:1:IOTEST START
+../../../as/iotest.casl:2:	OUT OBUF1,OLEN1
+	#0000	#7001
+	#0001	#0000
+	#0002	#7002
+	#0003	#0000
+	#0004	#1210
+	#0005	#005B
+	#0006	#1020
+	#0007	#006F
+	#0008	#F000
+	#0009	#0002
+	#000A	#1210
+	#000B	#00C8
+	#00C8	#000A
+	#000C	#1220
+	#000D	#0001
+	#000E	#F000
+	#000F	#0002
+	#0010	#7120
+	#0011	#7110
+../../../as/iotest.casl:3:LOOP IN IOBUF,IOLEN
+	#0012	#7001
+	#0013	#0000
+	#0014	#7002
+	#0015	#0000
+	#0016	#1210
+	#0017	#0087
+	#0018	#1220
+	#0019	#00C7
+	#001A	#F000
+	#001B	#0001
+	#001C	#7120
+	#001D	#7110
+../../../as/iotest.casl:4:	LD	GR1,IOLEN
+	#001E	#1010
+	#001F	#00C7
+../../../as/iotest.casl:5:    JZE	RETURN
+	#0020	#6300
+	#0021	#005A
+../../../as/iotest.casl:6:	OUT OBUF2,OLEN2
+	#0022	#7001
+	#0023	#0000
+	#0024	#7002
+	#0025	#0000
+	#0026	#1210
+	#0027	#0070
+	#0028	#1020
+	#0029	#0079
+	#002A	#F000
+	#002B	#0002
+	#002C	#1210
+	#002D	#00C9
+	#00C9	#000A
+	#002E	#1220
+	#002F	#0001
+	#0030	#F000
+	#0031	#0002
+	#0032	#7120
+	#0033	#7110
+../../../as/iotest.casl:7:	OUT IOBUF,IOLEN
+	#0034	#7001
+	#0035	#0000
+	#0036	#7002
+	#0037	#0000
+	#0038	#1210
+	#0039	#0087
+	#003A	#1020
+	#003B	#00C7
+	#003C	#F000
+	#003D	#0002
+	#003E	#1210
+	#003F	#00CA
+	#00CA	#000A
+	#0040	#1220
+	#0041	#0001
+	#0042	#F000
+	#0043	#0002
+	#0044	#7120
+	#0045	#7110
+../../../as/iotest.casl:8:	OUT OBUF3,OLEN3
+	#0046	#7001
+	#0047	#0000
+	#0048	#7002
+	#0049	#0000
+	#004A	#1210
+	#004B	#007A
+	#004C	#1020
+	#004D	#0086
+	#004E	#F000
+	#004F	#0002
+	#0050	#1210
+	#0051	#00CB
+	#00CB	#000A
+	#0052	#1220
+	#0053	#0001
+	#0054	#F000
+	#0055	#0002
+	#0056	#7120
+	#0057	#7110
+../../../as/iotest.casl:9:	JUMP LOOP
+	#0058	#6400
+	#0059	#0012
+../../../as/iotest.casl:10:RETURN	RET
+	#005A	#8100
+../../../as/iotest.casl:11:; Memory
+../../../as/iotest.casl:12:OBUF1 DC 'LET''S START. TYPE IN'
+	#005B	#004C
+	#005C	#0045
+	#005D	#0054
+	#005E	#0027
+	#005F	#0053
+	#0060	#0020
+	#0061	#0053
+	#0062	#0054
+	#0063	#0041
+	#0064	#0052
+	#0065	#0054
+	#0066	#002E
+	#0067	#0020
+	#0068	#0054
+	#0069	#0059
+	#006A	#0050
+	#006B	#0045
+	#006C	#0020
+	#006D	#0049
+	#006E	#004E
+../../../as/iotest.casl:13:OLEN1 DC 20
+	#006F	#0014
+../../../as/iotest.casl:14:OBUF2 DC 'YOU TYPED'
+	#0070	#0059
+	#0071	#004F
+	#0072	#0055
+	#0073	#0020
+	#0074	#0054
+	#0075	#0059
+	#0076	#0050
+	#0077	#0045
+	#0078	#0044
+../../../as/iotest.casl:15:OLEN2 DC 9
+	#0079	#0009
+../../../as/iotest.casl:16:OBUF3 DC 'WHAT''S NEXT?'
+	#007A	#0057
+	#007B	#0048
+	#007C	#0041
+	#007D	#0054
+	#007E	#0027
+	#007F	#0053
+	#0080	#0020
+	#0081	#004E
+	#0082	#0045
+	#0083	#0058
+	#0084	#0054
+	#0085	#003F
+../../../as/iotest.casl:17:OLEN3 DC 12
+	#0086	#000C
+../../../as/iotest.casl:18:IOBUF DS 64
+	#0087	#0000
+	#0088	#0000
+	#0089	#0000
+	#008A	#0000
+	#008B	#0000
+	#008C	#0000
+	#008D	#0000
+	#008E	#0000
+	#008F	#0000
+	#0090	#0000
+	#0091	#0000
+	#0092	#0000
+	#0093	#0000
+	#0094	#0000
+	#0095	#0000
+	#0096	#0000
+	#0097	#0000
+	#0098	#0000
+	#0099	#0000
+	#009A	#0000
+	#009B	#0000
+	#009C	#0000
+	#009D	#0000
+	#009E	#0000
+	#009F	#0000
+	#00A0	#0000
+	#00A1	#0000
+	#00A2	#0000
+	#00A3	#0000
+	#00A4	#0000
+	#00A5	#0000
+	#00A6	#0000
+	#00A7	#0000
+	#00A8	#0000
+	#00A9	#0000
+	#00AA	#0000
+	#00AB	#0000
+	#00AC	#0000
+	#00AD	#0000
+	#00AE	#0000
+	#00AF	#0000
+	#00B0	#0000
+	#00B1	#0000
+	#00B2	#0000
+	#00B3	#0000
+	#00B4	#0000
+	#00B5	#0000
+	#00B6	#0000
+	#00B7	#0000
+	#00B8	#0000
+	#00B9	#0000
+	#00BA	#0000
+	#00BB	#0000
+	#00BC	#0000
+	#00BD	#0000
+	#00BE	#0000
+	#00BF	#0000
+	#00C0	#0000
+	#00C1	#0000
+	#00C2	#0000
+	#00C3	#0000
+	#00C4	#0000
+	#00C5	#0000
+	#00C6	#0000
+../../../as/iotest.casl:19:IOLEN DS 1
+	#00C7	#0000
+../../../as/iotest.casl:20:	END
+LET'S START. TYPE IN
+YOU TYPED
+aaaaaaaaaaaaaaaaaaaa
+WHAT'S NEXT?
+YOU TYPED
+qwerty
+WHAT'S NEXT?
+YOU TYPED
+1234567890
+WHAT'S NEXT?
+YOU TYPED
+cccccccccccccccccccccccccccccccccccccccc
+WHAT'S NEXT?
+YOU TYPED
+	a	b	c
+WHAT'S NEXT?
+YOU TYPED
+	
+WHAT'S NEXT?

@@ -1,0 +1,5 @@
+PTN3   START
+       LD      GR2,=#0001
+       SLL     GR2,0,GR1
+       RET
+       END
