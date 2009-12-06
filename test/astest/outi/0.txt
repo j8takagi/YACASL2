@@ -1,0 +1,327 @@
+
+Assemble ../../../as/outi_call.casl (0)
+
+Assemble ../../../as/outi.casl (0)
+
+Label::::
+VAL ---> #0010
+STR ---> #006F
+DFIN ---> #0083
+RNEXT ---> #0099
+CNT ---> #001E
+DIV10 ---> #0076
+RFIN ---> #00A7
+ILOOP ---> #0032
+REV ---> #0084
+PRT ---> #0051
+LOOP ---> #0004
+ZCHAR ---> #006E
+MAIN ---> #0000
+INEXT ---> #0041
+INV ---> #00AB
+RPO ---> #009B
+RPU ---> #008C
+OUTI ---> #001F
+DLOOP ---> #0079
+FIN ---> #000F
+LEN ---> #0075
+TEN ---> #006D
+
+Assemble ../../../as/outi_call.casl (1)
+../../../as/outi_call.casl:1:; need outi.casl
+../../../as/outi_call.casl:2:MAIN    START
+../../../as/outi_call.casl:3:        LAD GR2,0
+	#0000	#1220
+	#0001	#0000
+../../../as/outi_call.casl:4:        LD  GR3,CNT
+	#0002	#1030
+	#0003	#001E
+../../../as/outi_call.casl:5:LOOP    LD GR1,VAL,GR2
+	#0004	#1012
+	#0005	#0010
+../../../as/outi_call.casl:6:        CALL    OUTI
+	#0006	#8000
+	#0007	#001F
+../../../as/outi_call.casl:7:        LAD GR2,1,GR2
+	#0008	#1222
+	#0009	#0001
+../../../as/outi_call.casl:8:        CPA GR2,GR3
+	#000A	#4423
+../../../as/outi_call.casl:9:        JZE FIN
+	#000B	#6300
+	#000C	#000F
+../../../as/outi_call.casl:10:        JUMP LOOP
+	#000D	#6400
+	#000E	#0004
+../../../as/outi_call.casl:11:FIN RET
+	#000F	#8100
+../../../as/outi_call.casl:12:        END
+../../../as/outi_call.casl:13:VAL DC  #0000,#0001,#0002,#0010,#0100,#1000,#7FFF,#FFFF,#FFFE,#FFF0,#FF00,#F000,#8001,#8000
+	#0010	#0000
+	#0011	#0001
+	#0012	#0002
+	#0013	#0010
+	#0014	#0100
+	#0015	#1000
+	#0016	#7FFF
+	#0017	#FFFF
+	#0018	#FFFE
+	#0019	#FFF0
+	#001A	#FF00
+	#001B	#F000
+	#001C	#8001
+	#001D	#8000
+../../../as/outi_call.casl:14:CNT DC  14
+	#001E	#000E
+
+Assemble ../../../as/outi.casl (1)
+../../../as/outi.casl:1:;GR1に格納された数値を表示
+../../../as/outi.casl:2:OUTI    START
+../../../as/outi.casl:3:        PUSH    0,GR2
+	#001F	#7002
+	#0020	#0000
+../../../as/outi.casl:4:        PUSH    0,GR3
+	#0021	#7003
+	#0022	#0000
+../../../as/outi.casl:5:        PUSH    0,GR4
+	#0023	#7004
+	#0024	#0000
+../../../as/outi.casl:6:        LAD GR0,0               ; 負数フラグ。GR1が負数の場合、GR0は1
+	#0025	#1200
+	#0026	#0000
+../../../as/outi.casl:7:        LAD GR2,0
+	#0027	#1220
+	#0028	#0000
+../../../as/outi.casl:8:        AND GR1,GR1
+	#0029	#3411
+../../../as/outi.casl:9:        JZE INEXT               ; GR1が0の場合
+	#002A	#6300
+	#002B	#0041
+../../../as/outi.casl:10:        JPL ILOOP               ; GR1が正数の場合
+	#002C	#6500
+	#002D	#0032
+../../../as/outi.casl:11:        LAD GR0,1               ; GR1が負数の場合、負数フラグ設定
+	#002E	#1200
+	#002F	#0001
+../../../as/outi.casl:12:        CALL INV                ;            負数を正数に変換
+	#0030	#8000
+	#0031	#00AB
+../../../as/outi.casl:13:ILOOP   CPL GR1,TEN
+	#0032	#4110
+	#0033	#006D
+../../../as/outi.casl:14:        JMI INEXT               ; GR1が10未満の場合は、ループ終了
+	#0034	#6100
+	#0035	#0041
+../../../as/outi.casl:15:        CALL    DIV10           ; (GR1 / 10)の商をGR3、剰余をGR4に格納
+	#0036	#8000
+	#0037	#0076
+../../../as/outi.casl:16:        ADDL    GR4,ZCHAR       ; (GR1 / 10)の剰余を文字に変換
+	#0038	#2240
+	#0039	#006E
+../../../as/outi.casl:17:        ST  GR4,STR,GR2         ; 文字をメモリに格納
+	#003A	#1142
+	#003B	#006F
+../../../as/outi.casl:18:        LAD GR2,1,GR2           ; GR2をインクリメント
+	#003C	#1222
+	#003D	#0001
+../../../as/outi.casl:19:        LD  GR1,GR3             ; (GR1 / 10)の商をGR1に格納
+	#003E	#1413
+../../../as/outi.casl:20:        JUMP    ILOOP
+	#003F	#6400
+	#0040	#0032
+../../../as/outi.casl:21:INEXT   ADDL    GR1,ZCHAR       ; ループ終了後の剰余を文字に変換
+	#0041	#2210
+	#0042	#006E
+../../../as/outi.casl:22:        ST  GR1,STR,GR2         ; 文字をメモリに格納
+	#0043	#1112
+	#0044	#006F
+../../../as/outi.casl:23:        LAD GR2,1,GR2           ; GR2をインクリメント
+	#0045	#1222
+	#0046	#0001
+../../../as/outi.casl:24:        CPL GR0,=1              ; 負数フラグ判定
+	#00B0	#0001
+	#0047	#4100
+	#0048	#00B0
+../../../as/outi.casl:25:        JNZ PRT
+	#0049	#6200
+	#004A	#0051
+../../../as/outi.casl:26:        LD  GR1,='-'           ; 負数フラグがオンの場合、「-」をロード
+	#00B1	#002D
+	#004B	#1010
+	#004C	#00B1
+../../../as/outi.casl:27:        ST  GR1,STR,GR2         ; 「-」をメモリに格納
+	#004D	#1112
+	#004E	#006F
+../../../as/outi.casl:28:        LAD GR2,1,GR2           ; GR2をインクリメント
+	#004F	#1222
+	#0050	#0001
+../../../as/outi.casl:29:PRT     ST  GR2,LEN             ; GR2をメモリに格納
+	#0051	#1120
+	#0052	#0075
+../../../as/outi.casl:30:        LAD GR1,STR             ; GR1に文字列のアドレスを格納
+	#0053	#1210
+	#0054	#006F
+../../../as/outi.casl:31:        CALL    REV             ; アドレスがGR1、長さがGR2の文字列を逆順に並べ替える
+	#0055	#8000
+	#0056	#0084
+../../../as/outi.casl:32:        OUT STR,LEN             ; 文字列を印字
+	#0057	#7001
+	#0058	#0000
+	#0059	#7002
+	#005A	#0000
+	#005B	#1210
+	#005C	#006F
+	#005D	#1020
+	#005E	#0075
+	#005F	#F000
+	#0060	#0002
+	#0061	#1210
+	#0062	#00B2
+	#00B2	#000A
+	#0063	#1220
+	#0064	#0001
+	#0065	#F000
+	#0066	#0002
+	#0067	#7120
+	#0068	#7110
+../../../as/outi.casl:33:        POP GR4
+	#0069	#7140
+../../../as/outi.casl:34:        POP GR3
+	#006A	#7130
+../../../as/outi.casl:35:        POP GR2
+	#006B	#7120
+../../../as/outi.casl:36:        RET
+	#006C	#8100
+../../../as/outi.casl:37:TEN     DC  10
+	#006D	#000A
+../../../as/outi.casl:38:ZCHAR   DC '0'
+	#006E	#0030
+../../../as/outi.casl:39:STR     DS  6
+	#006F	#0000
+	#0070	#0000
+	#0071	#0000
+	#0072	#0000
+	#0073	#0000
+	#0074	#0000
+../../../as/outi.casl:40:LEN     DS  1
+	#0075	#0000
+../../../as/outi.casl:41:        END
+../../../as/outi.casl:42:;GR1を10で割ったときの商をGR3、剰余をGR4に格納
+../../../as/outi.casl:43:DIV10   LD  GR4,GR1         ; GR1の値をGR4にコピー
+	#0076	#1441
+../../../as/outi.casl:44:        LAD GR3,0
+	#0077	#1230
+	#0078	#0000
+../../../as/outi.casl:45:DLOOP   CPL GR4,TEN
+	#0079	#4140
+	#007A	#006D
+../../../as/outi.casl:46:        JMI DFIN            ; GR4が10未満の場合は終了
+	#007B	#6100
+	#007C	#0083
+../../../as/outi.casl:47:        SUBL    GR4,TEN     ; GR4 <- GR4 - 10
+	#007D	#2340
+	#007E	#006D
+../../../as/outi.casl:48:        LAD GR3,1,GR3       ; GR3をインクリメント
+	#007F	#1233
+	#0080	#0001
+../../../as/outi.casl:49:        JUMP    DLOOP
+	#0081	#6400
+	#0082	#0079
+../../../as/outi.casl:50:DFIN    RET
+	#0083	#8100
+../../../as/outi.casl:51:        END
+../../../as/outi.casl:52:;アドレスがGR1、長さがGR2の文字列を逆順に並べ替える
+../../../as/outi.casl:53:;例: 12345 -> 54321
+../../../as/outi.casl:54:REV     START
+../../../as/outi.casl:55:        PUSH    0,GR3
+	#0084	#7003
+	#0085	#0000
+../../../as/outi.casl:56:        PUSH    0,GR4
+	#0086	#7004
+	#0087	#0000
+../../../as/outi.casl:57:        PUSH    0,GR5
+	#0088	#7005
+	#0089	#0000
+../../../as/outi.casl:58:        LAD GR3,1
+	#008A	#1230
+	#008B	#0001
+../../../as/outi.casl:59:RPU     CPL GR2,GR3
+	#008C	#4523
+../../../as/outi.casl:60:        JMI RNEXT
+	#008D	#6100
+	#008E	#0099
+../../../as/outi.casl:61:        LD  GR4,GR1
+	#008F	#1441
+../../../as/outi.casl:62:        ADDL    GR4,GR3
+	#0090	#2643
+../../../as/outi.casl:63:        LD  GR4,-1,GR4
+	#0091	#1044
+	#0092	#FFFF
+../../../as/outi.casl:64:        PUSH 0,GR4
+	#0093	#7004
+	#0094	#0000
+../../../as/outi.casl:65:        LAD GR3,1,GR3
+	#0095	#1233
+	#0096	#0001
+../../../as/outi.casl:66:        JUMP    RPU
+	#0097	#6400
+	#0098	#008C
+../../../as/outi.casl:67:RNEXT   LAD GR3,1
+	#0099	#1230
+	#009A	#0001
+../../../as/outi.casl:68:RPO     CPL GR2,GR3
+	#009B	#4523
+../../../as/outi.casl:69:        JMI RFIN
+	#009C	#6100
+	#009D	#00A7
+../../../as/outi.casl:70:        POP GR4
+	#009E	#7140
+../../../as/outi.casl:71:        LD  GR5,GR1
+	#009F	#1451
+../../../as/outi.casl:72:        ADDL    GR5,GR3
+	#00A0	#2653
+../../../as/outi.casl:73:        ST  GR4,-1,GR5
+	#00A1	#1145
+	#00A2	#FFFF
+../../../as/outi.casl:74:        LAD GR3,1,GR3
+	#00A3	#1233
+	#00A4	#0001
+../../../as/outi.casl:75:        JUMP    RPO
+	#00A5	#6400
+	#00A6	#009B
+../../../as/outi.casl:76:RFIN    POP GR5
+	#00A7	#7150
+../../../as/outi.casl:77:        POP GR4
+	#00A8	#7140
+../../../as/outi.casl:78:        POP GR3
+	#00A9	#7130
+../../../as/outi.casl:79:        RET
+	#00AA	#8100
+../../../as/outi.casl:80:        END
+../../../as/outi.casl:81:;GR1の内容をマイナス値にする
+../../../as/outi.casl:82:;例: 10 -> -10, -20 -> 20
+../../../as/outi.casl:83:INV     START
+../../../as/outi.casl:84:        XOR GR1,=#FFFF
+	#00B3	#FFFF
+	#00AB	#3210
+	#00AC	#00B3
+../../../as/outi.casl:85:        LAD GR1,1,GR1
+	#00AD	#1211
+	#00AE	#0001
+../../../as/outi.casl:86:        RET
+	#00AF	#8100
+../../../as/outi.casl:87:        END
+0
+1
+2
+16
+256
+4096
+32767
+-1
+-2
+-16
+-256
+-4096
+-32767
+-32768

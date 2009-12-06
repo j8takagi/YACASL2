@@ -46,3 +46,4 @@ count_call2 \
 count_call \
 div10_test \
 div2 \
+outi \
