@@ -5,13 +5,16 @@
 #include <ctype.h>
 #include <assert.h>
 #include <stdbool.h>
+#include <time.h>
+
 #define ARRAYSIZE(array) (sizeof(array)/sizeof(array[0]))
 
 /* COMET IIの規格 */
 enum {
-    CMDSIZE = 4,    /* 命令の最大文字数 */    
-    REGSIZE = 8,     /* レジスタの数。COMET II規格では、8 */
-    MEMSIZE = 512    /* 主記憶の容量。COMET II規格では、65536語 */
+    CMDSIZE = 4,      /* 命令の最大文字数 */
+    REGSIZE = 8,      /* 汎用レジスタの数 */
+    MEMSIZE = 512,    /* メモリ容量。COMET II規格では、65536語 */
+    CLOCKS = 5000000  /* クロック周波数。COMET II規格では、未定義 */
 };
 
 /* ハッシュ値を取得する */

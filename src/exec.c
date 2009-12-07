@@ -266,6 +266,8 @@ void exec()
     WORD op, r_r1, x_r2, val;
     CMDTYPE cmdtype;
     char *errpr = malloc(8);
+    clock_t clock_begin, clock_end;
+
     if(tracemode) {
         fprintf(stdout, "\nExecuting machine codes\n");
     }
@@ -278,6 +280,7 @@ void exec()
     }
     /* 機械語の実行 */
     for (; ; ) {
+        clock_begin = clock();
         /* プログラムレジスタのアドレスが主記憶の範囲外の場合はエラー */
         if(PR >= MEMSIZE) {
             sprintf(errpr, "PR:#%04X", PR);
@@ -448,6 +451,9 @@ void exec()
         default:
             break;
         }
+        do {
+            clock_end = clock();
+        } while(clock_end - clock_begin < CLOCKS_PER_SEC / CLOCKS);
     }
 execerr:
     fprintf(stderr, "Execute error - %d: %s\n", cerrno, cerrmsg);
