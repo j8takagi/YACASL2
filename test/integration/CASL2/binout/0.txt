@@ -1,0 +1,197 @@
+../../../../casl2 -la ../../../../as/YAKUWA/binout.casl
+
+Assemble ../../../../as/YAKUWA/binout.casl (0)
+
+Label::::
+LOOP1 ---> #0023
+LOOP2 ---> #002B
+ONE ---> #0031
+OLNG ---> #0070
+MLOOP ---> #0002
+MFIN ---> #000E
+MLEN ---> #0013
+OBUF ---> #0060
+ZERO ---> #002D
+MAIN ---> #0000
+STORE ---> #0033
+OUT1 ---> #0041
+OUT2 ---> #0047
+MWORD ---> #000F
+BINOUT ---> #0014
+NZERO ---> #0071
+
+Assemble ../../../../as/YAKUWA/binout.casl (1)
+../../../../as/YAKUWA/binout.casl:1:;;; BINOUT: 主プログラムから渡された1語の内容を、
+../../../../as/YAKUWA/binout.casl:2:;;;         ゼロ抑制を行った2進表記で出力する
+../../../../as/YAKUWA/binout.casl:3:;;;     八鍬幸信『基本情報処理試験 らくらく突破 CASL II』172ページ
+../../../../as/YAKUWA/binout.casl:4:;;; BINOUTを呼び出す
+../../../../as/YAKUWA/binout.casl:5:MAIN    START
+../../../../as/YAKUWA/binout.casl:6:        LAD     GR2,0
+	#0000	#1220
+	#0001	#0000
+../../../../as/YAKUWA/binout.casl:7:MLOOP   CPA     GR2,MLEN
+	#0002	#4020
+	#0003	#0013
+../../../../as/YAKUWA/binout.casl:8:        JZE     MFIN
+	#0004	#6300
+	#0005	#000E
+../../../../as/YAKUWA/binout.casl:9:        LD      GR1,MWORD,GR2
+	#0006	#1012
+	#0007	#000F
+../../../../as/YAKUWA/binout.casl:10:        CALL    BINOUT
+	#0008	#8000
+	#0009	#0014
+../../../../as/YAKUWA/binout.casl:11:        LAD     GR2,1,GR2
+	#000A	#1222
+	#000B	#0001
+../../../../as/YAKUWA/binout.casl:12:        JUMP    MLOOP
+	#000C	#6400
+	#000D	#0002
+../../../../as/YAKUWA/binout.casl:13:MFIN    RET
+	#000E	#8100
+../../../../as/YAKUWA/binout.casl:14:MWORD   DC      #0000,#0001,#09CD,#8001
+	#000F	#0000
+	#0010	#0001
+	#0011	#09CD
+	#0012	#8001
+../../../../as/YAKUWA/binout.casl:15:MLEN    DC      4        
+	#0013	#0004
+../../../../as/YAKUWA/binout.casl:16:        END
+../../../../as/YAKUWA/binout.casl:17:;;; BINOUT
+../../../../as/YAKUWA/binout.casl:18:BINOUT  START
+../../../../as/YAKUWA/binout.casl:19:        PUSH    0,GR1           ; レジスタの退避
+	#0014	#7001
+	#0015	#0000
+../../../../as/YAKUWA/binout.casl:20:        PUSH    0,GR2           ; ↓
+	#0016	#7002
+	#0017	#0000
+../../../../as/YAKUWA/binout.casl:21:        PUSH    0,GR3           ; ↓
+	#0018	#7003
+	#0019	#0000
+../../../../as/YAKUWA/binout.casl:22:        PUSH    0,GR4           ; ↓
+	#001A	#7004
+	#001B	#0000
+../../../../as/YAKUWA/binout.casl:23:        LAD     GR2,0           ; 出力ポインタの初期化
+	#001C	#1220
+	#001D	#0000
+../../../../as/YAKUWA/binout.casl:24:        LAD     GR3,15          ; カウンタの初期化
+	#001E	#1230
+	#001F	#000F
+../../../../as/YAKUWA/binout.casl:25:        LD      GR4,GR1         ; 全ビット = 0？
+	#0020	#1441
+../../../../as/YAKUWA/binout.casl:26:        JZE     OUT1
+	#0021	#6300
+	#0022	#0041
+../../../../as/YAKUWA/binout.casl:27:LOOP1   JMI     ONE             ; 先行するビット処理
+	#0023	#6100
+	#0024	#0031
+../../../../as/YAKUWA/binout.casl:28:        LAD     GR3,-1,GR3      ; ↓
+	#0025	#1233
+	#0026	#FFFF
+../../../../as/YAKUWA/binout.casl:29:        SLL     GR1,1           ; ↓
+	#0027	#5210
+	#0028	#0001
+../../../../as/YAKUWA/binout.casl:30:        JUMP    LOOP1
+	#0029	#6400
+	#002A	#0023
+../../../../as/YAKUWA/binout.casl:31:LOOP2   JMI     ONE             ; 符号ビットの判定
+	#002B	#6100
+	#002C	#0031
+../../../../as/YAKUWA/binout.casl:32:ZERO    LAD     GR0,48          ; '0'→GR0
+	#002D	#1200
+	#002E	#0030
+../../../../as/YAKUWA/binout.casl:33:        JUMP    STORE
+	#002F	#6400
+	#0030	#0033
+../../../../as/YAKUWA/binout.casl:34:ONE     LAD     GR0,49          ; '1'→GR1
+	#0031	#1200
+	#0032	#0031
+../../../../as/YAKUWA/binout.casl:35:STORE   ST      GR0,OBUF,GR2
+	#0033	#1102
+	#0034	#0060
+../../../../as/YAKUWA/binout.casl:36:        LAD     GR2,1,GR2
+	#0035	#1222
+	#0036	#0001
+../../../../as/YAKUWA/binout.casl:37:        LAD     GR3,-1,GR3
+	#0037	#1233
+	#0038	#FFFF
+../../../../as/YAKUWA/binout.casl:38:        CPA     GR3,NZERO
+	#0039	#4030
+	#003A	#0071
+../../../../as/YAKUWA/binout.casl:39:        JMI     OUT2            ; 全ビット終了？
+	#003B	#6100
+	#003C	#0047
+../../../../as/YAKUWA/binout.casl:40:        SLL     GR1,1
+	#003D	#5210
+	#003E	#0001
+../../../../as/YAKUWA/binout.casl:41:        JUMP    LOOP2
+	#003F	#6400
+	#0040	#002B
+../../../../as/YAKUWA/binout.casl:42:OUT1    LAD     GR0,48
+	#0041	#1200
+	#0042	#0030
+../../../../as/YAKUWA/binout.casl:43:        ST      GR0,OBUF,GR2
+	#0043	#1102
+	#0044	#0060
+../../../../as/YAKUWA/binout.casl:44:        LAD     GR2,1,GR2
+	#0045	#1222
+	#0046	#0001
+../../../../as/YAKUWA/binout.casl:45:OUT2    ST      GR2,OLNG
+	#0047	#1120
+	#0048	#0070
+../../../../as/YAKUWA/binout.casl:46:        OUT     OBUF,OLNG
+	#0049	#7001
+	#004A	#0000
+	#004B	#7002
+	#004C	#0000
+	#004D	#1210
+	#004E	#0060
+	#004F	#1020
+	#0050	#0070
+	#0051	#F000
+	#0052	#0002
+	#0053	#1210
+	#0054	#0072
+	#0072	#000A
+	#0055	#1220
+	#0056	#0001
+	#0057	#F000
+	#0058	#0002
+	#0059	#7120
+	#005A	#7110
+../../../../as/YAKUWA/binout.casl:47:        POP     GR4             ; レジスタの復元
+	#005B	#7140
+../../../../as/YAKUWA/binout.casl:48:        POP     GR3             ; ↓
+	#005C	#7130
+../../../../as/YAKUWA/binout.casl:49:        POP     GR2             ; ↓
+	#005D	#7120
+../../../../as/YAKUWA/binout.casl:50:        POP     GR1             ; ↓
+	#005E	#7110
+../../../../as/YAKUWA/binout.casl:51:        RET
+	#005F	#8100
+../../../../as/YAKUWA/binout.casl:52:OBUF    DS      16
+	#0060	#0000
+	#0061	#0000
+	#0062	#0000
+	#0063	#0000
+	#0064	#0000
+	#0065	#0000
+	#0066	#0000
+	#0067	#0000
+	#0068	#0000
+	#0069	#0000
+	#006A	#0000
+	#006B	#0000
+	#006C	#0000
+	#006D	#0000
+	#006E	#0000
+	#006F	#0000
+../../../../as/YAKUWA/binout.casl:53:OLNG    DS      1
+	#0070	#0000
+../../../../as/YAKUWA/binout.casl:54:NZERO   DC      0
+	#0071	#0000
+../../../../as/YAKUWA/binout.casl:55:        END
+0
+1
+100111001101
+1000000000000001

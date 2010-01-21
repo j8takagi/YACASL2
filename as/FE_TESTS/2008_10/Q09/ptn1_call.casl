@@ -1,0 +1,7 @@
+MAIN    START
+        LAD     GR1,5
+        CALL    PTN1
+        LD      GR1,GR2
+        CALL    OUTB
+        RET
+        END

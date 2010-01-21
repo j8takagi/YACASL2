@@ -1,0 +1,2 @@
+../../../../comet2 svc2_out.o
+abcd

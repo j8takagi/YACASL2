@@ -1,0 +1,60 @@
+;GR1の値とGR2の値の積をGR0に格納
+MULA    START
+        RPUSH
+        XOR     GR0,GR0         ; 積
+        LAD     GR3,1           ; 対象ビット
+        XOR     GR4,GR4         ; マイナスフラグ
+CHK1    CALL    CHKVAL          ; (GR1 < 0)の場合は正負を反転させ、GR0 <- 1
+        JOV     MFIN
+        LD      GR4,GR0         ; マイナスフラグをオン
+CHK2    PUSH    0,GR1           ; GR1を退避
+        LD      GR1,GR2         ; GR2をGR1へロード
+        CALL    CHKVAL          ; (GR1 < 0)の場合は正負を反転させ、GR0 <- 1
+        JOV     C2OV
+        LD      GR2,GR1         ; GR1をGR2へロード
+        XOR     GR4,GR0         ; マイナスフラグを反転
+C2FIN   POP     GR1             ; GR1を復元
+        XOR     GR0,GR0         ; GR0を初期化
+        JUMP    MLOOP           ; MLOOPへジャンプ
+C2OV    POP     GR1             ; GR1を復元
+        JUMP    MFIN            ; MFINへジャンプ
+MLOOP   PUSH    0,GR3           ; ループ先頭。GR2の、GR3が示したビットが0の場合、MNEXTへジャンプ
+        AND     GR3,GR2         ; ↓
+        POP     GR3             ; ↓
+        JZE     MNEXT           ; ↓
+        ADDA    GR0,GR1         ; GR0 <- GR0 + GR1
+        JOV     MFIN            ; オーバーフローした場合、ループ脱出
+MNEXT   SLA     GR3,1           ; GR3を1回左シフト
+        AND     GR3,GR3         ; (GR3 = 0)の場合、ループ脱出
+        JZE     MMIN            ; ↓
+        CPL     GR3,GR2         ; (GR3 > GR2)の場合、ループ脱出
+        JPL     MMIN            ; ↓
+        SLA     GR1,1           ; GR1を1回左シフト
+        JOV     MFIN            ; オーバーフローした場合、ループ脱出
+        JUMP    MLOOP           ; ループ終端
+MMIN    AND     GR4,GR4         ; マイナスフラグがオフの場合、MFINへジャンプ
+        JZE     MFIN            ; ↓
+        LD      GR1,GR0         ; GR1にGR0をロード
+        CALL    MABS            ; GR1の正負を反転
+        JOV     MFIN            ; オーバーフロー(GR1 = -32768)の場合、MFINへジャンプ
+        LD      GR0,GR1         ; GR0にGR1をロード
+MFIN    RPOP
+        RET
+        END
+;;; GR1が0未満の場合は、絶対値に変換し、GR0に1を設定
+CHKVAL  START
+        LAD     GR0,0
+        AND     GR1,GR1         ; (GR1 >= 0)の場合は、CFINへジャンプ
+        JPL     CFIN            ; ↓
+        JZE     CFIN            ; ↓
+        LAD     GR0,1           ; GR0に1をロード
+        CALL    MABS            ; GR1を絶対値に変換
+CFIN    RET
+        END
+;;; GR1の値の正負を反転させる。
+;;; 例: -10 -> 10、10 -> -10
+MABS    START
+        XOR     GR1,=#FFFF       ; GR1のビット値を反転
+        ADDA    GR1,=1           ; GR1 <- GR1 + 1
+        RET
+        END

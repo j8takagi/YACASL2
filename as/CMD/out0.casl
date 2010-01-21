@@ -1,0 +1,6 @@
+MAIN     START
+         OUT    BUF,LEN
+         RET
+BUF      DC     '0'
+LEN      DC     1
+         END

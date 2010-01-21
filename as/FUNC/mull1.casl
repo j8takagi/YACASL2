@@ -1,0 +1,22 @@
+;GR1の値とGR2の値の積をGR0に格納
+MULL    START
+        RPUSH
+        XOR     GR0,GR0         ; 積
+        LAD     GR3,1           ; 対象ビット
+MLOOP   PUSH    0,GR3           ; ループ先頭。GR2の、GR3が示したビットが0の場合、MNEXTへジャンプ
+        AND     GR3,GR2         ; ↓
+        POP     GR3             ; ↓
+        JZE     MNEXT           ; ↓
+        ADDL    GR0,GR1         ; GR0 <- GR0 + GR1
+        JOV     MFIN            ; オーバーフローした場合、ループ脱出
+MNEXT   SLL     GR3,1           ; GR3を1回左シフト
+        AND     GR3,GR3         ; (GR3 = 0)の場合、ループ脱出
+        JZE     MFIN            ; ↓
+        CPL     GR3,GR2         ; (GR3 > GR2)の場合、ループ脱出
+        JPL     MFIN            ; ↓
+        SLL     GR1,1           ; GR1を1回左シフト
+        JOV     MFIN            ; オーバーフローした場合、ループ脱出
+        JUMP    MLOOP           ; ループ終端
+MFIN    RPOP
+        RET
+        END

@@ -1,0 +1,19 @@
+;;; GR1のアドレスに格納されたGR2の個数の値の中で、最小値をGR0に格納する
+MINIM   START
+        LD      GR0,0,GR1
+        ST      GR0,MIN
+        LAD     GR3,0
+S1      CPA     GR3,GR2
+        JZE     LRET
+        LAD     GR1,1,GR1
+        LD      GR0,0,GR1
+        CPA     GR0,MIN
+        JPL     S2
+        JZE     S2
+        ST      GR0,MIN
+S2      LAD     GR3,1,GR3
+        JUMP    S1
+LRET    LD      GR0,MIN
+        RET
+MIN     DS      1
+        END

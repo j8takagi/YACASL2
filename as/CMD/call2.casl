@@ -1,0 +1,11 @@
+MAIN    START   BEGIN
+BEGIN   LD      GR1,=29
+        CALL    INCR
+        ST      GR1,A
+        RET
+A       DS      1
+        END
+INCR    START
+        ADDA      GR1,=1
+        RET
+FIN     END

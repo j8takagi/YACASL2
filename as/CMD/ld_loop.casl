@@ -1,0 +1,12 @@
+;;; ループを使い、連続でGR1にデータを転送する
+MAIN    START
+        LAD     GR2,0
+MLOOP   CPA     GR2,LEN
+        JZE     MEND
+        LD      GR1,DATA,GR2
+        LAD     GR2,1,GR2
+        JUMP    MLOOP
+MEND    RET
+DATA    DC      #9600,#F000,#A400
+LEN     DC      3
+        END

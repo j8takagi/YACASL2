@@ -1,0 +1,6 @@
+; casl2 outa_call.casl outa.casl
+MAIN    START
+        LAD     GR1,170
+        CALL    OUTA
+        RET
+        END

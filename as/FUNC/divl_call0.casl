@@ -1,0 +1,7 @@
+;;; casl2 div0_call0.casl div0.casl outl.casl
+MAIN    START
+BEGIN   LAD     GR1,101
+        LAD     GR2,10
+        CALL    DIVL
+        RET
+        END

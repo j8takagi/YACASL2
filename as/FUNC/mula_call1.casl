@@ -1,0 +1,14 @@
+;;; casl2 mula_call0.casl mula.casl outa.casl
+MAIN    START
+        LAD     GR1,151
+        LAD     GR2,255
+        CALL    MULA
+        JOV     WAN
+        LD      GR1,GR0
+        CALL    OUTA
+        JUMP    FIN
+WAN     OUT     MSG,MLEN        
+FIN     RET
+MSG     DC      'OF'
+MLEN    DC      2
+        END

@@ -1,0 +1,14 @@
+;GR1の値とGR2の値の積をGR0に格納
+MULL    START
+        RPUSH
+        LAD     GR3,0           ; インデックス
+        LAD     GR0,0           ; 積
+MLOOP   CPA     GR2,GR3         ; ループ先頭。(GR2 = GR3)の場合、ループ脱出
+        JZE     MFIN            ; ↓
+        ADDL    GR0,GR1         ; GR0 <- GR0 + GR1
+        JOV     MFIN            ; オーバーフローした場合、ループ脱出
+        LAD     GR3,1,GR3       ; GR3 <- GR3 + 1
+        JUMP    MLOOP           ; ループ終端
+MFIN    RPOP
+        RET
+        END

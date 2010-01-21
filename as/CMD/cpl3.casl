@@ -1,0 +1,7 @@
+MAIN    START
+BEGIN   LAD     GR1,#5000
+        ADDL    GR1,=#FFFF
+        LAD     GR2,#F000
+        CPL     GR1,GR2
+        RET
+        END

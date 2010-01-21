@@ -1,0 +1,12 @@
+;;; 「SVC 2」で数値を表示
+;;; casl2 svctest.casl div10.casl
+MAIN    START
+BEGIN   LAD     GR1,D
+        LAD     GR2,A
+        SVC     2
+        LAD     GR1,=#A
+        SVC     2
+        RET
+D       DC      '0'
+A       DS      1
+        END

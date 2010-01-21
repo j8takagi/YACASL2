@@ -1,0 +1,5 @@
+MAIN    START
+BEGIN   LAD     GR0,#3444
+        AND     GR0,=#00DD
+        RET
+        END

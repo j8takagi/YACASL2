@@ -1,0 +1,14 @@
+;;; casl2 mull_call0.casl mull.casl outl.casl
+MAIN    START
+        LAD     GR1,1
+        LAD     GR2,#8000
+        CALL    MULL
+        JOV     WAN
+        LD      GR1,GR0
+        CALL    OUTL
+        JUMP    FIN
+WAN     OUT     MSG,MLEN        
+FIN     RET
+MSG     DC      'OF'
+MLEN    DC      2
+        END

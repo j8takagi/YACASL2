@@ -1,0 +1,11 @@
+;;; casl2 minim_call.casl minim.casl outa.casl
+MAIN    START
+        LAD     GR1,DATA
+        LD      GR2,CNT
+        CALL    MINIM
+        LD      GR1,GR0
+        CALL    OUTA
+        RET
+DATA    DC      23,78,2,45,67,-39,86
+CNT     DC      7
+        END

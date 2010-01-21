@@ -1,0 +1,6 @@
+MAIN    START   BEGIN
+BEGIN   LAD     GR1,3
+        LAD     GR2,2
+        LEA     GR1,GR2
+        RET
+        END

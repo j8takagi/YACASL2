@@ -1,9 +1,0 @@
-
-Assemble ../../../as/ds_err.casl (0)
-../../../as/ds_err.casl:1:MAIN START
-../../../as/ds_err.casl:2:    LAD GR0,=10
-../../../as/ds_err.casl:3:    ST GR0,A
-../../../as/ds_err.casl:4:A DS
-Assemble error - 106: operand count mismatch
- ../../../as/ds_err.casl:4: A DS
-

@@ -1,0 +1,10 @@
+MAIN    START
+        LAD     GR1,X
+        LAD     GR2,Y
+        LAD     GR3,A
+        CALL    MUL
+        RET
+X       DC      2,3
+Y       DC      4,5
+A       DS      2
+        END

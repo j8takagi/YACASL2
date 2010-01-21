@@ -1,5 +1,0 @@
-MAIN    START
-BEGIN   LD	GR1,0
-        LD	GR2,0,GR1
-        RET
-        END

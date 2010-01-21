@@ -1,0 +1,6 @@
+MAIN    START   BEGIN
+BEGIN   LD      GR1,A
+        LAD     GR1,1,GR1
+        RET
+A       DC      3
+        END

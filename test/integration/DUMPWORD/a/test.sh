@@ -1,0 +1,12 @@
+../../../../dumpword -a  0
+../../../../dumpword -a  1
+../../../../dumpword -a  01
+../../../../dumpword -a  001
+../../../../dumpword -a  0001
+../../../../dumpword -a  10
+../../../../dumpword -a  11
+../../../../dumpword -a  F
+../../../../dumpword -a  000F
+../../../../dumpword -a  FFFF
+../../../../dumpword -a  00001
+../../../../dumpword -a  G

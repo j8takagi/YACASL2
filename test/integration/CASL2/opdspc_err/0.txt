@@ -1,0 +1,8 @@
+../../../../casl2 -slatd ../../../../as/ERR/opdspc_err.casl
+
+Assemble ../../../../as/ERR/opdspc_err.casl (0)
+../../../../as/ERR/opdspc_err.casl:1:MAIN    START   BEGIN
+../../../../as/ERR/opdspc_err.casl:2:BEGIN   LD      GR1, A
+Assemble error - 121: cannot get operand token
+ ../../../../as/ERR/opdspc_err.casl:2: BEGIN   LD      GR1, A
+

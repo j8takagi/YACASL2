@@ -1,0 +1,2 @@
+../../../../comet2 minim_call.o
+-39

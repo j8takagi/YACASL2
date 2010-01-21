@@ -1,7 +1,0 @@
-OTEST START
-	OUT IOBUF,IOLEN
-	RET
-	 ; Memory
-IOBUF DC 'abcd'
-IOLEN DC 4
-	END

@@ -1,0 +1,14 @@
+;;; sum.casl
+;;; 1からGR1で指定された値までの正数をすべて加算する
+SUM     START
+        LAD     GR2,0
+        LAD     GR3,1
+SLOOP   CPL     GR3,GR1
+        JPL     SFIN
+        ADDL    GR2,GR3
+        JOV     SERR
+        LAD     GR3,1,GR3
+        JUMP    SLOOP
+SERR    LAD     GR2,#FFFF
+SFIN    RET
+        END

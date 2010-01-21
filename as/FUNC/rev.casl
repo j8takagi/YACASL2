@@ -1,0 +1,25 @@
+;; アドレスがGR1、長さがGR2の文字列を逆順に並べ替える
+;; 例: 12345 => 54321、54321- => -12345
+REV     START
+        RPUSH
+        LAD     GR3,0           ; GR3の初期化
+RPU     CPL     GR3,GR2         ; ループ開始。(GR3 = GR2)の場合、ループ脱出
+        JZE     RNEXT           ; ↓
+        LD      GR4,GR1         ; GR4にGR1の値をコピー
+        ADDL    GR4,GR3         ; GR4 <= GR4 + GR3
+        LD      GR5,0,GR4       ; GR5にアドレスGR4の値を格納
+        PUSH    0,GR5           ; GR5をプッシュ
+        LAD     GR3,1,GR3       ; GR3 <= GR3 + 1
+        JUMP    RPU             ; ループ終了
+RNEXT   LAD     GR3,0           ; GR3の初期化
+RPO     CPL     GR3,GR2         ; ループ開始。(GR3 = GR2)の場合、ループ脱出
+        JZE     RFIN            ; ↓
+        POP     GR5             ; GR5にポップ
+        LD      GR4,GR1         ; GR4にGR1の値をコピー
+        ADDL    GR4,GR3         ; GR4 <= GR4 + GR3
+        ST      GR5,0,GR4       ; アドレスGR4にGR5の値を格納
+        LAD     GR3,1,GR3       ; GR3 <= GR3 + 1
+        JUMP    RPO             ; ループ終了
+RFIN    RPOP
+        RET
+        END

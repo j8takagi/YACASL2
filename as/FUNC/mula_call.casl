@@ -1,0 +1,38 @@
+MAIN    START
+        LAD     GR3,0           ; Xのインデックス
+LOOPX   CPA     GR3,XCNT
+        JZE     FIN
+        LD      GR1,X,GR3
+        LAD     GR4,0           ; Yのインデックス
+LOOPY   CPA     GR4,YCNT
+        JZE     XNEXT
+        LD      GR2,Y,GR4
+        OUT     SEP,SLEN
+        CALL    OUTA
+        PUSH    0,GR1
+        LD      GR1,GR2
+        CALL    OUTA
+        POP     GR1
+        CALL    MULA
+        JOV     WOV
+        PUSH    0,GR1
+        LD      GR1,GR0
+        CALL    OUTA
+        POP     GR1
+YNEXT   OUT     SEP,SLEN        
+        LAD     GR4,1,GR4
+        JUMP    LOOPY
+WOV     OUT     YOMSG,YLEN
+        JUMP    YNEXT
+XNEXT   LAD     GR3,1,GR3
+        JUMP    LOOPX
+FIN     RET
+X       DC      0,1,2,127,128,151,217,255,256,257,32767,-32768,-32767,-257,-256,-255,-217,-151,-128,-127,-2,-1
+Y       DC      0,1,2,127,128,151,217,255,256,257,32767,-32768,-32767,-257,-256,-255,-217,-151,-128,-127,-2,-1
+XCNT    DC      22
+YCNT    DC      22
+SEP     DC      '--------------------'
+SLEN    DC      20
+YOMSG   DC      'Warning: overflow'
+YLEN    DC      17
+        END

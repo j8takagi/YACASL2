@@ -1,0 +1,30 @@
+REPLACE START 
+        RPUSH 
+        LD      GR4,GR2    ; GR4 ← p
+        SRL     GR4,4      ; GR4 ← p/16 
+        ADDA    GR1,GR4    ; GR1 を置換え対象語（第i語）に位置付ける。
+        AND     GR2,=#000F 
+        LD      GR4,=16 
+        SUBA    GR4,GR2 
+        LD      GR5,GR0
+        LD      GR6,=#8000
+        SUBA    GR3,=1
+        SRA     GR6,0,GR3
+        LD      GR7,GR6
+        SRL     GR0,0,GR2
+        SRL     GR6,0,GR2
+        SLL     GR5,0,GR4
+        SLL     GR7,0,GR4
+        LD      GR2,0,GR1
+        XOR     GR6,GR2    ; 第i語のうち
+        AND     GR2,GR6    ; ビット列Bを入れる部分を0にする。
+        OR      GR2,GR0 
+        ST      GR2,0,GR1 
+        LD      GR2,1,GR1 
+        XOR     GR7,GR2    ; 第(i+1)語のうち
+        AND     GR2,GR7    ; ビット列Bを入れる部分を0にする。
+        OR      GR2,GR5
+        ST      GR2,1,GR1
+        RPOP
+        RET 
+        END 

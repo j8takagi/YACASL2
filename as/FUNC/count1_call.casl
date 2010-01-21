@@ -1,0 +1,15 @@
+;; count1.casl（「アセンブラ言語の仕様」プログラム例）を呼び出し、出力結果を表示
+;; 使い方: casl2 count1_call.casl count1.casl outa.casl
+MAIN    START
+        LAD     GR2,0
+LOOP    CPA     GR2,MAX         ; ループ開始。GR2がMAXの値になったらループ脱出
+        JZE     FIN             ; ↓
+        LD      GR1,GR2         ; GR1にVALの値をロード
+        CALL    COUNT1          ; COUNT1を呼び出す。出力はGR0に格納
+        LD      GR1,GR0         ; GR1にGR0の値をコピー
+        CALL    OUTA            ; OUTAを呼び出す
+        LAD     GR2,1,GR2       ; GR2 <= GR2 + 1
+        JUMP    LOOP            ; ループ終端
+FIN     RET
+MAX     DC      256
+        END

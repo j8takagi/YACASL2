@@ -1,6 +1,0 @@
-MAIN START
-    LAD GR0,=10
-    ST GR0,A
-A DS
-    RET
-    END

@@ -1,0 +1,27 @@
+MAIN    START
+        LD      GR1,XMIN
+LOOPX   CPL     GR1,XMAX
+        JPL     FIN
+        OUT     SEP,SLEN
+        CALL    OUTL
+        OUT     SEP,SLEN        
+        LD      GR2,YMIN
+LOOPY   CPL     GR2,YMAX
+        JPL     XNEXT
+        CALL    MULL
+        PUSH    0,GR1
+        LD      GR1,GR0
+        CALL    OUTL
+        POP     GR1
+        LAD     GR2,1,GR2
+        JUMP    LOOPY
+XNEXT   LAD     GR1,1,GR1
+        JUMP    LOOPX
+FIN     RET
+XMIN    DC      0        
+XMAX    DC      19
+YMIN    DC      0        
+YMAX    DC      19
+SEP     DC      '--------------------'
+SLEN    DC      20
+        END

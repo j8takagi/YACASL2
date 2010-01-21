@@ -1,0 +1,18 @@
+;;; 0〜65535の範囲で、フィボナッチ数列を表示する
+MAIN    START
+        LAD     GR1,0           ; GR1は、第n項
+        LAD     GR2,0           ; GR2は、インデックス
+BEGIN   CPL     GR2,=1          ; GR2が1以下の場合、SUMP2へジャンプ
+        JPL     SUMP2           ; ↓
+        LD      GR1,GR2         ; GR1にGR2をロード
+        JUMP    FOUT            ; FOUTへジャンプ
+SUMP2   LD      GR1,GR3         ; GR1にGR3をロード
+        ADDL    GR1,GR4         ; GR1 <- GR1 + GR4
+        JOV     FIN             ; オーバーフローした場合は終了
+FOUT    CALL    OUTL            ; GR1の数値を表示
+        LD      GR4,GR3         ; GR4にGR3をロード
+        LD      GR3,GR1         ; GR3にGR1をロード
+        LAD     GR2,1,GR2       ; GR2 <- GR2 + 1
+        JUMP    BEGIN
+FIN     RET
+        END

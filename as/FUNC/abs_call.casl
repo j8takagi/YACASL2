@@ -1,0 +1,15 @@
+;;; ABSを呼び出す
+;;; casl2 abs_call.casl abs.casl outa.casl
+MAIN    START
+        LAD     GR2,0
+MLOOP   CPA     GR2,MLEN
+        JZE     MFIN
+        LD      GR1,MVAL,GR2
+        CALL    ABS
+        CALL    OUTA
+        LAD     GR2,1,GR2
+        JUMP    MLOOP
+MFIN    RET
+MVAL    DC      12,-12,1,-1,32767,-32767,0,-32768
+MLEN    DC      8
+        END

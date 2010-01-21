@@ -1,0 +1,2 @@
+YACASL2DIR=../../../..
+CASL2 = $(YACASL2DIR)/casl2

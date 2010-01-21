@@ -1,0 +1,13 @@
+;;; XORで、GR1の内容をクリア
+MAIN    START
+BEGIN   XOR     GR2,GR2
+LOOP    CPA     GR2,LEN
+        JZE     FIN
+        LD      GR1,A,GR2
+        XOR     GR1,GR1
+        LAD     GR2,1,GR2
+        JUMP    LOOP
+FIN     RET
+A       DC      #8001,#8000,#FFFF,#51,#7FFF
+LEN     DC      5
+        END

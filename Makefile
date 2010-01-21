@@ -1,19 +1,20 @@
-INSTALLDIR = /usr/local/bin
+prefix = $(HOME)
 .PHPNY: all clean check install uninstall
 all:
-	make -C src ../casl2 ../comet2
+	make -C src
 check:
-	make -C test/astest
+	make -C test/integration
 clean:
 	make -C src clean
-	make -C test/astest clean
-	make -C test/utest clean
-install: casl2 comet2
-	@if test -d $(INSTALLDIR); then \
-       install -s ./casl2 $(INSTALLDIR)/casl2; \
-       install -s ./comet2 $(INSTALLDIR)/comet2; \
+	make -C test/integration clean
+	make -C test/unit clean
+install: all
+	@if test -d $(prefix); then \
+       install -s ./casl2 $(prefix)/casl2; \
+       install -s ./comet2 $(prefix)/comet2; \
+       install -s ./dumpword $(prefix)/dumpword; \
      fi
 uninstall:
-	@if test -d $(INSTALLDIR); then \
-       rm -f $(INSTALLDIR)/casl2 $(INSTALLDIR)/comet2; \
+	@if test -d $(prefix); then \
+       rm -f $(prefix)/casl2 $(prefix)/comet2 $(prefix)/dumpword; \
      fi

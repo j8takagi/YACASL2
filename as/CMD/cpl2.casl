@@ -1,0 +1,6 @@
+MAIN    START
+BEGIN   LAD     GR0,#3000
+        CPL     GR0,A
+        RET
+A       DC      #A000
+        END

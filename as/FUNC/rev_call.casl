@@ -1,0 +1,10 @@
+MAIN    START
+        OUT     STR,LEN
+        LAD     GR1,STR
+        LD      GR2,LEN
+        CALL    REV
+        OUT     STR,LEN
+        RET
+STR     DC      '12345'
+LEN     DC      5
+        END

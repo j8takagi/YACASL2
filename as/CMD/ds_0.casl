@@ -1,0 +1,8 @@
+;; 「DS 0」を指定したプログラム例
+MAIN    START
+        LD      GR1,A
+        LD      GR2,B
+        RET
+A       DS      0
+B       DC      15
+        END

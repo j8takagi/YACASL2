@@ -1,0 +1,6 @@
+MAIN    START   BEGIN
+BEGIN   LAD     GR1,32766
+        ADDA    GR1,A
+        RET
+A       DC      29
+        END

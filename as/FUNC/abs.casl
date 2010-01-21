@@ -1,0 +1,9 @@
+;;; GR1を絶対値に変換する
+ABS     START
+        AND     GR1,GR1
+        JPL     ABSFIN
+        JZE     ABSFIN
+        XOR     GR1,=#FFFF
+        LAD     GR1,1,GR1
+ABSFIN  RET
+        END

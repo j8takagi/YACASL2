@@ -1,0 +1,13 @@
+MAIN    START
+        NOP
+        NOP
+        NOP
+        NOP
+        NOP
+        NOP
+        NOP
+        NOP
+        NOP
+        RET
+        END
+        

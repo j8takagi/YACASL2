@@ -1,0 +1,7 @@
+;; count1.casl（「アセンブラ言語の仕様」プログラム例）を呼び出す
+;; 使い方: casl2 count1_call0.casl count1.casl
+MAIN    START
+        LAD     GR1,#7FFFk
+        CALL    COUNT1
+FIN     RET
+        END

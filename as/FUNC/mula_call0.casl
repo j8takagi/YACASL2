@@ -1,0 +1,7 @@
+;;; casl2 mula_call0.casl mula.casl outa.casl
+MAIN    START
+        LAD     GR1,20000
+        LAD     GR2,2
+        CALL    MULA
+        RET
+        END

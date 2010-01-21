@@ -1,0 +1,12 @@
+;;; casl2 inl_call.casl outl.casl
+MAIN    START
+        CALL    INL
+        JOV     NAN
+        LD      GR1,GR0
+        CALL    OUTL
+        JUMP    FIN
+NAN     OUT     NANMSG,MLEN        
+FIN     RET
+NANMSG  DC      'Not A Number'
+MLEN    DC      12        
+        END

@@ -1,0 +1,7 @@
+;;; OUTの使用例
+OTEST   START
+        OUT     IOBUF,IOLEN
+        RET
+IOBUF   DC      'aaaa',10,'b','c',10,'as','qwerty','111111'
+IOLEN   DC      24
+        END
