@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
         }
     }
     if(argv[optind] == NULL) {
-	fprintf(stderr, "source file is not specified\n");
+        fprintf(stderr, "source file is not specified\n");
         exit(-1);
     }
     /* ソースファイルが指定されていない場合は終了 */

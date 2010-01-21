@@ -52,12 +52,3 @@ void reset();
 
 /* コードの実行 */
 void exec();
-
-/* WORD値を2進数表記に変換 */
-char *word2bit(const WORD word);
-
-/* COMET IIのメモリを表示 */
-void dumpmemory();
-
-/* COMET IIのレジスタを表示 */
-void dspregister();

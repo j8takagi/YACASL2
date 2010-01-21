@@ -1,5 +1,4 @@
 #include "casl2.h"
-#include "exec.h"
 
 /* WORD値を2進数表記に変換 */
 char *word2bit(const WORD word)
@@ -8,8 +7,8 @@ char *word2bit(const WORD word)
     char *bit, *p;
     bit = malloc(16 + 1);
     p = bit;
-	while(mask > 0){
-	    if((word & mask) == 0) {
+        while(mask > 0){
+            if((word & mask) == 0) {
             *p++ = '0';
         } else {
             *p++ = '1';
@@ -32,7 +31,7 @@ void dumpmemory()
     }
     fprintf(stdout, "\n");
     /* Memory */
-    for(i = 0; i < MEMSIZE; i++) {
+    for(i = 0; i < memsize; i++) {
         if(i % col == 0) {
             fprintf(stdout, "#%04X: %04X: ", PR, i);
         }

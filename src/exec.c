@@ -42,7 +42,8 @@ void svcout()
         }
         /* 「文字の組」の符号表に記載された文字と、改行（CR）／タブを表示
            それ以外の文字は、「.」で表す */
-        if(((c = (char)(memory[GR[1]+i])) >= 0x20 && c <= 0x7E) || c == 0xA || c == '\t') {
+        if(((c = (char)(memory[GR[1]+i])) >= 0x20 && c <= 0x7E) || c == 0xA || c == '\t')
+        {
             putchar(c);
         } else {
             putchar('.');
