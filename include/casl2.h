@@ -13,8 +13,8 @@
 enum {
     CMDSIZE = 4,      /* 命令の最大文字数 */
     REGSIZE = 8,      /* 汎用レジスタの数 */
-    MEMSIZE = 512,    /* メモリ容量。COMET II規格では、65536語 */
-    CLOCKS = 5000000  /* クロック周波数。COMET II規格では、未定義 */
+    DEFAULT_MEMSIZE = 512,    /* デフォルトのメモリ容量。COMET II規格では、65536語 */
+    DEFAULT_CLOCKS = 5000000  /* デフォルトのクロック周波数。COMET II規格では、未定義 */
 };
 
 /* ハッシュ値を取得する */
@@ -24,7 +24,7 @@ unsigned hash(const char *key, int size);
 typedef unsigned short WORD;
 
 /* COMET IIのメモリ */
-extern WORD memory[MEMSIZE];
+extern WORD *memory;
 
 /* COMET IIのCPUレジスタ */
 extern WORD GR[REGSIZE], SP, PR, FR;
@@ -57,11 +57,20 @@ extern bool srcmode;
 /* ラベル表を表示する場合はTRUE */
 extern bool labelmode;
 
+/* ラベル表を表示して終了する場合はTRUE */
+extern bool onlylabelmode;
+
 /* アセンブラ詳細結果を表示するならTRUE */
 extern bool asdetailmode;
 
 /* アセンブルだけを行う場合はTRUE */
 extern bool onlyassemblemode;
+
+/* メモリーサイズ */
+extern int memsize;
+
+/* クロック周波数 */
+extern int clocks;
 
 /* 実行開始番地 */
 extern WORD startptr;

@@ -16,17 +16,21 @@ void outassemble(char *file) {
 }
 
 static struct option longopts[] = {
+    {"source", no_argument, NULL, 's'},
+    {"label", no_argument, NULL, 'l'},
+    {"labelonly", no_argument, NULL, 'L'},
+    {"assembledetail", no_argument, NULL, 'a'},
+    {"assembledetailonly", no_argument, NULL, 'A'},
+    {"assembleout", optional_argument, NULL, 'o'},
+    {"assembleoutonly", optional_argument, NULL, 'O'},
     {"trace", no_argument, NULL, 't'},
     {"tracearithmetic", no_argument, NULL, 't'},
     {"tracelogical", no_argument, NULL, 'T'},
     {"dump", no_argument, NULL, 'd'},
-    {"source", no_argument, NULL, 's'},
-    {"label", no_argument, NULL, 'l'},
-    {"assembledetail", no_argument, NULL, 'a'},    
-    {"onlyassemble", optional_argument, NULL, 'o'},
-    {"assembledetailonly", no_argument, NULL, 'A'},
+    {"memsize", required_argument, NULL, 'M'},
+    {"clocks", required_argument, NULL, 'C'},
     {"help", no_argument, NULL, 'h'},
-    {0, 0, 0, 0}
+    {0, 0, 0, 0},
 };
 
 int main(int argc, char *argv[])
@@ -36,10 +40,42 @@ int main(int argc, char *argv[])
     bool status = false;
     WORD beginptr[argc];
     char *objfile = NULL;
-    const char *usage = "Usage: %s [-tTdslaAh] [-o <OUTFILE>] FILE ...\n";
+    const char *default_objfile = "a.o";
+    const char *usage = "Usage: %s [-slLaAtTdh] [-oO<OUTFILE>] [-M <memsize>] [-C <clocks>] FILE ...\n";
 
-    while((opt = getopt_long(argc, argv, "tTdslao:Ah", longopts, NULL)) != -1) {
+    while((opt = getopt_long(argc, argv, "tTdslLao::O::AM:C:h", longopts, NULL)) != -1) {
         switch(opt) {
+        case 's':
+            srcmode = true;
+            break;
+        case 'l':
+            labelmode = true;
+            break;
+        case 'L':
+            onlylabelmode = true;
+            break;
+        case 'a':
+            asdetailmode = true;
+            break;
+        case 'A':
+            onlyassemblemode = true;
+            asdetailmode = true;
+            break;
+        case 'o':
+            if(optarg == NULL) {
+                objfile = strdup(default_objfile);
+            } else {
+                objfile = strdup(optarg);
+            }
+            break;
+        case 'O':
+            onlyassemblemode = true;
+            if(optarg == NULL) {
+                objfile = strdup(default_objfile);
+            } else {
+                objfile = strdup(optarg);
+            }
+            break;
         case 't':
             tracemode = true;
             break;
@@ -50,25 +86,11 @@ int main(int argc, char *argv[])
         case 'd':
             dumpmode = true;
             break;
-        case 's':
-            srcmode = true;
+        case 'M':
+            memsize = atoi(optarg);
             break;
-        case 'l':
-            labelmode = true;
-            break;
-        case 'a':
-            asdetailmode = true;
-            break;
-        case 'o':
-            onlyassemblemode = true;
-            if(optarg != NULL) {
-                objfile = strdup(optarg);
-            }
-            break;
-        case 'A':
-            onlyassemblemode = true;
-            objfile = NULL;
-            asdetailmode = true;
+        case 'C':
+            clocks = atoi(optarg);
             break;
         case 'h':
             fprintf(stdout, usage, argv[0]);
@@ -78,6 +100,12 @@ int main(int argc, char *argv[])
             exit(-1);
         }
     }
+    if(argv[optind] == NULL) {
+	fprintf(stderr, "source file is not specified\n");
+        exit(-1);
+    }
+    /* ソースファイルが指定されていない場合は終了 */
+    reset();
     /* アセンブル。ラベル表作成のため、2回行う */
     for(pass = FIRST; pass <= SECOND; pass++) {
         for(i = optind; i < argc; i++) {
@@ -99,18 +127,20 @@ int main(int argc, char *argv[])
                 exit(-1);
             }
         }
-        if(pass == FIRST && labelmode == true) {
+        if(pass == FIRST && (labelmode == true || onlylabelmode == true)) {
             fprintf(stdout, "\nLabel::::\n");
             printlabel();
+            if(onlylabelmode == true) {
+                return 0;
+            }
         }
     }
     freelabel();    /* ラベル表の解放 */
     if(status == true) {
-        if(onlyassemblemode) {
-            if(objfile != NULL) {
-                outassemble(objfile);
-            }
-        } else {
+        if(objfile != NULL) {
+            outassemble(objfile);
+        }
+        if(onlyassemblemode == false) {
             exec();    /* プログラム実行 */
         }
     }

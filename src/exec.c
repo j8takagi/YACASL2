@@ -17,7 +17,7 @@ void svcin()
             --i;
             break;
         }
-        if(GR[1] + i >= MEMSIZE - 1) {
+        if(GR[1] + i >= memsize - 1) {
             setcerr(202, NULL);    /* SVC input - out of Input memory */
             break;
         }
@@ -33,7 +33,7 @@ void svcout()
     char c;
 
     for(i = 0; i < GR[2]; i++) {
-        if(GR[1] + i >= MEMSIZE - 1) {
+        if(GR[1] + i >= memsize - 1) {
             setcerr(203, NULL);    /* SVC output - out of Comet II memory */
             return;
         }
@@ -255,7 +255,8 @@ void reset()
         GR[i] = 0x0;
     }
     SP = PR = FR = 0x0;
-    for(i = 0; i < MEMSIZE; i++) {
+    memory = malloc(memsize);
+    for(i = 0; i < memsize; i++) {
         memory[i] = 0x0;
     }
 }
@@ -273,7 +274,7 @@ void exec()
     }
     /* フラグレジスタの初期値設定 */
     FR = 0x0;
-    SP = MEMSIZE;
+    SP = memsize;
     PR = startptr;
     if(create_code_type() == false) {
         goto execerr;
@@ -282,9 +283,14 @@ void exec()
     for (; ; ) {
         clock_begin = clock();
         /* プログラムレジスタのアドレスが主記憶の範囲外の場合はエラー */
-        if(PR >= MEMSIZE) {
+        if(PR >= memsize) {
             sprintf(errpr, "PR:#%04X", PR);
             setcerr(204, errpr);    /* Program Register (PR) - out of COMET II memory */
+        }
+        /* スタック領域のアドレスが主記憶の範囲外の場合はエラー */
+        if(SP > memsize) {
+            sprintf(errpr, "PR:#%04X", PR);
+            setcerr(207, errpr);    /* Stack Pointer (SP) - out of COMET II memory */
         }
         /* スタック領域を確保できない場合はエラー */
         if(SP <= endptr) {
@@ -325,7 +331,7 @@ void exec()
             }
             /* ロード／算術論理演算命令／比較演算命令では、アドレスに格納されている内容を取得 */
             if(cmdtype == R_ADR_X_) {
-                if(val >= MEMSIZE) {
+                if(val >= memsize) {
                     sprintf(errpr, "PR:#%04X", PR-1);
                     setcerr(206, errpr);    /* Address - out of COMET II memory */
                     goto execerr;
@@ -419,18 +425,21 @@ void exec()
             }
             break;
         case 0x7000:  /* PUSH */
+            assert(SP > endptr && SP <= memsize);
             memory[--SP] = val;
             break;
         case 0x7100:  /* POP */
+            assert(SP > endptr && SP <= memsize);
             GR[r_r1] = memory[SP++];
             break;
         case 0x8000:  /* CALL */
+            assert(SP > endptr && SP <= memsize);
             memory[--SP] = PR;
             PR = val;
             break;
         case 0x8100:  /* RET */
-            assert(SP > endptr && SP <= MEMSIZE);
-            if(SP == MEMSIZE) {
+            assert(SP > endptr && SP <= memsize);
+            if(SP == memsize) {
                 return;
             } else {
                 PR = memory[SP++];
@@ -453,7 +462,8 @@ void exec()
         }
         do {
             clock_end = clock();
-        } while(clock_end - clock_begin < CLOCKS_PER_SEC / CLOCKS);
+        } while(clock_end - clock_begin < CLOCKS_PER_SEC / clocks);
+/*        printf("PR:%04X; time: %f\n", PR, (double)((clock_end - clock_begin) * CLOCKS_PER_SEC)); */
     }
 execerr:
     fprintf(stderr, "Execute error - %d: %s\n", cerrno, cerrmsg);

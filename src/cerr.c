@@ -33,7 +33,8 @@ CERRARRAY cerr[] = {
     { 203, "SVC output - out of COMET II memory" },
     { 204, "Program Register (PR) - out of COMET II memory" },
     { 205, "Stack Pointer (SP) - cannot allocate stack buffer" },
-    { 206, "Address - out of COMET II memory" }
+    { 206, "Address - out of COMET II memory" },
+    { 207, "Stack Pointer (SP) - out of COMET II memory" },
 };
 
 /* WORD値を文字列に変換 */

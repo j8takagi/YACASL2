@@ -92,7 +92,7 @@ bool writememory(WORD word, WORD adr, PASS pass)
 {
     bool status = false;
     /* COMET IIメモリオーバーの場合 */
-    if(adr >= MEMSIZE) {
+    if(adr >= memsize) {
         setcerr(119, wtoa(adr));    /* out of COMET II memory */
     }
     if(cerrno == 0) {
@@ -153,7 +153,7 @@ void writestr(const char *str, bool literal, PASS pass)
 void writeDC(const char *str, PASS pass)
 {
     WORD adr = 0x0;
-    if(*str == '\''){
+    if(*str == '\'') {
         writestr(str, false, pass);
     } else {
         if(*str == '#') {
@@ -202,7 +202,7 @@ bool assemblecmd(const CMDLINE *cmdl, PASS pass)
             setcerr(107, NULL);    /* no label in START */
             return false;
         }
-	/* オペランドがある場合、実行開始番地を設定 */
+        /* オペランドがある場合、実行開始番地を設定 */
         if(pass == SECOND && cmdl->opd->opdc == 1) {
             if((startptr = getlabel(cmdl->opd->opdv[0])) == 0xFFFF) {
                 setcerr(103, cmdl->opd->opdv[0]);    /* label not found */
@@ -366,7 +366,7 @@ bool cometcmd(const CMDLINE *cmdl, PASS pass)
     }
     /* オペランド数1〜2。第1オペランドはアドレス */
     else if(cmdl->opd->opdc == 1 || cmdl->opd->opdc == 2) {
-        if((cmd = getcmdcode(cmdl->cmd, ADR_X)) == 0xFFFF) {                
+        if((cmd = getcmdcode(cmdl->cmd, ADR_X)) == 0xFFFF) {
             setcerr(111, cmdl->cmd);    /* not command of operand "adr[,x]" */
             return false;
         }
