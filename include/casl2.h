@@ -14,7 +14,7 @@ enum {
     CMDSIZE = 4,      /* 命令の最大文字数 */
     REGSIZE = 8,      /* 汎用レジスタの数 */
     DEFAULT_MEMSIZE = 512,    /* デフォルトのメモリ容量。COMET II規格では、65536語 */
-    DEFAULT_CLOCKS = 5000000  /* デフォルトのクロック周波数。COMET II規格では、未定義 */
+    DEFAULT_CLOCKS = 5000000, /* デフォルトのクロック周波数。COMET II規格では、未定義 */
 };
 
 /* ハッシュ値を取得する */
@@ -33,7 +33,7 @@ extern WORD GR[REGSIZE], SP, PR, FR;
 enum {
     OF = 0x4,    /* Overflow Flag */
     SF = 0x2,    /* Sign Flag */
-    ZF = 0x1     /* Zero Flag */
+    ZF = 0x1,    /* Zero Flag */
 };
 
 /* エラー番号 */
@@ -94,7 +94,7 @@ typedef enum {
     R1_R2 = 020,
     ADR_X = 030,
     R_ = 040,
-    NONE = 0
+    NONE = 0,
 } CMDTYPE;
 
 typedef struct {

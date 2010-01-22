@@ -7,14 +7,9 @@ char *word2bit(const WORD word)
     char *bit, *p;
     bit = malloc(16 + 1);
     p = bit;
-        while(mask > 0){
-            if((word & mask) == 0) {
-            *p++ = '0';
-        } else {
-            *p++ = '1';
-        }
-        mask = (mask >> 1);
-    }
+    do {
+        *p++ = (word & mask) ? '1' : '0';
+    } while((mask >>= 1) > 0);
     *p = '\0';
     return bit;
 }

@@ -1,7 +1,7 @@
 INCLUDE = ../include
 CC = gcc
 CFLAGS = -Wall -I $(INCLUDE)
-COMMONSRC = struct.o cmd.o cerr.o dump.o
+COMMONSRC = struct.o hash.o cmd.o cerr.o dump.o
 ASSRC = assemble.o token.o label.o macro.o
 EXECSRC = exec.o
 .PHPNY: all clean
