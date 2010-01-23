@@ -34,9 +34,9 @@ DYZ     LAD     GR3,#FFFF       ; 強制的にオーバーフローを発生さ�
         ADDL    GR3,=1          ; ↓
         JUMP    DFIN            ; DFINへジャンプ
 DCP     LD      GR3,GR1
-DFIN    POP	GR4
+DFIN    POP     GR4
         POP     GR2
         POP     GR1
         RET
-DY      DS      1        
+DY      DS      1
         END

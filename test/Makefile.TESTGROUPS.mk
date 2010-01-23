@@ -30,43 +30,17 @@ report: $(LOGFILE)
        grep "Failure" $(LOGFILE); \
      fi
 clean:
-	@for target in $(TESTS); do \
-         $(MAKE) clean -C $$target; \
-     done
+	@for target in $(TESTS); do $(MAKE) clean -C $$target; done
 	@rm -f $(LOGFILE)
 cleanall:
-	@for target in $(TESTS); do \
-         $(MAKE) cleanall -C $$target; \
-     done
+	@for target in $(TESTS); do $(MAKE) cleanall -C $$target; done
 	@rm -f $(LOGFILE)
 prepare:
-	@for target in $(TESTS) ; do \
-         $(MAKE) prepare -C $$target ;\
-     done
+	@for target in $(TESTS) ; do $(MAKE) prepare -C $$target ; done
 create:
 ifdef UNITNAME
 	@mkdir $(UNITNAME)
-	@echo 'include ../CMD.mk    # YACASL2DIR, CASL2' >$(UNITNAME)/Makefile
-ifdef CASL2FLAG
-	@echo 'CASL2FLAG = $(CASL2FLAG)' >>$(UNITNAME)/Makefile
-else
-	@echo 'CASL2FLAG = -la' >>$(UNITNAME)/Makefile
-endif
-ifdef ASDIR
-	@echo 'ASDIR = $(ASDIR)' >>$(UNITNAME)/Makefile
-else
-	@echo 'ASDIR = $$(YACASL2DIR)/as' >>$(UNITNAME)/Makefile
-endif
-ifdef ASFILE
-	@echo 'ASFILE = $(ASFILE)' >>$(UNITNAME)/Makefile
-else
-	@echo 'ASFILE = $$(ASDIR)/$(UNITNAME).casl' >>$(UNITNAME)/Makefile
-endif
-ifdef INFILE
-	@echo 'IN = <$(INFILE)' >>$(UNITNAME)/Makefile
-endif
-	@echo 'CMD = $$(CASL2) $$(CASL2FLAG) $$(ASFILE) $$(IN)' >>$(UNITNAME)/Makefile; \
-     echo 'include ../TEST.mk' >>$(UNITNAME)/Makefile
+	@echo 'CMD = ' >>$(UNITNAME)/Makefile
 else
 	@echo "no test created. set UNITNAME"
 endif

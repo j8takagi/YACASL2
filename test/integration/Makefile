@@ -1,6 +1,6 @@
-TESTGROUP = CASL2 COMET2 DUMPWORD
+TESTGROUPS = `ls | grep "^[^A-Z].*"`
 .PHONY: all
 all:
-	@for target in $(TESTGROUP); do \
+	@for target in $(TESTGROUPS); do \
          $(MAKE) -C $$target; \
      done

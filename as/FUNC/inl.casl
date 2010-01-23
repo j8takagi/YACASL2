@@ -25,7 +25,7 @@ MUL10   CPL     GR4,=1
         JUMP    MUL10
 ISNEXT  LD      GR4,NLEN
         ADDL    GR3,GR1
-	LAD	GR4,1,GR4
+        LAD     GR4,1,GR4
         JUMP    ISTOL           ; ループ終端
 IOV     LAD     GR0,1
         ADDL    GR0,=#FFFF
