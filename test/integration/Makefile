@@ -1,6 +1,6 @@
-TESTGROUPS = `ls | grep "^[^A-Z].*"`
+YACASL2DIR=../..
+TARGETS = casl2 comet2 dumpword
 .PHONY: all
-all:
-	@for target in $(TESTGROUPS); do \
-         $(MAKE) -C $$target; \
-     done
+all:$(TARGETS)
+%: $(YACASL2DIR)/%
+	$(MAKE) -C $@
