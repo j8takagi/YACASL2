@@ -12,10 +12,10 @@ Assemble ../../../../as/CMD/addl.casl (0)
 ../../../../as/CMD/addl.casl:9:        END
 
 Label::::
-A ---> #0007
-B ---> #0008
-C ---> #0009
-BEGIN ---> #0000
+MAIN.A ---> #0007
+MAIN.B ---> #0008
+MAIN.C ---> #0009
+MAIN.BEGIN ---> #0000
 MAIN ---> #0000
 
 Assemble ../../../../as/CMD/addl.casl (1)

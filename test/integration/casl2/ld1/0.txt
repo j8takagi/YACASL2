@@ -8,7 +8,7 @@ Assemble ../../../../as/CMD/ld1.casl (0)
 ../../../../as/CMD/ld1.casl:5:        END
 
 Label::::
-A ---> #0003
+MAIN.A ---> #0003
 MAIN ---> #0000
 
 Assemble ../../../../as/CMD/ld1.casl (1)

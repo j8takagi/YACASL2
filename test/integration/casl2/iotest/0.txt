@@ -23,16 +23,16 @@ Assemble ../../../../as/FUNC/iotest.casl (0)
 ../../../../as/FUNC/iotest.casl:20:	    END
 
 Label::::
-OBUF1 ---> #005B
-OBUF2 ---> #0070
-IOLEN ---> #00C7
-OBUF3 ---> #007A
-RETURN ---> #005A
-IOBUF ---> #0087
-LOOP ---> #0012
-OLEN1 ---> #006F
-OLEN2 ---> #0079
-OLEN3 ---> #0086
+IOTEST.OBUF1 ---> #005B
+IOTEST.OBUF2 ---> #0070
+IOTEST.IOLEN ---> #00C7
+IOTEST.OBUF3 ---> #007A
+IOTEST.RETURN ---> #005A
+IOTEST.IOBUF ---> #0087
+IOTEST.LOOP ---> #0012
+IOTEST.OLEN1 ---> #006F
+IOTEST.OLEN2 ---> #0079
+IOTEST.OLEN3 ---> #0086
 IOTEST ---> #0000
 
 Assemble ../../../../as/FUNC/iotest.casl (1)

@@ -9,8 +9,8 @@ Assemble ../../../../as/CMD/lad1.casl (0)
 ../../../../as/CMD/lad1.casl:6:        END
 
 Label::::
-A ---> #0005
-BEGIN ---> #0000
+MAIN.A ---> #0005
+MAIN.BEGIN ---> #0000
 MAIN ---> #0000
 
 Assemble ../../../../as/CMD/lad1.casl (1)

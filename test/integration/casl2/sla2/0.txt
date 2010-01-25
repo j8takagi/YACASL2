@@ -9,7 +9,7 @@ Assemble ../../../../as/CMD/sla2.casl (0)
 ../../../../as/CMD/sla2.casl:6:        
 Label::::
 SLA2 ---> #0000
-BEGIN ---> #0000
+SLA2.BEGIN ---> #0000
 
 Assemble ../../../../as/CMD/sla2.casl (1)
 ../../../../as/CMD/sla2.casl:1:SLA2    START   BEGIN

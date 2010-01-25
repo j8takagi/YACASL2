@@ -1,6 +1,6 @@
 INCLUDE = ../include
 CC = gcc
-CFLAGS = -Wall -I $(INCLUDE)
+CFLAGS = -g -Wall -I $(INCLUDE)
 COMMONSRC = struct.o hash.o cmd.o cerr.o dump.o
 ASSRC = assemble.o token.o label.o macro.o
 EXECSRC = exec.o

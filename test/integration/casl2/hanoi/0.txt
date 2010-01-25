@@ -52,17 +52,17 @@ Assemble ../../../../as/FUNC/hanoi.casl (0)
 ../../../../as/FUNC/hanoi.casl:49:       END
 
 Label::::
-LNG ---> #004A
-HANOI ---> #000B
-A ---> #004B
-B ---> #004C
-C ---> #004D
-N ---> #0049
-MSG ---> #004E
-DISP ---> #0032
+MAIN.LNG ---> #004A
+MAIN.HANOI ---> #000B
+MAIN.A ---> #004B
+MAIN.B ---> #004C
+MAIN.C ---> #004D
+MAIN.N ---> #0049
+MAIN.MSG ---> #004E
+MAIN.DISP ---> #0032
 MAIN ---> #0000
-MSG1 ---> #0053
-MSG2 ---> #0058
+MAIN.MSG1 ---> #0053
+MAIN.MSG2 ---> #0058
 
 Assemble ../../../../as/FUNC/hanoi.casl (1)
 ../../../../as/FUNC/hanoi.casl:1:; ハノイの塔を解くプログラム

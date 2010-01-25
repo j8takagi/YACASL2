@@ -15,10 +15,10 @@ Assemble ../../../../as/CMD/call0.casl (0)
 ../../../../as/CMD/call0.casl:12:        END
 
 Label::::
-A ---> #0007
-B ---> #0008
+MAIN.A ---> #0007
+MAIN.B ---> #0008
 COPY ---> #0009
-BEGIN ---> #0000
+MAIN.BEGIN ---> #0000
 MAIN ---> #0000
 
 Assemble ../../../../as/CMD/call0.casl (1)

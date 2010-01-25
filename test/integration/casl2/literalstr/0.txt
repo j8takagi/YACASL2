@@ -16,10 +16,10 @@ Assemble ../../../../as/CMD/literalstr.casl (0)
 ../../../../as/CMD/literalstr.casl:13:    END
 
 Label::::
-LOOP ---> #0004
+MAIN.LOOP ---> #0004
 MAIN ---> #0000
-LEND ---> #0012
-LEN ---> #0013
+MAIN.LEND ---> #0012
+MAIN.LEN ---> #0013
 
 Assemble ../../../../as/CMD/literalstr.casl (1)
 ../../../../as/CMD/literalstr.casl:1:MAIN START

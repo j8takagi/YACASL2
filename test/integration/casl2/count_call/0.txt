@@ -162,35 +162,35 @@ Assemble ../../../../as/FUNC/outa.casl (0)
 ../../../../as/FUNC/outa.casl:122:        END
 
 Label::::
-STI ---> #0044
-ODYOV ---> #00E3
+OUTA.STI ---> #0044
+ODIVL.ODYOV ---> #00E3
 STSTR ---> #00B8
-STR ---> #0082
+OUTA.STR ---> #0082
 COUNT1 ---> #0012
-ODY ---> #0101
-RETURN ---> #0021
-MAX ---> #0011
-RNEXT ---> #011F
-MORE ---> #001A
-RFIN ---> #012D
+ODIVL.ODY ---> #0101
+COUNT1.RETURN ---> #0021
+MAIN.MAX ---> #0011
+REV.RNEXT ---> #011F
+COUNT1.MORE ---> #001A
+REV.RFIN ---> #012D
 REV ---> #0102
-PRT ---> #0062
+OUTA.PRT ---> #0062
 OABS ---> #0135
-NCHAR ---> #0094
-LOOP ---> #0002
-STLST ---> #0051
+OUTA.NCHAR ---> #0094
+MAIN.LOOP ---> #0002
+OUTA.STLST ---> #0051
 MAIN ---> #0000
 ODIVL ---> #00C7
-RPO ---> #0121
+REV.RPO ---> #0121
 OUTA ---> #0025
-RPU ---> #0112
-FIN ---> #0010
-ODSL ---> #00D8
-LEN ---> #0093
-ODFIN ---> #00FC
-ZPRT ---> #005E
-ODLOOP ---> #00EB
-ODLPIN ---> #00F8
+REV.RPU ---> #0112
+MAIN.FIN ---> #0010
+ODIVL.ODSL ---> #00D8
+OUTA.LEN ---> #0093
+ODIVL.ODFIN ---> #00FC
+OUTA.ZPRT ---> #005E
+ODIVL.ODLOOP ---> #00EB
+ODIVL.ODLPIN ---> #00F8
 
 Assemble ../../../../as/FUNC/count1_call.casl (1)
 ../../../../as/FUNC/count1_call.casl:1:;; count1.casl（「アセンブラ言語の仕様」プログラム例）を呼び出し、出力結果を表示

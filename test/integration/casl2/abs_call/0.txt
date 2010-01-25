@@ -153,35 +153,35 @@ Assemble ../../../../as/FUNC/outa.casl (0)
 ../../../../as/FUNC/outa.casl:122:        END
 
 Label::::
-STI ---> #0043
-ODYOV ---> #00E2
+OUTA.STI ---> #0043
+ODIVL.ODYOV ---> #00E2
 STSTR ---> #00B7
-STR ---> #0081
-ODY ---> #0100
-RNEXT ---> #011E
+OUTA.STR ---> #0081
+ODIVL.ODY ---> #0100
+REV.RNEXT ---> #011E
 ABS ---> #001A
-RFIN ---> #012C
-ABSFIN ---> #0023
-MLOOP ---> #0002
-MFIN ---> #0010
+REV.RFIN ---> #012C
+ABS.ABSFIN ---> #0023
+MAIN.MLOOP ---> #0002
+MAIN.MFIN ---> #0010
 REV ---> #0101
-MLEN ---> #0019
-PRT ---> #0061
-MVAL ---> #0011
+MAIN.MLEN ---> #0019
+OUTA.PRT ---> #0061
+MAIN.MVAL ---> #0011
 OABS ---> #0134
-NCHAR ---> #0093
-STLST ---> #0050
+OUTA.NCHAR ---> #0093
+OUTA.STLST ---> #0050
 MAIN ---> #0000
 ODIVL ---> #00C6
-RPO ---> #0120
+REV.RPO ---> #0120
 OUTA ---> #0024
-RPU ---> #0111
-ODSL ---> #00D7
-LEN ---> #0092
-ODFIN ---> #00FB
-ZPRT ---> #005D
-ODLOOP ---> #00EA
-ODLPIN ---> #00F7
+REV.RPU ---> #0111
+ODIVL.ODSL ---> #00D7
+OUTA.LEN ---> #0092
+ODIVL.ODFIN ---> #00FB
+OUTA.ZPRT ---> #005D
+ODIVL.ODLOOP ---> #00EA
+ODIVL.ODLPIN ---> #00F7
 
 Assemble ../../../../as/FUNC/abs_call.casl (1)
 ../../../../as/FUNC/abs_call.casl:1:;;; ABSを呼び出す

@@ -3,9 +3,9 @@
 Assemble ../../../../as/CMD/ld5.casl (0)
 
 Label::::
-A ---> #0005
-B ---> #0006
-BEGIN ---> #0000
+MAIN.A ---> #0005
+MAIN.B ---> #0006
+MAIN.BEGIN ---> #0000
 MAIN ---> #0000
 
 Assemble ../../../../as/CMD/ld5.casl (1)

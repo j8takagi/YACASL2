@@ -159,36 +159,36 @@ Assemble ../../../../as/FUNC/outa.casl (0)
 ../../../../as/FUNC/outa.casl:122:        END
 
 Label::::
-STI ---> #004E
-ODYOV ---> #00ED
+OUTA.STI ---> #004E
+ODIVL.ODYOV ---> #00ED
 STSTR ---> #00C2
-STR ---> #008C
-ODY ---> #010B
-MIN ---> #002E
-S1 ---> #0018
-S2 ---> #0027
-RNEXT ---> #0129
-CNT ---> #0011
-RFIN ---> #0137
+OUTA.STR ---> #008C
+ODIVL.ODY ---> #010B
+MINIM.MIN ---> #002E
+MINIM.S1 ---> #0018
+MINIM.S2 ---> #0027
+REV.RNEXT ---> #0129
+MAIN.CNT ---> #0011
+REV.RFIN ---> #0137
 REV ---> #010C
-PRT ---> #006C
+OUTA.PRT ---> #006C
 OABS ---> #013F
-NCHAR ---> #009E
-DATA ---> #000A
-STLST ---> #005B
-LRET ---> #002B
+OUTA.NCHAR ---> #009E
+MAIN.DATA ---> #000A
+OUTA.STLST ---> #005B
+MINIM.LRET ---> #002B
 MAIN ---> #0000
 ODIVL ---> #00D1
-RPO ---> #012B
+REV.RPO ---> #012B
 OUTA ---> #002F
 MINIM ---> #0012
-RPU ---> #011C
-ODSL ---> #00E2
-LEN ---> #009D
-ODFIN ---> #0106
-ZPRT ---> #0068
-ODLOOP ---> #00F5
-ODLPIN ---> #0102
+REV.RPU ---> #011C
+ODIVL.ODSL ---> #00E2
+OUTA.LEN ---> #009D
+ODIVL.ODFIN ---> #0106
+OUTA.ZPRT ---> #0068
+ODIVL.ODLOOP ---> #00F5
+ODIVL.ODLPIN ---> #0102
 
 Assemble ../../../../as/FUNC/minim_call.casl (1)
 ../../../../as/FUNC/minim_call.casl:1:;;; casl2 minim_call.casl minim.casl outa.casl

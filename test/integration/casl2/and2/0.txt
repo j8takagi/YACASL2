@@ -8,7 +8,7 @@ Assemble ../../../../as/CMD/and2.casl (0)
 ../../../../as/CMD/and2.casl:5:        END
 
 Label::::
-BEGIN ---> #0000
+MAIN.BEGIN ---> #0000
 MAIN ---> #0000
 
 Assemble ../../../../as/CMD/and2.casl (1)

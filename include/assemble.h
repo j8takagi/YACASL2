@@ -1,10 +1,10 @@
 /* CASL IIの制限 */
 enum {
-    LINESIZE = 1024,    /* 行の最大文字数 */
-    TOKENSIZE = 256,    /* トークンの最大文字数 */
-    LABELSIZE = 8,    /* ラベルの最大文字数 */
+    LINESIZE = 1024,       /* 行の最大文字数 */
+    TOKENSIZE = 256,       /* トークンの最大文字数 */
+    LABELSIZE = 8,         /* ラベルの最大文字数 */
     LABELTABSIZE = 256,    /* ラベルの最大数 */
-    OPDSIZE = 40     /* オペラントの最大数 */
+    OPDSIZE = 40,          /* オペラントの最大数 */
 };
 
 /* 値を格納するポインタ */
@@ -12,6 +12,9 @@ extern WORD ptr;
 
 /* リテラル（=付きの値）を格納するポインタ */
 extern WORD lptr;
+
+/* 他のプログラムで参照する入口名 */
+extern char *prog;
 
 /* アセンブラ命令とマクロ命令を表す番号 */
 typedef enum {
@@ -22,7 +25,7 @@ typedef enum {
     IN = 011,
     OUT = 012,
     RPUSH = 013,
-    RPOP = 014
+    RPOP = 014,
 } CASLCMD;
 
 /* アセンブラ命令とマクロ命令を表す配列 */
@@ -36,21 +39,22 @@ typedef struct {
 /* ラベル表 */
 typedef struct _LABELTAB {
     struct _LABELTAB *next;
-    char *name;
+    char *prog;
+    char *label;
     WORD adr;
 } LABELTAB;
 
 /* アセンブラが、1回目か、2回目か、を表す */
 typedef enum {
     FIRST = 0,
-    SECOND = 1
+    SECOND = 1,
 } PASS;
 
 /* ラベル表からアドレスを検索する */
-WORD getlabel(const char *label);
+WORD getlabel(const char *label, const char *prog);
 
 /* ラベルを表に追加する */
-bool addlabel(const char *label, WORD word);
+bool addlabel(const char *prog, const char *label, WORD word);
 
 /* ラベル表を表示する */
 void printlabel();

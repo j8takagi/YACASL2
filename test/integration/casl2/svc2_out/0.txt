@@ -20,8 +20,8 @@ Assemble ../../../../as/CMD/svc2_out.casl (0)
 
 Label::::
 OTEST ---> #0000
-OBUF ---> #0013
-LEN ---> #0017
+OTEST.OBUF ---> #0013
+OTEST.LEN ---> #0017
 
 Assemble ../../../../as/CMD/svc2_out.casl (1)
 ../../../../as/CMD/svc2_out.casl:1:;;; 「OUT」と同等のプログラム

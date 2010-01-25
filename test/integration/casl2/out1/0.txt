@@ -3,9 +3,9 @@
 Assemble ../../../../as/CMD/out1.casl (0)
 
 Label::::
-IOLEN ---> #0029
+OTEST.IOLEN ---> #0029
 OTEST ---> #0000
-IOBUF ---> #0013
+OTEST.IOBUF ---> #0013
 
 Assemble ../../../../as/CMD/out1.casl (1)
 ../../../../as/CMD/out1.casl:1:;;; OUTの使用例

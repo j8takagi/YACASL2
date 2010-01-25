@@ -7,6 +7,9 @@ WORD ptr;
 /* リテラル（=付きの値）を格納するポインタ */
 WORD lptr;
 
+/* 他のプログラムで参照する入口名 */
+char *prog;
+
 /* 汎用レジスタを表す文字列「GR[0-7]」をWORD値に変換
    is_xがtrueの場合は、指標レジスタとして用いる汎用レジスタ
    文字列が汎用レジスタを表さない場合は、0xFFFFを返す */
@@ -79,7 +82,7 @@ WORD getadr(const char *str, PASS pass)
     } else if(isdigit(*str) || *str == '-') {
         adr = getint(str);
     } else {
-        if(pass == SECOND && (adr = getlabel(str)) == 0xFFFF) {
+        if(pass == SECOND && (adr = getlabel(str, prog)) == 0xFFFF) {
             setcerr(103, str);    /* label not found */
         }
     }
@@ -161,7 +164,7 @@ void writeDC(const char *str, PASS pass)
         } else if(isdigit(*str) || *str == '-') {
             adr = getint(str);
         } else {
-            if(pass == SECOND && (adr = getlabel(str)) == 0xFFFF) {
+            if(pass == SECOND && (adr = getlabel(str, prog)) == 0xFFFF) {
                 setcerr(103, str);    /* label not found */
             }
         }
@@ -202,9 +205,11 @@ bool assemblecmd(const CMDLINE *cmdl, PASS pass)
             setcerr(107, NULL);    /* no label in START */
             return false;
         }
+        /* プログラム名の設定 */
+        prog = strdup(cmdl->label);
         /* オペランドがある場合、実行開始番地を設定 */
         if(pass == SECOND && cmdl->opd->opdc == 1) {
-            if((startptr = getlabel(cmdl->opd->opdv[0])) == 0xFFFF) {
+            if((startptr = getlabel(cmdl->opd->opdv[0], prog)) == 0xFFFF) {
                 setcerr(103, cmdl->opd->opdv[0]);    /* label not found */
             }
         }
@@ -219,6 +224,7 @@ bool assemblecmd(const CMDLINE *cmdl, PASS pass)
         else if(pass == SECOND) {
             endptr = lptr;
         }
+        prog = NULL;
         status = true;
         break;
     case DS:
@@ -430,7 +436,7 @@ bool assemble(const char *file, PASS pass)
     CMDLINE *cmdl;
     char *line;
     FILE *fp;
-    
+
     if(create_cmdtype_code() == false) {
         return false;
     }
@@ -450,7 +456,7 @@ bool assemble(const char *file, PASS pass)
         }
         if((cmdl = linetok(line)) != NULL) {
             if(pass == FIRST && cmdl->label != NULL) {
-                if(addlabel(cmdl->label, ptr) == false) {
+                if(addlabel(prog, cmdl->label, ptr) == false) {
                     break;
                 }
             }

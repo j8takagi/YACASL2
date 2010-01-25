@@ -10,8 +10,8 @@ Assemble ../../../../as/CMD/sra3.casl (0)
 
 Label::::
 SLA2 ---> #0000
-X ---> #0005
-BEGIN ---> #0000
+SLA2.X ---> #0005
+SLA2.BEGIN ---> #0000
 
 Assemble ../../../../as/CMD/sra3.casl (1)
 ../../../../as/CMD/sra3.casl:1:SLA2	START	BEGIN

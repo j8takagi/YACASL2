@@ -14,11 +14,11 @@ Assemble ../../../../as/CMD/addl_overflow.casl (0)
 ../../../../as/CMD/addl_overflow.casl:11:	END
 
 Label::::
-A ---> #0009
-B ---> #000A
-C ---> #000B
-D ---> #000C
-BEGIN ---> #0000
+MAIN.A ---> #0009
+MAIN.B ---> #000A
+MAIN.C ---> #000B
+MAIN.D ---> #000C
+MAIN.BEGIN ---> #0000
 MAIN ---> #0000
 
 Assemble ../../../../as/CMD/addl_overflow.casl (1)

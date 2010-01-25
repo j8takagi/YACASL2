@@ -10,8 +10,8 @@ Assemble ../../../../as/CMD/xor1.casl (0)
 ../../../../as/CMD/xor1.casl:7:	END
 
 Label::::
-A ---> #0007
-BEGIN ---> #0000
+MAIN.A ---> #0007
+MAIN.BEGIN ---> #0000
 MAIN ---> #0000
 
 Assemble ../../../../as/CMD/xor1.casl (1)

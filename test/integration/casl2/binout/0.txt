@@ -3,22 +3,22 @@
 Assemble ../../../../as/YAKUWA/binout.casl (0)
 
 Label::::
-LOOP1 ---> #0023
-LOOP2 ---> #002B
-ONE ---> #0031
-OLNG ---> #0070
-MLOOP ---> #0002
-MFIN ---> #000E
-MLEN ---> #0013
-OBUF ---> #0060
-ZERO ---> #002D
+BINOUT.LOOP1 ---> #0023
+BINOUT.LOOP2 ---> #002B
+BINOUT.ONE ---> #0031
+BINOUT.OLNG ---> #0070
+MAIN.MLOOP ---> #0002
+MAIN.MFIN ---> #000E
+MAIN.MLEN ---> #0013
+BINOUT.OBUF ---> #0060
+BINOUT.ZERO ---> #002D
 MAIN ---> #0000
-STORE ---> #0033
-OUT1 ---> #0041
-OUT2 ---> #0047
-MWORD ---> #000F
+BINOUT.STORE ---> #0033
+BINOUT.OUT1 ---> #0041
+BINOUT.OUT2 ---> #0047
+MAIN.MWORD ---> #000F
 BINOUT ---> #0014
-NZERO ---> #0071
+BINOUT.NZERO ---> #0071
 
 Assemble ../../../../as/YAKUWA/binout.casl (1)
 ../../../../as/YAKUWA/binout.casl:1:;;; BINOUT: 主プログラムから渡された1語の内容を、
@@ -54,7 +54,7 @@ Assemble ../../../../as/YAKUWA/binout.casl (1)
 	#0010	#0001
 	#0011	#09CD
 	#0012	#8001
-../../../../as/YAKUWA/binout.casl:15:MLEN    DC      4        
+../../../../as/YAKUWA/binout.casl:15:MLEN    DC      4
 	#0013	#0004
 ../../../../as/YAKUWA/binout.casl:16:        END
 ../../../../as/YAKUWA/binout.casl:17:;;; BINOUT

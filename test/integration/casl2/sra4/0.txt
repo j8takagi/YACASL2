@@ -11,9 +11,9 @@ Assemble ../../../../as/CMD/sra4.casl (0)
 ../../../../as/CMD/sra4.casl:8:        END
 
 Label::::
-X ---> #0007
-Y ---> #0008
-BEGIN ---> #0000
+SRA4.X ---> #0007
+SRA4.Y ---> #0008
+SRA4.BEGIN ---> #0000
 SRA4 ---> #0000
 
 Assemble ../../../../as/CMD/sra4.casl (1)

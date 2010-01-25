@@ -11,8 +11,8 @@ Assemble ../../../../as/CMD/ds_0.casl (0)
 ../../../../as/CMD/ds_0.casl:8:        END
 
 Label::::
-A ---> #0005
-B ---> #0005
+MAIN.A ---> #0005
+MAIN.B ---> #0005
 MAIN ---> #0000
 
 Assemble ../../../../as/CMD/ds_0.casl (1)

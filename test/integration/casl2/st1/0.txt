@@ -10,7 +10,7 @@ Assemble ../../../../as/CMD/st1.casl (0)
 ../../../../as/CMD/st1.casl:7:        END
 
 Label::::
-A ---> #0007
+MAIN.A ---> #0007
 MAIN ---> #0000
 
 Assemble ../../../../as/CMD/st1.casl (1)

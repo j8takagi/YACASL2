@@ -11,9 +11,9 @@ Assemble ../../../../as/CMD/adda1.casl (0)
 ../../../../as/CMD/adda1.casl:8:        END
 
 Label::::
-A ---> #0006
-B ---> #0007
-BEGIN ---> #0000
+MAIN.A ---> #0006
+MAIN.B ---> #0007
+MAIN.BEGIN ---> #0000
 MAIN ---> #0000
 
 Assemble ../../../../as/CMD/adda1.casl (1)

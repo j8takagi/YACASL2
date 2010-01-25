@@ -15,11 +15,11 @@ Assemble ../../../../as/CMD/ld_loop.casl (0)
 ../../../../as/CMD/ld_loop.casl:12:        END
 
 Label::::
-MEND ---> #000C
-MLOOP ---> #0002
-DATA ---> #000D
+MAIN.MEND ---> #000C
+MAIN.MLOOP ---> #0002
+MAIN.DATA ---> #000D
 MAIN ---> #0000
-LEN ---> #0010
+MAIN.LEN ---> #0010
 
 Assemble ../../../../as/CMD/ld_loop.casl (1)
 ../../../../as/CMD/ld_loop.casl:1:;;; ループを使い、連続でGR1にデータを転送する

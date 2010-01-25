@@ -16,12 +16,12 @@ Assemble ../../../../as/CMD/xor4.casl (0)
 ../../../../as/CMD/xor4.casl:13:        END
 
 Label::::
-A ---> #000D
-BEGIN ---> #0000
-LOOP ---> #0001
+MAIN.A ---> #000D
+MAIN.BEGIN ---> #0000
+MAIN.LOOP ---> #0001
 MAIN ---> #0000
-FIN ---> #000C
-LEN ---> #0012
+MAIN.FIN ---> #000C
+MAIN.LEN ---> #0012
 
 Assemble ../../../../as/CMD/xor4.casl (1)
 ../../../../as/CMD/xor4.casl:1:;;; XORで、GR1の内容をクリア

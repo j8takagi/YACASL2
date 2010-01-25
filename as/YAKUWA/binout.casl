@@ -12,7 +12,7 @@ MLOOP   CPA     GR2,MLEN
         JUMP    MLOOP
 MFIN    RET
 MWORD   DC      #0000,#0001,#09CD,#8001
-MLEN    DC      4        
+MLEN    DC      4
         END
 ;;; BINOUT
 BINOUT  START
