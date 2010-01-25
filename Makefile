@@ -1,13 +1,12 @@
 prefix = $(HOME)
+CLEANDIR = src test/integration test/unit
 .PHPNY: all clean check install uninstall
 all:
 	make -C src
 check:
-	make -C test/integration
+	make -sC test/integration
 clean:
-	make -C src clean
-	make -C test/integration clean
-	make -C test/unit clean
+	@for target in $(CLEANDIR); do $(MAKE) -sC $$target clean; done
 install: all
 	@if test -d $(prefix); then \
        install -s ./casl2 $(prefix)/casl2; \

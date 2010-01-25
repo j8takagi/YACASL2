@@ -1,6 +1,7 @@
 YACASL2DIR=../..
-TARGETS = casl2 comet2 dumpword
-.PHONY: all
-all:$(TARGETS)
-%: $(YACASL2DIR)/%
-	$(MAKE) -kC $@
+TESTGROUPS = casl2 comet2 dumpword
+.PHONY: all clean
+all:
+	@for target in $(TESTGROUPS); do $(MAKE) -sC $$target; done
+clean:
+	@for target in $(TESTGROUPS); do $(MAKE) -sC $$target clean; done
