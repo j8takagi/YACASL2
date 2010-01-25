@@ -1,0 +1,28 @@
+../../../../casl2 -sL ../../../../as/FUNC/sum_10.casl
+
+Assemble ../../../../as/FUNC/sum_10.casl (0)
+../../../../as/FUNC/sum_10.casl:1:;;; sum_10.casl
+../../../../as/FUNC/sum_10.casl:2:;;; 出力 GR0: 1から10までの整数をすべて加算した値
+../../../../as/FUNC/sum_10.casl:3:MAIN    START
+../../../../as/FUNC/sum_10.casl:4:        PUSH    0,GR1
+../../../../as/FUNC/sum_10.casl:5:        LAD     GR0,0           ; GR0を初期化
+../../../../as/FUNC/sum_10.casl:6:        LD      GR1,FST         ; GR1に初項を転送
+../../../../as/FUNC/sum_10.casl:7:LOOP    ADDL    GR0,GR1         ; ループ先頭
+../../../../as/FUNC/sum_10.casl:8:        ADDL    GR1,STEP        ; GR1 <- GR1 + 公差
+../../../../as/FUNC/sum_10.casl:9:        CPL     GR1,LST         ; GR1が末項より大きい場合は終了
+../../../../as/FUNC/sum_10.casl:10:        JPL     FIN             ; ↓
+../../../../as/FUNC/sum_10.casl:11:        JUMP    LOOP            ; ループ終端
+../../../../as/FUNC/sum_10.casl:12:FIN     POP     GR1
+../../../../as/FUNC/sum_10.casl:13:        RET
+../../../../as/FUNC/sum_10.casl:14:FST     DC      1               ; 初項
+../../../../as/FUNC/sum_10.casl:15:LST     DC      10              ; 末項
+../../../../as/FUNC/sum_10.casl:16:STEP    DC      1               ; 公差
+../../../../as/FUNC/sum_10.casl:17:        END
+
+Label::::
+MAIN.FST ---> #0011
+MAIN.LOOP ---> #0006
+MAIN.LST ---> #0012
+MAIN ---> #0000
+MAIN.STEP ---> #0013
+MAIN.FIN ---> #000F

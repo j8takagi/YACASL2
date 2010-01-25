@@ -21,7 +21,7 @@ static struct option longopts[] = {
     {"tracearithmetic", no_argument, NULL, 't'},
     {"tracelogical", no_argument, NULL, 'T'},
     {"dump", no_argument, NULL, 'd'},
-    {"memsize", required_argument, NULL, 'M'},
+    {"memorysize", required_argument, NULL, 'M'},
     {"clocks", required_argument, NULL, 'C'},
     {"help", no_argument, NULL, 'h'},
     {0, 0, 0, 0}
@@ -30,7 +30,7 @@ static struct option longopts[] = {
 int main(int argc, char *argv[])
 {
     int opt;
-    const char *usage = "Usage: %s [-tTdh] [-M<memsize>] [-C<clocks>] FILE\n";
+    const char *usage = "Usage: %s [-tTdh] [-M <memorysize>] [-C <clocks>] FILE\n";
 
     while((opt = getopt_long(argc, argv, "tTdM:C:h", longopts, NULL)) != -1) {
         switch(opt) {
@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
             break;
         case 'h':
             fprintf(stdout, usage, argv[0]);
-            exit(-1);
+            return 0;
         case '?':
             fprintf(stderr, usage, argv[0]);
             exit(-1);
