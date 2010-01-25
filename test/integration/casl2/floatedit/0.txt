@@ -1,70 +1,70 @@
 ../../../../casl2 -sla ../../../../as/YAKUWA/floatedit.casl
 
 Assemble ../../../../as/YAKUWA/floatedit.casl (0)
-../../../../as/YAKUWA/floatedit.casl:1:EDIT	START
-../../../../as/YAKUWA/floatedit.casl:2:RETRY	IN	INAREA,INLENG
-../../../../as/YAKUWA/floatedit.casl:3:	LAD	GR1,0
-../../../../as/YAKUWA/floatedit.casl:4:	OR	GR1,INLENG
-../../../../as/YAKUWA/floatedit.casl:5:	JZE	FINISH
-../../../../as/YAKUWA/floatedit.casl:6:	CPA	GR1,TEN
-../../../../as/YAKUWA/floatedit.casl:7:	JZE	BEGIN
-../../../../as/YAKUWA/floatedit.casl:8:	OUT	ERRMSG,MSGLNG
-../../../../as/YAKUWA/floatedit.casl:9:	JUMP	RETRY
-../../../../as/YAKUWA/floatedit.casl:10:BEGIN	LAD	GR0,1
-../../../../as/YAKUWA/floatedit.casl:11:	ST	GR0,ZSFLAG
-../../../../as/YAKUWA/floatedit.casl:12:	LAD	GR1,0
-../../../../as/YAKUWA/floatedit.casl:13:	LAD	GR2,-1
-../../../../as/YAKUWA/floatedit.casl:14:	LAD	GR3,0
-../../../../as/YAKUWA/floatedit.casl:15:LOOP	LD	GR0,MASK,GR3
-../../../../as/YAKUWA/floatedit.casl:16:	PUSH	1,GR3
-../../../../as/YAKUWA/floatedit.casl:17:	LD	GR3,INAREA,GR1
-../../../../as/YAKUWA/floatedit.casl:18:	LAD	GR1,1,GR1
-../../../../as/YAKUWA/floatedit.casl:19:	CPL	GR0,DIGIT0
-../../../../as/YAKUWA/floatedit.casl:20:	JZE	ENDSPR
-../../../../as/YAKUWA/floatedit.casl:21:	CPL	GR0,DIGIT9
-../../../../as/YAKUWA/floatedit.casl:22:	JNZ	NONDGT
-../../../../as/YAKUWA/floatedit.casl:23:	CPL	GR3,DIGIT0
-../../../../as/YAKUWA/floatedit.casl:24:	JNZ	ENDSPR
-../../../../as/YAKUWA/floatedit.casl:25:	LAD	GR0,0
-../../../../as/YAKUWA/floatedit.casl:26:	OR	GR0,ZSFLAG
-../../../../as/YAKUWA/floatedit.casl:27:	JNZ	SUPPRS
-../../../../as/YAKUWA/floatedit.casl:28:ENDSPR	LD	GR0,OTAREA,GR2
-../../../../as/YAKUWA/floatedit.casl:29:	CPL	GR0,SPACE
-../../../../as/YAKUWA/floatedit.casl:30:	JNZ	NOT1ST
-../../../../as/YAKUWA/floatedit.casl:31:	LD	GR0,MASK
-../../../../as/YAKUWA/floatedit.casl:32:	ST	GR0,OTAREA,GR2
-../../../../as/YAKUWA/floatedit.casl:33:	LAD	GR0,0
-../../../../as/YAKUWA/floatedit.casl:34:	ST	GR0,ZSFLAG
-../../../../as/YAKUWA/floatedit.casl:35:NOT1ST	LAD	GR0,0,GR3
-../../../../as/YAKUWA/floatedit.casl:36:	JUMP	STORE
-../../../../as/YAKUWA/floatedit.casl:37:NONDGT	LAD	GR1,-1,GR1
-../../../../as/YAKUWA/floatedit.casl:38:	LAD	GR3,0
-../../../../as/YAKUWA/floatedit.casl:39:	OR	GR3,ZSFLAG
-../../../../as/YAKUWA/floatedit.casl:40:	JZE	STORE
-../../../../as/YAKUWA/floatedit.casl:41:SUPPRS	LD	GR0,SPACE
-../../../../as/YAKUWA/floatedit.casl:42:STORE	LAD	GR2,1,GR2
-../../../../as/YAKUWA/floatedit.casl:43:	ST	GR0,OTAREA,GR2
-../../../../as/YAKUWA/floatedit.casl:44:	POP	GR3
-../../../../as/YAKUWA/floatedit.casl:45:	CPA	GR1,INLENG
-../../../../as/YAKUWA/floatedit.casl:46:	JNZ	LOOP
-../../../../as/YAKUWA/floatedit.casl:47:	LAD	GR2,1,GR2
-../../../../as/YAKUWA/floatedit.casl:48:	ST	GR2,OTLENG
-../../../../as/YAKUWA/floatedit.casl:49:	OUT	OTAREA,OTLENG
-../../../../as/YAKUWA/floatedit.casl:50:    JUMP RETRY
-../../../../as/YAKUWA/floatedit.casl:51:FINISH	RET
-../../../../as/YAKUWA/floatedit.casl:52:MASK	DC	'\99,999,990.99'
-../../../../as/YAKUWA/floatedit.casl:53:SPACE	DC	' '
-../../../../as/YAKUWA/floatedit.casl:54:DIGIT0	DC	'0'
-../../../../as/YAKUWA/floatedit.casl:55:DIGIT9	DC	'9'
-../../../../as/YAKUWA/floatedit.casl:56:TEN	DC	10
-../../../../as/YAKUWA/floatedit.casl:57:ERRMSG	DC	'input error!'
-../../../../as/YAKUWA/floatedit.casl:58:MSGLNG	DC	12
-../../../../as/YAKUWA/floatedit.casl:59:INAREA	DS	80
-../../../../as/YAKUWA/floatedit.casl:60:INLENG	DS	1
-../../../../as/YAKUWA/floatedit.casl:61:OTAREA	DS	80
-../../../../as/YAKUWA/floatedit.casl:62:OTLENG	DS	1
-../../../../as/YAKUWA/floatedit.casl:63:ZSFLAG	DS	1
-../../../../as/YAKUWA/floatedit.casl:64:	END
+../../../../as/YAKUWA/floatedit.casl:    1:EDIT	START
+../../../../as/YAKUWA/floatedit.casl:    2:RETRY	IN	INAREA,INLENG
+../../../../as/YAKUWA/floatedit.casl:    3:	LAD	GR1,0
+../../../../as/YAKUWA/floatedit.casl:    4:	OR	GR1,INLENG
+../../../../as/YAKUWA/floatedit.casl:    5:	JZE	FINISH
+../../../../as/YAKUWA/floatedit.casl:    6:	CPA	GR1,TEN
+../../../../as/YAKUWA/floatedit.casl:    7:	JZE	BEGIN
+../../../../as/YAKUWA/floatedit.casl:    8:	OUT	ERRMSG,MSGLNG
+../../../../as/YAKUWA/floatedit.casl:    9:	JUMP	RETRY
+../../../../as/YAKUWA/floatedit.casl:   10:BEGIN	LAD	GR0,1
+../../../../as/YAKUWA/floatedit.casl:   11:	ST	GR0,ZSFLAG
+../../../../as/YAKUWA/floatedit.casl:   12:	LAD	GR1,0
+../../../../as/YAKUWA/floatedit.casl:   13:	LAD	GR2,-1
+../../../../as/YAKUWA/floatedit.casl:   14:	LAD	GR3,0
+../../../../as/YAKUWA/floatedit.casl:   15:LOOP	LD	GR0,MASK,GR3
+../../../../as/YAKUWA/floatedit.casl:   16:	PUSH	1,GR3
+../../../../as/YAKUWA/floatedit.casl:   17:	LD	GR3,INAREA,GR1
+../../../../as/YAKUWA/floatedit.casl:   18:	LAD	GR1,1,GR1
+../../../../as/YAKUWA/floatedit.casl:   19:	CPL	GR0,DIGIT0
+../../../../as/YAKUWA/floatedit.casl:   20:	JZE	ENDSPR
+../../../../as/YAKUWA/floatedit.casl:   21:	CPL	GR0,DIGIT9
+../../../../as/YAKUWA/floatedit.casl:   22:	JNZ	NONDGT
+../../../../as/YAKUWA/floatedit.casl:   23:	CPL	GR3,DIGIT0
+../../../../as/YAKUWA/floatedit.casl:   24:	JNZ	ENDSPR
+../../../../as/YAKUWA/floatedit.casl:   25:	LAD	GR0,0
+../../../../as/YAKUWA/floatedit.casl:   26:	OR	GR0,ZSFLAG
+../../../../as/YAKUWA/floatedit.casl:   27:	JNZ	SUPPRS
+../../../../as/YAKUWA/floatedit.casl:   28:ENDSPR	LD	GR0,OTAREA,GR2
+../../../../as/YAKUWA/floatedit.casl:   29:	CPL	GR0,SPACE
+../../../../as/YAKUWA/floatedit.casl:   30:	JNZ	NOT1ST
+../../../../as/YAKUWA/floatedit.casl:   31:	LD	GR0,MASK
+../../../../as/YAKUWA/floatedit.casl:   32:	ST	GR0,OTAREA,GR2
+../../../../as/YAKUWA/floatedit.casl:   33:	LAD	GR0,0
+../../../../as/YAKUWA/floatedit.casl:   34:	ST	GR0,ZSFLAG
+../../../../as/YAKUWA/floatedit.casl:   35:NOT1ST	LAD	GR0,0,GR3
+../../../../as/YAKUWA/floatedit.casl:   36:	JUMP	STORE
+../../../../as/YAKUWA/floatedit.casl:   37:NONDGT	LAD	GR1,-1,GR1
+../../../../as/YAKUWA/floatedit.casl:   38:	LAD	GR3,0
+../../../../as/YAKUWA/floatedit.casl:   39:	OR	GR3,ZSFLAG
+../../../../as/YAKUWA/floatedit.casl:   40:	JZE	STORE
+../../../../as/YAKUWA/floatedit.casl:   41:SUPPRS	LD	GR0,SPACE
+../../../../as/YAKUWA/floatedit.casl:   42:STORE	LAD	GR2,1,GR2
+../../../../as/YAKUWA/floatedit.casl:   43:	ST	GR0,OTAREA,GR2
+../../../../as/YAKUWA/floatedit.casl:   44:	POP	GR3
+../../../../as/YAKUWA/floatedit.casl:   45:	CPA	GR1,INLENG
+../../../../as/YAKUWA/floatedit.casl:   46:	JNZ	LOOP
+../../../../as/YAKUWA/floatedit.casl:   47:	LAD	GR2,1,GR2
+../../../../as/YAKUWA/floatedit.casl:   48:	ST	GR2,OTLENG
+../../../../as/YAKUWA/floatedit.casl:   49:	OUT	OTAREA,OTLENG
+../../../../as/YAKUWA/floatedit.casl:   50:    JUMP RETRY
+../../../../as/YAKUWA/floatedit.casl:   51:FINISH	RET
+../../../../as/YAKUWA/floatedit.casl:   52:MASK	DC	'\99,999,990.99'
+../../../../as/YAKUWA/floatedit.casl:   53:SPACE	DC	' '
+../../../../as/YAKUWA/floatedit.casl:   54:DIGIT0	DC	'0'
+../../../../as/YAKUWA/floatedit.casl:   55:DIGIT9	DC	'9'
+../../../../as/YAKUWA/floatedit.casl:   56:TEN	DC	10
+../../../../as/YAKUWA/floatedit.casl:   57:ERRMSG	DC	'input error!'
+../../../../as/YAKUWA/floatedit.casl:   58:MSGLNG	DC	12
+../../../../as/YAKUWA/floatedit.casl:   59:INAREA	DS	80
+../../../../as/YAKUWA/floatedit.casl:   60:INLENG	DS	1
+../../../../as/YAKUWA/floatedit.casl:   61:OTAREA	DS	80
+../../../../as/YAKUWA/floatedit.casl:   62:OTLENG	DS	1
+../../../../as/YAKUWA/floatedit.casl:   63:ZSFLAG	DS	1
+../../../../as/YAKUWA/floatedit.casl:   64:	END
 
 Label::::
 EDIT.MSGLNG ---> #00AA
@@ -91,8 +91,8 @@ EDIT.ERRMSG ---> #009E
 EDIT.TEN ---> #009D
 
 Assemble ../../../../as/YAKUWA/floatedit.casl (1)
-../../../../as/YAKUWA/floatedit.casl:1:EDIT	START
-../../../../as/YAKUWA/floatedit.casl:2:RETRY	IN	INAREA,INLENG
+../../../../as/YAKUWA/floatedit.casl:    1:EDIT	START
+../../../../as/YAKUWA/floatedit.casl:    2:RETRY	IN	INAREA,INLENG
 	#0000	#7001
 	#0001	#0000
 	#0002	#7002
@@ -105,22 +105,22 @@ Assemble ../../../../as/YAKUWA/floatedit.casl (1)
 	#0009	#0001
 	#000A	#7120
 	#000B	#7110
-../../../../as/YAKUWA/floatedit.casl:3:	LAD	GR1,0
+../../../../as/YAKUWA/floatedit.casl:    3:	LAD	GR1,0
 	#000C	#1210
 	#000D	#0000
-../../../../as/YAKUWA/floatedit.casl:4:	OR	GR1,INLENG
+../../../../as/YAKUWA/floatedit.casl:    4:	OR	GR1,INLENG
 	#000E	#3110
 	#000F	#00FB
-../../../../as/YAKUWA/floatedit.casl:5:	JZE	FINISH
+../../../../as/YAKUWA/floatedit.casl:    5:	JZE	FINISH
 	#0010	#6300
 	#0011	#008B
-../../../../as/YAKUWA/floatedit.casl:6:	CPA	GR1,TEN
+../../../../as/YAKUWA/floatedit.casl:    6:	CPA	GR1,TEN
 	#0012	#4010
 	#0013	#009D
-../../../../as/YAKUWA/floatedit.casl:7:	JZE	BEGIN
+../../../../as/YAKUWA/floatedit.casl:    7:	JZE	BEGIN
 	#0014	#6300
 	#0015	#002A
-../../../../as/YAKUWA/floatedit.casl:8:	OUT	ERRMSG,MSGLNG
+../../../../as/YAKUWA/floatedit.casl:    8:	OUT	ERRMSG,MSGLNG
 	#0016	#7001
 	#0017	#0000
 	#0018	#7002
@@ -140,126 +140,126 @@ Assemble ../../../../as/YAKUWA/floatedit.casl (1)
 	#0025	#0002
 	#0026	#7120
 	#0027	#7110
-../../../../as/YAKUWA/floatedit.casl:9:	JUMP	RETRY
+../../../../as/YAKUWA/floatedit.casl:    9:	JUMP	RETRY
 	#0028	#6400
 	#0029	#0000
-../../../../as/YAKUWA/floatedit.casl:10:BEGIN	LAD	GR0,1
+../../../../as/YAKUWA/floatedit.casl:   10:BEGIN	LAD	GR0,1
 	#002A	#1200
 	#002B	#0001
-../../../../as/YAKUWA/floatedit.casl:11:	ST	GR0,ZSFLAG
+../../../../as/YAKUWA/floatedit.casl:   11:	ST	GR0,ZSFLAG
 	#002C	#1100
 	#002D	#014D
-../../../../as/YAKUWA/floatedit.casl:12:	LAD	GR1,0
+../../../../as/YAKUWA/floatedit.casl:   12:	LAD	GR1,0
 	#002E	#1210
 	#002F	#0000
-../../../../as/YAKUWA/floatedit.casl:13:	LAD	GR2,-1
+../../../../as/YAKUWA/floatedit.casl:   13:	LAD	GR2,-1
 	#0030	#1220
 	#0031	#FFFF
-../../../../as/YAKUWA/floatedit.casl:14:	LAD	GR3,0
+../../../../as/YAKUWA/floatedit.casl:   14:	LAD	GR3,0
 	#0032	#1230
 	#0033	#0000
-../../../../as/YAKUWA/floatedit.casl:15:LOOP	LD	GR0,MASK,GR3
+../../../../as/YAKUWA/floatedit.casl:   15:LOOP	LD	GR0,MASK,GR3
 	#0034	#1003
 	#0035	#008C
-../../../../as/YAKUWA/floatedit.casl:16:	PUSH	1,GR3
+../../../../as/YAKUWA/floatedit.casl:   16:	PUSH	1,GR3
 	#0036	#7003
 	#0037	#0001
-../../../../as/YAKUWA/floatedit.casl:17:	LD	GR3,INAREA,GR1
+../../../../as/YAKUWA/floatedit.casl:   17:	LD	GR3,INAREA,GR1
 	#0038	#1031
 	#0039	#00AB
-../../../../as/YAKUWA/floatedit.casl:18:	LAD	GR1,1,GR1
+../../../../as/YAKUWA/floatedit.casl:   18:	LAD	GR1,1,GR1
 	#003A	#1211
 	#003B	#0001
-../../../../as/YAKUWA/floatedit.casl:19:	CPL	GR0,DIGIT0
+../../../../as/YAKUWA/floatedit.casl:   19:	CPL	GR0,DIGIT0
 	#003C	#4100
 	#003D	#009B
-../../../../as/YAKUWA/floatedit.casl:20:	JZE	ENDSPR
+../../../../as/YAKUWA/floatedit.casl:   20:	JZE	ENDSPR
 	#003E	#6300
 	#003F	#004E
-../../../../as/YAKUWA/floatedit.casl:21:	CPL	GR0,DIGIT9
+../../../../as/YAKUWA/floatedit.casl:   21:	CPL	GR0,DIGIT9
 	#0040	#4100
 	#0041	#009C
-../../../../as/YAKUWA/floatedit.casl:22:	JNZ	NONDGT
+../../../../as/YAKUWA/floatedit.casl:   22:	JNZ	NONDGT
 	#0042	#6200
 	#0043	#0060
-../../../../as/YAKUWA/floatedit.casl:23:	CPL	GR3,DIGIT0
+../../../../as/YAKUWA/floatedit.casl:   23:	CPL	GR3,DIGIT0
 	#0044	#4130
 	#0045	#009B
-../../../../as/YAKUWA/floatedit.casl:24:	JNZ	ENDSPR
+../../../../as/YAKUWA/floatedit.casl:   24:	JNZ	ENDSPR
 	#0046	#6200
 	#0047	#004E
-../../../../as/YAKUWA/floatedit.casl:25:	LAD	GR0,0
+../../../../as/YAKUWA/floatedit.casl:   25:	LAD	GR0,0
 	#0048	#1200
 	#0049	#0000
-../../../../as/YAKUWA/floatedit.casl:26:	OR	GR0,ZSFLAG
+../../../../as/YAKUWA/floatedit.casl:   26:	OR	GR0,ZSFLAG
 	#004A	#3100
 	#004B	#014D
-../../../../as/YAKUWA/floatedit.casl:27:	JNZ	SUPPRS
+../../../../as/YAKUWA/floatedit.casl:   27:	JNZ	SUPPRS
 	#004C	#6200
 	#004D	#0068
-../../../../as/YAKUWA/floatedit.casl:28:ENDSPR	LD	GR0,OTAREA,GR2
+../../../../as/YAKUWA/floatedit.casl:   28:ENDSPR	LD	GR0,OTAREA,GR2
 	#004E	#1002
 	#004F	#00FC
-../../../../as/YAKUWA/floatedit.casl:29:	CPL	GR0,SPACE
+../../../../as/YAKUWA/floatedit.casl:   29:	CPL	GR0,SPACE
 	#0050	#4100
 	#0051	#009A
-../../../../as/YAKUWA/floatedit.casl:30:	JNZ	NOT1ST
+../../../../as/YAKUWA/floatedit.casl:   30:	JNZ	NOT1ST
 	#0052	#6200
 	#0053	#005C
-../../../../as/YAKUWA/floatedit.casl:31:	LD	GR0,MASK
+../../../../as/YAKUWA/floatedit.casl:   31:	LD	GR0,MASK
 	#0054	#1000
 	#0055	#008C
-../../../../as/YAKUWA/floatedit.casl:32:	ST	GR0,OTAREA,GR2
+../../../../as/YAKUWA/floatedit.casl:   32:	ST	GR0,OTAREA,GR2
 	#0056	#1102
 	#0057	#00FC
-../../../../as/YAKUWA/floatedit.casl:33:	LAD	GR0,0
+../../../../as/YAKUWA/floatedit.casl:   33:	LAD	GR0,0
 	#0058	#1200
 	#0059	#0000
-../../../../as/YAKUWA/floatedit.casl:34:	ST	GR0,ZSFLAG
+../../../../as/YAKUWA/floatedit.casl:   34:	ST	GR0,ZSFLAG
 	#005A	#1100
 	#005B	#014D
-../../../../as/YAKUWA/floatedit.casl:35:NOT1ST	LAD	GR0,0,GR3
+../../../../as/YAKUWA/floatedit.casl:   35:NOT1ST	LAD	GR0,0,GR3
 	#005C	#1203
 	#005D	#0000
-../../../../as/YAKUWA/floatedit.casl:36:	JUMP	STORE
+../../../../as/YAKUWA/floatedit.casl:   36:	JUMP	STORE
 	#005E	#6400
 	#005F	#006A
-../../../../as/YAKUWA/floatedit.casl:37:NONDGT	LAD	GR1,-1,GR1
+../../../../as/YAKUWA/floatedit.casl:   37:NONDGT	LAD	GR1,-1,GR1
 	#0060	#1211
 	#0061	#FFFF
-../../../../as/YAKUWA/floatedit.casl:38:	LAD	GR3,0
+../../../../as/YAKUWA/floatedit.casl:   38:	LAD	GR3,0
 	#0062	#1230
 	#0063	#0000
-../../../../as/YAKUWA/floatedit.casl:39:	OR	GR3,ZSFLAG
+../../../../as/YAKUWA/floatedit.casl:   39:	OR	GR3,ZSFLAG
 	#0064	#3130
 	#0065	#014D
-../../../../as/YAKUWA/floatedit.casl:40:	JZE	STORE
+../../../../as/YAKUWA/floatedit.casl:   40:	JZE	STORE
 	#0066	#6300
 	#0067	#006A
-../../../../as/YAKUWA/floatedit.casl:41:SUPPRS	LD	GR0,SPACE
+../../../../as/YAKUWA/floatedit.casl:   41:SUPPRS	LD	GR0,SPACE
 	#0068	#1000
 	#0069	#009A
-../../../../as/YAKUWA/floatedit.casl:42:STORE	LAD	GR2,1,GR2
+../../../../as/YAKUWA/floatedit.casl:   42:STORE	LAD	GR2,1,GR2
 	#006A	#1222
 	#006B	#0001
-../../../../as/YAKUWA/floatedit.casl:43:	ST	GR0,OTAREA,GR2
+../../../../as/YAKUWA/floatedit.casl:   43:	ST	GR0,OTAREA,GR2
 	#006C	#1102
 	#006D	#00FC
-../../../../as/YAKUWA/floatedit.casl:44:	POP	GR3
+../../../../as/YAKUWA/floatedit.casl:   44:	POP	GR3
 	#006E	#7130
-../../../../as/YAKUWA/floatedit.casl:45:	CPA	GR1,INLENG
+../../../../as/YAKUWA/floatedit.casl:   45:	CPA	GR1,INLENG
 	#006F	#4010
 	#0070	#00FB
-../../../../as/YAKUWA/floatedit.casl:46:	JNZ	LOOP
+../../../../as/YAKUWA/floatedit.casl:   46:	JNZ	LOOP
 	#0071	#6200
 	#0072	#0034
-../../../../as/YAKUWA/floatedit.casl:47:	LAD	GR2,1,GR2
+../../../../as/YAKUWA/floatedit.casl:   47:	LAD	GR2,1,GR2
 	#0073	#1222
 	#0074	#0001
-../../../../as/YAKUWA/floatedit.casl:48:	ST	GR2,OTLENG
+../../../../as/YAKUWA/floatedit.casl:   48:	ST	GR2,OTLENG
 	#0075	#1120
 	#0076	#014C
-../../../../as/YAKUWA/floatedit.casl:49:	OUT	OTAREA,OTLENG
+../../../../as/YAKUWA/floatedit.casl:   49:	OUT	OTAREA,OTLENG
 	#0077	#7001
 	#0078	#0000
 	#0079	#7002
@@ -279,12 +279,12 @@ Assemble ../../../../as/YAKUWA/floatedit.casl (1)
 	#0086	#0002
 	#0087	#7120
 	#0088	#7110
-../../../../as/YAKUWA/floatedit.casl:50:    JUMP RETRY
+../../../../as/YAKUWA/floatedit.casl:   50:    JUMP RETRY
 	#0089	#6400
 	#008A	#0000
-../../../../as/YAKUWA/floatedit.casl:51:FINISH	RET
+../../../../as/YAKUWA/floatedit.casl:   51:FINISH	RET
 	#008B	#8100
-../../../../as/YAKUWA/floatedit.casl:52:MASK	DC	'\99,999,990.99'
+../../../../as/YAKUWA/floatedit.casl:   52:MASK	DC	'\99,999,990.99'
 	#008C	#005C
 	#008D	#0039
 	#008E	#0039
@@ -299,15 +299,15 @@ Assemble ../../../../as/YAKUWA/floatedit.casl (1)
 	#0097	#002E
 	#0098	#0039
 	#0099	#0039
-../../../../as/YAKUWA/floatedit.casl:53:SPACE	DC	' '
+../../../../as/YAKUWA/floatedit.casl:   53:SPACE	DC	' '
 	#009A	#0020
-../../../../as/YAKUWA/floatedit.casl:54:DIGIT0	DC	'0'
+../../../../as/YAKUWA/floatedit.casl:   54:DIGIT0	DC	'0'
 	#009B	#0030
-../../../../as/YAKUWA/floatedit.casl:55:DIGIT9	DC	'9'
+../../../../as/YAKUWA/floatedit.casl:   55:DIGIT9	DC	'9'
 	#009C	#0039
-../../../../as/YAKUWA/floatedit.casl:56:TEN	DC	10
+../../../../as/YAKUWA/floatedit.casl:   56:TEN	DC	10
 	#009D	#000A
-../../../../as/YAKUWA/floatedit.casl:57:ERRMSG	DC	'input error!'
+../../../../as/YAKUWA/floatedit.casl:   57:ERRMSG	DC	'input error!'
 	#009E	#0069
 	#009F	#006E
 	#00A0	#0070
@@ -320,9 +320,9 @@ Assemble ../../../../as/YAKUWA/floatedit.casl (1)
 	#00A7	#006F
 	#00A8	#0072
 	#00A9	#0021
-../../../../as/YAKUWA/floatedit.casl:58:MSGLNG	DC	12
+../../../../as/YAKUWA/floatedit.casl:   58:MSGLNG	DC	12
 	#00AA	#000C
-../../../../as/YAKUWA/floatedit.casl:59:INAREA	DS	80
+../../../../as/YAKUWA/floatedit.casl:   59:INAREA	DS	80
 	#00AB	#0000
 	#00AC	#0000
 	#00AD	#0000
@@ -403,9 +403,9 @@ Assemble ../../../../as/YAKUWA/floatedit.casl (1)
 	#00F8	#0000
 	#00F9	#0000
 	#00FA	#0000
-../../../../as/YAKUWA/floatedit.casl:60:INLENG	DS	1
+../../../../as/YAKUWA/floatedit.casl:   60:INLENG	DS	1
 	#00FB	#0000
-../../../../as/YAKUWA/floatedit.casl:61:OTAREA	DS	80
+../../../../as/YAKUWA/floatedit.casl:   61:OTAREA	DS	80
 	#00FC	#0000
 	#00FD	#0000
 	#00FE	#0000
@@ -486,11 +486,11 @@ Assemble ../../../../as/YAKUWA/floatedit.casl (1)
 	#0149	#0000
 	#014A	#0000
 	#014B	#0000
-../../../../as/YAKUWA/floatedit.casl:62:OTLENG	DS	1
+../../../../as/YAKUWA/floatedit.casl:   62:OTLENG	DS	1
 	#014C	#0000
-../../../../as/YAKUWA/floatedit.casl:63:ZSFLAG	DS	1
+../../../../as/YAKUWA/floatedit.casl:   63:ZSFLAG	DS	1
 	#014D	#0000
-../../../../as/YAKUWA/floatedit.casl:64:	END
+../../../../as/YAKUWA/floatedit.casl:   64:	END
 input error!
 input error!
 input error!

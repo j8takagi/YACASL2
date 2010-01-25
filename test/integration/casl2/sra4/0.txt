@@ -1,14 +1,14 @@
 ../../../../casl2 -slatd ../../../../as/CMD/sra4.casl
 
 Assemble ../../../../as/CMD/sra4.casl (0)
-../../../../as/CMD/sra4.casl:1:SRA4    START   BEGIN
-../../../../as/CMD/sra4.casl:2:BEGIN   LD  GR0,X
-../../../../as/CMD/sra4.casl:3:        LD  GR1,Y
-../../../../as/CMD/sra4.casl:4:        SRA GR0,1,GR1
-../../../../as/CMD/sra4.casl:5:        RET
-../../../../as/CMD/sra4.casl:6:X   DC  #A238
-../../../../as/CMD/sra4.casl:7:Y   DC  2
-../../../../as/CMD/sra4.casl:8:        END
+../../../../as/CMD/sra4.casl:    1:SRA4    START   BEGIN
+../../../../as/CMD/sra4.casl:    2:BEGIN   LD  GR0,X
+../../../../as/CMD/sra4.casl:    3:        LD  GR1,Y
+../../../../as/CMD/sra4.casl:    4:        SRA GR0,1,GR1
+../../../../as/CMD/sra4.casl:    5:        RET
+../../../../as/CMD/sra4.casl:    6:X   DC  #A238
+../../../../as/CMD/sra4.casl:    7:Y   DC  2
+../../../../as/CMD/sra4.casl:    8:        END
 
 Label::::
 SRA4.X ---> #0007
@@ -17,23 +17,23 @@ SRA4.BEGIN ---> #0000
 SRA4 ---> #0000
 
 Assemble ../../../../as/CMD/sra4.casl (1)
-../../../../as/CMD/sra4.casl:1:SRA4    START   BEGIN
-../../../../as/CMD/sra4.casl:2:BEGIN   LD  GR0,X
+../../../../as/CMD/sra4.casl:    1:SRA4    START   BEGIN
+../../../../as/CMD/sra4.casl:    2:BEGIN   LD  GR0,X
 	#0000	#1000
 	#0001	#0007
-../../../../as/CMD/sra4.casl:3:        LD  GR1,Y
+../../../../as/CMD/sra4.casl:    3:        LD  GR1,Y
 	#0002	#1010
 	#0003	#0008
-../../../../as/CMD/sra4.casl:4:        SRA GR0,1,GR1
+../../../../as/CMD/sra4.casl:    4:        SRA GR0,1,GR1
 	#0004	#5101
 	#0005	#0001
-../../../../as/CMD/sra4.casl:5:        RET
+../../../../as/CMD/sra4.casl:    5:        RET
 	#0006	#8100
-../../../../as/CMD/sra4.casl:6:X   DC  #A238
+../../../../as/CMD/sra4.casl:    6:X   DC  #A238
 	#0007	#A238
-../../../../as/CMD/sra4.casl:7:Y   DC  2
+../../../../as/CMD/sra4.casl:    7:Y   DC  2
 	#0008	#0002
-../../../../as/CMD/sra4.casl:8:        END
+../../../../as/CMD/sra4.casl:    8:        END
 
 Executing machine codes
 #0000: Register::::

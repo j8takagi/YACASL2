@@ -1,12 +1,12 @@
 ../../../../casl2 -slatd ../../../../as/CMD/out0.casl
 
 Assemble ../../../../as/CMD/out0.casl (0)
-../../../../as/CMD/out0.casl:1:MAIN     START
-../../../../as/CMD/out0.casl:2:         OUT    BUF,LEN
-../../../../as/CMD/out0.casl:3:         RET
-../../../../as/CMD/out0.casl:4:BUF      DC     '0'
-../../../../as/CMD/out0.casl:5:LEN      DC     1
-../../../../as/CMD/out0.casl:6:         END
+../../../../as/CMD/out0.casl:    1:MAIN     START
+../../../../as/CMD/out0.casl:    2:         OUT    BUF,LEN
+../../../../as/CMD/out0.casl:    3:         RET
+../../../../as/CMD/out0.casl:    4:BUF      DC     '0'
+../../../../as/CMD/out0.casl:    5:LEN      DC     1
+../../../../as/CMD/out0.casl:    6:         END
 
 Label::::
 MAIN.BUF ---> #0013
@@ -14,8 +14,8 @@ MAIN ---> #0000
 MAIN.LEN ---> #0014
 
 Assemble ../../../../as/CMD/out0.casl (1)
-../../../../as/CMD/out0.casl:1:MAIN     START
-../../../../as/CMD/out0.casl:2:         OUT    BUF,LEN
+../../../../as/CMD/out0.casl:    1:MAIN     START
+../../../../as/CMD/out0.casl:    2:         OUT    BUF,LEN
 	#0000	#7001
 	#0001	#0000
 	#0002	#7002
@@ -35,13 +35,13 @@ Assemble ../../../../as/CMD/out0.casl (1)
 	#000F	#0002
 	#0010	#7120
 	#0011	#7110
-../../../../as/CMD/out0.casl:3:         RET
+../../../../as/CMD/out0.casl:    3:         RET
 	#0012	#8100
-../../../../as/CMD/out0.casl:4:BUF      DC     '0'
+../../../../as/CMD/out0.casl:    4:BUF      DC     '0'
 	#0013	#0030
-../../../../as/CMD/out0.casl:5:LEN      DC     1
+../../../../as/CMD/out0.casl:    5:LEN      DC     1
 	#0014	#0001
-../../../../as/CMD/out0.casl:6:         END
+../../../../as/CMD/out0.casl:    6:         END
 
 Executing machine codes
 #0000: Register::::

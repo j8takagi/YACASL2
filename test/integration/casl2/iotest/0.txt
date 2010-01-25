@@ -1,26 +1,26 @@
 ../../../../casl2 -sla ../../../../as/FUNC/iotest.casl
 
 Assemble ../../../../as/FUNC/iotest.casl (0)
-../../../../as/FUNC/iotest.casl:1:IOTEST  START
-../../../../as/FUNC/iotest.casl:2:	    OUT     OBUF1,OLEN1
-../../../../as/FUNC/iotest.casl:3:LOOP    IN      IOBUF,IOLEN
-../../../../as/FUNC/iotest.casl:4:	    LD	    GR1,IOLEN
-../../../../as/FUNC/iotest.casl:5:        JZE	    RETURN
-../../../../as/FUNC/iotest.casl:6:	    OUT     OBUF2,OLEN2
-../../../../as/FUNC/iotest.casl:7:	    OUT     IOBUF,IOLEN
-../../../../as/FUNC/iotest.casl:8:	    OUT     OBUF3,OLEN3
-../../../../as/FUNC/iotest.casl:9:	    JUMP    LOOP
-../../../../as/FUNC/iotest.casl:10:RETURN	RET
-../../../../as/FUNC/iotest.casl:11:; Memory
-../../../../as/FUNC/iotest.casl:12:OBUF1   DC      'LET''S START. TYPE IN'
-../../../../as/FUNC/iotest.casl:13:OLEN1   DC      20
-../../../../as/FUNC/iotest.casl:14:OBUF2   DC      'YOU TYPED'
-../../../../as/FUNC/iotest.casl:15:OLEN2   DC      9
-../../../../as/FUNC/iotest.casl:16:OBUF3   DC      'WHAT''S NEXT?'
-../../../../as/FUNC/iotest.casl:17:OLEN3   DC      12
-../../../../as/FUNC/iotest.casl:18:IOBUF   DS      64
-../../../../as/FUNC/iotest.casl:19:IOLEN   DS      1   
-../../../../as/FUNC/iotest.casl:20:	    END
+../../../../as/FUNC/iotest.casl:    1:IOTEST  START
+../../../../as/FUNC/iotest.casl:    2:	    OUT     OBUF1,OLEN1
+../../../../as/FUNC/iotest.casl:    3:LOOP    IN      IOBUF,IOLEN
+../../../../as/FUNC/iotest.casl:    4:	    LD	    GR1,IOLEN
+../../../../as/FUNC/iotest.casl:    5:        JZE	    RETURN
+../../../../as/FUNC/iotest.casl:    6:	    OUT     OBUF2,OLEN2
+../../../../as/FUNC/iotest.casl:    7:	    OUT     IOBUF,IOLEN
+../../../../as/FUNC/iotest.casl:    8:	    OUT     OBUF3,OLEN3
+../../../../as/FUNC/iotest.casl:    9:	    JUMP    LOOP
+../../../../as/FUNC/iotest.casl:   10:RETURN	RET
+../../../../as/FUNC/iotest.casl:   11:; Memory
+../../../../as/FUNC/iotest.casl:   12:OBUF1   DC      'LET''S START. TYPE IN'
+../../../../as/FUNC/iotest.casl:   13:OLEN1   DC      20
+../../../../as/FUNC/iotest.casl:   14:OBUF2   DC      'YOU TYPED'
+../../../../as/FUNC/iotest.casl:   15:OLEN2   DC      9
+../../../../as/FUNC/iotest.casl:   16:OBUF3   DC      'WHAT''S NEXT?'
+../../../../as/FUNC/iotest.casl:   17:OLEN3   DC      12
+../../../../as/FUNC/iotest.casl:   18:IOBUF   DS      64
+../../../../as/FUNC/iotest.casl:   19:IOLEN   DS      1   
+../../../../as/FUNC/iotest.casl:   20:	    END
 
 Label::::
 IOTEST.OBUF1 ---> #005B
@@ -36,8 +36,8 @@ IOTEST.OLEN3 ---> #0086
 IOTEST ---> #0000
 
 Assemble ../../../../as/FUNC/iotest.casl (1)
-../../../../as/FUNC/iotest.casl:1:IOTEST  START
-../../../../as/FUNC/iotest.casl:2:	    OUT     OBUF1,OLEN1
+../../../../as/FUNC/iotest.casl:    1:IOTEST  START
+../../../../as/FUNC/iotest.casl:    2:	    OUT     OBUF1,OLEN1
 	#0000	#7001
 	#0001	#0000
 	#0002	#7002
@@ -57,7 +57,7 @@ Assemble ../../../../as/FUNC/iotest.casl (1)
 	#000F	#0002
 	#0010	#7120
 	#0011	#7110
-../../../../as/FUNC/iotest.casl:3:LOOP    IN      IOBUF,IOLEN
+../../../../as/FUNC/iotest.casl:    3:LOOP    IN      IOBUF,IOLEN
 	#0012	#7001
 	#0013	#0000
 	#0014	#7002
@@ -70,13 +70,13 @@ Assemble ../../../../as/FUNC/iotest.casl (1)
 	#001B	#0001
 	#001C	#7120
 	#001D	#7110
-../../../../as/FUNC/iotest.casl:4:	    LD	    GR1,IOLEN
+../../../../as/FUNC/iotest.casl:    4:	    LD	    GR1,IOLEN
 	#001E	#1010
 	#001F	#00C7
-../../../../as/FUNC/iotest.casl:5:        JZE	    RETURN
+../../../../as/FUNC/iotest.casl:    5:        JZE	    RETURN
 	#0020	#6300
 	#0021	#005A
-../../../../as/FUNC/iotest.casl:6:	    OUT     OBUF2,OLEN2
+../../../../as/FUNC/iotest.casl:    6:	    OUT     OBUF2,OLEN2
 	#0022	#7001
 	#0023	#0000
 	#0024	#7002
@@ -96,7 +96,7 @@ Assemble ../../../../as/FUNC/iotest.casl (1)
 	#0031	#0002
 	#0032	#7120
 	#0033	#7110
-../../../../as/FUNC/iotest.casl:7:	    OUT     IOBUF,IOLEN
+../../../../as/FUNC/iotest.casl:    7:	    OUT     IOBUF,IOLEN
 	#0034	#7001
 	#0035	#0000
 	#0036	#7002
@@ -116,7 +116,7 @@ Assemble ../../../../as/FUNC/iotest.casl (1)
 	#0043	#0002
 	#0044	#7120
 	#0045	#7110
-../../../../as/FUNC/iotest.casl:8:	    OUT     OBUF3,OLEN3
+../../../../as/FUNC/iotest.casl:    8:	    OUT     OBUF3,OLEN3
 	#0046	#7001
 	#0047	#0000
 	#0048	#7002
@@ -136,13 +136,13 @@ Assemble ../../../../as/FUNC/iotest.casl (1)
 	#0055	#0002
 	#0056	#7120
 	#0057	#7110
-../../../../as/FUNC/iotest.casl:9:	    JUMP    LOOP
+../../../../as/FUNC/iotest.casl:    9:	    JUMP    LOOP
 	#0058	#6400
 	#0059	#0012
-../../../../as/FUNC/iotest.casl:10:RETURN	RET
+../../../../as/FUNC/iotest.casl:   10:RETURN	RET
 	#005A	#8100
-../../../../as/FUNC/iotest.casl:11:; Memory
-../../../../as/FUNC/iotest.casl:12:OBUF1   DC      'LET''S START. TYPE IN'
+../../../../as/FUNC/iotest.casl:   11:; Memory
+../../../../as/FUNC/iotest.casl:   12:OBUF1   DC      'LET''S START. TYPE IN'
 	#005B	#004C
 	#005C	#0045
 	#005D	#0054
@@ -163,9 +163,9 @@ Assemble ../../../../as/FUNC/iotest.casl (1)
 	#006C	#0020
 	#006D	#0049
 	#006E	#004E
-../../../../as/FUNC/iotest.casl:13:OLEN1   DC      20
+../../../../as/FUNC/iotest.casl:   13:OLEN1   DC      20
 	#006F	#0014
-../../../../as/FUNC/iotest.casl:14:OBUF2   DC      'YOU TYPED'
+../../../../as/FUNC/iotest.casl:   14:OBUF2   DC      'YOU TYPED'
 	#0070	#0059
 	#0071	#004F
 	#0072	#0055
@@ -175,9 +175,9 @@ Assemble ../../../../as/FUNC/iotest.casl (1)
 	#0076	#0050
 	#0077	#0045
 	#0078	#0044
-../../../../as/FUNC/iotest.casl:15:OLEN2   DC      9
+../../../../as/FUNC/iotest.casl:   15:OLEN2   DC      9
 	#0079	#0009
-../../../../as/FUNC/iotest.casl:16:OBUF3   DC      'WHAT''S NEXT?'
+../../../../as/FUNC/iotest.casl:   16:OBUF3   DC      'WHAT''S NEXT?'
 	#007A	#0057
 	#007B	#0048
 	#007C	#0041
@@ -190,9 +190,9 @@ Assemble ../../../../as/FUNC/iotest.casl (1)
 	#0083	#0058
 	#0084	#0054
 	#0085	#003F
-../../../../as/FUNC/iotest.casl:17:OLEN3   DC      12
+../../../../as/FUNC/iotest.casl:   17:OLEN3   DC      12
 	#0086	#000C
-../../../../as/FUNC/iotest.casl:18:IOBUF   DS      64
+../../../../as/FUNC/iotest.casl:   18:IOBUF   DS      64
 	#0087	#0000
 	#0088	#0000
 	#0089	#0000
@@ -257,9 +257,9 @@ Assemble ../../../../as/FUNC/iotest.casl (1)
 	#00C4	#0000
 	#00C5	#0000
 	#00C6	#0000
-../../../../as/FUNC/iotest.casl:19:IOLEN   DS      1   
+../../../../as/FUNC/iotest.casl:   19:IOLEN   DS      1   
 	#00C7	#0000
-../../../../as/FUNC/iotest.casl:20:	    END
+../../../../as/FUNC/iotest.casl:   20:	    END
 LET'S START. TYPE IN
 YOU TYPED
 aaaaaaaaaaaaaaaaaaaa

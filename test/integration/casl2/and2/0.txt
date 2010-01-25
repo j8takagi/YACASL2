@@ -1,28 +1,28 @@
 ../../../../casl2 -slatd ../../../../as/CMD/and2.casl
 
 Assemble ../../../../as/CMD/and2.casl (0)
-../../../../as/CMD/and2.casl:1:MAIN    START
-../../../../as/CMD/and2.casl:2:BEGIN   LAD     GR0,#3444
-../../../../as/CMD/and2.casl:3:        AND     GR0,=#00DD
-../../../../as/CMD/and2.casl:4:        RET
-../../../../as/CMD/and2.casl:5:        END
+../../../../as/CMD/and2.casl:    1:MAIN    START
+../../../../as/CMD/and2.casl:    2:BEGIN   LAD     GR0,#3444
+../../../../as/CMD/and2.casl:    3:        AND     GR0,=#00DD
+../../../../as/CMD/and2.casl:    4:        RET
+../../../../as/CMD/and2.casl:    5:        END
 
 Label::::
 MAIN.BEGIN ---> #0000
 MAIN ---> #0000
 
 Assemble ../../../../as/CMD/and2.casl (1)
-../../../../as/CMD/and2.casl:1:MAIN    START
-../../../../as/CMD/and2.casl:2:BEGIN   LAD     GR0,#3444
+../../../../as/CMD/and2.casl:    1:MAIN    START
+../../../../as/CMD/and2.casl:    2:BEGIN   LAD     GR0,#3444
 	#0000	#1200
 	#0001	#3444
-../../../../as/CMD/and2.casl:3:        AND     GR0,=#00DD
+../../../../as/CMD/and2.casl:    3:        AND     GR0,=#00DD
 	#0005	#00DD
 	#0002	#3000
 	#0003	#0005
-../../../../as/CMD/and2.casl:4:        RET
+../../../../as/CMD/and2.casl:    4:        RET
 	#0004	#8100
-../../../../as/CMD/and2.casl:5:        END
+../../../../as/CMD/and2.casl:    5:        END
 
 Executing machine codes
 #0000: Register::::

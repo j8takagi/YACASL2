@@ -1,22 +1,22 @@
 ../../../../casl2 -slatd ../../../../as/CMD/lad0.casl
 
 Assemble ../../../../as/CMD/lad0.casl (0)
-../../../../as/CMD/lad0.casl:1:LAD     START
-../../../../as/CMD/lad0.casl:2:        LAD     GR1,5
-../../../../as/CMD/lad0.casl:3:        RET
-../../../../as/CMD/lad0.casl:4:        END
+../../../../as/CMD/lad0.casl:    1:LAD     START
+../../../../as/CMD/lad0.casl:    2:        LAD     GR1,5
+../../../../as/CMD/lad0.casl:    3:        RET
+../../../../as/CMD/lad0.casl:    4:        END
 
 Label::::
 LAD ---> #0000
 
 Assemble ../../../../as/CMD/lad0.casl (1)
-../../../../as/CMD/lad0.casl:1:LAD     START
-../../../../as/CMD/lad0.casl:2:        LAD     GR1,5
+../../../../as/CMD/lad0.casl:    1:LAD     START
+../../../../as/CMD/lad0.casl:    2:        LAD     GR1,5
 	#0000	#1210
 	#0001	#0005
-../../../../as/CMD/lad0.casl:3:        RET
+../../../../as/CMD/lad0.casl:    3:        RET
 	#0002	#8100
-../../../../as/CMD/lad0.casl:4:        END
+../../../../as/CMD/lad0.casl:    4:        END
 
 Executing machine codes
 #0000: Register::::

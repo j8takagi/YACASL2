@@ -1,17 +1,17 @@
 ../../../../casl2 -slatd ../../../../as/CMD/call2.casl
 
 Assemble ../../../../as/CMD/call2.casl (0)
-../../../../as/CMD/call2.casl:1:MAIN    START   BEGIN
-../../../../as/CMD/call2.casl:2:BEGIN   LD      GR1,=29
-../../../../as/CMD/call2.casl:3:        CALL    INCR
-../../../../as/CMD/call2.casl:4:        ST      GR1,A
-../../../../as/CMD/call2.casl:5:        RET
-../../../../as/CMD/call2.casl:6:A       DS      1
-../../../../as/CMD/call2.casl:7:        END
-../../../../as/CMD/call2.casl:8:INCR    START
-../../../../as/CMD/call2.casl:9:        ADDA      GR1,=1
-../../../../as/CMD/call2.casl:10:        RET
-../../../../as/CMD/call2.casl:11:FIN     END
+../../../../as/CMD/call2.casl:    1:MAIN    START   BEGIN
+../../../../as/CMD/call2.casl:    2:BEGIN   LD      GR1,=29
+../../../../as/CMD/call2.casl:    3:        CALL    INCR
+../../../../as/CMD/call2.casl:    4:        ST      GR1,A
+../../../../as/CMD/call2.casl:    5:        RET
+../../../../as/CMD/call2.casl:    6:A       DS      1
+../../../../as/CMD/call2.casl:    7:        END
+../../../../as/CMD/call2.casl:    8:INCR    START
+../../../../as/CMD/call2.casl:    9:        ADDA      GR1,=1
+../../../../as/CMD/call2.casl:   10:        RET
+../../../../as/CMD/call2.casl:   11:FIN     END
 
 Label::::
 MAIN.A ---> #0007
@@ -21,30 +21,30 @@ MAIN ---> #0000
 INCR.FIN ---> #000B
 
 Assemble ../../../../as/CMD/call2.casl (1)
-../../../../as/CMD/call2.casl:1:MAIN    START   BEGIN
-../../../../as/CMD/call2.casl:2:BEGIN   LD      GR1,=29
+../../../../as/CMD/call2.casl:    1:MAIN    START   BEGIN
+../../../../as/CMD/call2.casl:    2:BEGIN   LD      GR1,=29
 	#000B	#001D
 	#0000	#1010
 	#0001	#000B
-../../../../as/CMD/call2.casl:3:        CALL    INCR
+../../../../as/CMD/call2.casl:    3:        CALL    INCR
 	#0002	#8000
 	#0003	#0008
-../../../../as/CMD/call2.casl:4:        ST      GR1,A
+../../../../as/CMD/call2.casl:    4:        ST      GR1,A
 	#0004	#1110
 	#0005	#0007
-../../../../as/CMD/call2.casl:5:        RET
+../../../../as/CMD/call2.casl:    5:        RET
 	#0006	#8100
-../../../../as/CMD/call2.casl:6:A       DS      1
+../../../../as/CMD/call2.casl:    6:A       DS      1
 	#0007	#0000
-../../../../as/CMD/call2.casl:7:        END
-../../../../as/CMD/call2.casl:8:INCR    START
-../../../../as/CMD/call2.casl:9:        ADDA      GR1,=1
+../../../../as/CMD/call2.casl:    7:        END
+../../../../as/CMD/call2.casl:    8:INCR    START
+../../../../as/CMD/call2.casl:    9:        ADDA      GR1,=1
 	#000C	#0001
 	#0008	#2010
 	#0009	#000C
-../../../../as/CMD/call2.casl:10:        RET
+../../../../as/CMD/call2.casl:   10:        RET
 	#000A	#8100
-../../../../as/CMD/call2.casl:11:FIN     END
+../../../../as/CMD/call2.casl:   11:FIN     END
 
 Executing machine codes
 #0000: Register::::

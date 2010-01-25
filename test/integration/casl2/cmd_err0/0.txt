@@ -1,10 +1,10 @@
 ../../../../casl2 -slatd ../../../../as/ERR/cmd_err0.casl
 
 Assemble ../../../../as/ERR/cmd_err0.casl (0)
-../../../../as/ERR/cmd_err0.casl:1:MAIN    START   BEGIN
-../../../../as/ERR/cmd_err0.casl:2:BEGIN   LAD     GR1,3
-../../../../as/ERR/cmd_err0.casl:3:        LAD     GR2,2
-../../../../as/ERR/cmd_err0.casl:4:        LEA     GR1,GR2
+../../../../as/ERR/cmd_err0.casl:    1:MAIN    START   BEGIN
+../../../../as/ERR/cmd_err0.casl:    2:BEGIN   LAD     GR1,3
+../../../../as/ERR/cmd_err0.casl:    3:        LAD     GR2,2
+../../../../as/ERR/cmd_err0.casl:    4:        LEA     GR1,GR2
 Assemble error - 109: LEA: not command of operand "r1,r2"
  ../../../../as/ERR/cmd_err0.casl:4:         LEA     GR1,GR2
 

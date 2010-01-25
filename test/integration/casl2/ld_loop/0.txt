@@ -1,18 +1,18 @@
 ../../../../casl2 -slatd ../../../../as/CMD/ld_loop.casl
 
 Assemble ../../../../as/CMD/ld_loop.casl (0)
-../../../../as/CMD/ld_loop.casl:1:;;; ループを使い、連続でGR1にデータを転送する
-../../../../as/CMD/ld_loop.casl:2:MAIN    START
-../../../../as/CMD/ld_loop.casl:3:        LAD     GR2,0
-../../../../as/CMD/ld_loop.casl:4:MLOOP   CPA     GR2,LEN
-../../../../as/CMD/ld_loop.casl:5:        JZE     MEND
-../../../../as/CMD/ld_loop.casl:6:        LD      GR1,DATA,GR2
-../../../../as/CMD/ld_loop.casl:7:        LAD     GR2,1,GR2
-../../../../as/CMD/ld_loop.casl:8:        JUMP    MLOOP
-../../../../as/CMD/ld_loop.casl:9:MEND    RET
-../../../../as/CMD/ld_loop.casl:10:DATA    DC      #9600,#F000,#A400
-../../../../as/CMD/ld_loop.casl:11:LEN     DC      3
-../../../../as/CMD/ld_loop.casl:12:        END
+../../../../as/CMD/ld_loop.casl:    1:;;; ループを使い、連続でGR1にデータを転送する
+../../../../as/CMD/ld_loop.casl:    2:MAIN    START
+../../../../as/CMD/ld_loop.casl:    3:        LAD     GR2,0
+../../../../as/CMD/ld_loop.casl:    4:MLOOP   CPA     GR2,LEN
+../../../../as/CMD/ld_loop.casl:    5:        JZE     MEND
+../../../../as/CMD/ld_loop.casl:    6:        LD      GR1,DATA,GR2
+../../../../as/CMD/ld_loop.casl:    7:        LAD     GR2,1,GR2
+../../../../as/CMD/ld_loop.casl:    8:        JUMP    MLOOP
+../../../../as/CMD/ld_loop.casl:    9:MEND    RET
+../../../../as/CMD/ld_loop.casl:   10:DATA    DC      #9600,#F000,#A400
+../../../../as/CMD/ld_loop.casl:   11:LEN     DC      3
+../../../../as/CMD/ld_loop.casl:   12:        END
 
 Label::::
 MAIN.MEND ---> #000C
@@ -22,35 +22,35 @@ MAIN ---> #0000
 MAIN.LEN ---> #0010
 
 Assemble ../../../../as/CMD/ld_loop.casl (1)
-../../../../as/CMD/ld_loop.casl:1:;;; ループを使い、連続でGR1にデータを転送する
-../../../../as/CMD/ld_loop.casl:2:MAIN    START
-../../../../as/CMD/ld_loop.casl:3:        LAD     GR2,0
+../../../../as/CMD/ld_loop.casl:    1:;;; ループを使い、連続でGR1にデータを転送する
+../../../../as/CMD/ld_loop.casl:    2:MAIN    START
+../../../../as/CMD/ld_loop.casl:    3:        LAD     GR2,0
 	#0000	#1220
 	#0001	#0000
-../../../../as/CMD/ld_loop.casl:4:MLOOP   CPA     GR2,LEN
+../../../../as/CMD/ld_loop.casl:    4:MLOOP   CPA     GR2,LEN
 	#0002	#4020
 	#0003	#0010
-../../../../as/CMD/ld_loop.casl:5:        JZE     MEND
+../../../../as/CMD/ld_loop.casl:    5:        JZE     MEND
 	#0004	#6300
 	#0005	#000C
-../../../../as/CMD/ld_loop.casl:6:        LD      GR1,DATA,GR2
+../../../../as/CMD/ld_loop.casl:    6:        LD      GR1,DATA,GR2
 	#0006	#1012
 	#0007	#000D
-../../../../as/CMD/ld_loop.casl:7:        LAD     GR2,1,GR2
+../../../../as/CMD/ld_loop.casl:    7:        LAD     GR2,1,GR2
 	#0008	#1222
 	#0009	#0001
-../../../../as/CMD/ld_loop.casl:8:        JUMP    MLOOP
+../../../../as/CMD/ld_loop.casl:    8:        JUMP    MLOOP
 	#000A	#6400
 	#000B	#0002
-../../../../as/CMD/ld_loop.casl:9:MEND    RET
+../../../../as/CMD/ld_loop.casl:    9:MEND    RET
 	#000C	#8100
-../../../../as/CMD/ld_loop.casl:10:DATA    DC      #9600,#F000,#A400
+../../../../as/CMD/ld_loop.casl:   10:DATA    DC      #9600,#F000,#A400
 	#000D	#9600
 	#000E	#F000
 	#000F	#A400
-../../../../as/CMD/ld_loop.casl:11:LEN     DC      3
+../../../../as/CMD/ld_loop.casl:   11:LEN     DC      3
 	#0010	#0003
-../../../../as/CMD/ld_loop.casl:12:        END
+../../../../as/CMD/ld_loop.casl:   12:        END
 
 Executing machine codes
 #0000: Register::::

@@ -1,8 +1,8 @@
 ../../../../casl2 -slatd ../../../../as/ERR/cmd_err1.casl
 
 Assemble ../../../../as/ERR/cmd_err1.casl (0)
-../../../../as/ERR/cmd_err1.casl:1:MAIN    START   BEGIN
-../../../../as/ERR/cmd_err1.casl:2:BEGIN   LEA     GR1,A
+../../../../as/ERR/cmd_err1.casl:    1:MAIN    START   BEGIN
+../../../../as/ERR/cmd_err1.casl:    2:BEGIN   LEA     GR1,A
 Assemble error - 110: LEA: not command of operand "r,adr[,x]"
  ../../../../as/ERR/cmd_err1.casl:2: BEGIN   LEA     GR1,A
 

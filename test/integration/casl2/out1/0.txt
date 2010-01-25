@@ -8,9 +8,9 @@ OTEST ---> #0000
 OTEST.IOBUF ---> #0013
 
 Assemble ../../../../as/CMD/out1.casl (1)
-../../../../as/CMD/out1.casl:1:;;; OUTの使用例
-../../../../as/CMD/out1.casl:2:OTEST   START
-../../../../as/CMD/out1.casl:3:        OUT     IOBUF,IOLEN
+../../../../as/CMD/out1.casl:    1:;;; OUTの使用例
+../../../../as/CMD/out1.casl:    2:OTEST   START
+../../../../as/CMD/out1.casl:    3:        OUT     IOBUF,IOLEN
 	#0000	#7001
 	#0001	#0000
 	#0002	#7002
@@ -30,9 +30,9 @@ Assemble ../../../../as/CMD/out1.casl (1)
 	#000F	#0002
 	#0010	#7120
 	#0011	#7110
-../../../../as/CMD/out1.casl:4:        RET
+../../../../as/CMD/out1.casl:    4:        RET
 	#0012	#8100
-../../../../as/CMD/out1.casl:5:IOBUF   DC      'aaaa',10,'b','c',10,'as','qwerty','111111'
+../../../../as/CMD/out1.casl:    5:IOBUF   DC      'aaaa',10,'b','c',10,'as','qwerty','111111'
 	#0013	#0061
 	#0014	#0061
 	#0015	#0061
@@ -55,9 +55,9 @@ Assemble ../../../../as/CMD/out1.casl (1)
 	#0026	#0031
 	#0027	#0031
 	#0028	#0031
-../../../../as/CMD/out1.casl:6:IOLEN   DC      24
+../../../../as/CMD/out1.casl:    6:IOLEN   DC      24
 	#0029	#0018
-../../../../as/CMD/out1.casl:7:        END
+../../../../as/CMD/out1.casl:    7:        END
 
 Executing machine codes
 #0000: Register::::

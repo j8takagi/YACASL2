@@ -1,10 +1,10 @@
 ../../../../casl2 -slatd ../../../../as/ERR/ds_err.casl
 
 Assemble ../../../../as/ERR/ds_err.casl (0)
-../../../../as/ERR/ds_err.casl:1:MAIN    START
-../../../../as/ERR/ds_err.casl:2:        LAD     GR0,=10
-../../../../as/ERR/ds_err.casl:3:        ST      GR0,A
-../../../../as/ERR/ds_err.casl:4:A       DS
+../../../../as/ERR/ds_err.casl:    1:MAIN    START
+../../../../as/ERR/ds_err.casl:    2:        LAD     GR0,=10
+../../../../as/ERR/ds_err.casl:    3:        ST      GR0,A
+../../../../as/ERR/ds_err.casl:    4:A       DS
 Assemble error - 106: operand count mismatch
  ../../../../as/ERR/ds_err.casl:4: A       DS
 

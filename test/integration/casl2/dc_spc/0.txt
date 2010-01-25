@@ -1,13 +1,13 @@
 ../../../../casl2 -slatd ../../../../as/CMD/dc_spc.casl
 
 Assemble ../../../../as/CMD/dc_spc.casl (0)
-../../../../as/CMD/dc_spc.casl:1:;;; DC命令で空白を指定
-../../../../as/CMD/dc_spc.casl:2:MAIN    START
-../../../../as/CMD/dc_spc.casl:3:        OUT     BUF,LEN
-../../../../as/CMD/dc_spc.casl:4:        RET
-../../../../as/CMD/dc_spc.casl:5:BUF     DC      ' '
-../../../../as/CMD/dc_spc.casl:6:LEN     DC      1
-../../../../as/CMD/dc_spc.casl:7:        END
+../../../../as/CMD/dc_spc.casl:    1:;;; DC命令で空白を指定
+../../../../as/CMD/dc_spc.casl:    2:MAIN    START
+../../../../as/CMD/dc_spc.casl:    3:        OUT     BUF,LEN
+../../../../as/CMD/dc_spc.casl:    4:        RET
+../../../../as/CMD/dc_spc.casl:    5:BUF     DC      ' '
+../../../../as/CMD/dc_spc.casl:    6:LEN     DC      1
+../../../../as/CMD/dc_spc.casl:    7:        END
 
 Label::::
 MAIN.BUF ---> #0013
@@ -15,9 +15,9 @@ MAIN ---> #0000
 MAIN.LEN ---> #0014
 
 Assemble ../../../../as/CMD/dc_spc.casl (1)
-../../../../as/CMD/dc_spc.casl:1:;;; DC命令で空白を指定
-../../../../as/CMD/dc_spc.casl:2:MAIN    START
-../../../../as/CMD/dc_spc.casl:3:        OUT     BUF,LEN
+../../../../as/CMD/dc_spc.casl:    1:;;; DC命令で空白を指定
+../../../../as/CMD/dc_spc.casl:    2:MAIN    START
+../../../../as/CMD/dc_spc.casl:    3:        OUT     BUF,LEN
 	#0000	#7001
 	#0001	#0000
 	#0002	#7002
@@ -37,13 +37,13 @@ Assemble ../../../../as/CMD/dc_spc.casl (1)
 	#000F	#0002
 	#0010	#7120
 	#0011	#7110
-../../../../as/CMD/dc_spc.casl:4:        RET
+../../../../as/CMD/dc_spc.casl:    4:        RET
 	#0012	#8100
-../../../../as/CMD/dc_spc.casl:5:BUF     DC      ' '
+../../../../as/CMD/dc_spc.casl:    5:BUF     DC      ' '
 	#0013	#0020
-../../../../as/CMD/dc_spc.casl:6:LEN     DC      1
+../../../../as/CMD/dc_spc.casl:    6:LEN     DC      1
 	#0014	#0001
-../../../../as/CMD/dc_spc.casl:7:        END
+../../../../as/CMD/dc_spc.casl:    7:        END
 
 Executing machine codes
 #0000: Register::::

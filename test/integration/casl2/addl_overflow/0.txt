@@ -1,17 +1,17 @@
 ../../../../casl2 -slatd ../../../../as/CMD/addl_overflow.casl
 
 Assemble ../../../../as/CMD/addl_overflow.casl (0)
-../../../../as/CMD/addl_overflow.casl:1:MAIN	START	BEGIN
-../../../../as/CMD/addl_overflow.casl:2:BEGIN	LD	GR1,A
-../../../../as/CMD/addl_overflow.casl:3:	ADDL	GR1,B
-../../../../as/CMD/addl_overflow.casl:4:	ADDL	GR1,C
-../../../../as/CMD/addl_overflow.casl:5:    ADDL	GR1,D
-../../../../as/CMD/addl_overflow.casl:6:	RET
-../../../../as/CMD/addl_overflow.casl:7:A	DC	32765
-../../../../as/CMD/addl_overflow.casl:8:B	DC	4
-../../../../as/CMD/addl_overflow.casl:9:C	DC	32764
-../../../../as/CMD/addl_overflow.casl:10:D	DC	7
-../../../../as/CMD/addl_overflow.casl:11:	END
+../../../../as/CMD/addl_overflow.casl:    1:MAIN	START	BEGIN
+../../../../as/CMD/addl_overflow.casl:    2:BEGIN	LD	GR1,A
+../../../../as/CMD/addl_overflow.casl:    3:	ADDL	GR1,B
+../../../../as/CMD/addl_overflow.casl:    4:	ADDL	GR1,C
+../../../../as/CMD/addl_overflow.casl:    5:    ADDL	GR1,D
+../../../../as/CMD/addl_overflow.casl:    6:	RET
+../../../../as/CMD/addl_overflow.casl:    7:A	DC	32765
+../../../../as/CMD/addl_overflow.casl:    8:B	DC	4
+../../../../as/CMD/addl_overflow.casl:    9:C	DC	32764
+../../../../as/CMD/addl_overflow.casl:   10:D	DC	7
+../../../../as/CMD/addl_overflow.casl:   11:	END
 
 Label::::
 MAIN.A ---> #0009
@@ -22,30 +22,30 @@ MAIN.BEGIN ---> #0000
 MAIN ---> #0000
 
 Assemble ../../../../as/CMD/addl_overflow.casl (1)
-../../../../as/CMD/addl_overflow.casl:1:MAIN	START	BEGIN
-../../../../as/CMD/addl_overflow.casl:2:BEGIN	LD	GR1,A
+../../../../as/CMD/addl_overflow.casl:    1:MAIN	START	BEGIN
+../../../../as/CMD/addl_overflow.casl:    2:BEGIN	LD	GR1,A
 	#0000	#1010
 	#0001	#0009
-../../../../as/CMD/addl_overflow.casl:3:	ADDL	GR1,B
+../../../../as/CMD/addl_overflow.casl:    3:	ADDL	GR1,B
 	#0002	#2210
 	#0003	#000A
-../../../../as/CMD/addl_overflow.casl:4:	ADDL	GR1,C
+../../../../as/CMD/addl_overflow.casl:    4:	ADDL	GR1,C
 	#0004	#2210
 	#0005	#000B
-../../../../as/CMD/addl_overflow.casl:5:    ADDL	GR1,D
+../../../../as/CMD/addl_overflow.casl:    5:    ADDL	GR1,D
 	#0006	#2210
 	#0007	#000C
-../../../../as/CMD/addl_overflow.casl:6:	RET
+../../../../as/CMD/addl_overflow.casl:    6:	RET
 	#0008	#8100
-../../../../as/CMD/addl_overflow.casl:7:A	DC	32765
+../../../../as/CMD/addl_overflow.casl:    7:A	DC	32765
 	#0009	#7FFD
-../../../../as/CMD/addl_overflow.casl:8:B	DC	4
+../../../../as/CMD/addl_overflow.casl:    8:B	DC	4
 	#000A	#0004
-../../../../as/CMD/addl_overflow.casl:9:C	DC	32764
+../../../../as/CMD/addl_overflow.casl:    9:C	DC	32764
 	#000B	#7FFC
-../../../../as/CMD/addl_overflow.casl:10:D	DC	7
+../../../../as/CMD/addl_overflow.casl:   10:D	DC	7
 	#000C	#0007
-../../../../as/CMD/addl_overflow.casl:11:	END
+../../../../as/CMD/addl_overflow.casl:   11:	END
 
 Executing machine codes
 #0000: Register::::

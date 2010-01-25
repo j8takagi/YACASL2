@@ -1,48 +1,48 @@
 ../../../../casl2 -slatd ../../../../as/CMD/pushpop.casl
 
 Assemble ../../../../as/CMD/pushpop.casl (0)
-../../../../as/CMD/pushpop.casl:1:PUSHPOP START
-../../../../as/CMD/pushpop.casl:2:        LAD     GR1,1
-../../../../as/CMD/pushpop.casl:3:        LAD     GR2,2
-../../../../as/CMD/pushpop.casl:4:        PUSH    0,GR1
-../../../../as/CMD/pushpop.casl:5:        PUSH    0,GR2
-../../../../as/CMD/pushpop.casl:6:        LAD     GR1,0
-../../../../as/CMD/pushpop.casl:7:        LAD     GR2,0
-../../../../as/CMD/pushpop.casl:8:        POP     GR2
-../../../../as/CMD/pushpop.casl:9:        POP     GR1
-../../../../as/CMD/pushpop.casl:10:        RET
-../../../../as/CMD/pushpop.casl:11:        END
+../../../../as/CMD/pushpop.casl:    1:PUSHPOP START
+../../../../as/CMD/pushpop.casl:    2:        LAD     GR1,1
+../../../../as/CMD/pushpop.casl:    3:        LAD     GR2,2
+../../../../as/CMD/pushpop.casl:    4:        PUSH    0,GR1
+../../../../as/CMD/pushpop.casl:    5:        PUSH    0,GR2
+../../../../as/CMD/pushpop.casl:    6:        LAD     GR1,0
+../../../../as/CMD/pushpop.casl:    7:        LAD     GR2,0
+../../../../as/CMD/pushpop.casl:    8:        POP     GR2
+../../../../as/CMD/pushpop.casl:    9:        POP     GR1
+../../../../as/CMD/pushpop.casl:   10:        RET
+../../../../as/CMD/pushpop.casl:   11:        END
 
 Label::::
 PUSHPOP ---> #0000
 
 Assemble ../../../../as/CMD/pushpop.casl (1)
-../../../../as/CMD/pushpop.casl:1:PUSHPOP START
-../../../../as/CMD/pushpop.casl:2:        LAD     GR1,1
+../../../../as/CMD/pushpop.casl:    1:PUSHPOP START
+../../../../as/CMD/pushpop.casl:    2:        LAD     GR1,1
 	#0000	#1210
 	#0001	#0001
-../../../../as/CMD/pushpop.casl:3:        LAD     GR2,2
+../../../../as/CMD/pushpop.casl:    3:        LAD     GR2,2
 	#0002	#1220
 	#0003	#0002
-../../../../as/CMD/pushpop.casl:4:        PUSH    0,GR1
+../../../../as/CMD/pushpop.casl:    4:        PUSH    0,GR1
 	#0004	#7001
 	#0005	#0000
-../../../../as/CMD/pushpop.casl:5:        PUSH    0,GR2
+../../../../as/CMD/pushpop.casl:    5:        PUSH    0,GR2
 	#0006	#7002
 	#0007	#0000
-../../../../as/CMD/pushpop.casl:6:        LAD     GR1,0
+../../../../as/CMD/pushpop.casl:    6:        LAD     GR1,0
 	#0008	#1210
 	#0009	#0000
-../../../../as/CMD/pushpop.casl:7:        LAD     GR2,0
+../../../../as/CMD/pushpop.casl:    7:        LAD     GR2,0
 	#000A	#1220
 	#000B	#0000
-../../../../as/CMD/pushpop.casl:8:        POP     GR2
+../../../../as/CMD/pushpop.casl:    8:        POP     GR2
 	#000C	#7120
-../../../../as/CMD/pushpop.casl:9:        POP     GR1
+../../../../as/CMD/pushpop.casl:    9:        POP     GR1
 	#000D	#7110
-../../../../as/CMD/pushpop.casl:10:        RET
+../../../../as/CMD/pushpop.casl:   10:        RET
 	#000E	#8100
-../../../../as/CMD/pushpop.casl:11:        END
+../../../../as/CMD/pushpop.casl:   11:        END
 
 Executing machine codes
 #0000: Register::::

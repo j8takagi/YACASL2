@@ -1,27 +1,27 @@
 ../../../../casl2 -slatd ../../../../as/CMD/sra2.casl
 
 Assemble ../../../../as/CMD/sra2.casl (0)
-../../../../as/CMD/sra2.casl:1:SRA2    START   BEGIN
-../../../../as/CMD/sra2.casl:2:BEGIN   LAD     GR4,124
-../../../../as/CMD/sra2.casl:3:        SRA     GR4,2
-../../../../as/CMD/sra2.casl:4:        RET
-../../../../as/CMD/sra2.casl:5:        END
+../../../../as/CMD/sra2.casl:    1:SRA2    START   BEGIN
+../../../../as/CMD/sra2.casl:    2:BEGIN   LAD     GR4,124
+../../../../as/CMD/sra2.casl:    3:        SRA     GR4,2
+../../../../as/CMD/sra2.casl:    4:        RET
+../../../../as/CMD/sra2.casl:    5:        END
 
 Label::::
 SRA2.BEGIN ---> #0000
 SRA2 ---> #0000
 
 Assemble ../../../../as/CMD/sra2.casl (1)
-../../../../as/CMD/sra2.casl:1:SRA2    START   BEGIN
-../../../../as/CMD/sra2.casl:2:BEGIN   LAD     GR4,124
+../../../../as/CMD/sra2.casl:    1:SRA2    START   BEGIN
+../../../../as/CMD/sra2.casl:    2:BEGIN   LAD     GR4,124
 	#0000	#1240
 	#0001	#007C
-../../../../as/CMD/sra2.casl:3:        SRA     GR4,2
+../../../../as/CMD/sra2.casl:    3:        SRA     GR4,2
 	#0002	#5140
 	#0003	#0002
-../../../../as/CMD/sra2.casl:4:        RET
+../../../../as/CMD/sra2.casl:    4:        RET
 	#0004	#8100
-../../../../as/CMD/sra2.casl:5:        END
+../../../../as/CMD/sra2.casl:    5:        END
 
 Executing machine codes
 #0000: Register::::

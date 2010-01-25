@@ -9,21 +9,21 @@ MAIN.BEGIN ---> #0000
 MAIN ---> #0000
 
 Assemble ../../../../as/CMD/ld5.casl (1)
-../../../../as/CMD/ld5.casl:1:; LDコマンド
-../../../../as/CMD/ld5.casl:2:MAIN    START   BEGIN
-../../../../as/CMD/ld5.casl:3:BEGIN   LAD     GR2,1
+../../../../as/CMD/ld5.casl:    1:; LDコマンド
+../../../../as/CMD/ld5.casl:    2:MAIN    START   BEGIN
+../../../../as/CMD/ld5.casl:    3:BEGIN   LAD     GR2,1
 	#0000	#1220
 	#0001	#0001
-../../../../as/CMD/ld5.casl:4:        LD      GR1,A,GR2
+../../../../as/CMD/ld5.casl:    4:        LD      GR1,A,GR2
 	#0002	#1012
 	#0003	#0005
-../../../../as/CMD/ld5.casl:5:        RET
+../../../../as/CMD/ld5.casl:    5:        RET
 	#0004	#8100
-../../../../as/CMD/ld5.casl:6:A       DC      1
+../../../../as/CMD/ld5.casl:    6:A       DC      1
 	#0005	#0001
-../../../../as/CMD/ld5.casl:7:B       DC      2
+../../../../as/CMD/ld5.casl:    7:B       DC      2
 	#0006	#0002
-../../../../as/CMD/ld5.casl:8:        END
+../../../../as/CMD/ld5.casl:    8:        END
 
 Executing machine codes
 #0000: Register::::

@@ -1,31 +1,31 @@
 ../../../../casl2 -slatd ../../../../as/CMD/ld1.casl
 
 Assemble ../../../../as/CMD/ld1.casl (0)
-../../../../as/CMD/ld1.casl:1:MAIN    START
-../../../../as/CMD/ld1.casl:2:        LD      GR0,A
-../../../../as/CMD/ld1.casl:3:        RET
-../../../../as/CMD/ld1.casl:4:A       DC      1,1,2,3,5,8
-../../../../as/CMD/ld1.casl:5:        END
+../../../../as/CMD/ld1.casl:    1:MAIN    START
+../../../../as/CMD/ld1.casl:    2:        LD      GR0,A
+../../../../as/CMD/ld1.casl:    3:        RET
+../../../../as/CMD/ld1.casl:    4:A       DC      1,1,2,3,5,8
+../../../../as/CMD/ld1.casl:    5:        END
 
 Label::::
 MAIN.A ---> #0003
 MAIN ---> #0000
 
 Assemble ../../../../as/CMD/ld1.casl (1)
-../../../../as/CMD/ld1.casl:1:MAIN    START
-../../../../as/CMD/ld1.casl:2:        LD      GR0,A
+../../../../as/CMD/ld1.casl:    1:MAIN    START
+../../../../as/CMD/ld1.casl:    2:        LD      GR0,A
 	#0000	#1000
 	#0001	#0003
-../../../../as/CMD/ld1.casl:3:        RET
+../../../../as/CMD/ld1.casl:    3:        RET
 	#0002	#8100
-../../../../as/CMD/ld1.casl:4:A       DC      1,1,2,3,5,8
+../../../../as/CMD/ld1.casl:    4:A       DC      1,1,2,3,5,8
 	#0003	#0001
 	#0004	#0001
 	#0005	#0002
 	#0006	#0003
 	#0007	#0005
 	#0008	#0008
-../../../../as/CMD/ld1.casl:5:        END
+../../../../as/CMD/ld1.casl:    5:        END
 
 Executing machine codes
 #0000: Register::::

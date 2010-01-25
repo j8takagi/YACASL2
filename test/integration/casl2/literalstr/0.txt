@@ -1,19 +1,19 @@
 ../../../../casl2 -slatd ../../../../as/CMD/literalstr.casl
 
 Assemble ../../../../as/CMD/literalstr.casl (0)
-../../../../as/CMD/literalstr.casl:1:MAIN START
-../../../../as/CMD/literalstr.casl:2:	LAD	GR1,='abcdeABCDE'
-../../../../as/CMD/literalstr.casl:3:    LAD GR2,10
-../../../../as/CMD/literalstr.casl:4:LOOP CPA GR2,=0
-../../../../as/CMD/literalstr.casl:5:    JZE LEND
-../../../../as/CMD/literalstr.casl:6:    JMI LEND
-../../../../as/CMD/literalstr.casl:7:    LD GR3,0,GR1
-../../../../as/CMD/literalstr.casl:8:    ADDA GR1,=1
-../../../../as/CMD/literalstr.casl:9:    SUBA GR2,=1
-../../../../as/CMD/literalstr.casl:10:    JUMP LOOP
-../../../../as/CMD/literalstr.casl:11:LEND RET
-../../../../as/CMD/literalstr.casl:12:LEN DC 5
-../../../../as/CMD/literalstr.casl:13:    END
+../../../../as/CMD/literalstr.casl:    1:MAIN START
+../../../../as/CMD/literalstr.casl:    2:	LAD	GR1,='abcdeABCDE'
+../../../../as/CMD/literalstr.casl:    3:    LAD GR2,10
+../../../../as/CMD/literalstr.casl:    4:LOOP CPA GR2,=0
+../../../../as/CMD/literalstr.casl:    5:    JZE LEND
+../../../../as/CMD/literalstr.casl:    6:    JMI LEND
+../../../../as/CMD/literalstr.casl:    7:    LD GR3,0,GR1
+../../../../as/CMD/literalstr.casl:    8:    ADDA GR1,=1
+../../../../as/CMD/literalstr.casl:    9:    SUBA GR2,=1
+../../../../as/CMD/literalstr.casl:   10:    JUMP LOOP
+../../../../as/CMD/literalstr.casl:   11:LEND RET
+../../../../as/CMD/literalstr.casl:   12:LEN DC 5
+../../../../as/CMD/literalstr.casl:   13:    END
 
 Label::::
 MAIN.LOOP ---> #0004
@@ -22,8 +22,8 @@ MAIN.LEND ---> #0012
 MAIN.LEN ---> #0013
 
 Assemble ../../../../as/CMD/literalstr.casl (1)
-../../../../as/CMD/literalstr.casl:1:MAIN START
-../../../../as/CMD/literalstr.casl:2:	LAD	GR1,='abcdeABCDE'
+../../../../as/CMD/literalstr.casl:    1:MAIN START
+../../../../as/CMD/literalstr.casl:    2:	LAD	GR1,='abcdeABCDE'
 	#0014	#0061
 	#0015	#0062
 	#0016	#0063
@@ -36,38 +36,38 @@ Assemble ../../../../as/CMD/literalstr.casl (1)
 	#001D	#0045
 	#0000	#1210
 	#0001	#0014
-../../../../as/CMD/literalstr.casl:3:    LAD GR2,10
+../../../../as/CMD/literalstr.casl:    3:    LAD GR2,10
 	#0002	#1220
 	#0003	#000A
-../../../../as/CMD/literalstr.casl:4:LOOP CPA GR2,=0
+../../../../as/CMD/literalstr.casl:    4:LOOP CPA GR2,=0
 	#001E	#0000
 	#0004	#4020
 	#0005	#001E
-../../../../as/CMD/literalstr.casl:5:    JZE LEND
+../../../../as/CMD/literalstr.casl:    5:    JZE LEND
 	#0006	#6300
 	#0007	#0012
-../../../../as/CMD/literalstr.casl:6:    JMI LEND
+../../../../as/CMD/literalstr.casl:    6:    JMI LEND
 	#0008	#6100
 	#0009	#0012
-../../../../as/CMD/literalstr.casl:7:    LD GR3,0,GR1
+../../../../as/CMD/literalstr.casl:    7:    LD GR3,0,GR1
 	#000A	#1031
 	#000B	#0000
-../../../../as/CMD/literalstr.casl:8:    ADDA GR1,=1
+../../../../as/CMD/literalstr.casl:    8:    ADDA GR1,=1
 	#001F	#0001
 	#000C	#2010
 	#000D	#001F
-../../../../as/CMD/literalstr.casl:9:    SUBA GR2,=1
+../../../../as/CMD/literalstr.casl:    9:    SUBA GR2,=1
 	#0020	#0001
 	#000E	#2120
 	#000F	#0020
-../../../../as/CMD/literalstr.casl:10:    JUMP LOOP
+../../../../as/CMD/literalstr.casl:   10:    JUMP LOOP
 	#0010	#6400
 	#0011	#0004
-../../../../as/CMD/literalstr.casl:11:LEND RET
+../../../../as/CMD/literalstr.casl:   11:LEND RET
 	#0012	#8100
-../../../../as/CMD/literalstr.casl:12:LEN DC 5
+../../../../as/CMD/literalstr.casl:   12:LEN DC 5
 	#0013	#0005
-../../../../as/CMD/literalstr.casl:13:    END
+../../../../as/CMD/literalstr.casl:   13:    END
 
 Executing machine codes
 #0000: Register::::

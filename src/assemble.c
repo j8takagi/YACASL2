@@ -452,7 +452,7 @@ bool assemble(const char *file, PASS pass)
         }
         lineno++;
         if((pass == FIRST && srcmode == true) || (pass == SECOND && asdetailmode == true)) {
-            fprintf(stdout, "%s:%d:%s", file, lineno, line);
+            fprintf(stdout, "%s:%5d:%s", file, lineno, line);
         }
         if((cmdl = linetok(line)) != NULL) {
             if(pass == FIRST && cmdl->label != NULL) {

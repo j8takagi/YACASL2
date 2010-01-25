@@ -1,22 +1,22 @@
 ../../../../casl2 -slatd ../../../../as/CMD/svc2_out.casl
 
 Assemble ../../../../as/CMD/svc2_out.casl (0)
-../../../../as/CMD/svc2_out.casl:1:;;; 「OUT」と同等のプログラム
-../../../../as/CMD/svc2_out.casl:2:OTEST   START
-../../../../as/CMD/svc2_out.casl:3:        PUSH    0,GR1
-../../../../as/CMD/svc2_out.casl:4:        PUSH    0,GR2
-../../../../as/CMD/svc2_out.casl:5:        LAD     GR1,OBUF
-../../../../as/CMD/svc2_out.casl:6:        LD      GR2,LEN
-../../../../as/CMD/svc2_out.casl:7:        SVC     2
-../../../../as/CMD/svc2_out.casl:8:        LAD     GR1,=#A
-../../../../as/CMD/svc2_out.casl:9:        LAD     GR2,1
-../../../../as/CMD/svc2_out.casl:10:        SVC     2
-../../../../as/CMD/svc2_out.casl:11:        POP     GR2
-../../../../as/CMD/svc2_out.casl:12:        POP     GR1
-../../../../as/CMD/svc2_out.casl:13:        RET
-../../../../as/CMD/svc2_out.casl:14:OBUF    DC      'abcd'
-../../../../as/CMD/svc2_out.casl:15:LEN     DC      4
-../../../../as/CMD/svc2_out.casl:16:        END
+../../../../as/CMD/svc2_out.casl:    1:;;; 「OUT」と同等のプログラム
+../../../../as/CMD/svc2_out.casl:    2:OTEST   START
+../../../../as/CMD/svc2_out.casl:    3:        PUSH    0,GR1
+../../../../as/CMD/svc2_out.casl:    4:        PUSH    0,GR2
+../../../../as/CMD/svc2_out.casl:    5:        LAD     GR1,OBUF
+../../../../as/CMD/svc2_out.casl:    6:        LD      GR2,LEN
+../../../../as/CMD/svc2_out.casl:    7:        SVC     2
+../../../../as/CMD/svc2_out.casl:    8:        LAD     GR1,=#A
+../../../../as/CMD/svc2_out.casl:    9:        LAD     GR2,1
+../../../../as/CMD/svc2_out.casl:   10:        SVC     2
+../../../../as/CMD/svc2_out.casl:   11:        POP     GR2
+../../../../as/CMD/svc2_out.casl:   12:        POP     GR1
+../../../../as/CMD/svc2_out.casl:   13:        RET
+../../../../as/CMD/svc2_out.casl:   14:OBUF    DC      'abcd'
+../../../../as/CMD/svc2_out.casl:   15:LEN     DC      4
+../../../../as/CMD/svc2_out.casl:   16:        END
 
 Label::::
 OTEST ---> #0000
@@ -24,47 +24,47 @@ OTEST.OBUF ---> #0013
 OTEST.LEN ---> #0017
 
 Assemble ../../../../as/CMD/svc2_out.casl (1)
-../../../../as/CMD/svc2_out.casl:1:;;; 「OUT」と同等のプログラム
-../../../../as/CMD/svc2_out.casl:2:OTEST   START
-../../../../as/CMD/svc2_out.casl:3:        PUSH    0,GR1
+../../../../as/CMD/svc2_out.casl:    1:;;; 「OUT」と同等のプログラム
+../../../../as/CMD/svc2_out.casl:    2:OTEST   START
+../../../../as/CMD/svc2_out.casl:    3:        PUSH    0,GR1
 	#0000	#7001
 	#0001	#0000
-../../../../as/CMD/svc2_out.casl:4:        PUSH    0,GR2
+../../../../as/CMD/svc2_out.casl:    4:        PUSH    0,GR2
 	#0002	#7002
 	#0003	#0000
-../../../../as/CMD/svc2_out.casl:5:        LAD     GR1,OBUF
+../../../../as/CMD/svc2_out.casl:    5:        LAD     GR1,OBUF
 	#0004	#1210
 	#0005	#0013
-../../../../as/CMD/svc2_out.casl:6:        LD      GR2,LEN
+../../../../as/CMD/svc2_out.casl:    6:        LD      GR2,LEN
 	#0006	#1020
 	#0007	#0017
-../../../../as/CMD/svc2_out.casl:7:        SVC     2
+../../../../as/CMD/svc2_out.casl:    7:        SVC     2
 	#0008	#F000
 	#0009	#0002
-../../../../as/CMD/svc2_out.casl:8:        LAD     GR1,=#A
+../../../../as/CMD/svc2_out.casl:    8:        LAD     GR1,=#A
 	#0018	#000A
 	#000A	#1210
 	#000B	#0018
-../../../../as/CMD/svc2_out.casl:9:        LAD     GR2,1
+../../../../as/CMD/svc2_out.casl:    9:        LAD     GR2,1
 	#000C	#1220
 	#000D	#0001
-../../../../as/CMD/svc2_out.casl:10:        SVC     2
+../../../../as/CMD/svc2_out.casl:   10:        SVC     2
 	#000E	#F000
 	#000F	#0002
-../../../../as/CMD/svc2_out.casl:11:        POP     GR2
+../../../../as/CMD/svc2_out.casl:   11:        POP     GR2
 	#0010	#7120
-../../../../as/CMD/svc2_out.casl:12:        POP     GR1
+../../../../as/CMD/svc2_out.casl:   12:        POP     GR1
 	#0011	#7110
-../../../../as/CMD/svc2_out.casl:13:        RET
+../../../../as/CMD/svc2_out.casl:   13:        RET
 	#0012	#8100
-../../../../as/CMD/svc2_out.casl:14:OBUF    DC      'abcd'
+../../../../as/CMD/svc2_out.casl:   14:OBUF    DC      'abcd'
 	#0013	#0061
 	#0014	#0062
 	#0015	#0063
 	#0016	#0064
-../../../../as/CMD/svc2_out.casl:15:LEN     DC      4
+../../../../as/CMD/svc2_out.casl:   15:LEN     DC      4
 	#0017	#0004
-../../../../as/CMD/svc2_out.casl:16:        END
+../../../../as/CMD/svc2_out.casl:   16:        END
 
 Executing machine codes
 #0000: Register::::

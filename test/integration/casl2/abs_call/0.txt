@@ -1,156 +1,156 @@
 ../../../../casl2 -sla ../../../../as/FUNC/abs_call.casl ../../../../as/FUNC/abs.casl ../../../../as/FUNC/outa.casl
 
 Assemble ../../../../as/FUNC/abs_call.casl (0)
-../../../../as/FUNC/abs_call.casl:1:;;; ABSを呼び出す
-../../../../as/FUNC/abs_call.casl:2:;;; casl2 abs_call.casl abs.casl outa.casl
-../../../../as/FUNC/abs_call.casl:3:MAIN    START
-../../../../as/FUNC/abs_call.casl:4:        LAD     GR2,0
-../../../../as/FUNC/abs_call.casl:5:MLOOP   CPA     GR2,MLEN
-../../../../as/FUNC/abs_call.casl:6:        JZE     MFIN
-../../../../as/FUNC/abs_call.casl:7:        LD      GR1,MVAL,GR2
-../../../../as/FUNC/abs_call.casl:8:        CALL    ABS
-../../../../as/FUNC/abs_call.casl:9:        CALL    OUTA
-../../../../as/FUNC/abs_call.casl:10:        LAD     GR2,1,GR2
-../../../../as/FUNC/abs_call.casl:11:        JUMP    MLOOP
-../../../../as/FUNC/abs_call.casl:12:MFIN    RET
-../../../../as/FUNC/abs_call.casl:13:MVAL    DC      12,-12,1,-1,32767,-32767,0,-32768
-../../../../as/FUNC/abs_call.casl:14:MLEN    DC      8
-../../../../as/FUNC/abs_call.casl:15:        END
+../../../../as/FUNC/abs_call.casl:    1:;;; ABSを呼び出す
+../../../../as/FUNC/abs_call.casl:    2:;;; casl2 abs_call.casl abs.casl outa.casl
+../../../../as/FUNC/abs_call.casl:    3:MAIN    START
+../../../../as/FUNC/abs_call.casl:    4:        LAD     GR2,0
+../../../../as/FUNC/abs_call.casl:    5:MLOOP   CPA     GR2,MLEN
+../../../../as/FUNC/abs_call.casl:    6:        JZE     MFIN
+../../../../as/FUNC/abs_call.casl:    7:        LD      GR1,MVAL,GR2
+../../../../as/FUNC/abs_call.casl:    8:        CALL    ABS
+../../../../as/FUNC/abs_call.casl:    9:        CALL    OUTA
+../../../../as/FUNC/abs_call.casl:   10:        LAD     GR2,1,GR2
+../../../../as/FUNC/abs_call.casl:   11:        JUMP    MLOOP
+../../../../as/FUNC/abs_call.casl:   12:MFIN    RET
+../../../../as/FUNC/abs_call.casl:   13:MVAL    DC      12,-12,1,-1,32767,-32767,0,-32768
+../../../../as/FUNC/abs_call.casl:   14:MLEN    DC      8
+../../../../as/FUNC/abs_call.casl:   15:        END
 
 Assemble ../../../../as/FUNC/abs.casl (0)
-../../../../as/FUNC/abs.casl:1:;;; GR1を絶対値に変換する
-../../../../as/FUNC/abs.casl:2:ABS     START
-../../../../as/FUNC/abs.casl:3:        AND     GR1,GR1
-../../../../as/FUNC/abs.casl:4:        JPL     ABSFIN
-../../../../as/FUNC/abs.casl:5:        JZE     ABSFIN
-../../../../as/FUNC/abs.casl:6:        XOR     GR1,=#FFFF
-../../../../as/FUNC/abs.casl:7:        LAD     GR1,1,GR1
-../../../../as/FUNC/abs.casl:8:ABSFIN  RET
-../../../../as/FUNC/abs.casl:9:        END
+../../../../as/FUNC/abs.casl:    1:;;; GR1を絶対値に変換する
+../../../../as/FUNC/abs.casl:    2:ABS     START
+../../../../as/FUNC/abs.casl:    3:        AND     GR1,GR1
+../../../../as/FUNC/abs.casl:    4:        JPL     ABSFIN
+../../../../as/FUNC/abs.casl:    5:        JZE     ABSFIN
+../../../../as/FUNC/abs.casl:    6:        XOR     GR1,=#FFFF
+../../../../as/FUNC/abs.casl:    7:        LAD     GR1,1,GR1
+../../../../as/FUNC/abs.casl:    8:ABSFIN  RET
+../../../../as/FUNC/abs.casl:    9:        END
 
 Assemble ../../../../as/FUNC/outa.casl (0)
-../../../../as/FUNC/outa.casl:1:;;; GR1に格納された値を、10進数の整数値（-32768〜32767）として表示
-../../../../as/FUNC/outa.casl:2:OUTA    START
-../../../../as/FUNC/outa.casl:3:        RPUSH
-../../../../as/FUNC/outa.casl:4:        LAD     GR2,10          ; GR2に10進数の「10」を格納。
-../../../../as/FUNC/outa.casl:5:        LAD     GR0,0           ; GR0 <- 0
-../../../../as/FUNC/outa.casl:6:        LAD     GR4,0           ; 負数フラグ。GR1が負数の場合、GR4は1
-../../../../as/FUNC/outa.casl:7:        ST      GR0,LEN         ; LENの初期化
-../../../../as/FUNC/outa.casl:8:        AND     GR1,GR1         ; GR1をテスト
-../../../../as/FUNC/outa.casl:9:        JZE     ZPRT            ; GR1が0の場合、ZPRTにジャンプ
-../../../../as/FUNC/outa.casl:10:        JPL     STI             ; GR1が正数の場合、STIにジャンプ
-../../../../as/FUNC/outa.casl:11:        LAD     GR4,1           ; GR1が負数の場合、GR4をオン
-../../../../as/FUNC/outa.casl:12:        CALL    OABS            ;                  GR1を正数に変換
-../../../../as/FUNC/outa.casl:13:STI     CPL     GR1,GR2         ; ループ先頭。(GR1 < GR2)の場合は、ループ脱出
-../../../../as/FUNC/outa.casl:14:        JMI     STLST           ; ↓
-../../../../as/FUNC/outa.casl:15:        CALL    ODIVL           ; GR1とGR2の、商をGR0、剰余をGR3に格納
-../../../../as/FUNC/outa.casl:16:        LD      GR1,GR3         ; GR1にGR3をコピー
-../../../../as/FUNC/outa.casl:17:        LD      GR1,NCHAR,GR1   ; GR1を文字に変換
-../../../../as/FUNC/outa.casl:18:        CALL    STSTR           ; GR1をSTR領域に格納
-../../../../as/FUNC/outa.casl:19:        LD      GR1,GR0         ; GR0をGR1にコピー
-../../../../as/FUNC/outa.casl:20:        JUMP    STI             ; ループ終端
-../../../../as/FUNC/outa.casl:21:STLST   LD      GR1,NCHAR,GR1   ; GR1を文字に変換
-../../../../as/FUNC/outa.casl:22:        CALL    STSTR           ; GR1をSTR領域に格納
-../../../../as/FUNC/outa.casl:23:        AND     GR4,GR4         ; 正数の場合
-../../../../as/FUNC/outa.casl:24:        JZE     PRT             ; ↓
-../../../../as/FUNC/outa.casl:25:        LD      GR1,='-'        ; 負数の場合、「-」をSTR領域に格納
-../../../../as/FUNC/outa.casl:26:        CALL    STSTR           ; ↓
-../../../../as/FUNC/outa.casl:27:        JUMP    PRT             ; PRTにジャンプ
-../../../../as/FUNC/outa.casl:28:ZPRT    LD      GR1,NCHAR       ; 「0」をSTR領域に格納
-../../../../as/FUNC/outa.casl:29:        CALL    STSTR           ; ↓
-../../../../as/FUNC/outa.casl:30:PRT     LD      GR2,LEN         ; GR2にLENの値を格納
-../../../../as/FUNC/outa.casl:31:        LAD     GR1,STR         ; GR1に文字列のアドレスを格納
-../../../../as/FUNC/outa.casl:32:        CALL    REV             ; 文字列を逆順に並べ替え
-../../../../as/FUNC/outa.casl:33:        OUT     STR,LEN         ; 文字列を出力
-../../../../as/FUNC/outa.casl:34:        RPOP
-../../../../as/FUNC/outa.casl:35:        RET
-../../../../as/FUNC/outa.casl:36:STR     DS      17
-../../../../as/FUNC/outa.casl:37:LEN     DS      1
-../../../../as/FUNC/outa.casl:38:NCHAR   DC      '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-../../../../as/FUNC/outa.casl:39:        END
-../../../../as/FUNC/outa.casl:40:;; GR1をSTR領域に格納し、LENをインクリメント
-../../../../as/FUNC/outa.casl:41:STSTR   START
-../../../../as/FUNC/outa.casl:42:        PUSH    0,GR1
-../../../../as/FUNC/outa.casl:43:        PUSH    0,GR2
-../../../../as/FUNC/outa.casl:44:        LD      GR2,LEN         ; GR2にLENの値をロード
-../../../../as/FUNC/outa.casl:45:        ST      GR1,STR,GR2     ; STR+GR2 <- GR1
-../../../../as/FUNC/outa.casl:46:        LAD     GR2,1,GR2       ; GR2 <- GR2 + 1
-../../../../as/FUNC/outa.casl:47:        ST      GR2,LEN         ; LENにGR2を格納
-../../../../as/FUNC/outa.casl:48:        POP     GR2
-../../../../as/FUNC/outa.casl:49:        POP     GR1
-../../../../as/FUNC/outa.casl:50:        RET
-../../../../as/FUNC/outa.casl:51:        END
-../../../../as/FUNC/outa.casl:52:;;; GR1の値とGR2の値の、商をGR0、剰余をGR3に格納する
-../../../../as/FUNC/outa.casl:53:;;; 0〜65535の範囲の数値を扱う
-../../../../as/FUNC/outa.casl:54:ODIVL   START
-../../../../as/FUNC/outa.casl:55:        PUSH    0,GR1
-../../../../as/FUNC/outa.casl:56:        PUSH    0,GR2
-../../../../as/FUNC/outa.casl:57:        PUSH    0,GR4
-../../../../as/FUNC/outa.casl:58:        AND     GR2,GR2         ; GR2が0の場合、ODFINへジャンプ
-../../../../as/FUNC/outa.casl:59:        JZE     ODFIN           ; ↓
-../../../../as/FUNC/outa.casl:60:        ST      GR2,ODY         ; ODYにGR2の初期値を保存
-../../../../as/FUNC/outa.casl:61:        LAD     GR0,0           ; GR0の初期化
-../../../../as/FUNC/outa.casl:62:        LAD     GR3,0           ; GR3の初期化
-../../../../as/FUNC/outa.casl:63:        LAD     GR4,1           ; GR4の初期化。対象ビットを表す
-../../../../as/FUNC/outa.casl:64:ODSL    CPL     GR2,GR1         ; ループ先頭。(GR2 > GR1)の場合、ODLOOPへループ脱出
-../../../../as/FUNC/outa.casl:65:        JPL     ODLOOP          ; ↓
-../../../../as/FUNC/outa.casl:66:        SLL     GR4,1           ; GR4を1回左シフト
-../../../../as/FUNC/outa.casl:67:        SLL     GR2,1           ; GR2を1回左シフト
-../../../../as/FUNC/outa.casl:68:        JOV     ODYOV           ; オーバーフローの場合は、ODYOVにジャンプ
-../../../../as/FUNC/outa.casl:69:        JUMP    ODSL            ; ループ終端
-../../../../as/FUNC/outa.casl:70:ODYOV   SRL     GR2,1
-../../../../as/FUNC/outa.casl:71:        LAD     GR2,#8000,GR2
-../../../../as/FUNC/outa.casl:72:        SRL     GR4,1
-../../../../as/FUNC/outa.casl:73:        JUMP    ODLPIN
-../../../../as/FUNC/outa.casl:74:ODLOOP  SRL     GR4,1           ; ループ先頭。GR4を1回右シフト
-../../../../as/FUNC/outa.casl:75:        JZE     ODFIN           ; (GR4 = 0)の場合、ループ脱出
-../../../../as/FUNC/outa.casl:76:        SRL     GR2,1           ; GR2を1回右シフト
-../../../../as/FUNC/outa.casl:77:        CPL     GR1,ODY         ; (GR1 < ODY)の場合、ループ脱出
-../../../../as/FUNC/outa.casl:78:        JMI     ODFIN           ; ↓
-../../../../as/FUNC/outa.casl:79:        CPL     GR1,GR2         ; (GR1 < GR2)の場合、ループ先頭へジャンプ
-../../../../as/FUNC/outa.casl:80:        JMI     ODLOOP          ; ↓
-../../../../as/FUNC/outa.casl:81:ODLPIN  SUBL    GR1,GR2         ; GR1 <- GR1 - GR2
-../../../../as/FUNC/outa.casl:82:        ADDL    GR0,GR4         ; GR0 <- GR0 + GR4
-../../../../as/FUNC/outa.casl:83:        JUMP    ODLOOP          ; ループ終端
-../../../../as/FUNC/outa.casl:84:ODFIN   LD      GR3,GR1
-../../../../as/FUNC/outa.casl:85:        POP	GR4
-../../../../as/FUNC/outa.casl:86:        POP     GR2
-../../../../as/FUNC/outa.casl:87:        POP     GR1
-../../../../as/FUNC/outa.casl:88:        RET
-../../../../as/FUNC/outa.casl:89:ODY     DS      1        
-../../../../as/FUNC/outa.casl:90:        END
-../../../../as/FUNC/outa.casl:91:;; アドレスがGR1、長さがGR2の文字列を逆順に並べ替える
-../../../../as/FUNC/outa.casl:92:;; 例: 12345 -> 54321、54321- -> -12345
-../../../../as/FUNC/outa.casl:93:REV     START
-../../../../as/FUNC/outa.casl:94:        RPUSH
-../../../../as/FUNC/outa.casl:95:        LAD     GR3,0           ; GR3の初期化
-../../../../as/FUNC/outa.casl:96:RPU     CPL     GR3,GR2         ; ループ先頭。(GR3 = GR2)の場合、ループ脱出
-../../../../as/FUNC/outa.casl:97:        JZE     RNEXT           ; ↓
-../../../../as/FUNC/outa.casl:98:        LD      GR4,GR1         ; GR4にGR1の値をコピー
-../../../../as/FUNC/outa.casl:99:        ADDL    GR4,GR3         ; GR4 <- GR4 + GR3
-../../../../as/FUNC/outa.casl:100:        LD      GR5,0,GR4       ; GR5にアドレスGR4の値を格納
-../../../../as/FUNC/outa.casl:101:        PUSH    0,GR5           ; GR5をプッシュ
-../../../../as/FUNC/outa.casl:102:        LAD     GR3,1,GR3       ; GR3 <- GR3 + 1
-../../../../as/FUNC/outa.casl:103:        JUMP    RPU             ; ループ終端
-../../../../as/FUNC/outa.casl:104:RNEXT   LAD     GR3,0           ; GR3の初期化
-../../../../as/FUNC/outa.casl:105:RPO     CPL     GR3,GR2         ; ループ先頭。(GR3 = GR2)の場合、ループ脱出
-../../../../as/FUNC/outa.casl:106:        JZE     RFIN            ; ↓
-../../../../as/FUNC/outa.casl:107:        POP     GR5             ; GR5にポップ
-../../../../as/FUNC/outa.casl:108:        LD      GR4,GR1         ; GR4にGR1の値をコピー
-../../../../as/FUNC/outa.casl:109:        ADDL    GR4,GR3         ; GR4 <- GR4 + GR3
-../../../../as/FUNC/outa.casl:110:        ST      GR5,0,GR4       ; アドレスGR4にGR5の値を格納
-../../../../as/FUNC/outa.casl:111:        LAD     GR3,1,GR3       ; GR3 <- GR3 + 1
-../../../../as/FUNC/outa.casl:112:        JUMP    RPO             ; ループ終端
-../../../../as/FUNC/outa.casl:113:RFIN    RPOP
-../../../../as/FUNC/outa.casl:114:        RET
-../../../../as/FUNC/outa.casl:115:        END
-../../../../as/FUNC/outa.casl:116:;; GR1の値を絶対値に変換する。GR1にはマイナスの数値が格納されていると想定。
-../../../../as/FUNC/outa.casl:117:;; 例: -10 -> 10, -20 -> 20
-../../../../as/FUNC/outa.casl:118:OABS    START
-../../../../as/FUNC/outa.casl:119:        XOR     GR1,=#FFFF      ; GR1の値を反転
-../../../../as/FUNC/outa.casl:120:        LAD     GR1,1,GR1       ; GR1 <- GR1 + 1
-../../../../as/FUNC/outa.casl:121:        RET
-../../../../as/FUNC/outa.casl:122:        END
+../../../../as/FUNC/outa.casl:    1:;;; GR1に格納された値を、10進数の整数値（-32768〜32767）として表示
+../../../../as/FUNC/outa.casl:    2:OUTA    START
+../../../../as/FUNC/outa.casl:    3:        RPUSH
+../../../../as/FUNC/outa.casl:    4:        LAD     GR2,10          ; GR2に10進数の「10」を格納。
+../../../../as/FUNC/outa.casl:    5:        LAD     GR0,0           ; GR0 <- 0
+../../../../as/FUNC/outa.casl:    6:        LAD     GR4,0           ; 負数フラグ。GR1が負数の場合、GR4は1
+../../../../as/FUNC/outa.casl:    7:        ST      GR0,LEN         ; LENの初期化
+../../../../as/FUNC/outa.casl:    8:        AND     GR1,GR1         ; GR1をテスト
+../../../../as/FUNC/outa.casl:    9:        JZE     ZPRT            ; GR1が0の場合、ZPRTにジャンプ
+../../../../as/FUNC/outa.casl:   10:        JPL     STI             ; GR1が正数の場合、STIにジャンプ
+../../../../as/FUNC/outa.casl:   11:        LAD     GR4,1           ; GR1が負数の場合、GR4をオン
+../../../../as/FUNC/outa.casl:   12:        CALL    OABS            ;                  GR1を正数に変換
+../../../../as/FUNC/outa.casl:   13:STI     CPL     GR1,GR2         ; ループ先頭。(GR1 < GR2)の場合は、ループ脱出
+../../../../as/FUNC/outa.casl:   14:        JMI     STLST           ; ↓
+../../../../as/FUNC/outa.casl:   15:        CALL    ODIVL           ; GR1とGR2の、商をGR0、剰余をGR3に格納
+../../../../as/FUNC/outa.casl:   16:        LD      GR1,GR3         ; GR1にGR3をコピー
+../../../../as/FUNC/outa.casl:   17:        LD      GR1,NCHAR,GR1   ; GR1を文字に変換
+../../../../as/FUNC/outa.casl:   18:        CALL    STSTR           ; GR1をSTR領域に格納
+../../../../as/FUNC/outa.casl:   19:        LD      GR1,GR0         ; GR0をGR1にコピー
+../../../../as/FUNC/outa.casl:   20:        JUMP    STI             ; ループ終端
+../../../../as/FUNC/outa.casl:   21:STLST   LD      GR1,NCHAR,GR1   ; GR1を文字に変換
+../../../../as/FUNC/outa.casl:   22:        CALL    STSTR           ; GR1をSTR領域に格納
+../../../../as/FUNC/outa.casl:   23:        AND     GR4,GR4         ; 正数の場合
+../../../../as/FUNC/outa.casl:   24:        JZE     PRT             ; ↓
+../../../../as/FUNC/outa.casl:   25:        LD      GR1,='-'        ; 負数の場合、「-」をSTR領域に格納
+../../../../as/FUNC/outa.casl:   26:        CALL    STSTR           ; ↓
+../../../../as/FUNC/outa.casl:   27:        JUMP    PRT             ; PRTにジャンプ
+../../../../as/FUNC/outa.casl:   28:ZPRT    LD      GR1,NCHAR       ; 「0」をSTR領域に格納
+../../../../as/FUNC/outa.casl:   29:        CALL    STSTR           ; ↓
+../../../../as/FUNC/outa.casl:   30:PRT     LD      GR2,LEN         ; GR2にLENの値を格納
+../../../../as/FUNC/outa.casl:   31:        LAD     GR1,STR         ; GR1に文字列のアドレスを格納
+../../../../as/FUNC/outa.casl:   32:        CALL    REV             ; 文字列を逆順に並べ替え
+../../../../as/FUNC/outa.casl:   33:        OUT     STR,LEN         ; 文字列を出力
+../../../../as/FUNC/outa.casl:   34:        RPOP
+../../../../as/FUNC/outa.casl:   35:        RET
+../../../../as/FUNC/outa.casl:   36:STR     DS      17
+../../../../as/FUNC/outa.casl:   37:LEN     DS      1
+../../../../as/FUNC/outa.casl:   38:NCHAR   DC      '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+../../../../as/FUNC/outa.casl:   39:        END
+../../../../as/FUNC/outa.casl:   40:;; GR1をSTR領域に格納し、LENをインクリメント
+../../../../as/FUNC/outa.casl:   41:STSTR   START
+../../../../as/FUNC/outa.casl:   42:        PUSH    0,GR1
+../../../../as/FUNC/outa.casl:   43:        PUSH    0,GR2
+../../../../as/FUNC/outa.casl:   44:        LD      GR2,LEN         ; GR2にLENの値をロード
+../../../../as/FUNC/outa.casl:   45:        ST      GR1,STR,GR2     ; STR+GR2 <- GR1
+../../../../as/FUNC/outa.casl:   46:        LAD     GR2,1,GR2       ; GR2 <- GR2 + 1
+../../../../as/FUNC/outa.casl:   47:        ST      GR2,LEN         ; LENにGR2を格納
+../../../../as/FUNC/outa.casl:   48:        POP     GR2
+../../../../as/FUNC/outa.casl:   49:        POP     GR1
+../../../../as/FUNC/outa.casl:   50:        RET
+../../../../as/FUNC/outa.casl:   51:        END
+../../../../as/FUNC/outa.casl:   52:;;; GR1の値とGR2の値の、商をGR0、剰余をGR3に格納する
+../../../../as/FUNC/outa.casl:   53:;;; 0〜65535の範囲の数値を扱う
+../../../../as/FUNC/outa.casl:   54:ODIVL   START
+../../../../as/FUNC/outa.casl:   55:        PUSH    0,GR1
+../../../../as/FUNC/outa.casl:   56:        PUSH    0,GR2
+../../../../as/FUNC/outa.casl:   57:        PUSH    0,GR4
+../../../../as/FUNC/outa.casl:   58:        AND     GR2,GR2         ; GR2が0の場合、ODFINへジャンプ
+../../../../as/FUNC/outa.casl:   59:        JZE     ODFIN           ; ↓
+../../../../as/FUNC/outa.casl:   60:        ST      GR2,ODY         ; ODYにGR2の初期値を保存
+../../../../as/FUNC/outa.casl:   61:        LAD     GR0,0           ; GR0の初期化
+../../../../as/FUNC/outa.casl:   62:        LAD     GR3,0           ; GR3の初期化
+../../../../as/FUNC/outa.casl:   63:        LAD     GR4,1           ; GR4の初期化。対象ビットを表す
+../../../../as/FUNC/outa.casl:   64:ODSL    CPL     GR2,GR1         ; ループ先頭。(GR2 > GR1)の場合、ODLOOPへループ脱出
+../../../../as/FUNC/outa.casl:   65:        JPL     ODLOOP          ; ↓
+../../../../as/FUNC/outa.casl:   66:        SLL     GR4,1           ; GR4を1回左シフト
+../../../../as/FUNC/outa.casl:   67:        SLL     GR2,1           ; GR2を1回左シフト
+../../../../as/FUNC/outa.casl:   68:        JOV     ODYOV           ; オーバーフローの場合は、ODYOVにジャンプ
+../../../../as/FUNC/outa.casl:   69:        JUMP    ODSL            ; ループ終端
+../../../../as/FUNC/outa.casl:   70:ODYOV   SRL     GR2,1
+../../../../as/FUNC/outa.casl:   71:        LAD     GR2,#8000,GR2
+../../../../as/FUNC/outa.casl:   72:        SRL     GR4,1
+../../../../as/FUNC/outa.casl:   73:        JUMP    ODLPIN
+../../../../as/FUNC/outa.casl:   74:ODLOOP  SRL     GR4,1           ; ループ先頭。GR4を1回右シフト
+../../../../as/FUNC/outa.casl:   75:        JZE     ODFIN           ; (GR4 = 0)の場合、ループ脱出
+../../../../as/FUNC/outa.casl:   76:        SRL     GR2,1           ; GR2を1回右シフト
+../../../../as/FUNC/outa.casl:   77:        CPL     GR1,ODY         ; (GR1 < ODY)の場合、ループ脱出
+../../../../as/FUNC/outa.casl:   78:        JMI     ODFIN           ; ↓
+../../../../as/FUNC/outa.casl:   79:        CPL     GR1,GR2         ; (GR1 < GR2)の場合、ループ先頭へジャンプ
+../../../../as/FUNC/outa.casl:   80:        JMI     ODLOOP          ; ↓
+../../../../as/FUNC/outa.casl:   81:ODLPIN  SUBL    GR1,GR2         ; GR1 <- GR1 - GR2
+../../../../as/FUNC/outa.casl:   82:        ADDL    GR0,GR4         ; GR0 <- GR0 + GR4
+../../../../as/FUNC/outa.casl:   83:        JUMP    ODLOOP          ; ループ終端
+../../../../as/FUNC/outa.casl:   84:ODFIN   LD      GR3,GR1
+../../../../as/FUNC/outa.casl:   85:        POP	GR4
+../../../../as/FUNC/outa.casl:   86:        POP     GR2
+../../../../as/FUNC/outa.casl:   87:        POP     GR1
+../../../../as/FUNC/outa.casl:   88:        RET
+../../../../as/FUNC/outa.casl:   89:ODY     DS      1        
+../../../../as/FUNC/outa.casl:   90:        END
+../../../../as/FUNC/outa.casl:   91:;; アドレスがGR1、長さがGR2の文字列を逆順に並べ替える
+../../../../as/FUNC/outa.casl:   92:;; 例: 12345 -> 54321、54321- -> -12345
+../../../../as/FUNC/outa.casl:   93:REV     START
+../../../../as/FUNC/outa.casl:   94:        RPUSH
+../../../../as/FUNC/outa.casl:   95:        LAD     GR3,0           ; GR3の初期化
+../../../../as/FUNC/outa.casl:   96:RPU     CPL     GR3,GR2         ; ループ先頭。(GR3 = GR2)の場合、ループ脱出
+../../../../as/FUNC/outa.casl:   97:        JZE     RNEXT           ; ↓
+../../../../as/FUNC/outa.casl:   98:        LD      GR4,GR1         ; GR4にGR1の値をコピー
+../../../../as/FUNC/outa.casl:   99:        ADDL    GR4,GR3         ; GR4 <- GR4 + GR3
+../../../../as/FUNC/outa.casl:  100:        LD      GR5,0,GR4       ; GR5にアドレスGR4の値を格納
+../../../../as/FUNC/outa.casl:  101:        PUSH    0,GR5           ; GR5をプッシュ
+../../../../as/FUNC/outa.casl:  102:        LAD     GR3,1,GR3       ; GR3 <- GR3 + 1
+../../../../as/FUNC/outa.casl:  103:        JUMP    RPU             ; ループ終端
+../../../../as/FUNC/outa.casl:  104:RNEXT   LAD     GR3,0           ; GR3の初期化
+../../../../as/FUNC/outa.casl:  105:RPO     CPL     GR3,GR2         ; ループ先頭。(GR3 = GR2)の場合、ループ脱出
+../../../../as/FUNC/outa.casl:  106:        JZE     RFIN            ; ↓
+../../../../as/FUNC/outa.casl:  107:        POP     GR5             ; GR5にポップ
+../../../../as/FUNC/outa.casl:  108:        LD      GR4,GR1         ; GR4にGR1の値をコピー
+../../../../as/FUNC/outa.casl:  109:        ADDL    GR4,GR3         ; GR4 <- GR4 + GR3
+../../../../as/FUNC/outa.casl:  110:        ST      GR5,0,GR4       ; アドレスGR4にGR5の値を格納
+../../../../as/FUNC/outa.casl:  111:        LAD     GR3,1,GR3       ; GR3 <- GR3 + 1
+../../../../as/FUNC/outa.casl:  112:        JUMP    RPO             ; ループ終端
+../../../../as/FUNC/outa.casl:  113:RFIN    RPOP
+../../../../as/FUNC/outa.casl:  114:        RET
+../../../../as/FUNC/outa.casl:  115:        END
+../../../../as/FUNC/outa.casl:  116:;; GR1の値を絶対値に変換する。GR1にはマイナスの数値が格納されていると想定。
+../../../../as/FUNC/outa.casl:  117:;; 例: -10 -> 10, -20 -> 20
+../../../../as/FUNC/outa.casl:  118:OABS    START
+../../../../as/FUNC/outa.casl:  119:        XOR     GR1,=#FFFF      ; GR1の値を反転
+../../../../as/FUNC/outa.casl:  120:        LAD     GR1,1,GR1       ; GR1 <- GR1 + 1
+../../../../as/FUNC/outa.casl:  121:        RET
+../../../../as/FUNC/outa.casl:  122:        END
 
 Label::::
 OUTA.STI ---> #0043
@@ -184,36 +184,36 @@ ODIVL.ODLOOP ---> #00EA
 ODIVL.ODLPIN ---> #00F7
 
 Assemble ../../../../as/FUNC/abs_call.casl (1)
-../../../../as/FUNC/abs_call.casl:1:;;; ABSを呼び出す
-../../../../as/FUNC/abs_call.casl:2:;;; casl2 abs_call.casl abs.casl outa.casl
-../../../../as/FUNC/abs_call.casl:3:MAIN    START
-../../../../as/FUNC/abs_call.casl:4:        LAD     GR2,0
+../../../../as/FUNC/abs_call.casl:    1:;;; ABSを呼び出す
+../../../../as/FUNC/abs_call.casl:    2:;;; casl2 abs_call.casl abs.casl outa.casl
+../../../../as/FUNC/abs_call.casl:    3:MAIN    START
+../../../../as/FUNC/abs_call.casl:    4:        LAD     GR2,0
 	#0000	#1220
 	#0001	#0000
-../../../../as/FUNC/abs_call.casl:5:MLOOP   CPA     GR2,MLEN
+../../../../as/FUNC/abs_call.casl:    5:MLOOP   CPA     GR2,MLEN
 	#0002	#4020
 	#0003	#0019
-../../../../as/FUNC/abs_call.casl:6:        JZE     MFIN
+../../../../as/FUNC/abs_call.casl:    6:        JZE     MFIN
 	#0004	#6300
 	#0005	#0010
-../../../../as/FUNC/abs_call.casl:7:        LD      GR1,MVAL,GR2
+../../../../as/FUNC/abs_call.casl:    7:        LD      GR1,MVAL,GR2
 	#0006	#1012
 	#0007	#0011
-../../../../as/FUNC/abs_call.casl:8:        CALL    ABS
+../../../../as/FUNC/abs_call.casl:    8:        CALL    ABS
 	#0008	#8000
 	#0009	#001A
-../../../../as/FUNC/abs_call.casl:9:        CALL    OUTA
+../../../../as/FUNC/abs_call.casl:    9:        CALL    OUTA
 	#000A	#8000
 	#000B	#0024
-../../../../as/FUNC/abs_call.casl:10:        LAD     GR2,1,GR2
+../../../../as/FUNC/abs_call.casl:   10:        LAD     GR2,1,GR2
 	#000C	#1222
 	#000D	#0001
-../../../../as/FUNC/abs_call.casl:11:        JUMP    MLOOP
+../../../../as/FUNC/abs_call.casl:   11:        JUMP    MLOOP
 	#000E	#6400
 	#000F	#0002
-../../../../as/FUNC/abs_call.casl:12:MFIN    RET
+../../../../as/FUNC/abs_call.casl:   12:MFIN    RET
 	#0010	#8100
-../../../../as/FUNC/abs_call.casl:13:MVAL    DC      12,-12,1,-1,32767,-32767,0,-32768
+../../../../as/FUNC/abs_call.casl:   13:MVAL    DC      12,-12,1,-1,32767,-32767,0,-32768
 	#0011	#000C
 	#0012	#FFF4
 	#0013	#0001
@@ -222,36 +222,36 @@ Assemble ../../../../as/FUNC/abs_call.casl (1)
 	#0016	#8001
 	#0017	#0000
 	#0018	#8000
-../../../../as/FUNC/abs_call.casl:14:MLEN    DC      8
+../../../../as/FUNC/abs_call.casl:   14:MLEN    DC      8
 	#0019	#0008
-../../../../as/FUNC/abs_call.casl:15:        END
+../../../../as/FUNC/abs_call.casl:   15:        END
 
 Assemble ../../../../as/FUNC/abs.casl (1)
-../../../../as/FUNC/abs.casl:1:;;; GR1を絶対値に変換する
-../../../../as/FUNC/abs.casl:2:ABS     START
-../../../../as/FUNC/abs.casl:3:        AND     GR1,GR1
+../../../../as/FUNC/abs.casl:    1:;;; GR1を絶対値に変換する
+../../../../as/FUNC/abs.casl:    2:ABS     START
+../../../../as/FUNC/abs.casl:    3:        AND     GR1,GR1
 	#001A	#3411
-../../../../as/FUNC/abs.casl:4:        JPL     ABSFIN
+../../../../as/FUNC/abs.casl:    4:        JPL     ABSFIN
 	#001B	#6500
 	#001C	#0023
-../../../../as/FUNC/abs.casl:5:        JZE     ABSFIN
+../../../../as/FUNC/abs.casl:    5:        JZE     ABSFIN
 	#001D	#6300
 	#001E	#0023
-../../../../as/FUNC/abs.casl:6:        XOR     GR1,=#FFFF
+../../../../as/FUNC/abs.casl:    6:        XOR     GR1,=#FFFF
 	#0139	#FFFF
 	#001F	#3210
 	#0020	#0139
-../../../../as/FUNC/abs.casl:7:        LAD     GR1,1,GR1
+../../../../as/FUNC/abs.casl:    7:        LAD     GR1,1,GR1
 	#0021	#1211
 	#0022	#0001
-../../../../as/FUNC/abs.casl:8:ABSFIN  RET
+../../../../as/FUNC/abs.casl:    8:ABSFIN  RET
 	#0023	#8100
-../../../../as/FUNC/abs.casl:9:        END
+../../../../as/FUNC/abs.casl:    9:        END
 
 Assemble ../../../../as/FUNC/outa.casl (1)
-../../../../as/FUNC/outa.casl:1:;;; GR1に格納された値を、10進数の整数値（-32768〜32767）として表示
-../../../../as/FUNC/outa.casl:2:OUTA    START
-../../../../as/FUNC/outa.casl:3:        RPUSH
+../../../../as/FUNC/outa.casl:    1:;;; GR1に格納された値を、10進数の整数値（-32768〜32767）として表示
+../../../../as/FUNC/outa.casl:    2:OUTA    START
+../../../../as/FUNC/outa.casl:    3:        RPUSH
 	#0024	#7001
 	#0025	#0000
 	#0026	#7002
@@ -266,90 +266,90 @@ Assemble ../../../../as/FUNC/outa.casl (1)
 	#002F	#0000
 	#0030	#7007
 	#0031	#0000
-../../../../as/FUNC/outa.casl:4:        LAD     GR2,10          ; GR2に10進数の「10」を格納。
+../../../../as/FUNC/outa.casl:    4:        LAD     GR2,10          ; GR2に10進数の「10」を格納。
 	#0032	#1220
 	#0033	#000A
-../../../../as/FUNC/outa.casl:5:        LAD     GR0,0           ; GR0 <- 0
+../../../../as/FUNC/outa.casl:    5:        LAD     GR0,0           ; GR0 <- 0
 	#0034	#1200
 	#0035	#0000
-../../../../as/FUNC/outa.casl:6:        LAD     GR4,0           ; 負数フラグ。GR1が負数の場合、GR4は1
+../../../../as/FUNC/outa.casl:    6:        LAD     GR4,0           ; 負数フラグ。GR1が負数の場合、GR4は1
 	#0036	#1240
 	#0037	#0000
-../../../../as/FUNC/outa.casl:7:        ST      GR0,LEN         ; LENの初期化
+../../../../as/FUNC/outa.casl:    7:        ST      GR0,LEN         ; LENの初期化
 	#0038	#1100
 	#0039	#0092
-../../../../as/FUNC/outa.casl:8:        AND     GR1,GR1         ; GR1をテスト
+../../../../as/FUNC/outa.casl:    8:        AND     GR1,GR1         ; GR1をテスト
 	#003A	#3411
-../../../../as/FUNC/outa.casl:9:        JZE     ZPRT            ; GR1が0の場合、ZPRTにジャンプ
+../../../../as/FUNC/outa.casl:    9:        JZE     ZPRT            ; GR1が0の場合、ZPRTにジャンプ
 	#003B	#6300
 	#003C	#005D
-../../../../as/FUNC/outa.casl:10:        JPL     STI             ; GR1が正数の場合、STIにジャンプ
+../../../../as/FUNC/outa.casl:   10:        JPL     STI             ; GR1が正数の場合、STIにジャンプ
 	#003D	#6500
 	#003E	#0043
-../../../../as/FUNC/outa.casl:11:        LAD     GR4,1           ; GR1が負数の場合、GR4をオン
+../../../../as/FUNC/outa.casl:   11:        LAD     GR4,1           ; GR1が負数の場合、GR4をオン
 	#003F	#1240
 	#0040	#0001
-../../../../as/FUNC/outa.casl:12:        CALL    OABS            ;                  GR1を正数に変換
+../../../../as/FUNC/outa.casl:   12:        CALL    OABS            ;                  GR1を正数に変換
 	#0041	#8000
 	#0042	#0134
-../../../../as/FUNC/outa.casl:13:STI     CPL     GR1,GR2         ; ループ先頭。(GR1 < GR2)の場合は、ループ脱出
+../../../../as/FUNC/outa.casl:   13:STI     CPL     GR1,GR2         ; ループ先頭。(GR1 < GR2)の場合は、ループ脱出
 	#0043	#4512
-../../../../as/FUNC/outa.casl:14:        JMI     STLST           ; ↓
+../../../../as/FUNC/outa.casl:   14:        JMI     STLST           ; ↓
 	#0044	#6100
 	#0045	#0050
-../../../../as/FUNC/outa.casl:15:        CALL    ODIVL           ; GR1とGR2の、商をGR0、剰余をGR3に格納
+../../../../as/FUNC/outa.casl:   15:        CALL    ODIVL           ; GR1とGR2の、商をGR0、剰余をGR3に格納
 	#0046	#8000
 	#0047	#00C6
-../../../../as/FUNC/outa.casl:16:        LD      GR1,GR3         ; GR1にGR3をコピー
+../../../../as/FUNC/outa.casl:   16:        LD      GR1,GR3         ; GR1にGR3をコピー
 	#0048	#1413
-../../../../as/FUNC/outa.casl:17:        LD      GR1,NCHAR,GR1   ; GR1を文字に変換
+../../../../as/FUNC/outa.casl:   17:        LD      GR1,NCHAR,GR1   ; GR1を文字に変換
 	#0049	#1011
 	#004A	#0093
-../../../../as/FUNC/outa.casl:18:        CALL    STSTR           ; GR1をSTR領域に格納
+../../../../as/FUNC/outa.casl:   18:        CALL    STSTR           ; GR1をSTR領域に格納
 	#004B	#8000
 	#004C	#00B7
-../../../../as/FUNC/outa.casl:19:        LD      GR1,GR0         ; GR0をGR1にコピー
+../../../../as/FUNC/outa.casl:   19:        LD      GR1,GR0         ; GR0をGR1にコピー
 	#004D	#1410
-../../../../as/FUNC/outa.casl:20:        JUMP    STI             ; ループ終端
+../../../../as/FUNC/outa.casl:   20:        JUMP    STI             ; ループ終端
 	#004E	#6400
 	#004F	#0043
-../../../../as/FUNC/outa.casl:21:STLST   LD      GR1,NCHAR,GR1   ; GR1を文字に変換
+../../../../as/FUNC/outa.casl:   21:STLST   LD      GR1,NCHAR,GR1   ; GR1を文字に変換
 	#0050	#1011
 	#0051	#0093
-../../../../as/FUNC/outa.casl:22:        CALL    STSTR           ; GR1をSTR領域に格納
+../../../../as/FUNC/outa.casl:   22:        CALL    STSTR           ; GR1をSTR領域に格納
 	#0052	#8000
 	#0053	#00B7
-../../../../as/FUNC/outa.casl:23:        AND     GR4,GR4         ; 正数の場合
+../../../../as/FUNC/outa.casl:   23:        AND     GR4,GR4         ; 正数の場合
 	#0054	#3444
-../../../../as/FUNC/outa.casl:24:        JZE     PRT             ; ↓
+../../../../as/FUNC/outa.casl:   24:        JZE     PRT             ; ↓
 	#0055	#6300
 	#0056	#0061
-../../../../as/FUNC/outa.casl:25:        LD      GR1,='-'        ; 負数の場合、「-」をSTR領域に格納
+../../../../as/FUNC/outa.casl:   25:        LD      GR1,='-'        ; 負数の場合、「-」をSTR領域に格納
 	#013A	#002D
 	#0057	#1010
 	#0058	#013A
-../../../../as/FUNC/outa.casl:26:        CALL    STSTR           ; ↓
+../../../../as/FUNC/outa.casl:   26:        CALL    STSTR           ; ↓
 	#0059	#8000
 	#005A	#00B7
-../../../../as/FUNC/outa.casl:27:        JUMP    PRT             ; PRTにジャンプ
+../../../../as/FUNC/outa.casl:   27:        JUMP    PRT             ; PRTにジャンプ
 	#005B	#6400
 	#005C	#0061
-../../../../as/FUNC/outa.casl:28:ZPRT    LD      GR1,NCHAR       ; 「0」をSTR領域に格納
+../../../../as/FUNC/outa.casl:   28:ZPRT    LD      GR1,NCHAR       ; 「0」をSTR領域に格納
 	#005D	#1010
 	#005E	#0093
-../../../../as/FUNC/outa.casl:29:        CALL    STSTR           ; ↓
+../../../../as/FUNC/outa.casl:   29:        CALL    STSTR           ; ↓
 	#005F	#8000
 	#0060	#00B7
-../../../../as/FUNC/outa.casl:30:PRT     LD      GR2,LEN         ; GR2にLENの値を格納
+../../../../as/FUNC/outa.casl:   30:PRT     LD      GR2,LEN         ; GR2にLENの値を格納
 	#0061	#1020
 	#0062	#0092
-../../../../as/FUNC/outa.casl:31:        LAD     GR1,STR         ; GR1に文字列のアドレスを格納
+../../../../as/FUNC/outa.casl:   31:        LAD     GR1,STR         ; GR1に文字列のアドレスを格納
 	#0063	#1210
 	#0064	#0081
-../../../../as/FUNC/outa.casl:32:        CALL    REV             ; 文字列を逆順に並べ替え
+../../../../as/FUNC/outa.casl:   32:        CALL    REV             ; 文字列を逆順に並べ替え
 	#0065	#8000
 	#0066	#0101
-../../../../as/FUNC/outa.casl:33:        OUT     STR,LEN         ; 文字列を出力
+../../../../as/FUNC/outa.casl:   33:        OUT     STR,LEN         ; 文字列を出力
 	#0067	#7001
 	#0068	#0000
 	#0069	#7002
@@ -369,7 +369,7 @@ Assemble ../../../../as/FUNC/outa.casl (1)
 	#0076	#0002
 	#0077	#7120
 	#0078	#7110
-../../../../as/FUNC/outa.casl:34:        RPOP
+../../../../as/FUNC/outa.casl:   34:        RPOP
 	#0079	#7170
 	#007A	#7160
 	#007B	#7150
@@ -377,9 +377,9 @@ Assemble ../../../../as/FUNC/outa.casl (1)
 	#007D	#7130
 	#007E	#7120
 	#007F	#7110
-../../../../as/FUNC/outa.casl:35:        RET
+../../../../as/FUNC/outa.casl:   35:        RET
 	#0080	#8100
-../../../../as/FUNC/outa.casl:36:STR     DS      17
+../../../../as/FUNC/outa.casl:   36:STR     DS      17
 	#0081	#0000
 	#0082	#0000
 	#0083	#0000
@@ -397,9 +397,9 @@ Assemble ../../../../as/FUNC/outa.casl (1)
 	#008F	#0000
 	#0090	#0000
 	#0091	#0000
-../../../../as/FUNC/outa.casl:37:LEN     DS      1
+../../../../as/FUNC/outa.casl:   37:LEN     DS      1
 	#0092	#0000
-../../../../as/FUNC/outa.casl:38:NCHAR   DC      '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+../../../../as/FUNC/outa.casl:   38:NCHAR   DC      '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 	#0093	#0030
 	#0094	#0031
 	#0095	#0032
@@ -436,136 +436,136 @@ Assemble ../../../../as/FUNC/outa.casl (1)
 	#00B4	#0058
 	#00B5	#0059
 	#00B6	#005A
-../../../../as/FUNC/outa.casl:39:        END
-../../../../as/FUNC/outa.casl:40:;; GR1をSTR領域に格納し、LENをインクリメント
-../../../../as/FUNC/outa.casl:41:STSTR   START
-../../../../as/FUNC/outa.casl:42:        PUSH    0,GR1
+../../../../as/FUNC/outa.casl:   39:        END
+../../../../as/FUNC/outa.casl:   40:;; GR1をSTR領域に格納し、LENをインクリメント
+../../../../as/FUNC/outa.casl:   41:STSTR   START
+../../../../as/FUNC/outa.casl:   42:        PUSH    0,GR1
 	#00B7	#7001
 	#00B8	#0000
-../../../../as/FUNC/outa.casl:43:        PUSH    0,GR2
+../../../../as/FUNC/outa.casl:   43:        PUSH    0,GR2
 	#00B9	#7002
 	#00BA	#0000
-../../../../as/FUNC/outa.casl:44:        LD      GR2,LEN         ; GR2にLENの値をロード
+../../../../as/FUNC/outa.casl:   44:        LD      GR2,LEN         ; GR2にLENの値をロード
 	#00BB	#1020
 	#00BC	#0092
-../../../../as/FUNC/outa.casl:45:        ST      GR1,STR,GR2     ; STR+GR2 <- GR1
+../../../../as/FUNC/outa.casl:   45:        ST      GR1,STR,GR2     ; STR+GR2 <- GR1
 	#00BD	#1112
 	#00BE	#0081
-../../../../as/FUNC/outa.casl:46:        LAD     GR2,1,GR2       ; GR2 <- GR2 + 1
+../../../../as/FUNC/outa.casl:   46:        LAD     GR2,1,GR2       ; GR2 <- GR2 + 1
 	#00BF	#1222
 	#00C0	#0001
-../../../../as/FUNC/outa.casl:47:        ST      GR2,LEN         ; LENにGR2を格納
+../../../../as/FUNC/outa.casl:   47:        ST      GR2,LEN         ; LENにGR2を格納
 	#00C1	#1120
 	#00C2	#0092
-../../../../as/FUNC/outa.casl:48:        POP     GR2
+../../../../as/FUNC/outa.casl:   48:        POP     GR2
 	#00C3	#7120
-../../../../as/FUNC/outa.casl:49:        POP     GR1
+../../../../as/FUNC/outa.casl:   49:        POP     GR1
 	#00C4	#7110
-../../../../as/FUNC/outa.casl:50:        RET
+../../../../as/FUNC/outa.casl:   50:        RET
 	#00C5	#8100
-../../../../as/FUNC/outa.casl:51:        END
-../../../../as/FUNC/outa.casl:52:;;; GR1の値とGR2の値の、商をGR0、剰余をGR3に格納する
-../../../../as/FUNC/outa.casl:53:;;; 0〜65535の範囲の数値を扱う
-../../../../as/FUNC/outa.casl:54:ODIVL   START
-../../../../as/FUNC/outa.casl:55:        PUSH    0,GR1
+../../../../as/FUNC/outa.casl:   51:        END
+../../../../as/FUNC/outa.casl:   52:;;; GR1の値とGR2の値の、商をGR0、剰余をGR3に格納する
+../../../../as/FUNC/outa.casl:   53:;;; 0〜65535の範囲の数値を扱う
+../../../../as/FUNC/outa.casl:   54:ODIVL   START
+../../../../as/FUNC/outa.casl:   55:        PUSH    0,GR1
 	#00C6	#7001
 	#00C7	#0000
-../../../../as/FUNC/outa.casl:56:        PUSH    0,GR2
+../../../../as/FUNC/outa.casl:   56:        PUSH    0,GR2
 	#00C8	#7002
 	#00C9	#0000
-../../../../as/FUNC/outa.casl:57:        PUSH    0,GR4
+../../../../as/FUNC/outa.casl:   57:        PUSH    0,GR4
 	#00CA	#7004
 	#00CB	#0000
-../../../../as/FUNC/outa.casl:58:        AND     GR2,GR2         ; GR2が0の場合、ODFINへジャンプ
+../../../../as/FUNC/outa.casl:   58:        AND     GR2,GR2         ; GR2が0の場合、ODFINへジャンプ
 	#00CC	#3422
-../../../../as/FUNC/outa.casl:59:        JZE     ODFIN           ; ↓
+../../../../as/FUNC/outa.casl:   59:        JZE     ODFIN           ; ↓
 	#00CD	#6300
 	#00CE	#00FB
-../../../../as/FUNC/outa.casl:60:        ST      GR2,ODY         ; ODYにGR2の初期値を保存
+../../../../as/FUNC/outa.casl:   60:        ST      GR2,ODY         ; ODYにGR2の初期値を保存
 	#00CF	#1120
 	#00D0	#0100
-../../../../as/FUNC/outa.casl:61:        LAD     GR0,0           ; GR0の初期化
+../../../../as/FUNC/outa.casl:   61:        LAD     GR0,0           ; GR0の初期化
 	#00D1	#1200
 	#00D2	#0000
-../../../../as/FUNC/outa.casl:62:        LAD     GR3,0           ; GR3の初期化
+../../../../as/FUNC/outa.casl:   62:        LAD     GR3,0           ; GR3の初期化
 	#00D3	#1230
 	#00D4	#0000
-../../../../as/FUNC/outa.casl:63:        LAD     GR4,1           ; GR4の初期化。対象ビットを表す
+../../../../as/FUNC/outa.casl:   63:        LAD     GR4,1           ; GR4の初期化。対象ビットを表す
 	#00D5	#1240
 	#00D6	#0001
-../../../../as/FUNC/outa.casl:64:ODSL    CPL     GR2,GR1         ; ループ先頭。(GR2 > GR1)の場合、ODLOOPへループ脱出
+../../../../as/FUNC/outa.casl:   64:ODSL    CPL     GR2,GR1         ; ループ先頭。(GR2 > GR1)の場合、ODLOOPへループ脱出
 	#00D7	#4521
-../../../../as/FUNC/outa.casl:65:        JPL     ODLOOP          ; ↓
+../../../../as/FUNC/outa.casl:   65:        JPL     ODLOOP          ; ↓
 	#00D8	#6500
 	#00D9	#00EA
-../../../../as/FUNC/outa.casl:66:        SLL     GR4,1           ; GR4を1回左シフト
+../../../../as/FUNC/outa.casl:   66:        SLL     GR4,1           ; GR4を1回左シフト
 	#00DA	#5240
 	#00DB	#0001
-../../../../as/FUNC/outa.casl:67:        SLL     GR2,1           ; GR2を1回左シフト
+../../../../as/FUNC/outa.casl:   67:        SLL     GR2,1           ; GR2を1回左シフト
 	#00DC	#5220
 	#00DD	#0001
-../../../../as/FUNC/outa.casl:68:        JOV     ODYOV           ; オーバーフローの場合は、ODYOVにジャンプ
+../../../../as/FUNC/outa.casl:   68:        JOV     ODYOV           ; オーバーフローの場合は、ODYOVにジャンプ
 	#00DE	#6600
 	#00DF	#00E2
-../../../../as/FUNC/outa.casl:69:        JUMP    ODSL            ; ループ終端
+../../../../as/FUNC/outa.casl:   69:        JUMP    ODSL            ; ループ終端
 	#00E0	#6400
 	#00E1	#00D7
-../../../../as/FUNC/outa.casl:70:ODYOV   SRL     GR2,1
+../../../../as/FUNC/outa.casl:   70:ODYOV   SRL     GR2,1
 	#00E2	#5320
 	#00E3	#0001
-../../../../as/FUNC/outa.casl:71:        LAD     GR2,#8000,GR2
+../../../../as/FUNC/outa.casl:   71:        LAD     GR2,#8000,GR2
 	#00E4	#1222
 	#00E5	#8000
-../../../../as/FUNC/outa.casl:72:        SRL     GR4,1
+../../../../as/FUNC/outa.casl:   72:        SRL     GR4,1
 	#00E6	#5340
 	#00E7	#0001
-../../../../as/FUNC/outa.casl:73:        JUMP    ODLPIN
+../../../../as/FUNC/outa.casl:   73:        JUMP    ODLPIN
 	#00E8	#6400
 	#00E9	#00F7
-../../../../as/FUNC/outa.casl:74:ODLOOP  SRL     GR4,1           ; ループ先頭。GR4を1回右シフト
+../../../../as/FUNC/outa.casl:   74:ODLOOP  SRL     GR4,1           ; ループ先頭。GR4を1回右シフト
 	#00EA	#5340
 	#00EB	#0001
-../../../../as/FUNC/outa.casl:75:        JZE     ODFIN           ; (GR4 = 0)の場合、ループ脱出
+../../../../as/FUNC/outa.casl:   75:        JZE     ODFIN           ; (GR4 = 0)の場合、ループ脱出
 	#00EC	#6300
 	#00ED	#00FB
-../../../../as/FUNC/outa.casl:76:        SRL     GR2,1           ; GR2を1回右シフト
+../../../../as/FUNC/outa.casl:   76:        SRL     GR2,1           ; GR2を1回右シフト
 	#00EE	#5320
 	#00EF	#0001
-../../../../as/FUNC/outa.casl:77:        CPL     GR1,ODY         ; (GR1 < ODY)の場合、ループ脱出
+../../../../as/FUNC/outa.casl:   77:        CPL     GR1,ODY         ; (GR1 < ODY)の場合、ループ脱出
 	#00F0	#4110
 	#00F1	#0100
-../../../../as/FUNC/outa.casl:78:        JMI     ODFIN           ; ↓
+../../../../as/FUNC/outa.casl:   78:        JMI     ODFIN           ; ↓
 	#00F2	#6100
 	#00F3	#00FB
-../../../../as/FUNC/outa.casl:79:        CPL     GR1,GR2         ; (GR1 < GR2)の場合、ループ先頭へジャンプ
+../../../../as/FUNC/outa.casl:   79:        CPL     GR1,GR2         ; (GR1 < GR2)の場合、ループ先頭へジャンプ
 	#00F4	#4512
-../../../../as/FUNC/outa.casl:80:        JMI     ODLOOP          ; ↓
+../../../../as/FUNC/outa.casl:   80:        JMI     ODLOOP          ; ↓
 	#00F5	#6100
 	#00F6	#00EA
-../../../../as/FUNC/outa.casl:81:ODLPIN  SUBL    GR1,GR2         ; GR1 <- GR1 - GR2
+../../../../as/FUNC/outa.casl:   81:ODLPIN  SUBL    GR1,GR2         ; GR1 <- GR1 - GR2
 	#00F7	#2712
-../../../../as/FUNC/outa.casl:82:        ADDL    GR0,GR4         ; GR0 <- GR0 + GR4
+../../../../as/FUNC/outa.casl:   82:        ADDL    GR0,GR4         ; GR0 <- GR0 + GR4
 	#00F8	#2604
-../../../../as/FUNC/outa.casl:83:        JUMP    ODLOOP          ; ループ終端
+../../../../as/FUNC/outa.casl:   83:        JUMP    ODLOOP          ; ループ終端
 	#00F9	#6400
 	#00FA	#00EA
-../../../../as/FUNC/outa.casl:84:ODFIN   LD      GR3,GR1
+../../../../as/FUNC/outa.casl:   84:ODFIN   LD      GR3,GR1
 	#00FB	#1431
-../../../../as/FUNC/outa.casl:85:        POP	GR4
+../../../../as/FUNC/outa.casl:   85:        POP	GR4
 	#00FC	#7140
-../../../../as/FUNC/outa.casl:86:        POP     GR2
+../../../../as/FUNC/outa.casl:   86:        POP     GR2
 	#00FD	#7120
-../../../../as/FUNC/outa.casl:87:        POP     GR1
+../../../../as/FUNC/outa.casl:   87:        POP     GR1
 	#00FE	#7110
-../../../../as/FUNC/outa.casl:88:        RET
+../../../../as/FUNC/outa.casl:   88:        RET
 	#00FF	#8100
-../../../../as/FUNC/outa.casl:89:ODY     DS      1        
+../../../../as/FUNC/outa.casl:   89:ODY     DS      1        
 	#0100	#0000
-../../../../as/FUNC/outa.casl:90:        END
-../../../../as/FUNC/outa.casl:91:;; アドレスがGR1、長さがGR2の文字列を逆順に並べ替える
-../../../../as/FUNC/outa.casl:92:;; 例: 12345 -> 54321、54321- -> -12345
-../../../../as/FUNC/outa.casl:93:REV     START
-../../../../as/FUNC/outa.casl:94:        RPUSH
+../../../../as/FUNC/outa.casl:   90:        END
+../../../../as/FUNC/outa.casl:   91:;; アドレスがGR1、長さがGR2の文字列を逆順に並べ替える
+../../../../as/FUNC/outa.casl:   92:;; 例: 12345 -> 54321、54321- -> -12345
+../../../../as/FUNC/outa.casl:   93:REV     START
+../../../../as/FUNC/outa.casl:   94:        RPUSH
 	#0101	#7001
 	#0102	#0000
 	#0103	#7002
@@ -580,54 +580,54 @@ Assemble ../../../../as/FUNC/outa.casl (1)
 	#010C	#0000
 	#010D	#7007
 	#010E	#0000
-../../../../as/FUNC/outa.casl:95:        LAD     GR3,0           ; GR3の初期化
+../../../../as/FUNC/outa.casl:   95:        LAD     GR3,0           ; GR3の初期化
 	#010F	#1230
 	#0110	#0000
-../../../../as/FUNC/outa.casl:96:RPU     CPL     GR3,GR2         ; ループ先頭。(GR3 = GR2)の場合、ループ脱出
+../../../../as/FUNC/outa.casl:   96:RPU     CPL     GR3,GR2         ; ループ先頭。(GR3 = GR2)の場合、ループ脱出
 	#0111	#4532
-../../../../as/FUNC/outa.casl:97:        JZE     RNEXT           ; ↓
+../../../../as/FUNC/outa.casl:   97:        JZE     RNEXT           ; ↓
 	#0112	#6300
 	#0113	#011E
-../../../../as/FUNC/outa.casl:98:        LD      GR4,GR1         ; GR4にGR1の値をコピー
+../../../../as/FUNC/outa.casl:   98:        LD      GR4,GR1         ; GR4にGR1の値をコピー
 	#0114	#1441
-../../../../as/FUNC/outa.casl:99:        ADDL    GR4,GR3         ; GR4 <- GR4 + GR3
+../../../../as/FUNC/outa.casl:   99:        ADDL    GR4,GR3         ; GR4 <- GR4 + GR3
 	#0115	#2643
-../../../../as/FUNC/outa.casl:100:        LD      GR5,0,GR4       ; GR5にアドレスGR4の値を格納
+../../../../as/FUNC/outa.casl:  100:        LD      GR5,0,GR4       ; GR5にアドレスGR4の値を格納
 	#0116	#1054
 	#0117	#0000
-../../../../as/FUNC/outa.casl:101:        PUSH    0,GR5           ; GR5をプッシュ
+../../../../as/FUNC/outa.casl:  101:        PUSH    0,GR5           ; GR5をプッシュ
 	#0118	#7005
 	#0119	#0000
-../../../../as/FUNC/outa.casl:102:        LAD     GR3,1,GR3       ; GR3 <- GR3 + 1
+../../../../as/FUNC/outa.casl:  102:        LAD     GR3,1,GR3       ; GR3 <- GR3 + 1
 	#011A	#1233
 	#011B	#0001
-../../../../as/FUNC/outa.casl:103:        JUMP    RPU             ; ループ終端
+../../../../as/FUNC/outa.casl:  103:        JUMP    RPU             ; ループ終端
 	#011C	#6400
 	#011D	#0111
-../../../../as/FUNC/outa.casl:104:RNEXT   LAD     GR3,0           ; GR3の初期化
+../../../../as/FUNC/outa.casl:  104:RNEXT   LAD     GR3,0           ; GR3の初期化
 	#011E	#1230
 	#011F	#0000
-../../../../as/FUNC/outa.casl:105:RPO     CPL     GR3,GR2         ; ループ先頭。(GR3 = GR2)の場合、ループ脱出
+../../../../as/FUNC/outa.casl:  105:RPO     CPL     GR3,GR2         ; ループ先頭。(GR3 = GR2)の場合、ループ脱出
 	#0120	#4532
-../../../../as/FUNC/outa.casl:106:        JZE     RFIN            ; ↓
+../../../../as/FUNC/outa.casl:  106:        JZE     RFIN            ; ↓
 	#0121	#6300
 	#0122	#012C
-../../../../as/FUNC/outa.casl:107:        POP     GR5             ; GR5にポップ
+../../../../as/FUNC/outa.casl:  107:        POP     GR5             ; GR5にポップ
 	#0123	#7150
-../../../../as/FUNC/outa.casl:108:        LD      GR4,GR1         ; GR4にGR1の値をコピー
+../../../../as/FUNC/outa.casl:  108:        LD      GR4,GR1         ; GR4にGR1の値をコピー
 	#0124	#1441
-../../../../as/FUNC/outa.casl:109:        ADDL    GR4,GR3         ; GR4 <- GR4 + GR3
+../../../../as/FUNC/outa.casl:  109:        ADDL    GR4,GR3         ; GR4 <- GR4 + GR3
 	#0125	#2643
-../../../../as/FUNC/outa.casl:110:        ST      GR5,0,GR4       ; アドレスGR4にGR5の値を格納
+../../../../as/FUNC/outa.casl:  110:        ST      GR5,0,GR4       ; アドレスGR4にGR5の値を格納
 	#0126	#1154
 	#0127	#0000
-../../../../as/FUNC/outa.casl:111:        LAD     GR3,1,GR3       ; GR3 <- GR3 + 1
+../../../../as/FUNC/outa.casl:  111:        LAD     GR3,1,GR3       ; GR3 <- GR3 + 1
 	#0128	#1233
 	#0129	#0001
-../../../../as/FUNC/outa.casl:112:        JUMP    RPO             ; ループ終端
+../../../../as/FUNC/outa.casl:  112:        JUMP    RPO             ; ループ終端
 	#012A	#6400
 	#012B	#0120
-../../../../as/FUNC/outa.casl:113:RFIN    RPOP
+../../../../as/FUNC/outa.casl:  113:RFIN    RPOP
 	#012C	#7170
 	#012D	#7160
 	#012E	#7150
@@ -635,22 +635,22 @@ Assemble ../../../../as/FUNC/outa.casl (1)
 	#0130	#7130
 	#0131	#7120
 	#0132	#7110
-../../../../as/FUNC/outa.casl:114:        RET
+../../../../as/FUNC/outa.casl:  114:        RET
 	#0133	#8100
-../../../../as/FUNC/outa.casl:115:        END
-../../../../as/FUNC/outa.casl:116:;; GR1の値を絶対値に変換する。GR1にはマイナスの数値が格納されていると想定。
-../../../../as/FUNC/outa.casl:117:;; 例: -10 -> 10, -20 -> 20
-../../../../as/FUNC/outa.casl:118:OABS    START
-../../../../as/FUNC/outa.casl:119:        XOR     GR1,=#FFFF      ; GR1の値を反転
+../../../../as/FUNC/outa.casl:  115:        END
+../../../../as/FUNC/outa.casl:  116:;; GR1の値を絶対値に変換する。GR1にはマイナスの数値が格納されていると想定。
+../../../../as/FUNC/outa.casl:  117:;; 例: -10 -> 10, -20 -> 20
+../../../../as/FUNC/outa.casl:  118:OABS    START
+../../../../as/FUNC/outa.casl:  119:        XOR     GR1,=#FFFF      ; GR1の値を反転
 	#013C	#FFFF
 	#0134	#3210
 	#0135	#013C
-../../../../as/FUNC/outa.casl:120:        LAD     GR1,1,GR1       ; GR1 <- GR1 + 1
+../../../../as/FUNC/outa.casl:  120:        LAD     GR1,1,GR1       ; GR1 <- GR1 + 1
 	#0136	#1211
 	#0137	#0001
-../../../../as/FUNC/outa.casl:121:        RET
+../../../../as/FUNC/outa.casl:  121:        RET
 	#0138	#8100
-../../../../as/FUNC/outa.casl:122:        END
+../../../../as/FUNC/outa.casl:  122:        END
 12
 12
 1

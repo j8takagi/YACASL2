@@ -1,28 +1,28 @@
 ../../../../casl2 -slatd ../../../../as/CMD/ld2.casl
 
 Assemble ../../../../as/CMD/ld2.casl (0)
-../../../../as/CMD/ld2.casl:1:; LDコマンド
-../../../../as/CMD/ld2.casl:2:MAIN	START	BEGIN
-../../../../as/CMD/ld2.casl:3:BEGIN	LAD	GR0,3
-../../../../as/CMD/ld2.casl:4:    LD	GR1,GR0
-../../../../as/CMD/ld2.casl:5:	RET
-../../../../as/CMD/ld2.casl:6:	END
+../../../../as/CMD/ld2.casl:    1:; LDコマンド
+../../../../as/CMD/ld2.casl:    2:MAIN	START	BEGIN
+../../../../as/CMD/ld2.casl:    3:BEGIN	LAD	GR0,3
+../../../../as/CMD/ld2.casl:    4:    LD	GR1,GR0
+../../../../as/CMD/ld2.casl:    5:	RET
+../../../../as/CMD/ld2.casl:    6:	END
 
 Label::::
 MAIN.BEGIN ---> #0000
 MAIN ---> #0000
 
 Assemble ../../../../as/CMD/ld2.casl (1)
-../../../../as/CMD/ld2.casl:1:; LDコマンド
-../../../../as/CMD/ld2.casl:2:MAIN	START	BEGIN
-../../../../as/CMD/ld2.casl:3:BEGIN	LAD	GR0,3
+../../../../as/CMD/ld2.casl:    1:; LDコマンド
+../../../../as/CMD/ld2.casl:    2:MAIN	START	BEGIN
+../../../../as/CMD/ld2.casl:    3:BEGIN	LAD	GR0,3
 	#0000	#1200
 	#0001	#0003
-../../../../as/CMD/ld2.casl:4:    LD	GR1,GR0
+../../../../as/CMD/ld2.casl:    4:    LD	GR1,GR0
 	#0002	#1410
-../../../../as/CMD/ld2.casl:5:	RET
+../../../../as/CMD/ld2.casl:    5:	RET
 	#0003	#8100
-../../../../as/CMD/ld2.casl:6:	END
+../../../../as/CMD/ld2.casl:    6:	END
 
 Executing machine codes
 #0000: Register::::

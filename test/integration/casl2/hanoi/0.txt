@@ -1,55 +1,55 @@
 ../../../../casl2 -sla ../../../../as/FUNC/hanoi.casl
 
 Assemble ../../../../as/FUNC/hanoi.casl (0)
-../../../../as/FUNC/hanoi.casl:1:; ハノイの塔を解くプログラム
-../../../../as/FUNC/hanoi.casl:2:MAIN   START
-../../../../as/FUNC/hanoi.casl:3:       LD      GR0,N
-../../../../as/FUNC/hanoi.casl:4:       LD      GR1,A
-../../../../as/FUNC/hanoi.casl:5:       LD      GR2,B
-../../../../as/FUNC/hanoi.casl:6:       LD      GR3,C
-../../../../as/FUNC/hanoi.casl:7:       CALL    HANOI
-../../../../as/FUNC/hanoi.casl:8:       RET
-../../../../as/FUNC/hanoi.casl:9:
-../../../../as/FUNC/hanoi.casl:10:HANOI  CPA     GR0,=1
-../../../../as/FUNC/hanoi.casl:11:       JZE     DISP
-../../../../as/FUNC/hanoi.casl:12:       SUBA    GR0,=1
-../../../../as/FUNC/hanoi.casl:13:       PUSH    0,GR2
-../../../../as/FUNC/hanoi.casl:14:       PUSH    0,GR3
-../../../../as/FUNC/hanoi.casl:15:       POP     GR2
-../../../../as/FUNC/hanoi.casl:16:       POP     GR3
-../../../../as/FUNC/hanoi.casl:17:       CALL    HANOI
-../../../../as/FUNC/hanoi.casl:18:       PUSH    0,GR2
-../../../../as/FUNC/hanoi.casl:19:       PUSH    0,GR3
-../../../../as/FUNC/hanoi.casl:20:       POP     GR2
-../../../../as/FUNC/hanoi.casl:21:       POP     GR3
-../../../../as/FUNC/hanoi.casl:22:       CALL    DISP
-../../../../as/FUNC/hanoi.casl:23:       PUSH    0,GR1
-../../../../as/FUNC/hanoi.casl:24:       PUSH    0,GR2
-../../../../as/FUNC/hanoi.casl:25:       POP     GR1
-../../../../as/FUNC/hanoi.casl:26:       POP     GR2
-../../../../as/FUNC/hanoi.casl:27:       CALL    HANOI
-../../../../as/FUNC/hanoi.casl:28:       PUSH    0,GR1
-../../../../as/FUNC/hanoi.casl:29:       PUSH    0,GR2
-../../../../as/FUNC/hanoi.casl:30:       POP     GR1
-../../../../as/FUNC/hanoi.casl:31:       POP     GR2
-../../../../as/FUNC/hanoi.casl:32:       ADDA    GR0,=1
-../../../../as/FUNC/hanoi.casl:33:       RET
-../../../../as/FUNC/hanoi.casl:34:
-../../../../as/FUNC/hanoi.casl:35:DISP   ST      GR1,MSG1
-../../../../as/FUNC/hanoi.casl:36:       ST      GR3,MSG2
-../../../../as/FUNC/hanoi.casl:37:       OUT     MSG,LNG
-../../../../as/FUNC/hanoi.casl:38:       RET
-../../../../as/FUNC/hanoi.casl:39:
-../../../../as/FUNC/hanoi.casl:40:N      DC      3	;輪の総数
-../../../../as/FUNC/hanoi.casl:41:LNG    DC      11	;メッセージの長さ
-../../../../as/FUNC/hanoi.casl:42:A      DC      'A'
-../../../../as/FUNC/hanoi.casl:43:B      DC      'B'
-../../../../as/FUNC/hanoi.casl:44:C      DC      'C'
-../../../../as/FUNC/hanoi.casl:45:MSG    DC      'from '
-../../../../as/FUNC/hanoi.casl:46:MSG1   DS      1
-../../../../as/FUNC/hanoi.casl:47:       DC      ' to '
-../../../../as/FUNC/hanoi.casl:48:MSG2   DS      1
-../../../../as/FUNC/hanoi.casl:49:       END
+../../../../as/FUNC/hanoi.casl:    1:; ハノイの塔を解くプログラム
+../../../../as/FUNC/hanoi.casl:    2:MAIN   START
+../../../../as/FUNC/hanoi.casl:    3:       LD      GR0,N
+../../../../as/FUNC/hanoi.casl:    4:       LD      GR1,A
+../../../../as/FUNC/hanoi.casl:    5:       LD      GR2,B
+../../../../as/FUNC/hanoi.casl:    6:       LD      GR3,C
+../../../../as/FUNC/hanoi.casl:    7:       CALL    HANOI
+../../../../as/FUNC/hanoi.casl:    8:       RET
+../../../../as/FUNC/hanoi.casl:    9:
+../../../../as/FUNC/hanoi.casl:   10:HANOI  CPA     GR0,=1
+../../../../as/FUNC/hanoi.casl:   11:       JZE     DISP
+../../../../as/FUNC/hanoi.casl:   12:       SUBA    GR0,=1
+../../../../as/FUNC/hanoi.casl:   13:       PUSH    0,GR2
+../../../../as/FUNC/hanoi.casl:   14:       PUSH    0,GR3
+../../../../as/FUNC/hanoi.casl:   15:       POP     GR2
+../../../../as/FUNC/hanoi.casl:   16:       POP     GR3
+../../../../as/FUNC/hanoi.casl:   17:       CALL    HANOI
+../../../../as/FUNC/hanoi.casl:   18:       PUSH    0,GR2
+../../../../as/FUNC/hanoi.casl:   19:       PUSH    0,GR3
+../../../../as/FUNC/hanoi.casl:   20:       POP     GR2
+../../../../as/FUNC/hanoi.casl:   21:       POP     GR3
+../../../../as/FUNC/hanoi.casl:   22:       CALL    DISP
+../../../../as/FUNC/hanoi.casl:   23:       PUSH    0,GR1
+../../../../as/FUNC/hanoi.casl:   24:       PUSH    0,GR2
+../../../../as/FUNC/hanoi.casl:   25:       POP     GR1
+../../../../as/FUNC/hanoi.casl:   26:       POP     GR2
+../../../../as/FUNC/hanoi.casl:   27:       CALL    HANOI
+../../../../as/FUNC/hanoi.casl:   28:       PUSH    0,GR1
+../../../../as/FUNC/hanoi.casl:   29:       PUSH    0,GR2
+../../../../as/FUNC/hanoi.casl:   30:       POP     GR1
+../../../../as/FUNC/hanoi.casl:   31:       POP     GR2
+../../../../as/FUNC/hanoi.casl:   32:       ADDA    GR0,=1
+../../../../as/FUNC/hanoi.casl:   33:       RET
+../../../../as/FUNC/hanoi.casl:   34:
+../../../../as/FUNC/hanoi.casl:   35:DISP   ST      GR1,MSG1
+../../../../as/FUNC/hanoi.casl:   36:       ST      GR3,MSG2
+../../../../as/FUNC/hanoi.casl:   37:       OUT     MSG,LNG
+../../../../as/FUNC/hanoi.casl:   38:       RET
+../../../../as/FUNC/hanoi.casl:   39:
+../../../../as/FUNC/hanoi.casl:   40:N      DC      3	;輪の総数
+../../../../as/FUNC/hanoi.casl:   41:LNG    DC      11	;メッセージの長さ
+../../../../as/FUNC/hanoi.casl:   42:A      DC      'A'
+../../../../as/FUNC/hanoi.casl:   43:B      DC      'B'
+../../../../as/FUNC/hanoi.casl:   44:C      DC      'C'
+../../../../as/FUNC/hanoi.casl:   45:MSG    DC      'from '
+../../../../as/FUNC/hanoi.casl:   46:MSG1   DS      1
+../../../../as/FUNC/hanoi.casl:   47:       DC      ' to '
+../../../../as/FUNC/hanoi.casl:   48:MSG2   DS      1
+../../../../as/FUNC/hanoi.casl:   49:       END
 
 Label::::
 MAIN.LNG ---> #004A
@@ -65,100 +65,100 @@ MAIN.MSG1 ---> #0053
 MAIN.MSG2 ---> #0058
 
 Assemble ../../../../as/FUNC/hanoi.casl (1)
-../../../../as/FUNC/hanoi.casl:1:; ハノイの塔を解くプログラム
-../../../../as/FUNC/hanoi.casl:2:MAIN   START
-../../../../as/FUNC/hanoi.casl:3:       LD      GR0,N
+../../../../as/FUNC/hanoi.casl:    1:; ハノイの塔を解くプログラム
+../../../../as/FUNC/hanoi.casl:    2:MAIN   START
+../../../../as/FUNC/hanoi.casl:    3:       LD      GR0,N
 	#0000	#1000
 	#0001	#0049
-../../../../as/FUNC/hanoi.casl:4:       LD      GR1,A
+../../../../as/FUNC/hanoi.casl:    4:       LD      GR1,A
 	#0002	#1010
 	#0003	#004B
-../../../../as/FUNC/hanoi.casl:5:       LD      GR2,B
+../../../../as/FUNC/hanoi.casl:    5:       LD      GR2,B
 	#0004	#1020
 	#0005	#004C
-../../../../as/FUNC/hanoi.casl:6:       LD      GR3,C
+../../../../as/FUNC/hanoi.casl:    6:       LD      GR3,C
 	#0006	#1030
 	#0007	#004D
-../../../../as/FUNC/hanoi.casl:7:       CALL    HANOI
+../../../../as/FUNC/hanoi.casl:    7:       CALL    HANOI
 	#0008	#8000
 	#0009	#000B
-../../../../as/FUNC/hanoi.casl:8:       RET
+../../../../as/FUNC/hanoi.casl:    8:       RET
 	#000A	#8100
-../../../../as/FUNC/hanoi.casl:9:
-../../../../as/FUNC/hanoi.casl:10:HANOI  CPA     GR0,=1
+../../../../as/FUNC/hanoi.casl:    9:
+../../../../as/FUNC/hanoi.casl:   10:HANOI  CPA     GR0,=1
 	#0059	#0001
 	#000B	#4000
 	#000C	#0059
-../../../../as/FUNC/hanoi.casl:11:       JZE     DISP
+../../../../as/FUNC/hanoi.casl:   11:       JZE     DISP
 	#000D	#6300
 	#000E	#0032
-../../../../as/FUNC/hanoi.casl:12:       SUBA    GR0,=1
+../../../../as/FUNC/hanoi.casl:   12:       SUBA    GR0,=1
 	#005A	#0001
 	#000F	#2100
 	#0010	#005A
-../../../../as/FUNC/hanoi.casl:13:       PUSH    0,GR2
+../../../../as/FUNC/hanoi.casl:   13:       PUSH    0,GR2
 	#0011	#7002
 	#0012	#0000
-../../../../as/FUNC/hanoi.casl:14:       PUSH    0,GR3
+../../../../as/FUNC/hanoi.casl:   14:       PUSH    0,GR3
 	#0013	#7003
 	#0014	#0000
-../../../../as/FUNC/hanoi.casl:15:       POP     GR2
+../../../../as/FUNC/hanoi.casl:   15:       POP     GR2
 	#0015	#7120
-../../../../as/FUNC/hanoi.casl:16:       POP     GR3
+../../../../as/FUNC/hanoi.casl:   16:       POP     GR3
 	#0016	#7130
-../../../../as/FUNC/hanoi.casl:17:       CALL    HANOI
+../../../../as/FUNC/hanoi.casl:   17:       CALL    HANOI
 	#0017	#8000
 	#0018	#000B
-../../../../as/FUNC/hanoi.casl:18:       PUSH    0,GR2
+../../../../as/FUNC/hanoi.casl:   18:       PUSH    0,GR2
 	#0019	#7002
 	#001A	#0000
-../../../../as/FUNC/hanoi.casl:19:       PUSH    0,GR3
+../../../../as/FUNC/hanoi.casl:   19:       PUSH    0,GR3
 	#001B	#7003
 	#001C	#0000
-../../../../as/FUNC/hanoi.casl:20:       POP     GR2
+../../../../as/FUNC/hanoi.casl:   20:       POP     GR2
 	#001D	#7120
-../../../../as/FUNC/hanoi.casl:21:       POP     GR3
+../../../../as/FUNC/hanoi.casl:   21:       POP     GR3
 	#001E	#7130
-../../../../as/FUNC/hanoi.casl:22:       CALL    DISP
+../../../../as/FUNC/hanoi.casl:   22:       CALL    DISP
 	#001F	#8000
 	#0020	#0032
-../../../../as/FUNC/hanoi.casl:23:       PUSH    0,GR1
+../../../../as/FUNC/hanoi.casl:   23:       PUSH    0,GR1
 	#0021	#7001
 	#0022	#0000
-../../../../as/FUNC/hanoi.casl:24:       PUSH    0,GR2
+../../../../as/FUNC/hanoi.casl:   24:       PUSH    0,GR2
 	#0023	#7002
 	#0024	#0000
-../../../../as/FUNC/hanoi.casl:25:       POP     GR1
+../../../../as/FUNC/hanoi.casl:   25:       POP     GR1
 	#0025	#7110
-../../../../as/FUNC/hanoi.casl:26:       POP     GR2
+../../../../as/FUNC/hanoi.casl:   26:       POP     GR2
 	#0026	#7120
-../../../../as/FUNC/hanoi.casl:27:       CALL    HANOI
+../../../../as/FUNC/hanoi.casl:   27:       CALL    HANOI
 	#0027	#8000
 	#0028	#000B
-../../../../as/FUNC/hanoi.casl:28:       PUSH    0,GR1
+../../../../as/FUNC/hanoi.casl:   28:       PUSH    0,GR1
 	#0029	#7001
 	#002A	#0000
-../../../../as/FUNC/hanoi.casl:29:       PUSH    0,GR2
+../../../../as/FUNC/hanoi.casl:   29:       PUSH    0,GR2
 	#002B	#7002
 	#002C	#0000
-../../../../as/FUNC/hanoi.casl:30:       POP     GR1
+../../../../as/FUNC/hanoi.casl:   30:       POP     GR1
 	#002D	#7110
-../../../../as/FUNC/hanoi.casl:31:       POP     GR2
+../../../../as/FUNC/hanoi.casl:   31:       POP     GR2
 	#002E	#7120
-../../../../as/FUNC/hanoi.casl:32:       ADDA    GR0,=1
+../../../../as/FUNC/hanoi.casl:   32:       ADDA    GR0,=1
 	#005B	#0001
 	#002F	#2000
 	#0030	#005B
-../../../../as/FUNC/hanoi.casl:33:       RET
+../../../../as/FUNC/hanoi.casl:   33:       RET
 	#0031	#8100
-../../../../as/FUNC/hanoi.casl:34:
-../../../../as/FUNC/hanoi.casl:35:DISP   ST      GR1,MSG1
+../../../../as/FUNC/hanoi.casl:   34:
+../../../../as/FUNC/hanoi.casl:   35:DISP   ST      GR1,MSG1
 	#0032	#1110
 	#0033	#0053
-../../../../as/FUNC/hanoi.casl:36:       ST      GR3,MSG2
+../../../../as/FUNC/hanoi.casl:   36:       ST      GR3,MSG2
 	#0034	#1130
 	#0035	#0058
-../../../../as/FUNC/hanoi.casl:37:       OUT     MSG,LNG
+../../../../as/FUNC/hanoi.casl:   37:       OUT     MSG,LNG
 	#0036	#7001
 	#0037	#0000
 	#0038	#7002
@@ -178,35 +178,35 @@ Assemble ../../../../as/FUNC/hanoi.casl (1)
 	#0045	#0002
 	#0046	#7120
 	#0047	#7110
-../../../../as/FUNC/hanoi.casl:38:       RET
+../../../../as/FUNC/hanoi.casl:   38:       RET
 	#0048	#8100
-../../../../as/FUNC/hanoi.casl:39:
-../../../../as/FUNC/hanoi.casl:40:N      DC      3	;輪の総数
+../../../../as/FUNC/hanoi.casl:   39:
+../../../../as/FUNC/hanoi.casl:   40:N      DC      3	;輪の総数
 	#0049	#0003
-../../../../as/FUNC/hanoi.casl:41:LNG    DC      11	;メッセージの長さ
+../../../../as/FUNC/hanoi.casl:   41:LNG    DC      11	;メッセージの長さ
 	#004A	#000B
-../../../../as/FUNC/hanoi.casl:42:A      DC      'A'
+../../../../as/FUNC/hanoi.casl:   42:A      DC      'A'
 	#004B	#0041
-../../../../as/FUNC/hanoi.casl:43:B      DC      'B'
+../../../../as/FUNC/hanoi.casl:   43:B      DC      'B'
 	#004C	#0042
-../../../../as/FUNC/hanoi.casl:44:C      DC      'C'
+../../../../as/FUNC/hanoi.casl:   44:C      DC      'C'
 	#004D	#0043
-../../../../as/FUNC/hanoi.casl:45:MSG    DC      'from '
+../../../../as/FUNC/hanoi.casl:   45:MSG    DC      'from '
 	#004E	#0066
 	#004F	#0072
 	#0050	#006F
 	#0051	#006D
 	#0052	#0020
-../../../../as/FUNC/hanoi.casl:46:MSG1   DS      1
+../../../../as/FUNC/hanoi.casl:   46:MSG1   DS      1
 	#0053	#0000
-../../../../as/FUNC/hanoi.casl:47:       DC      ' to '
+../../../../as/FUNC/hanoi.casl:   47:       DC      ' to '
 	#0054	#0020
 	#0055	#0074
 	#0056	#006F
 	#0057	#0020
-../../../../as/FUNC/hanoi.casl:48:MSG2   DS      1
+../../../../as/FUNC/hanoi.casl:   48:MSG2   DS      1
 	#0058	#0000
-../../../../as/FUNC/hanoi.casl:49:       END
+../../../../as/FUNC/hanoi.casl:   49:       END
 from A to C
 from A to B
 from C to B

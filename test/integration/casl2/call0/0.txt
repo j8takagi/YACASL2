@@ -1,18 +1,18 @@
 ../../../../casl2 -slatd ../../../../as/CMD/call0.casl
 
 Assemble ../../../../as/CMD/call0.casl (0)
-../../../../as/CMD/call0.casl:1:MAIN    START   BEGIN
-../../../../as/CMD/call0.casl:2:BEGIN   LD      GR1,A
-../../../../as/CMD/call0.casl:3:        CALL    COPY
-../../../../as/CMD/call0.casl:4:        ST      GR2,B
-../../../../as/CMD/call0.casl:5:        RET
-../../../../as/CMD/call0.casl:6:A       DC      29
-../../../../as/CMD/call0.casl:7:B       DS      1
-../../../../as/CMD/call0.casl:8:        END
-../../../../as/CMD/call0.casl:9:COPY    START
-../../../../as/CMD/call0.casl:10:        LD      GR2,GR1
-../../../../as/CMD/call0.casl:11:        RET
-../../../../as/CMD/call0.casl:12:        END
+../../../../as/CMD/call0.casl:    1:MAIN    START   BEGIN
+../../../../as/CMD/call0.casl:    2:BEGIN   LD      GR1,A
+../../../../as/CMD/call0.casl:    3:        CALL    COPY
+../../../../as/CMD/call0.casl:    4:        ST      GR2,B
+../../../../as/CMD/call0.casl:    5:        RET
+../../../../as/CMD/call0.casl:    6:A       DC      29
+../../../../as/CMD/call0.casl:    7:B       DS      1
+../../../../as/CMD/call0.casl:    8:        END
+../../../../as/CMD/call0.casl:    9:COPY    START
+../../../../as/CMD/call0.casl:   10:        LD      GR2,GR1
+../../../../as/CMD/call0.casl:   11:        RET
+../../../../as/CMD/call0.casl:   12:        END
 
 Label::::
 MAIN.A ---> #0007
@@ -22,29 +22,29 @@ MAIN.BEGIN ---> #0000
 MAIN ---> #0000
 
 Assemble ../../../../as/CMD/call0.casl (1)
-../../../../as/CMD/call0.casl:1:MAIN    START   BEGIN
-../../../../as/CMD/call0.casl:2:BEGIN   LD      GR1,A
+../../../../as/CMD/call0.casl:    1:MAIN    START   BEGIN
+../../../../as/CMD/call0.casl:    2:BEGIN   LD      GR1,A
 	#0000	#1010
 	#0001	#0007
-../../../../as/CMD/call0.casl:3:        CALL    COPY
+../../../../as/CMD/call0.casl:    3:        CALL    COPY
 	#0002	#8000
 	#0003	#0009
-../../../../as/CMD/call0.casl:4:        ST      GR2,B
+../../../../as/CMD/call0.casl:    4:        ST      GR2,B
 	#0004	#1120
 	#0005	#0008
-../../../../as/CMD/call0.casl:5:        RET
+../../../../as/CMD/call0.casl:    5:        RET
 	#0006	#8100
-../../../../as/CMD/call0.casl:6:A       DC      29
+../../../../as/CMD/call0.casl:    6:A       DC      29
 	#0007	#001D
-../../../../as/CMD/call0.casl:7:B       DS      1
+../../../../as/CMD/call0.casl:    7:B       DS      1
 	#0008	#0000
-../../../../as/CMD/call0.casl:8:        END
-../../../../as/CMD/call0.casl:9:COPY    START
-../../../../as/CMD/call0.casl:10:        LD      GR2,GR1
+../../../../as/CMD/call0.casl:    8:        END
+../../../../as/CMD/call0.casl:    9:COPY    START
+../../../../as/CMD/call0.casl:   10:        LD      GR2,GR1
 	#0009	#1421
-../../../../as/CMD/call0.casl:11:        RET
+../../../../as/CMD/call0.casl:   11:        RET
 	#000A	#8100
-../../../../as/CMD/call0.casl:12:        END
+../../../../as/CMD/call0.casl:   12:        END
 
 Executing machine codes
 #0000: Register::::

@@ -1,15 +1,15 @@
 ../../../../casl2 -slatd ../../../../as/CMD/addl.casl
 
 Assemble ../../../../as/CMD/addl.casl (0)
-../../../../as/CMD/addl.casl:1:MAIN    START   BEGIN
-../../../../as/CMD/addl.casl:2:BEGIN   LD  GR0,A
-../../../../as/CMD/addl.casl:3:        ADDL    GR0,B
-../../../../as/CMD/addl.casl:4:        ST  GR0,C
-../../../../as/CMD/addl.casl:5:        RET
-../../../../as/CMD/addl.casl:6:A   DC  32766
-../../../../as/CMD/addl.casl:7:B   DC  29
-../../../../as/CMD/addl.casl:8:C   DS  1
-../../../../as/CMD/addl.casl:9:        END
+../../../../as/CMD/addl.casl:    1:MAIN    START   BEGIN
+../../../../as/CMD/addl.casl:    2:BEGIN   LD  GR0,A
+../../../../as/CMD/addl.casl:    3:        ADDL    GR0,B
+../../../../as/CMD/addl.casl:    4:        ST  GR0,C
+../../../../as/CMD/addl.casl:    5:        RET
+../../../../as/CMD/addl.casl:    6:A   DC  32766
+../../../../as/CMD/addl.casl:    7:B   DC  29
+../../../../as/CMD/addl.casl:    8:C   DS  1
+../../../../as/CMD/addl.casl:    9:        END
 
 Label::::
 MAIN.A ---> #0007
@@ -19,25 +19,25 @@ MAIN.BEGIN ---> #0000
 MAIN ---> #0000
 
 Assemble ../../../../as/CMD/addl.casl (1)
-../../../../as/CMD/addl.casl:1:MAIN    START   BEGIN
-../../../../as/CMD/addl.casl:2:BEGIN   LD  GR0,A
+../../../../as/CMD/addl.casl:    1:MAIN    START   BEGIN
+../../../../as/CMD/addl.casl:    2:BEGIN   LD  GR0,A
 	#0000	#1000
 	#0001	#0007
-../../../../as/CMD/addl.casl:3:        ADDL    GR0,B
+../../../../as/CMD/addl.casl:    3:        ADDL    GR0,B
 	#0002	#2200
 	#0003	#0008
-../../../../as/CMD/addl.casl:4:        ST  GR0,C
+../../../../as/CMD/addl.casl:    4:        ST  GR0,C
 	#0004	#1100
 	#0005	#0009
-../../../../as/CMD/addl.casl:5:        RET
+../../../../as/CMD/addl.casl:    5:        RET
 	#0006	#8100
-../../../../as/CMD/addl.casl:6:A   DC  32766
+../../../../as/CMD/addl.casl:    6:A   DC  32766
 	#0007	#7FFE
-../../../../as/CMD/addl.casl:7:B   DC  29
+../../../../as/CMD/addl.casl:    7:B   DC  29
 	#0008	#001D
-../../../../as/CMD/addl.casl:8:C   DS  1
+../../../../as/CMD/addl.casl:    8:C   DS  1
 	#0009	#0000
-../../../../as/CMD/addl.casl:9:        END
+../../../../as/CMD/addl.casl:    9:        END
 
 Executing machine codes
 #0000: Register::::

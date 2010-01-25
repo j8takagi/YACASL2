@@ -1,18 +1,18 @@
 ../../../../casl2 -slatd ../../../../as/CMD/svc2.casl
 
 Assemble ../../../../as/CMD/svc2.casl (0)
-../../../../as/CMD/svc2.casl:1:;;; 「SVC 2」で数値を表示
-../../../../as/CMD/svc2.casl:2:;;; casl2 svctest.casl div10.casl
-../../../../as/CMD/svc2.casl:3:MAIN    START
-../../../../as/CMD/svc2.casl:4:BEGIN   LAD     GR1,D
-../../../../as/CMD/svc2.casl:5:        LAD     GR2,A
-../../../../as/CMD/svc2.casl:6:        SVC     2
-../../../../as/CMD/svc2.casl:7:        LAD     GR1,=#A
-../../../../as/CMD/svc2.casl:8:        SVC     2
-../../../../as/CMD/svc2.casl:9:        RET
-../../../../as/CMD/svc2.casl:10:D       DC      '0'
-../../../../as/CMD/svc2.casl:11:A       DS      1
-../../../../as/CMD/svc2.casl:12:        END
+../../../../as/CMD/svc2.casl:    1:;;; 「SVC 2」で数値を表示
+../../../../as/CMD/svc2.casl:    2:;;; casl2 svctest.casl div10.casl
+../../../../as/CMD/svc2.casl:    3:MAIN    START
+../../../../as/CMD/svc2.casl:    4:BEGIN   LAD     GR1,D
+../../../../as/CMD/svc2.casl:    5:        LAD     GR2,A
+../../../../as/CMD/svc2.casl:    6:        SVC     2
+../../../../as/CMD/svc2.casl:    7:        LAD     GR1,=#A
+../../../../as/CMD/svc2.casl:    8:        SVC     2
+../../../../as/CMD/svc2.casl:    9:        RET
+../../../../as/CMD/svc2.casl:   10:D       DC      '0'
+../../../../as/CMD/svc2.casl:   11:A       DS      1
+../../../../as/CMD/svc2.casl:   12:        END
 
 Label::::
 MAIN.A ---> #000C
@@ -21,32 +21,32 @@ MAIN.BEGIN ---> #0000
 MAIN ---> #0000
 
 Assemble ../../../../as/CMD/svc2.casl (1)
-../../../../as/CMD/svc2.casl:1:;;; 「SVC 2」で数値を表示
-../../../../as/CMD/svc2.casl:2:;;; casl2 svctest.casl div10.casl
-../../../../as/CMD/svc2.casl:3:MAIN    START
-../../../../as/CMD/svc2.casl:4:BEGIN   LAD     GR1,D
+../../../../as/CMD/svc2.casl:    1:;;; 「SVC 2」で数値を表示
+../../../../as/CMD/svc2.casl:    2:;;; casl2 svctest.casl div10.casl
+../../../../as/CMD/svc2.casl:    3:MAIN    START
+../../../../as/CMD/svc2.casl:    4:BEGIN   LAD     GR1,D
 	#0000	#1210
 	#0001	#000B
-../../../../as/CMD/svc2.casl:5:        LAD     GR2,A
+../../../../as/CMD/svc2.casl:    5:        LAD     GR2,A
 	#0002	#1220
 	#0003	#000C
-../../../../as/CMD/svc2.casl:6:        SVC     2
+../../../../as/CMD/svc2.casl:    6:        SVC     2
 	#0004	#F000
 	#0005	#0002
-../../../../as/CMD/svc2.casl:7:        LAD     GR1,=#A
+../../../../as/CMD/svc2.casl:    7:        LAD     GR1,=#A
 	#000D	#000A
 	#0006	#1210
 	#0007	#000D
-../../../../as/CMD/svc2.casl:8:        SVC     2
+../../../../as/CMD/svc2.casl:    8:        SVC     2
 	#0008	#F000
 	#0009	#0002
-../../../../as/CMD/svc2.casl:9:        RET
+../../../../as/CMD/svc2.casl:    9:        RET
 	#000A	#8100
-../../../../as/CMD/svc2.casl:10:D       DC      '0'
+../../../../as/CMD/svc2.casl:   10:D       DC      '0'
 	#000B	#0030
-../../../../as/CMD/svc2.casl:11:A       DS      1
+../../../../as/CMD/svc2.casl:   11:A       DS      1
 	#000C	#0000
-../../../../as/CMD/svc2.casl:12:        END
+../../../../as/CMD/svc2.casl:   12:        END
 
 Executing machine codes
 #0000: Register::::

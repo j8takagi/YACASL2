@@ -1,19 +1,19 @@
 ../../../../casl2 -slatd ../../../../as/CMD/xor4.casl
 
 Assemble ../../../../as/CMD/xor4.casl (0)
-../../../../as/CMD/xor4.casl:1:;;; XORで、GR1の内容をクリア
-../../../../as/CMD/xor4.casl:2:MAIN    START
-../../../../as/CMD/xor4.casl:3:BEGIN   XOR     GR2,GR2
-../../../../as/CMD/xor4.casl:4:LOOP    CPA     GR2,LEN
-../../../../as/CMD/xor4.casl:5:        JZE     FIN
-../../../../as/CMD/xor4.casl:6:        LD      GR1,A,GR2
-../../../../as/CMD/xor4.casl:7:        XOR     GR1,GR1
-../../../../as/CMD/xor4.casl:8:        LAD     GR2,1,GR2
-../../../../as/CMD/xor4.casl:9:        JUMP    LOOP
-../../../../as/CMD/xor4.casl:10:FIN     RET
-../../../../as/CMD/xor4.casl:11:A       DC      #8001,#8000,#FFFF,#51,#7FFF
-../../../../as/CMD/xor4.casl:12:LEN     DC      5
-../../../../as/CMD/xor4.casl:13:        END
+../../../../as/CMD/xor4.casl:    1:;;; XORで、GR1の内容をクリア
+../../../../as/CMD/xor4.casl:    2:MAIN    START
+../../../../as/CMD/xor4.casl:    3:BEGIN   XOR     GR2,GR2
+../../../../as/CMD/xor4.casl:    4:LOOP    CPA     GR2,LEN
+../../../../as/CMD/xor4.casl:    5:        JZE     FIN
+../../../../as/CMD/xor4.casl:    6:        LD      GR1,A,GR2
+../../../../as/CMD/xor4.casl:    7:        XOR     GR1,GR1
+../../../../as/CMD/xor4.casl:    8:        LAD     GR2,1,GR2
+../../../../as/CMD/xor4.casl:    9:        JUMP    LOOP
+../../../../as/CMD/xor4.casl:   10:FIN     RET
+../../../../as/CMD/xor4.casl:   11:A       DC      #8001,#8000,#FFFF,#51,#7FFF
+../../../../as/CMD/xor4.casl:   12:LEN     DC      5
+../../../../as/CMD/xor4.casl:   13:        END
 
 Label::::
 MAIN.A ---> #000D
@@ -24,38 +24,38 @@ MAIN.FIN ---> #000C
 MAIN.LEN ---> #0012
 
 Assemble ../../../../as/CMD/xor4.casl (1)
-../../../../as/CMD/xor4.casl:1:;;; XORで、GR1の内容をクリア
-../../../../as/CMD/xor4.casl:2:MAIN    START
-../../../../as/CMD/xor4.casl:3:BEGIN   XOR     GR2,GR2
+../../../../as/CMD/xor4.casl:    1:;;; XORで、GR1の内容をクリア
+../../../../as/CMD/xor4.casl:    2:MAIN    START
+../../../../as/CMD/xor4.casl:    3:BEGIN   XOR     GR2,GR2
 	#0000	#3622
-../../../../as/CMD/xor4.casl:4:LOOP    CPA     GR2,LEN
+../../../../as/CMD/xor4.casl:    4:LOOP    CPA     GR2,LEN
 	#0001	#4020
 	#0002	#0012
-../../../../as/CMD/xor4.casl:5:        JZE     FIN
+../../../../as/CMD/xor4.casl:    5:        JZE     FIN
 	#0003	#6300
 	#0004	#000C
-../../../../as/CMD/xor4.casl:6:        LD      GR1,A,GR2
+../../../../as/CMD/xor4.casl:    6:        LD      GR1,A,GR2
 	#0005	#1012
 	#0006	#000D
-../../../../as/CMD/xor4.casl:7:        XOR     GR1,GR1
+../../../../as/CMD/xor4.casl:    7:        XOR     GR1,GR1
 	#0007	#3611
-../../../../as/CMD/xor4.casl:8:        LAD     GR2,1,GR2
+../../../../as/CMD/xor4.casl:    8:        LAD     GR2,1,GR2
 	#0008	#1222
 	#0009	#0001
-../../../../as/CMD/xor4.casl:9:        JUMP    LOOP
+../../../../as/CMD/xor4.casl:    9:        JUMP    LOOP
 	#000A	#6400
 	#000B	#0001
-../../../../as/CMD/xor4.casl:10:FIN     RET
+../../../../as/CMD/xor4.casl:   10:FIN     RET
 	#000C	#8100
-../../../../as/CMD/xor4.casl:11:A       DC      #8001,#8000,#FFFF,#51,#7FFF
+../../../../as/CMD/xor4.casl:   11:A       DC      #8001,#8000,#FFFF,#51,#7FFF
 	#000D	#8001
 	#000E	#8000
 	#000F	#FFFF
 	#0010	#0051
 	#0011	#7FFF
-../../../../as/CMD/xor4.casl:12:LEN     DC      5
+../../../../as/CMD/xor4.casl:   12:LEN     DC      5
 	#0012	#0005
-../../../../as/CMD/xor4.casl:13:        END
+../../../../as/CMD/xor4.casl:   13:        END
 
 Executing machine codes
 #0000: Register::::
