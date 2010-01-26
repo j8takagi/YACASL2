@@ -51,7 +51,7 @@ typedef enum {
 } PASS;
 
 /* ラベル表からアドレスを検索する */
-WORD getlabel(const char *label, const char *prog);
+WORD getlabel(const char *prog, const char *label);
 
 /* ラベルを表に追加する */
 bool addlabel(const char *prog, const char *label, WORD word);

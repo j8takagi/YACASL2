@@ -4,7 +4,7 @@
 LABELTAB *labels[LABELTABSIZE];
 
 /* ラベル表からアドレスを検索する */
-WORD getlabel(const char *label, const char *prog)
+WORD getlabel(const char *prog, const char *label)
 {
     LABELTAB *np;
 
@@ -22,7 +22,7 @@ bool addlabel(const char *prog, const char *label, WORD adr)
     LABELTAB *np;
     unsigned hashval;
 
-    if(getlabel(label, prog) != 0xFFFF) {
+    if(getlabel(prog, label) != 0xFFFF) {
         setcerr(101, label);    /* label already defined */
         return false;
     }

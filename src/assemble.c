@@ -82,7 +82,7 @@ WORD getadr(const char *str, PASS pass)
     } else if(isdigit(*str) || *str == '-') {
         adr = getint(str);
     } else {
-        if(pass == SECOND && (adr = getlabel(str, prog)) == 0xFFFF) {
+        if(pass == SECOND && (adr = getlabel(prog, str)) == 0xFFFF) {
             setcerr(103, str);    /* label not found */
         }
     }
@@ -164,7 +164,7 @@ void writeDC(const char *str, PASS pass)
         } else if(isdigit(*str) || *str == '-') {
             adr = getint(str);
         } else {
-            if(pass == SECOND && (adr = getlabel(str, prog)) == 0xFFFF) {
+            if(pass == SECOND && (adr = getlabel(prog, str)) == 0xFFFF) {
                 setcerr(103, str);    /* label not found */
             }
         }
@@ -209,7 +209,7 @@ bool assemblecmd(const CMDLINE *cmdl, PASS pass)
         prog = strdup(cmdl->label);
         /* オペランドがある場合、実行開始番地を設定 */
         if(pass == SECOND && cmdl->opd->opdc == 1) {
-            if((startptr = getlabel(cmdl->opd->opdv[0], prog)) == 0xFFFF) {
+            if((startptr = getlabel(prog, cmdl->opd->opdv[0])) == 0xFFFF) {
                 setcerr(103, cmdl->opd->opdv[0]);    /* label not found */
             }
         }
