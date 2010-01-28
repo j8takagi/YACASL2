@@ -6,6 +6,7 @@
 #include <assert.h>
 #include <stdbool.h>
 #include <time.h>
+#include "hash.h"
 
 #define ARRAYSIZE(array) (sizeof(array)/sizeof(array[0]))
 
@@ -16,9 +17,6 @@ enum {
     DEFAULT_MEMSIZE = 512,    /* デフォルトのメモリ容量。COMET II規格では、65536語 */
     DEFAULT_CLOCKS = 5000000, /* デフォルトのクロック周波数。COMET II規格では、未定義 */
 };
-
-/* ハッシュ値を取得する */
-unsigned hash(const char *key, int size);
 
 /* COMET IIの基本データサイズ */
 typedef unsigned short WORD;

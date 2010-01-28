@@ -1,3 +1,2 @@
-UNITNAME = getcmdtype
 UCLASS = COMMON
-include ../Test.mk
+include ../TEST.mk

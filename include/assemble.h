@@ -50,7 +50,10 @@ typedef enum {
     SECOND = 1,
 } PASS;
 
-/* ラベル表からアドレスを検索する */
+/* プログラム名とラベルに対応するハッシュ値を返す */
+unsigned labelhash(const char *prog, const char *label);
+
+/* プログラム名とラベルに対応するアドレスをラベル表から検索する */
 WORD getlabel(const char *prog, const char *label);
 
 /* ラベルを表に追加する */
@@ -98,7 +101,7 @@ WORD gethex(const char *str);
 
 /* アドレスを返す */
 /* アドレスには、リテラル／10進定数／16進定数／アドレス定数が含まれる */
-WORD getadr(const char *str, PASS pass);
+WORD getadr(const char *prog, const char *str, PASS pass);
 
 /* 定数の前に等号（=）をつけて記述される、リテラルを返す */
 /* リテラルには、10進定数／16進定数／文字定数が含まれる */

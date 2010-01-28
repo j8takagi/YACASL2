@@ -15,7 +15,7 @@ clean:
 cleanall: clean
 	@rm -f 0.txt $(OBJFILE)
 $(OBJFILE): $(CASL2) $(ASFILE)
-	@$(CASL2) $(CASL2FLAG) -O$(OBJFILE) $(ASFILE)
+	@$(CASL2) $(CASL2FLAG) -O$(OBJFILE) $(ASFILE) 2>$(ERRFILE)
 0.txt 1.txt: $(COMET2) $(OBJFILE)
 	@echo $(CMD) >$@; \
      $(CMD) >>$@ 2>$(ERRFILE); \

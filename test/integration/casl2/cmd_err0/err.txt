@@ -1,3 +1,0 @@
-Assemble error - 109: LEA: not command of operand "r1,r2"
- ../../../../as/ERR/cmd_err0.casl:4:         LEA     GR1,GR2
-

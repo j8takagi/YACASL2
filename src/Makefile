@@ -14,7 +14,7 @@ all: ../casl2 ../comet2 ../dumpword TAGS
 	$(CC) $(CFLAGS) -o $@ $^
 %.o: %.c
 	$(CC) -c $(CFLAGS) $<
-casl2.o comet2.o $(COMMONSRC) $(ASSRC) $(EXECSRC): $(INCLUDE)/casl2.h
+casl2.o comet2.o $(COMMONSRC) $(ASSRC) $(EXECSRC): $(INCLUDE)/casl2.h $(INCLUDE)/hash.h
 casl2.o $(ASSRC): $(INCLUDE)/assemble.h
 comet2.o $(EXECSRC): $(INCLUDE)/exec.h
 TAGS: $(INCLUDE)/*.h *.c

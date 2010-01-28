@@ -1,9 +1,25 @@
-/* ハッシュ値を取得する */
-unsigned hash(const char *key, int size){
-    unsigned hashval;
+#include "hash.h"
 
-    for(hashval = 0; *key != '\0'; key++){
-        hashval = *key + 31 * hashval;
+/* ハッシュ値を取得する */
+unsigned hash(int keyc, HKEY *keyv[], int tabsize)
+{
+    int i;
+    char *p;
+    unsigned hashval = 0;
+
+    for(i = 0; i < keyc; i++) {
+        switch(keyv[i]->type) {
+        case CHARS:
+            for(p = keyv[i]->val.s; *p != '\0'; p++) {
+                hashval = *p + 31 * hashval;
+            }
+            break;
+        case INT:
+            hashval = keyv[i]->val.i + 31 * hashval;
+            break;
+        default:
+            break;
+        }
     }
-    return hashval % size;
+    return (hashval % tabsize);
 }

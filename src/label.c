@@ -3,13 +3,32 @@
 
 LABELTAB *labels[LABELTABSIZE];
 
+/* プログラム名とラベルに対応するハッシュ値を返す */
+unsigned labelhash(const char *prog, const char *label)
+{
+    HKEY *keys[2];
+    int i = 0;
+    if(prog != NULL) {
+        keys[i] = malloc(sizeof(HKEY));
+        keys[i]->type = CHARS;
+        keys[i++]->val.s = strdup(prog);
+    }
+    keys[i] = malloc(sizeof(HKEY));
+    keys[i]->type = CHARS;
+    keys[i]->val.s = strdup(label);
+    /* ハッシュ値を返す */
+    return hash(i+1, keys, LABELTABSIZE);
+}
+
 /* ラベル表からアドレスを検索する */
 WORD getlabel(const char *prog, const char *label)
 {
     LABELTAB *np;
-
-    for(np = labels[hash(label, LABELTABSIZE)]; np != NULL; np = np->next) {
-        if(strcmp(label, np->label) == 0) {
+    for(np = labels[labelhash(prog, label)]; np != NULL; np = np->next) {
+        if(((prog == NULL && np->prog == NULL) ||
+            (prog != NULL && np->prog != NULL && strcmp(prog, np->prog) == 0)) &&
+           strcmp(label, np->label) == 0)
+        {
             return np->adr;
         }
     }
@@ -21,6 +40,8 @@ bool addlabel(const char *prog, const char *label, WORD adr)
 {
     LABELTAB *np;
     unsigned hashval;
+    char *keys[2];
+    int i = 0;
 
     if(getlabel(prog, label) != 0xFFFF) {
         setcerr(101, label);    /* label already defined */
@@ -33,7 +54,11 @@ bool addlabel(const char *prog, const char *label, WORD adr)
         setcerr(102, NULL);    /* label table is full */
         return false;
     }
-    hashval = hash(label, LABELTABSIZE);
+    if(prog != NULL) {
+        keys[i++] = strdup(prog);
+    }
+    keys[i] = strdup(label);;
+    hashval = labelhash(prog, label);
     np->next = labels[hashval];
     labels[hashval] = np;
     np->adr = adr;

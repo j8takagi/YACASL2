@@ -1,46 +1,47 @@
-include List.mk
-LOGFILE = test.log
-ifdef UNITNAME
-  define create
-    @mkdir $(UNITNAME)
-    @echo "UNITNAME = $(UNITNAME)" >$(UNITNAME)/Makefile; \
-     echo "UCLASS = $(UCLASS)" >>$(UNITNAME)/Makefile; \
-     echo "include ../Test.mk" >>$(UNITNAME)/Makefile
-    @echo "$(UNITNAME) \\" >>List.mk;
-    @cp Template.c $(UNITNAME)/$(UNITNAME).c;
-  endef
-else
-  define create
-    @echo "no test created. set UNITNAME, UCLASS={ AS | EXEC | COMMON }"
-  endef
-endif
+# テストグループ
+# make         : すべてのテストを実施し、ログを作成
+# make all     : ↓
+# make clean   : すべてのテストで、「make」で生成されたファイルをクリア
+# make check   : すべてのテストを実施
+# make cleanall: すべてのテストで、「make」と「make prepare」で生成されたファイルをクリア
+# make prepare : すべてのテストの、想定結果を出力
+# make create  : UNITNAMEで指定されたテストを新規に作成
+TESTS = `ls | grep "^[^A-Z].*"`
+LOGFILE = TEST.log
 
-.PHONY: all logclean testclean check prepare
-all: logclean check clean report
-clean: logclean testclean
-logclean:
+.PHONY: all check report clean cleanall prepare create
+all: check report
+check:
 	@rm -f $(LOGFILE)
-testclean:
 	@for target in $(TESTS); do \
-         $(MAKE) testclean -C $$target; \
+         $(MAKE) check -C $$target; \
      done
-check: $(LOGFILE)
 $(LOGFILE):
 	@for target in $(TESTS); do \
-         $(MAKE) -C $$target; \
+         cat <$$target/report.txt >>$(LOGFILE) || echo $$target ": no report"; \
      done
-prepare:
-	@for target in $(TESTS) ; do \
-	     $(MAKE) prepare -C $$target ;\
-     done
-create:
-	$(create)
 report: $(LOGFILE)
 	@success=`grep "Success" $(LOGFILE) | wc -l`; \
-	 all=`cat $(LOGFILE) | wc -l`; \
-	 echo "$$success / $$all tests passed."; \
-	 if test $$success -eq $$all; then \
-	   echo "All Tests are passed."; \
-	 else \
-	   grep "Failure" $(LOGFILE); \
-	 fi
+     all=`cat $(LOGFILE) | wc -l`; \
+     echo "$$success / $$all tests passed. Details in `pwd`/$(LOGFILE)"; \
+     if test $$success -eq $$all; then \
+       echo "All tests are succeded."; \
+     fi
+clean:
+	@for target in $(TESTS); do $(MAKE) clean -C $$target; done
+	@rm -f $(LOGFILE)
+cleanall:
+	@for target in $(TESTS); do $(MAKE) cleanall -C $$target; done
+	@rm -f $(LOGFILE)
+prepare:
+	@for target in $(TESTS) ; do $(MAKE) prepare -C $$target ; done
+create:
+ifdef UNITNAME
+	@mkdir $(UNITNAME); \
+     echo 'UCLASS = ' >>$(UNITNAME)/Makefile; \
+     echo 'TESTSRCFILE = $(UNITNAME).c' >>$(UNITNAME)/Makefile; \
+     echo 'include ../TEST.mk' >>$(UNITNAME)/Makefile; \
+     cp TEMPLATE.c $(UNITNAME)/$(UNITNAME).c
+else
+	@echo "no test created. set UNITNAME"
+endif

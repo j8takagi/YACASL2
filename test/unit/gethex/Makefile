@@ -1,3 +1,2 @@
-UNITNAME = gethex
 UCLASS = AS
-include ../Test.mk
+include ../TEST.mk

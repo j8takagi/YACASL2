@@ -1,3 +1,0 @@
-Assemble error - 121: cannot get operand token
- ../../../../as/ERR/opdspc_err.casl:2: BEGIN   LD      GR1, A
-

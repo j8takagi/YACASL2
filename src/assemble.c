@@ -72,7 +72,7 @@ WORD gethex(const char *str)
 
 /* アドレスを返す
    アドレスには、リテラル／10進定数／16進定数／アドレス定数が含まれる */
-WORD getadr(const char *str, PASS pass)
+WORD getadr(const char *prog, const char *str, PASS pass)
 {
     WORD adr = 0x0;
     if(*str == '=') {
@@ -359,7 +359,7 @@ bool cometcmd(const CMDLINE *cmdl, PASS pass)
                 }
                 cmd |= x;
             }
-            adr = getadr(cmdl->opd->opdv[1], pass);
+            adr = getadr(prog, cmdl->opd->opdv[1], pass);
             writememory(cmd, ptr++, pass);
             writememory(adr, ptr++, pass);
             if(cerrno == 0) {
@@ -384,7 +384,13 @@ bool cometcmd(const CMDLINE *cmdl, PASS pass)
             }
             cmd |= x;
         }
-        adr = getadr(cmdl->opd->opdv[0], pass);
+        /* CALLの場合はプログラムの入口名を表すラベル、
+           それ以外の場合は同一プログラム内のラベルを取得 */
+        if(cmd == 0x8000) {        /* CALL命令 */
+            adr = getadr(NULL, cmdl->opd->opdv[0], pass);
+        } else {
+            adr = getadr(prog, cmdl->opd->opdv[0], pass);
+        }
         writememory(cmd, ptr++, pass);
         writememory(adr, ptr++, pass);
         if(cerrno == 0) {
