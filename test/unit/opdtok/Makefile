@@ -1,3 +1,3 @@
-UNITNAME = opdtok
 UCLASS = AS
-include ../Test.mk
+TESTSRCFILE = opdtok.c
+include ../TEST.mk
