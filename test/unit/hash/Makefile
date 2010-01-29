@@ -1,3 +1,3 @@
 UCLASS = COMMON
-TESTSRCFILE = getcmdcode.c
+TESTSRCFILE = hash.c
 include ../TEST.mk

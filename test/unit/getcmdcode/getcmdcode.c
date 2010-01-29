@@ -25,7 +25,7 @@ int main(){
     create_cmdtype_code();
     for(i = 0; i < sizeof(cmdcodelist)/sizeof(cmdcodelist[0]); i++) {
         code = getcmdcode(cmdcodelist[i].cmd, cmdcodelist[i].type);
-        printf("%s:0%02o ---> 0x%04x\n", cmdcodelist[i].cmd, cmdcodelist[i].type, code);
+        printf("%s:0%02o ---> #%04X\n", cmdcodelist[i].cmd, cmdcodelist[i].type, code);
         if(cerrno != 0) {
             printf("\terror - %d: %s", cerrno, cerrmsg);
             freecerr();
