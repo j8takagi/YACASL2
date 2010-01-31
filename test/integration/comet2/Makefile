@@ -63,7 +63,7 @@ endif
 ifdef INFILE
 	@echo 'IN = <$(INFILE)' >>$(UNITNAME)/Makefile
 endif
-	@echo 'CMD = $$(COMET2) $$(COMET2FLAG) $$(UNITNAME).o $$(IN)' >>$(UNITNAME)/Makefile; \
+	@echo 'CMD = $$(COMET2) $$(COMET2FLAG) $$(OBJFILE)' >>$(UNITNAME)/Makefile; \
      echo 'include ../TEST.mk' >>$(UNITNAME)/Makefile
 else
 	@echo "no test created. set UNITNAME"

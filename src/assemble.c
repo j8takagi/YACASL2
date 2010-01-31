@@ -83,7 +83,9 @@ WORD getadr(const char *prog, const char *str, PASS pass)
         adr = getint(str);
     } else {
         if(pass == SECOND && (adr = getlabel(prog, str)) == 0xFFFF) {
-            setcerr(103, str);    /* label not found */
+            if(prog != NULL) {
+                setcerr(103, str);    /* label not found */
+            }
         }
     }
     return adr;
@@ -299,7 +301,6 @@ bool macrocmd(const CMDLINE *cmdl, PASS pass)
     return status;
 }
 
-
 /* 機械語命令の書込
    書込に成功した場合はtrue、それ以外の場合はfalseを返す */
 bool cometcmd(const CMDLINE *cmdl, PASS pass)
@@ -335,7 +336,7 @@ bool cometcmd(const CMDLINE *cmdl, PASS pass)
             if((cmd = getcmdcode(cmdl->cmd, R1_R2)) == 0xFFFF) {
                 setcerr(109, cmdl->cmd);    /* not command of operand "r1,r2" */
                 return false;
-            } 
+            }
             cmd |= ((r1 << 4) | r2);
             if(cerrno == 0 && writememory(cmd, ptr++, pass) == true) {
                 status = true;
@@ -388,7 +389,8 @@ bool cometcmd(const CMDLINE *cmdl, PASS pass)
            それ以外の場合は同一プログラム内のラベルを取得 */
         if(cmd == 0x8000) {        /* CALL命令 */
             adr = getadr(NULL, cmdl->opd->opdv[0], pass);
-        } else {
+        }
+        if(cmd != 0x8000 || (pass == SECOND && adr == 0xFFFF)) {
             adr = getadr(prog, cmdl->opd->opdv[0], pass);
         }
         writememory(cmd, ptr++, pass);
