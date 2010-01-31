@@ -69,13 +69,18 @@ bool create_cmdtype_code()
 
 /* 命令と命令タイプからハッシュ値を生成する */
 unsigned hash_cmdtype(const char *cmd, CMDTYPE type) {
-    int i;
-    unsigned hashval = 0;
-    for(i = 0; *cmd != '\0'; cmd++) {
-        hashval = *cmd + 31 * hashval;
-    }
-    hashval = (int)(type & 070) + 31 * hashval;
-    return hashval % cmdcodesize;
+    HKEY *keys[2];
+
+    /* 命令をセット */
+    keys[0] = malloc(sizeof(HKEY));
+    keys[0]->type = CHARS;
+    keys[0]->val.s = strdup(cmd);
+    /* 命令タイプをセット */
+    keys[1] = malloc(sizeof(HKEY));
+    keys[1]->type = INT;
+    keys[1]->val.i = (int)(type & 070);
+    /* ハッシュ値を返す */
+    return hash(2, keys, cmdcodesize);
 }
 
 /* 命令と命令タイプから、命令コードを取得する。
@@ -147,9 +152,14 @@ bool create_code_type()
 /* 命令コードからハッシュ値を生成する */
 unsigned hash_code(WORD code)
 {
-    unsigned hashval = 0;
-    hashval = (code >> 8);
-    return hashval % cmdcodesize;
+    HKEY *keys[1];
+
+    /* 命令コードをセット */
+    keys[0] = malloc(sizeof(HKEY));
+    keys[0]->type = INT;
+    keys[0]->val.i = (int)(code >> 8);
+    /* ハッシュ値を返す */
+    return hash(1, keys, cmdcodesize);
 }
 
 /* 命令コードから命令タイプを取得する。

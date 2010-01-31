@@ -25,8 +25,7 @@ WORD getlabel(const char *prog, const char *label)
 {
     LABELTAB *np;
     for(np = labels[labelhash(prog, label)]; np != NULL; np = np->next) {
-        if(((prog == NULL && np->prog == NULL) ||
-            (prog != NULL && np->prog != NULL && strcmp(prog, np->prog) == 0)) &&
+        if((prog == NULL || (np->prog != NULL && strcmp(prog, np->prog) == 0)) &&
            strcmp(label, np->label) == 0)
         {
             return np->adr;
