@@ -1,3 +1,3 @@
-../../../../comet2 -s sum_10_opterr.o
+../../../../comet2 -s a.o
 ../../../../comet2: invalid option -- s
 Usage: ../../../../comet2 [-tTdh] [-M <memorysize>] [-C <clocks>] FILE

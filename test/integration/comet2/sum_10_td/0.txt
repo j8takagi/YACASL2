@@ -1,4 +1,4 @@
-../../../../comet2 -td sum_10_td.o
+../../../../comet2 -td a.o
 
 Executing machine codes
 #0000: Register::::

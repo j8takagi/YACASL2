@@ -18,7 +18,7 @@ check:
      done
 $(LOGFILE):
 	@for target in $(TESTS); do \
-         cat <$$target/report.txt >>$(LOGFILE) 2>/dev/null || echo "Failure:" $$target "no report" >>$(LOGFILE); \
+         if test -s $^; then cat <$$target/report.txt >>$(LOGFILE); else echo "Failure:" $$target "no report" >>$(LOGFILE); fi; \
      done
 report: $(LOGFILE)
 	@success=`grep "Success" $(LOGFILE) | wc -l`; \

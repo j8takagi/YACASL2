@@ -1,2 +1,2 @@
-../../../../comet2 literal_spc.o
+../../../../comet2 a.o
  

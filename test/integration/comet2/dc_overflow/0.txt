@@ -1,1 +1,1 @@
-../../../../comet2 dc_overflow.o
+../../../../comet2 a.o

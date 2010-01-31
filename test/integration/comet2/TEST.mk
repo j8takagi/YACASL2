@@ -15,13 +15,13 @@ clean:
 cleanall: clean
 	@rm -f 0.txt $(OBJFILE)
 $(OBJFILE): $(CASL2) $(ASFILE)
-	@$(CASL2) $(CASL2FLAG) -O$(OBJFILE) $(ASFILE) 2>$(ERRFILE)
+	@$(CASL2) $(CASL2FLAG) -O $(ASFILE) 2>$(ERRFILE)
 0.txt 1.txt: $(COMET2) $(OBJFILE)
 	@echo $(CMD) >$@; \
      $(CMD) >>$@ 2>$(ERRFILE); \
      if test -s $(ERRFILE); then cat err.txt >>$@; else rm -f $(ERRFILE); fi
 diff.txt: 1.txt
-	@-diff 0.txt 1.txt >$@ 2>&1
+	@-diff -c 0.txt 1.txt >$@ 2>&1
 report.txt: diff.txt
 	@echo -n "$(UNITNAME): Test " >$@; \
      if test ! -s $^; then echo -n "Success " >>$@; rm -f $^; else echo -n "Failure " >>$@; fi; \

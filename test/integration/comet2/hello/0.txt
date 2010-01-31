@@ -1,2 +1,2 @@
-../../../../comet2 hello.o
+../../../../comet2 a.o
 Hello, World!
