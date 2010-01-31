@@ -8,8 +8,8 @@ Assemble ../../../../as/CMD/sra2.casl (0)
 ../../../../as/CMD/sra2.casl:    5:        END
 
 Label::::
-SRA2.BEGIN ---> #0000
 SRA2 ---> #0000
+SRA2.BEGIN ---> #0000
 
 Assemble ../../../../as/CMD/sra2.casl (1)
 ../../../../as/CMD/sra2.casl:    1:SRA2    START   BEGIN

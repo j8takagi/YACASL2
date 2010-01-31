@@ -8,8 +8,8 @@ Assemble ../../../../as/CMD/ld3.casl (0)
 ../../../../as/CMD/ld3.casl:    5:	END
 
 Label::::
-MAIN.I ---> #0003
 MAIN.BEGIN ---> #0000
+MAIN.I ---> #0003
 MAIN ---> #0000
 
 Assemble ../../../../as/CMD/ld3.casl (1)

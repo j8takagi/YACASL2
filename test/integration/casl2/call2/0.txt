@@ -14,11 +14,11 @@ Assemble ../../../../as/CMD/call2.casl (0)
 ../../../../as/CMD/call2.casl:   11:FIN     END
 
 Label::::
-MAIN.A ---> #0007
+INCR.FIN ---> #000B
 INCR ---> #0008
 MAIN.BEGIN ---> #0000
+MAIN.A ---> #0007
 MAIN ---> #0000
-INCR.FIN ---> #000B
 
 Assemble ../../../../as/CMD/call2.casl (1)
 ../../../../as/CMD/call2.casl:    1:MAIN    START   BEGIN

@@ -3,22 +3,22 @@
 Assemble ../../../../as/YAKUWA/binout.casl (0)
 
 Label::::
-BINOUT.LOOP1 ---> #0023
-BINOUT.LOOP2 ---> #002B
-BINOUT.ONE ---> #0031
-BINOUT.OLNG ---> #0070
-MAIN.MLOOP ---> #0002
-MAIN.MFIN ---> #000E
-MAIN.MLEN ---> #0013
 BINOUT.OBUF ---> #0060
 BINOUT.ZERO ---> #002D
-MAIN ---> #0000
-BINOUT.STORE ---> #0033
 BINOUT.OUT1 ---> #0041
 BINOUT.OUT2 ---> #0047
-MAIN.MWORD ---> #000F
-BINOUT ---> #0014
+BINOUT.STORE ---> #0033
+MAIN.MLOOP ---> #0002
 BINOUT.NZERO ---> #0071
+BINOUT.LOOP1 ---> #0023
+BINOUT.LOOP2 ---> #002B
+MAIN.MFIN ---> #000E
+MAIN ---> #0000
+BINOUT.OLNG ---> #0070
+MAIN.MWORD ---> #000F
+MAIN.MLEN ---> #0013
+BINOUT ---> #0014
+BINOUT.ONE ---> #0031
 
 Assemble ../../../../as/YAKUWA/binout.casl (1)
 ../../../../as/YAKUWA/binout.casl:    1:;;; BINOUT: 主プログラムから渡された1語の内容を、

@@ -14,9 +14,9 @@ Assemble ../../../../as/CMD/call1.casl (0)
 ../../../../as/CMD/call1.casl:   11:        END
 
 Label::::
-MAIN.B ---> #0007
-COPY ---> #0008
 MAIN.BEGIN ---> #0000
+COPY ---> #0008
+MAIN.B ---> #0007
 MAIN ---> #0000
 
 Assemble ../../../../as/CMD/call1.casl (1)

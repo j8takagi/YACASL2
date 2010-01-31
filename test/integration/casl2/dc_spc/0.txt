@@ -10,9 +10,9 @@ Assemble ../../../../as/CMD/dc_spc.casl (0)
 ../../../../as/CMD/dc_spc.casl:    7:        END
 
 Label::::
-MAIN.BUF ---> #0013
-MAIN ---> #0000
 MAIN.LEN ---> #0014
+MAIN ---> #0000
+MAIN.BUF ---> #0013
 
 Assemble ../../../../as/CMD/dc_spc.casl (1)
 ../../../../as/CMD/dc_spc.casl:    1:;;; DC命令で空白を指定
