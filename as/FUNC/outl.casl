@@ -3,23 +3,27 @@ OUTL    START
         RPUSH
         LAD     GR2,10          ; GR2に10進数の「10」を格納。
         LAD     GR0,0           ; GR0 <- 0
-        ST      GR0,LEN         ; LENの初期化
+        XOR     GR4,GR4         ; 整数値の長さ
         AND     GR1,GR1         ; GR1をテスト
-        JZE     ZPRT            ; GR1が0の場合、ZPRTにジャンプ
+        JZE     ZERO            ; GR1が0の場合、ZEROにジャンプ
 STI     CPL     GR1,GR2         ; ループ先頭。(GR1 < GR2)の場合は、ループ脱出
         JMI     STLST           ; ↓
         CALL    ODIVL           ; GR1とGR2の、商をGR0、剰余をGR3に格納
         LD      GR1,GR3         ; GR1にGR3をコピー
         LD      GR1,NCHAR,GR1   ; GR1を文字に変換
-        CALL    STSTR           ; GR1をSTR領域に格納
+        ST      GR1,STR,GR4     ; (STR + GR4) <- GR1
+        LAD     GR4,1,GR4       ; GR4 <- GR4 + 1
         LD      GR1,GR0         ; GR0をGR1にコピー
         JUMP    STI             ; ループ終端
 STLST   LD      GR1,NCHAR,GR1   ; GR1を文字に変換
-        CALL    STSTR           ; GR1をSTR領域に格納
+        ST      GR1,STR,GR4     ; (STR + GR4) <- GR1
+        LAD     GR4,1,GR4       ; GR4 <- GR4 + 1
         JUMP    PRT             ; PRTにジャンプ
-ZPRT    LD      GR1,NCHAR       ; 「0」をSTR領域に格納
-        CALL    STSTR           ; ↓
-PRT     LD      GR2,LEN         ; GR2にLENの値を格納
+ZERO    LD      GR1,NCHAR       ; 「0」をSTR領域に格納
+        ST      GR1,STR,GR4     ; ↓ (STR + GR4) <- GR1
+        LAD     GR4,1,GR4       ; ↓ GR4 <- GR4 + 1
+PRT     ST      GR4,LEN         ; LEN <- GR4
+        LD      GR2,LEN         ; GR2にLENの値を格納
         LAD     GR1,STR         ; GR1に文字列のアドレスを格納
         CALL    REV             ; 文字列を逆順に並べ替え
         OUT     STR,LEN         ; 文字列を出力
@@ -28,18 +32,6 @@ PRT     LD      GR2,LEN         ; GR2にLENの値を格納
 STR     DS      17
 LEN     DS      1
 NCHAR   DC      '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-        END
-;; GR1をSTR領域に格納し、LENをインクリメント
-STSTR   START
-        PUSH    0,GR1
-        PUSH    0,GR2
-        LD      GR2,LEN         ; GR2にLENの値をロード
-        ST      GR1,STR,GR2     ; STR+GR2 <- GR1
-        LAD     GR2,1,GR2       ; GR2 <- GR2 + 1
-        ST      GR2,LEN         ; LENにGR2を格納
-        POP     GR2
-        POP     GR1
-        RET
         END
 ;;; GR1の値とGR2の値の、商をGR0、剰余をGR3に格納する
 ;;; 0〜65535の範囲の数値を扱う
@@ -74,11 +66,11 @@ ODLPIN  SUBL    GR1,GR2         ; GR1 <- GR1 - GR2
         ADDL    GR0,GR4         ; GR0 <- GR0 + GR4
         JUMP    ODLOOP          ; ループ終端
 ODFIN   LD      GR3,GR1
-        POP	GR4
+        POP     GR4
         POP     GR2
         POP     GR1
         RET
-ODY     DS      1        
+ODY     DS      1
         END
 ;; アドレスがGR1、長さがGR2の文字列を逆順に並べ替える
 ;; 例: 12345 -> 54321、54321- -> -12345

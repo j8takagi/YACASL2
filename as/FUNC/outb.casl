@@ -3,28 +3,33 @@ OUTB    START
         RPUSH
         LAD     GR2,2           ; GR2に2進数の「2」を格納。
         LAD     GR0,0           ; GR0 <- 0
-        ST      GR0,LEN         ; LENの初期化
+        XOR     GR4,GR4         ; 2進数値の長さ
         AND     GR1,GR1         ; GR1をテスト
-        JZE     ZINS            ; GR1が0の場合、ZINSにジャンプ
+        JZE     ZERO            ; GR1が0の場合、ZEROにジャンプ
 STI     CPL     GR1,GR2         ; ループ先頭。(GR1 < GR2)の場合は、ループ脱出
         JMI     STLST           ; ↓
-        CALL    ODIVL           ; GR1とGR2の、商をGR0、剰余をGR1に格納
+        CALL    ODIVL           ; GR1とGR2の、商をGR0、剰余をGR3に格納
+        LD      GR1,GR3         ; GR1にGR3をコピー
         LD      GR1,NCHAR,GR1   ; GR1を文字に変換
-        CALL    STSTR           ; GR1をSTR領域に格納
+        ST      GR1,STR,GR4     ; (STR + GR4) <- GR1
+        LAD     GR4,1,GR4       ; GR4 <- GR4 + 1
         LD      GR1,GR0         ; GR0をGR1にコピー
         JUMP    STI             ; ループ終端
 STLST   LD      GR1,NCHAR,GR1   ; GR1を文字に変換
-        CALL    STSTR           ; GR1をSTR領域に格納
+        ST      GR1,STR,GR4     ; (STR + GR4) <- GR1
+        LAD     GR4,1,GR4       ; GR4 <- GR4 + 1
         JUMP    EMB             ; EMBにジャンプ
-ZINS    LD      GR1,NCHAR       ; 「0」をSTR領域に格納
-        CALL    STSTR           ; ↓
-EMB     LD      GR1,NCHAR       ; GR0 <- '0'
-EMLOOP  LD      GR2,LEN         ; GR2 <- LEN
-        CPA     GR2,DIG         ; ループ先頭。(GR2 = DIG)の場合は、ループ脱出
+ZERO    LD      GR1,NCHAR       ; 「0」をSTR領域に格納
+        ST      GR1,STR,GR4     ; ↓ (STR + GR4) <- GR1
+        LAD     GR4,1,GR4       ; ↓ GR4 <- GR4 + 1
+EMB     LD      GR1,NCHAR       ; GR1 <- '0'
+EMLOOP  CPA     GR4,DIG         ; ループ先頭。(GR4 = DIG)の場合は、ループ脱出
         JZE     PRT             ; ↓
-        CALL    STSTR           ; GR1をSTR領域に格納
+        ST      GR1,STR,GR4     ; ↓ (STR + GR4) <- GR1
+        LAD     GR4,1,GR4       ; ↓ GR4 <- GR4 + 1
         JUMP    EMLOOP          ; ループ終端
-PRT     LD      GR2,LEN         ; GR2にLENの値を格納
+PRT     ST      GR4,LEN         ; LEN <- GR4
+        LD      GR2,LEN         ; GR2にLENの値を格納
         LAD     GR1,STR         ; GR1に文字列のアドレスを格納
         CALL    REV             ; 文字列を逆順に並べ替え
         OUT     STR,LEN         ; 文字列を出力
@@ -33,53 +38,46 @@ PRT     LD      GR2,LEN         ; GR2にLENの値を格納
 STR     DS      17
 LEN     DS      1
 NCHAR   DC      '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-DIG     DC      16        
+DIG     DC      16
         END
-;; GR1をSTR領域に格納し、LENをインクリメント
-STSTR   START
-        PUSH    0,GR1
-        PUSH    0,GR2
-        LD      GR2,LEN         ; GR2にLENの値をロード
-        ST      GR1,STR,GR2     ; STR+GR2 <- GR1
-        LAD     GR2,1,GR2       ; GR2 <- GR2 + 1
-        ST      GR2,LEN         ; LENにGR2を格納
-        POP     GR2
-        POP     GR1
-        RET
-        END
-;;; GR1の値とGR2の値の、商をGR0、剰余をGR1に格納する
+;;; GR1の値とGR2の値の、商をGR0、剰余をGR3に格納する
 ;;; 0〜65535の範囲の数値を扱う
 ODIVL   START
+        PUSH    0,GR1
         PUSH    0,GR2
-        PUSH    0,GR3
-        LAD     GR0,0           ; GR0の初期化。商
-        ST      GR2,ODY         ; DYにGR2の初期値を保存
-        LAD     GR3,1           ; GR3の初期化。対象ビットを表す
-ODSL    CPL     GR2,GR1         ; ループ先頭。(GR3 > GR1)の場合、DLOOPへループ脱出
+        PUSH    0,GR4
+        AND     GR2,GR2         ; GR2が0の場合、ODFINへジャンプ
+        JZE     ODFIN           ; ↓
+        ST      GR2,ODY         ; ODYにGR2の初期値を保存
+        LAD     GR0,0           ; GR0の初期化
+        LAD     GR3,0           ; GR3の初期化
+        LAD     GR4,1           ; GR4の初期化。対象ビットを表す
+ODSL    CPL     GR2,GR1         ; ループ先頭。(GR2 > GR1)の場合、ODLOOPへループ脱出
         JPL     ODLOOP          ; ↓
-        SLL     GR3,1           ; GR3を1回左シフト
+        SLL     GR4,1           ; GR4を1回左シフト
         SLL     GR2,1           ; GR2を1回左シフト
         JOV     ODYOV           ; オーバーフローの場合は、ODYOVにジャンプ
         JUMP    ODSL            ; ループ終端
-ODYOV   SRL     GR2,1           ; GR2を1回右シフト
-        LAD     GR2,#8000,GR2   ; GR2 <- GR2 + #8000
-        SRL     GR3,1           ; GR3を1回右シフト
-        JUMP    ODLPIN          ; ODLPINへジャンプ
-ODLOOP  SRL     GR3,1           ; ループ先頭。GR3を1回右シフト
-        JZE     ODFIN           ; (GR3= 0)の場合、ループ脱出
+ODYOV   SRL     GR2,1
+        LAD     GR2,#8000,GR2
+        SRL     GR4,1
+        JUMP    ODLPIN
+ODLOOP  SRL     GR4,1           ; ループ先頭。GR4を1回右シフト
+        JZE     ODFIN           ; (GR4 = 0)の場合、ループ脱出
         SRL     GR2,1           ; GR2を1回右シフト
         CPL     GR1,ODY         ; (GR1 < ODY)の場合、ループ脱出
         JMI     ODFIN           ; ↓
         CPL     GR1,GR2         ; (GR1 < GR2)の場合、ループ先頭へジャンプ
         JMI     ODLOOP          ; ↓
 ODLPIN  SUBL    GR1,GR2         ; GR1 <- GR1 - GR2
-        ADDL    GR0,GR3         ; GR0 <- GR0 + GR3
+        ADDL    GR0,GR4         ; GR0 <- GR0 + GR4
         JUMP    ODLOOP          ; ループ終端
-ODFIN   POP     GR3
+ODFIN   LD      GR3,GR1
+        POP     GR4
         POP     GR2
+        POP     GR1
         RET
 ODY     DS      1
-ODMB    DC      #8000        
         END
 ;; アドレスがGR1、長さがGR2の文字列を逆順に並べ替える
 ;; 例: 12345 -> 54321、54321- -> -12345

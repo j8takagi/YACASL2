@@ -8,7 +8,6 @@ LOOP    LD      GR1,VAL,GR2
         JZE     FIN
         JUMP    LOOP
 FIN     RET
-        END
 VAL     DC      0
         DC      #0001,#0002,#0004,#0008
         DC      #0010,#0020,#0040,#0080
@@ -20,3 +19,4 @@ VAL     DC      0
         DC      #FF80,#FFC0,#FFE0,#FFF0
         DC      #FFF8,#FFFC,#FFFE,#FFFF
 CNT     DC      34
+        END
