@@ -4,7 +4,7 @@ CLEANDIR = src test/integration test/unit
 all:
 	make -C src
 check:
-	make -sC test/integration
+	@make -sC test/integration
 clean:
 	@for target in $(CLEANDIR); do $(MAKE) -sC $$target clean; done
 install: all

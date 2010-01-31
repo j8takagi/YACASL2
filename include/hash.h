@@ -1,3 +1,6 @@
+#ifndef YACASL2_HASH_INCLUDED
+#define YACASL2_HASH_INCLUDED
+
 /* ハッシュ共用体の型 */
 typedef enum {
     CHARS = 0,
@@ -15,3 +18,5 @@ typedef struct {
 
 /* ハッシュ値を取得する */
 unsigned hash(int keyc, HKEY *keyv[], int tabsize);
+
+#endif

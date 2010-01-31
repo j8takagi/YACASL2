@@ -1,3 +1,6 @@
+#ifndef YACASL2_EXEC_INCLUDED
+#define YACASL2_EXEC_INCLUDED
+
 /* コードから命令のパターンを取得 */
 CMDTYPE getcmdtype(WORD code);
 
@@ -52,3 +55,11 @@ void reset();
 
 /* コードの実行 */
 void exec();
+
+/* COMET IIのメモリを表示 */
+void dumpmemory();
+
+/* COMET IIのレジスタを表示 */
+void dspregister();
+
+#endif

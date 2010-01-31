@@ -10,9 +10,9 @@ WORD lptr;
 /* 他のプログラムで参照する入口名 */
 char *prog;
 
-/* 汎用レジスタを表す文字列「GR[0-7]」をWORD値に変換
-   is_xがtrueの場合は、指標レジスタとして用いる汎用レジスタ
-   文字列が汎用レジスタを表さない場合は、0xFFFFを返す */
+/* 汎用レジスタを表す文字列「GR[0-7]」をWORD値に変換 */
+/* is_xがtrueの場合は、指標レジスタとして用いる汎用レジスタ */
+/* 文字列が汎用レジスタを表さない場合は、0xFFFFを返す */
 WORD getgr(const char *str, bool is_x)
 {
     assert(str != NULL);
@@ -31,56 +31,15 @@ WORD getgr(const char *str, bool is_x)
     return r;
 }
 
-/* 10進定数をWORD値に変換 */
-WORD getint(const char *str)
-{
-    assert(isdigit(*str) || *str == '-');
-    char *check;
-    int n;
-    /* WORD値に変換 */
-    n = strtol(str, &check, 10);
-    if(*check != '\0') {
-        setcerr(114, str);    /* not integer */
-        return 0x0;
-    }
-    /* nが-32768〜32767の範囲にないときは、その下位16ビットを格納 */
-    if(n < -32768 || n > 32767) {
-        n = n % 32768;
-    }
-    return (WORD)n;
-}
-
-/* 16進定数をWORD値に変換 */
-WORD gethex(const char *str)
-{
-    assert(*str == '#');
-    WORD adr = 0x0;
-    char *check;
-    str++;
-    if(*str == '-' || strlen(str) > 4) {
-        setcerr(116, str-1);    /* out of hex range */
-        return 0;
-    }
-    /* WORD値に変換 */
-    adr = (WORD)strtol(str, &check, 16);
-    if(*check != '\0') {
-        setcerr(115, str-1);    /* not hex */
-        return 0x0;
-    }
-    return adr;
-}
-
-/* アドレスを返す
-   アドレスには、リテラル／10進定数／16進定数／アドレス定数が含まれる */
+/* アドレスを返す */
+/* アドレスには、リテラル／10進定数／16進定数／アドレス定数が含まれる */
 WORD getadr(const char *prog, const char *str, PASS pass)
 {
     WORD adr = 0x0;
     if(*str == '=') {
         adr = getliteral(str, pass);
-    } else if(*str == '#') {
-        adr = gethex(str);
-    } else if(isdigit(*str) || *str == '-') {
-        adr = getint(str);
+    } else if((*str == '#') || isdigit(*str) || *str == '-') {
+        adr = a2word(str);
     } else {
         if(pass == SECOND && (adr = getlabel(prog, str)) == 0xFFFF) {
             if(prog != NULL) {
@@ -91,14 +50,14 @@ WORD getadr(const char *prog, const char *str, PASS pass)
     return adr;
 }
 
-/* WORD値wordをアドレスadrに書込
-   書込に成功した場合はtrue、失敗した場合はfalseを返す */
+/* WORD値wordをアドレスadrに書込 */
+/* 書込に成功した場合はtrue、失敗した場合はfalseを返す */
 bool writememory(WORD word, WORD adr, PASS pass)
 {
     bool status = false;
     /* COMET IIメモリオーバーの場合 */
     if(adr >= memsize) {
-        setcerr(119, wtoa(adr));    /* out of COMET II memory */
+        setcerr(119, word2n(adr));    /* out of COMET II memory */
     }
     if(cerrno == 0) {
         memory[adr] = word;
@@ -114,19 +73,13 @@ bool writememory(WORD word, WORD adr, PASS pass)
 /* リテラルには、10進定数／16進定数／文字定数が含まれる */
 WORD getliteral(const char *str, PASS pass)
 {
-    WORD adr = lptr, word = 0x0;
+    WORD adr = lptr;
     assert(*str == '=');
     str++;
     if(*str == '\'') {    /* 文字定数 */
         writestr(str, true, pass);
     } else {
-        if(*str == '#') {    /* 16進定数  */
-            word = gethex(str);
-        } else if(isdigit(*str) || *str == '-') {    /* 10進定数  */
-            word = getint(str);
-        }
-        /* リテラル領域に書込 */
-        writememory(word, lptr++, pass);
+        writememory(a2word(str), lptr++, pass);
     }
     return adr;
 }
@@ -161,10 +114,8 @@ void writeDC(const char *str, PASS pass)
     if(*str == '\'') {
         writestr(str, false, pass);
     } else {
-        if(*str == '#') {
-            adr = gethex(str);
-        } else if(isdigit(*str) || *str == '-') {
-            adr = getint(str);
+        if(*str == '#' || isdigit(*str) || *str == '-') {
+            adr = a2word(str);
         } else {
             if(pass == SECOND && (adr = getlabel(prog, str)) == 0xFFFF) {
                 setcerr(103, str);    /* label not found */
@@ -174,8 +125,8 @@ void writeDC(const char *str, PASS pass)
     }
 }
 
-/* 命令がアセンブラ命令の場合は処理を実行
-   実行に成功した場合はtrue、それ以外の場合はfalseを返す */
+/* 命令がアセンブラ命令の場合は処理を実行 */
+/* 実行に成功した場合はtrue、それ以外の場合はfalseを返す */
 bool assemblecmd(const CMDLINE *cmdl, PASS pass)
 {
     int i = 0;
@@ -256,8 +207,8 @@ bool assemblecmd(const CMDLINE *cmdl, PASS pass)
     return status;
 }
 
-/* 命令がマクロ命令の場合はメモリに書込
-   書込に成功した場合はtrue、それ以外の場合はfalseを返す */
+/* 命令がマクロ命令の場合はメモリに書込 */
+/* 書込に成功した場合はtrue、それ以外の場合はfalseを返す */
 bool macrocmd(const CMDLINE *cmdl, PASS pass)
 {
     int i = 0;
@@ -301,8 +252,8 @@ bool macrocmd(const CMDLINE *cmdl, PASS pass)
     return status;
 }
 
-/* 機械語命令の書込
-   書込に成功した場合はtrue、それ以外の場合はfalseを返す */
+/* 機械語命令の書込 */
+/* 書込に成功した場合はtrue、それ以外の場合はfalseを返す */
 bool cometcmd(const CMDLINE *cmdl, PASS pass)
 {
     WORD cmd, adr, r1, r2, x;
@@ -344,8 +295,7 @@ bool cometcmd(const CMDLINE *cmdl, PASS pass)
         }
         /* オペランド数2〜3。第2オペランドはアドレス、
            第3オペランドは指標レジスタとして用いる汎用レジスタ */
-        else if(cmdl->opd->opdc == 2 || cmdl->opd->opdc == 3)
-        {
+        else if(cmdl->opd->opdc == 2 || cmdl->opd->opdc == 3) {
             if((cmd = getcmdcode(cmdl->cmd, R_ADR_X_)) == 0xFFFF &&
                (cmd = getcmdcode(cmdl->cmd, R_ADR_X)) == 0xFFFF)
             {

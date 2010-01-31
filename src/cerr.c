@@ -1,10 +1,5 @@
-#include "casl2.h"
+#include "cerr.h"
 
-/* エラーコードリスト */
-typedef struct {
-    int num;
-    char *msg;
-} CERRARRAY;
 CERRARRAY cerr[] = {
     { 101, "label already defined" },
     { 102, "label table is full" },
@@ -36,21 +31,6 @@ CERRARRAY cerr[] = {
     { 206, "Address - out of COMET II memory" },
     { 207, "Stack Pointer (SP) - out of COMET II memory" },
 };
-
-/* WORD値を文字列に変換 */
-char *wtoa(WORD word)
-{
-    char *p = malloc(6), *q = malloc(6);
-    int i = 0, j;
-    do{
-        *(p + i++) = word % 10 + '0';
-    } while((word /= 10) > 0);
-    for(j = 0; j < i; j++) {
-        *(q + j) = *(p + (i - 1) - j);
-    }
-    *(q + j + 1) = '\0';
-    return q;
-}
 
 /* エラー番号とエラーメッセージを設定する */
 void setcerr(int num, const char *val)

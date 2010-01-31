@@ -1,3 +1,6 @@
+#ifndef YACASL2_ASSEMBLE_INCLUDED
+#define YACASL2_ASSEMBLE_INCLUDED
+
 /* CASL IIの制限 */
 enum {
     LINESIZE = 1024,       /* 行の最大文字数 */
@@ -148,3 +151,5 @@ bool writeRPUSH(PASS pass);
 
 /* マクロ命令「RPOP」をメモリに書込 */
 bool writeRPOP(PASS pass);
+
+#endif

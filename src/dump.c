@@ -1,19 +1,5 @@
 #include "casl2.h"
 
-/* WORD値を2進数表記に変換 */
-char *word2bit(const WORD word)
-{
-    WORD mask = 0x8000;
-    char *bit, *p;
-    bit = malloc(16 + 1);
-    p = bit;
-    do {
-        *p++ = (word & mask) ? '1' : '0';
-    } while((mask >>= 1) > 0);
-    *p = '\0';
-    return bit;
-}
-
 /* COMET IIのメモリを表示 */
 void dumpmemory()
 {
