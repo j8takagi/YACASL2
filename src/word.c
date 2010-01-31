@@ -42,10 +42,14 @@ WORD h2word(const char *str)
 /* 10進数または16進数の文字列をWORD値に変換 */
 WORD a2word(const char *str)
 {
-    WORD word = 0x0;
+    WORD word;
+    if(!isdigit(*str) && *str != '-' && *str != '#') {
+        setcerr(114, str);    /* not integer */
+        return 0x0;
+    }
     if(*str == '#') {
         word = h2word(str);
-    } else if(isdigit(*str) || *str == '-') {
+    } else {
         word = n2word(str);
     }
     return word;
