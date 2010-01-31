@@ -23,3 +23,5 @@
  #FFFF:  65535 = #FFFF = 1111111111111111
 Dumpword Error - 116: #00001: out of hex range
 Dumpword Error - 115: #G: not hex
+Dumpword Error - 114: G: not integer
+Dumpword Error - 114: g: not integer

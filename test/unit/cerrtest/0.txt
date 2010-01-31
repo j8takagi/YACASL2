@@ -1,0 +1,64 @@
+101: (null) - 101	label already defined
+102: (null) - 102	label table is full
+103: (null) - 103	label not found
+104: (null) - 104	label length is too long
+105: (null) - 105	no command in the line
+106: (null) - 106	operand count mismatch
+107: (null) - 107	no label in START
+108: (null) - 108	not command of operand "r"
+109: (null) - 109	not command of operand "r1,r2"
+110: (null) - 110	not command of operand "r,adr[,x]"
+111: (null) - 111	not command of operand "adr[,x]"
+112: (null) - 112	not command of no operand
+113: (null) - 113	command not defined
+114: (null) - 114	not integer
+115: (null) - 115	not hex
+116: (null) - 116	out of hex range
+117: (null) - 117	operand is too many
+118: (null) - 118	operand length is too long
+119: (null) - 119	out of COMET II memory
+120: (null) - 120	GR0 in operand x
+121: (null) - 121	cannot get operand token
+122: (null) - 122	cannot create hash table
+123: (null) - 123	unkown error
+124: (null) - 124	unkown error
+201: (null) - 201	execute - out of COMET II memory
+202: (null) - 202	SVC input - out of Input memory
+203: (null) - 203	SVC output - out of COMET II memory
+204: (null) - 204	Program Register (PR) - out of COMET II memory
+205: (null) - 205	Stack Pointer (SP) - cannot allocate stack buffer
+206: (null) - 206	Address - out of COMET II memory
+207: (null) - 207	Stack Pointer (SP) - out of COMET II memory
+999: (null) - 999	unkown error
+101: foobar - 101	foobar: label already defined
+102: foobar - 102	foobar: label table is full
+103: foobar - 103	foobar: label not found
+104: foobar - 104	foobar: label length is too long
+105: foobar - 105	foobar: no command in the line
+106: foobar - 106	foobar: operand count mismatch
+107: foobar - 107	foobar: no label in START
+108: foobar - 108	foobar: not command of operand "r"
+109: foobar - 109	foobar: not command of operand "r1,r2"
+110: foobar - 110	foobar: not command of operand "r,adr[,x]"
+111: foobar - 111	foobar: not command of operand "adr[,x]"
+112: foobar - 112	foobar: not command of no operand
+113: foobar - 113	foobar: command not defined
+114: foobar - 114	foobar: not integer
+115: foobar - 115	foobar: not hex
+116: foobar - 116	foobar: out of hex range
+117: foobar - 117	foobar: operand is too many
+118: foobar - 118	foobar: operand length is too long
+119: foobar - 119	foobar: out of COMET II memory
+120: foobar - 120	foobar: GR0 in operand x
+121: foobar - 121	foobar: cannot get operand token
+122: foobar - 122	foobar: cannot create hash table
+123: foobar - 123	foobar: unkown error
+124: foobar - 124	foobar: unkown error
+201: foobar - 201	foobar: execute - out of COMET II memory
+202: foobar - 202	foobar: SVC input - out of Input memory
+203: foobar - 203	foobar: SVC output - out of COMET II memory
+204: foobar - 204	foobar: Program Register (PR) - out of COMET II memory
+205: foobar - 205	foobar: Stack Pointer (SP) - cannot allocate stack buffer
+206: foobar - 206	foobar: Address - out of COMET II memory
+207: foobar - 207	foobar: Stack Pointer (SP) - out of COMET II memory
+999: foobar - 999	foobar: unkown error

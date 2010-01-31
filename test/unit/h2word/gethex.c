@@ -10,7 +10,7 @@ int main(){
         "#32768", "#-1", "#G", "#FFFF", "#0", "#1", "#ab", "#AB", "#20"
     };
     for(i = 0; i < sizeof(str)/sizeof(str[0]); i++) {
-        r = gethex(str[i]);
+        r = h2word(str[i]);
         printf("%s\t#%04X", str[i], r);
         if(cerrno > 0) {
             printf("\tError - %d\t%s", cerrno, cerrmsg);

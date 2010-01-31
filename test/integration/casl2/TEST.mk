@@ -4,7 +4,6 @@
 # make prepare : CMDで設定されたコマンドを実行した出力結果を0.txt（テストの想定結果）に出力
 # make clean   : 「make」で生成されたファイルをクリア
 # make cleanall: 「make」と「make clean」で生成されたファイルをクリア
-LOGFILE = ../TEST.log
 ERRFILE = err.txt
 UNITNAME = `pwd | xargs basename`
 

@@ -10,7 +10,7 @@ int main(){
         "-1", "-2345", "-32768", "-32769", "-32770"
     };
     for(i = 0; i < sizeof(str)/sizeof(str[0]); i++) {
-        r = getint(str[i]);
+        r = n2word(str[i]);
         printf("%s\t0x%04x", str[i], r);
         if(cerrno > 0) {
             printf("\tError - %d\t%s", cerrno, cerrmsg);

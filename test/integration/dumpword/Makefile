@@ -7,7 +7,7 @@
 # make prepare : すべてのテストの、想定結果を出力
 # make create  : UNITNAMEで指定されたテストを新規に作成
 TESTS = `ls | grep "^[^A-Z].*"`
-LOGFILE = TEST.log
+LOGFILE = Test.log
 
 .PHONY: all check report clean cleanall prepare create
 all: check report
