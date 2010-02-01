@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
         exit(-1);
     }
     /* WORD値に変換 */
-    word = a2word(argv[optind]);
+    word = nh2word(argv[optind]);
     if(cerrno > 0) {
         fprintf(stderr, "Dumpword Error - %d: %s\n", cerrno, cerrmsg);
         exit(-1);

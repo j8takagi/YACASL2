@@ -40,7 +40,7 @@ WORD h2word(const char *str)
 }
 
 /* 10進数または16進数の文字列をWORD値に変換 */
-WORD a2word(const char *str)
+WORD nh2word(const char *str)
 {
     WORD word;
     if(!isdigit(*str) && *str != '-' && *str != '#') {

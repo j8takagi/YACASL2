@@ -39,7 +39,7 @@ WORD getadr(const char *prog, const char *str, PASS pass)
     if(*str == '=') {
         adr = getliteral(str, pass);
     } else if((*str == '#') || isdigit(*str) || *str == '-') {
-        adr = a2word(str);
+        adr = nh2word(str);
     } else {
         if(pass == SECOND && (adr = getlabel(prog, str)) == 0xFFFF) {
             if(prog != NULL) {
@@ -79,7 +79,7 @@ WORD getliteral(const char *str, PASS pass)
     if(*str == '\'') {    /* 文字定数 */
         writestr(str, true, pass);
     } else {
-        writememory(a2word(str), lptr++, pass);
+        writememory(nh2word(str), lptr++, pass);
     }
     return adr;
 }
@@ -88,8 +88,7 @@ WORD getliteral(const char *str, PASS pass)
 /* DC命令とリテラルで使い、リテラルの場合はリテラル領域に書込 */
 void writestr(const char *str, bool literal, PASS pass)
 {
-    assert(cerrno == 0);
-    assert(*str == '\'');
+    assert(cerrno == 0 && *str == '\'');
     str++;
     while(*str != '\0') {
         if(*str == '\'') {
@@ -115,7 +114,7 @@ void writeDC(const char *str, PASS pass)
         writestr(str, false, pass);
     } else {
         if(*str == '#' || isdigit(*str) || *str == '-') {
-            adr = a2word(str);
+            adr = nh2word(str);
         } else {
             if(pass == SECOND && (adr = getlabel(prog, str)) == 0xFFFF) {
                 setcerr(103, str);    /* label not found */
@@ -335,10 +334,11 @@ bool cometcmd(const CMDLINE *cmdl, PASS pass)
             }
             cmd |= x;
         }
-        /* CALLの場合はプログラムの入口名を表すラベル、
-           それ以外の場合は同一プログラム内のラベルを取得 */
-        if(cmd == 0x8000) {        /* CALL命令 */
-            adr = getadr(NULL, cmdl->opd->opdv[0], pass);
+        /* CALLの場合はプログラムの入口名を表すラベルを取得 */
+        /* CALL以外の命令の場合と、プログラムの入口名を取得できない場合は、 */
+        /* 同一プログラム内のラベルを取得 */
+        if(pass == SECOND && cmd == 0x8000) {        /* CALL命令 */
+            adr = getlabel(NULL, cmdl->opd->opdv[0]);
         }
         if(cmd != 0x8000 || (pass == SECOND && adr == 0xFFFF)) {
             adr = getadr(prog, cmdl->opd->opdv[0], pass);
