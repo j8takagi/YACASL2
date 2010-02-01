@@ -12,14 +12,14 @@ UNITNAME = `pwd | xargs basename`
 check: clean report.txt
 prepare: cleanall 0.txt $(OBJFILE)
 clean:
-	@rm -f 1.txt diff.txt report.txt
+	@rm -f 1.txt diff.txt report.txt $(OBJFILE)
 cleanall: clean
 	@rm -f 0.txt $(OBJFILE)
 $(OBJFILE): $(CASL2) $(ASFILE)
-	@$(CASL2) $(CASL2FLAG) -O $(ASFILE) 2>$(ERRFILE)
+	@-$(CASL2) $(CASL2FLAG) -O $(ASFILE) 2>$(ERRFILE)
 0.txt 1.txt: $(COMET2) $(OBJFILE)
 	@echo $(CMD) >$@; \
-     $(CMD) >>$@ 2>$(ERRFILE); \
+     if test -s $(OBJFILE); then $(CMD) >>$@ 2>$(ERRFILE); fi; \
      if test -s $(ERRFILE); then cat err.txt >>$@; else rm -f $(ERRFILE); fi
 diff.txt: 1.txt
 	@-diff -c 0.txt 1.txt >$@ 2>&1

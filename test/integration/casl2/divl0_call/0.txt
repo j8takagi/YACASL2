@@ -1,4 +1,4 @@
-../../../../casl2 ../../../../as/FUNC/divl_call.casl ../../../../as/FUNC/divl0.casl ../../../../as/FUNC/outl.casl
+../../../../casl2 ../../../../as/FUNC/divl_call.casl ../../../../as/FUNC/divl0.casl ../../../../as/FUNC/outl_main.casl ../../../../as/FUNC/rev.casl
 --------------------
 100
 0
