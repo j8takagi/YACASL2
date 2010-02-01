@@ -99,7 +99,7 @@ WORD addl(WORD val0, WORD val1)
     FR = 0x0;
 
     temp = val0 + val1;
-    if(temp > 65535) {
+    if(temp < 0 || temp > 65535) {
         FR += OF;
     }
     res = (WORD)(temp & 0xFFFF);
@@ -114,21 +114,7 @@ WORD addl(WORD val0, WORD val1)
 /* 論理減算。フラグを設定して値を返す */
 WORD subl(WORD val0, WORD val1)
 {
-    long temp;
-    WORD res;
-    FR = 0x0;
-
-    temp = val0 - val1;
-    if(temp < 0) {
-        FR += OF;
-    }
-    res = (WORD)(temp & 0xFFFF);
-    if((res & 0x8000) > 0) {
-        FR += SF;
-    } else if(res == 0) {
-        FR += ZF;
-    }
-    return res;
+    return addl(val0, (~val1 + 1));
 }
 
 /* 算術比較のフラグ設定。OFは常に0 */
