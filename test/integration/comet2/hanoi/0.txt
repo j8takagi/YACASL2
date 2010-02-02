@@ -1,4 +1,4 @@
-../../../../comet2 hanoi.o
+../../../../comet2 a.o
 from A to C
 from A to B
 from C to B

@@ -1,1 +1,1 @@
-../../../../comet2 adda_overflow.o
+../../../../comet2 a.o

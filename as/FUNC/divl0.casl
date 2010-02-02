@@ -1,20 +1,22 @@
-;;; GR1の値とGR2の値の、商をGR0、剰余をGR3に格納する
-;;; 0〜65535の範囲の数値を扱う
+;;; 0〜65535の範囲にある正数の割算を行う
+;;; 入力 GR1:被除数 GR2:除数
+;;; 出力 GR0:商 GR3:剰余
+;;; GR2が0の場合は、GR0、GR3とも0になり、オーバーフロー
 DIVL    START
         PUSH    0,GR1
         AND     GR2,GR2         ; (GR2 = 0)の場合、DYZへジャンプ
-        JZE     DYZ             ; ↓
+        JZE     DIVZERO         ; ↓
         LAD     GR0,0           ; GR0を初期化
         LD      GR3,GR1         ; GR3 <- GR1
-DLOOP   CPL     GR3,GR2         ; ループ先頭。(GR3 < GR2)の場合、終了
-        JMI     DFIN            ; ↓
+LOOP    CPL     GR3,GR2         ; ループ先頭。(GR3 < GR2)の場合、終了
+        JMI     FIN             ; ↓
         SUBL    GR3,GR2         ; GR3 <- GR3 - GR2
-        ADDL    GR0,DONE        ; ↓
-        JUMP    DLOOP           ; ループ終端
-DYZ     LAD     GR3,#FFFF       ; 強制的にオーバーフローを発生させ、GR3 <- 0
-        ADDL    GR3,=1          ; ↓
-        JUMP    DFIN            ; DFINへジャンプ
-DFIN    POP     GR1
+        ADDL    GR0,ONE         ; ↓
+        JUMP    LOOP            ; ループ終端
+DIVZERO LAD     GR3,#8000       ; 強制的にオーバーフローを発生させ、GR3 <- 0
+        SLL     GR3,1           ; ↓
+        JUMP    FIN             ; FIN へジャンプ
+FIN     POP     GR1
         RET
-DONE    DC      1        
+ONE     DC      1
         END

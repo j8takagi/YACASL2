@@ -1,4 +1,4 @@
-../../../../comet2 outa_call.o
+../../../../comet2 a.o
 0
 1
 2

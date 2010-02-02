@@ -1,3 +1,3 @@
-UNITNAME = linetok
 UCLASS = AS
-include ../Test.mk
+TESTSRCFILE = linetok.c
+include ../TEST.mk

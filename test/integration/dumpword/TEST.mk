@@ -18,10 +18,10 @@ cleanall: clean
 0.txt 1.txt: $(DUMPWORD) $(TESTSH)
 	@sh $(TESTSH) >>$@ 2>$(ERRFILE); \
      if test -s $(ERRFILE); then cat err.txt >>$@; else rm -f $(ERRFILE); fi
-$(TESTSH): ../HEX.txt
+$(TESTSH): ../ARGS.txt
 	@xargs -n1 echo "$(DUMPWORD) $(DUMPWORDFLAG) " <$^ >$@
 diff.txt: 1.txt
-	@-diff 0.txt 1.txt >$@ 2>&1
+	@-diff -c 0.txt 1.txt >$@ 2>&1
 report.txt: diff.txt
 	@echo -n "$(UNITNAME): Test " >$@; \
      if test ! -s $^; then echo -n "Success " >>$@; rm -f $^; else echo -n "Failure " >>$@; fi; \

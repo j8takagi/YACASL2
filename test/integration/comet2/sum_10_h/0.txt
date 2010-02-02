@@ -1,2 +1,2 @@
-../../../../comet2 -tdh sum_10_h.o
+../../../../comet2 -tdh a.o
 Usage: ../../../../comet2 [-tTdh] [-M <memorysize>] [-C <clocks>] FILE

@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "casl2.h"
 
 int main(){
@@ -16,9 +15,9 @@ int main(){
         0x8000, 0xF000, 0x8100
     };
     create_code_type();
-    for(i = 0; i < sizeof(codelist)/sizeof(codelist[0]); i++) {
+    for(i = 0; i < ARRAYSIZE(codelist); i++) {
         type = getcmdtype(codelist[i]);
-        printf("0x%04x ---> 0%02o\n", codelist[i], type);
+        printf("#%04X ---> 0%02o\n", codelist[i], type);
         if(cerrno != 0) {
             printf("\t%s", cerrmsg);
             freecerr();

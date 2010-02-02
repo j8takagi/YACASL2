@@ -22,10 +22,10 @@ bool writeIN(const char *ibuf, const char *len, PASS pass)
     writememory(0x0, ptr++, pass);
     /* LAD GR1,IBUF */
     writememory(0x1210, ptr++, pass);
-    writememory(getadr(ibuf, pass), ptr++, pass);
+    writememory(getadr(prog, ibuf, pass), ptr++, pass);
     /* LAD GR2,LEN */
     writememory(0x1220, ptr++, pass);
-    writememory(getadr(len, pass), ptr++, pass);
+    writememory(getadr(prog, len, pass), ptr++, pass);
     /* SVC 1 */
     writememory(0xF000, ptr++, pass);
     writememory(0x0001, ptr++, pass);
@@ -63,10 +63,10 @@ bool writeOUT(const char *obuf, const char *len, PASS pass)
     writememory(0x0, ptr++, pass);
     /* LAD GR1,OBUF */
     writememory(0x1210, ptr++, pass);
-    writememory(getadr(obuf, pass), ptr++, pass);
+    writememory(getadr(prog, obuf, pass), ptr++, pass);
     /* LD GR2,OLEN */
     writememory(0x1020, ptr++, pass);
-    writememory(getadr(len, pass), ptr++, pass);
+    writememory(getadr(prog, len, pass), ptr++, pass);
     /* SVC 2 */
     writememory(0xF000, ptr++, pass);
     writememory(0x0002, ptr++, pass);

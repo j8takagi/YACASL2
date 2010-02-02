@@ -1,3 +1,3 @@
-UNITNAME = print_code_type
 UCLASS = COMMON
-include ../Test.mk
+TESTSRCFILE = print_code_type.c
+include ../TEST.mk

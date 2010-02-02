@@ -67,28 +67,28 @@ Assemble ../../../../as/YAKUWA/floatedit.casl (0)
 ../../../../as/YAKUWA/floatedit.casl:   64:	END
 
 Label::::
-EDIT.MSGLNG ---> #00AA
 EDIT ---> #0000
-EDIT.ZSFLAG ---> #014D
-EDIT.INAREA ---> #00AB
-EDIT.OTLENG ---> #014C
-EDIT.NONDGT ---> #0060
-EDIT.RETRY ---> #0000
-EDIT.BEGIN ---> #002A
+EDIT.SPACE ---> #009A
 EDIT.FINISH ---> #008B
 EDIT.INLENG ---> #00FB
 EDIT.SUPPRS ---> #0068
-EDIT.LOOP ---> #0034
 EDIT.NOT1ST ---> #005C
-EDIT.STORE ---> #006A
 EDIT.DIGIT0 ---> #009B
 EDIT.DIGIT9 ---> #009C
-EDIT.SPACE ---> #009A
-EDIT.MASK ---> #008C
 EDIT.OTAREA ---> #00FC
 EDIT.ENDSPR ---> #004E
 EDIT.ERRMSG ---> #009E
+EDIT.MSGLNG ---> #00AA
+EDIT.LOOP ---> #0034
+EDIT.ZSFLAG ---> #014D
 EDIT.TEN ---> #009D
+EDIT.INAREA ---> #00AB
+EDIT.RETRY ---> #0000
+EDIT.BEGIN ---> #002A
+EDIT.OTLENG ---> #014C
+EDIT.NONDGT ---> #0060
+EDIT.MASK ---> #008C
+EDIT.STORE ---> #006A
 
 Assemble ../../../../as/YAKUWA/floatedit.casl (1)
 ../../../../as/YAKUWA/floatedit.casl:    1:EDIT	START

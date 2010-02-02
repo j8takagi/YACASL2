@@ -1,3 +1,0 @@
-Assemble error - 101: A: label already defined
- ../../../../as/ERR/labeldup_err.casl:6: A       DC      1
-

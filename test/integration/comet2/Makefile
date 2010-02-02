@@ -7,7 +7,7 @@
 # make prepare : すべてのテストの、想定結果を出力
 # make create  : UNITNAMEで指定されたテストを新規に作成
 TESTS = `ls | grep "^[^A-Z].*"`
-LOGFILE = TEST.log
+LOGFILE = Test.log
 
 .PHONY: all check report clean cleanall prepare create
 all: check report
@@ -18,7 +18,7 @@ check:
      done
 $(LOGFILE):
 	@for target in $(TESTS); do \
-         cat <$$target/report.txt >>$(LOGFILE); \
+         if test -s $^; then cat <$$target/report.txt >>$(LOGFILE); else echo "Failure:" $$target "no report" >>$(LOGFILE); fi; \
      done
 report: $(LOGFILE)
 	@success=`grep "Success" $(LOGFILE) | wc -l`; \
@@ -26,8 +26,6 @@ report: $(LOGFILE)
      echo "$$success / $$all tests passed. Details in `pwd`/$(LOGFILE)"; \
      if test $$success -eq $$all; then \
        echo "All tests are succeded."; \
-     else \
-       grep "Failure" $(LOGFILE); \
      fi
 clean:
 	@for target in $(TESTS); do \
@@ -65,7 +63,7 @@ endif
 ifdef INFILE
 	@echo 'IN = <$(INFILE)' >>$(UNITNAME)/Makefile
 endif
-	@echo 'CMD = $$(COMET2) $$(COMET2FLAG) $$(UNITNAME).o $$(IN)' >>$(UNITNAME)/Makefile; \
+	@echo 'CMD = $$(COMET2) $$(COMET2FLAG) $$(OBJFILE)' >>$(UNITNAME)/Makefile; \
      echo 'include ../TEST.mk' >>$(UNITNAME)/Makefile
 else
 	@echo "no test created. set UNITNAME"

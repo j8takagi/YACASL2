@@ -15,9 +15,9 @@ Assemble ../../../../as/CMD/svc2.casl (0)
 ../../../../as/CMD/svc2.casl:   12:        END
 
 Label::::
+MAIN.BEGIN ---> #0000
 MAIN.A ---> #000C
 MAIN.D ---> #000B
-MAIN.BEGIN ---> #0000
 MAIN ---> #0000
 
 Assemble ../../../../as/CMD/svc2.casl (1)

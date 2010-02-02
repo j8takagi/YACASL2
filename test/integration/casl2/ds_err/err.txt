@@ -1,3 +1,0 @@
-Assemble error - 106: operand count mismatch
- ../../../../as/ERR/ds_err.casl:4: A       DS
-

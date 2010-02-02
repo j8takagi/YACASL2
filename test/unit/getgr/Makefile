@@ -1,3 +1,3 @@
-UNITNAME = getgr
 UCLASS = AS
-include ../Test.mk
+TESTSRCFILE = getgr.c
+include ../TEST.mk

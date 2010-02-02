@@ -38,7 +38,7 @@ OPD *opdtok(const char *str)
                 setcerr(121, NULL);    /* cannot get operand token */
                 break;
             }
-            if(strlen(p) > OPDSIZE + 2) {
+            if(strlen(p) > OPDSIZE + 2) {    /* OPDSIZE + 「'」2文字分 */
                 setcerr(118, p);    /* operand length is too long */
                 break;
             }

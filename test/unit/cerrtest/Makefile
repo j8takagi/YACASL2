@@ -1,3 +1,3 @@
-UNITNAME = cerrtest
 UCLASS = COMMON
-include ../Test.mk
+TESTSRCFILE = cerrtest.c
+include ../TEST.mk

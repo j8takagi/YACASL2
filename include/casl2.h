@@ -1,13 +1,21 @@
+#ifndef YACASL2_CASL2_INCLUDED
+#define YACASL2_CASL2_INCLUDED
+
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <malloc.h>
-#include <ctype.h>
-#include <assert.h>
 #include <stdbool.h>
 #include <time.h>
+#include <assert.h>
+#include <ctype.h>
+#include <string.h>
 
+#include "word.h"
+#include "hash.h"
+#include "cerr.h"
+
+#ifndef ARRAYSIZE
 #define ARRAYSIZE(array) (sizeof(array)/sizeof(array[0]))
+#endif
 
 /* COMET IIの規格 */
 enum {
@@ -16,12 +24,6 @@ enum {
     DEFAULT_MEMSIZE = 512,    /* デフォルトのメモリ容量。COMET II規格では、65536語 */
     DEFAULT_CLOCKS = 5000000, /* デフォルトのクロック周波数。COMET II規格では、未定義 */
 };
-
-/* ハッシュ値を取得する */
-unsigned hash(const char *key, int size);
-
-/* COMET IIの基本データサイズ */
-typedef unsigned short WORD;
 
 /* COMET IIのメモリ */
 extern WORD *memory;
@@ -35,12 +37,6 @@ enum {
     SF = 0x2,    /* Sign Flag */
     ZF = 0x1,    /* Zero Flag */
 };
-
-/* エラー番号 */
-extern int cerrno;
-
-/* エラーメッセージ */
-extern char *cerrmsg;
 
 /* レジストリの内容を表示する場合はTRUE */
 extern bool tracemode;
@@ -141,26 +137,7 @@ void print_code_type();
 /* 命令コードがキーのハッシュ表を解放する */
 void free_code_type();
 
-/* エラー番号とエラーメッセージを設定 */
-void setcerr(int num, const char *val);
-
-/* エラー番号からメッセージを返す */
-char *getcerrmsg(int num);
-
-/* WORD値を文字列に変換 */
-char *wtoa(WORD word);
-
-/* エラーを解放する */
-void freecerr();
-
 /* 指定されたファイルにアセンブル結果を書込 */
 void outassemble(char *file);
 
-/* WORD値を2進数表記に変換 */
-char *word2bit(const WORD word);
-
-/* COMET IIのメモリを表示 */
-void dumpmemory();
-
-/* COMET IIのレジスタを表示 */
-void dspregister();
+#endif

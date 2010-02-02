@@ -27,8 +27,8 @@
 203: (null) - 203	SVC output - out of COMET II memory
 204: (null) - 204	Program Register (PR) - out of COMET II memory
 205: (null) - 205	Stack Pointer (SP) - cannot allocate stack buffer
-206: (null) - 206	unkown error
-207: (null) - 207	unkown error
+206: (null) - 206	Address - out of COMET II memory
+207: (null) - 207	Stack Pointer (SP) - out of COMET II memory
 999: (null) - 999	unkown error
 101: foobar - 101	foobar: label already defined
 102: foobar - 102	foobar: label table is full
@@ -59,6 +59,6 @@
 203: foobar - 203	foobar: SVC output - out of COMET II memory
 204: foobar - 204	foobar: Program Register (PR) - out of COMET II memory
 205: foobar - 205	foobar: Stack Pointer (SP) - cannot allocate stack buffer
-206: foobar - 206	foobar: unkown error
-207: foobar - 207	foobar: unkown error
+206: foobar - 206	foobar: Address - out of COMET II memory
+207: foobar - 207	foobar: Stack Pointer (SP) - out of COMET II memory
 999: foobar - 999	foobar: unkown error

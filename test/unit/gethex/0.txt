@@ -1,9 +1,0 @@
-#32768	#0000	Error - 122	#32768: out of hex range
-#-1	#0000	Error - 122	#-1: out of hex range
-#G	#0000	Error - 115	#G: not hex
-#FFFF	#FFFF
-#0	#0000
-#1	#0001
-#ab	#00AB
-#AB	#00AB
-#20	#0020

@@ -1,3 +1,3 @@
-UNITNAME = getcmdcode
 UCLASS = COMMON
-include ../Test.mk
+TESTSRCFILE = getcmdcode.c
+include ../TEST.mk
