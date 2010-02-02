@@ -14,7 +14,7 @@ WORD n2word(const char *str)
     }
     /* nが-32768〜32767の範囲にないときは、その下位16ビットを格納 */
     if(n < -32768 || n > 32767) {
-        n = n % 0x10000;
+        n = n & 0xFFFF;
     }
     return (WORD)n;
 }
@@ -23,7 +23,7 @@ WORD n2word(const char *str)
 WORD h2word(const char *str)
 {
     assert(*str == '#');
-    WORD w = 0x0;
+    WORD word = 0x0;
     char *check;
     str++;
     if(*str == '-' || strlen(str) > 4) {
@@ -31,12 +31,12 @@ WORD h2word(const char *str)
         return 0;
     }
     /* WORD値に変換 */
-    w = (WORD)strtol(str, &check, 16);
+    word = (WORD)strtol(str, &check, 16);
     if(*check != '\0') {
         setcerr(115, str-1);    /* not hex */
         return 0x0;
     }
-    return w;
+    return word;
 }
 
 /* 10進数または16進数の文字列をWORD値に変換 */

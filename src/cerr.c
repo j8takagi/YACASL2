@@ -36,7 +36,7 @@ CERRARRAY cerr[] = {
 void setcerr(int num, const char *val)
 {
     cerrno = num;
-    cerrmsg = malloc(256);
+    cerrmsg = malloc(MSGSIZE + 1);
     if(val != NULL) {
         strcpy(cerrmsg, val);
         strcat(cerrmsg, ": ");

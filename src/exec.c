@@ -72,12 +72,11 @@ WORD adda(WORD val0, WORD val1)
     long temp;
     FR = 0x0;
 
-    temp = (short)val0 + (short)val1;
+    temp = (signed short)val0 + (signed short)val1;
     if(temp > 32767 || temp < -32768) {
         FR += OF;
     }
-    res = (WORD)(temp & 0xFFFF);
-    if((res & 0x8000) > 0x0) {
+    if(((res = (WORD)(temp & 0xFFFF)) & 0x8000) == 0x8000) {
         FR += SF;
     } else if(res == 0x0) {
         FR += ZF;
@@ -98,12 +97,10 @@ WORD addl(WORD val0, WORD val1)
     WORD res;
     FR = 0x0;
 
-    temp = val0 + val1;
-    if(temp < 0 || temp > 65535) {
+    if((temp = val0 + val1) < 0 || temp > 65535) {
         FR += OF;
     }
-    res = (WORD)(temp & 0xFFFF);
-    if((res & 0x8000) > 0x0) {
+    if(((res = (WORD)(temp & 0xFFFF)) & 0x8000) == 0x8000) {
         FR += SF;
     } else if(res == 0x0) {
         FR += ZF;
@@ -139,8 +136,8 @@ void cpl(WORD val0, WORD val1)
     }
 }
 
-/* 算術左シフト。フラグを設定して値を返す。
-   算術演算なので、第15ビットは送り出されない */
+/* 算術左シフト。フラグを設定して値を返す。 */
+/* 算術演算なので、第15ビットは送り出されない */
 WORD sla(WORD val0, WORD val1)
 {
     FR = 0x0;
@@ -171,7 +168,7 @@ WORD sra(WORD val0, WORD val1)
     res = (val0 & 0x7FFF) >> val1;
     /* 符号（第15ビット）が1の場合、符号と空いたビット位置に1を設定
        COMET IIの仕様で、シフトの結果空いたビット位置には符号と同じものが入る */
-    if((sign = val0 & 0x8000) > 0x0) {
+    if((sign = val0 & 0x8000) == 0x8000) {
         for(i = 0; i <= val1; i++) {
             res |= onbit;
             onbit >>= 1;
@@ -224,7 +221,7 @@ WORD srl(WORD val0, WORD val1)
         FR += OF;
     }
     /* 第15ビットが1のとき、SFは1 */
-    if((res & 0x8000) > 0x0) {
+    if((res & 0x8000) == 0x8000) {
         FR += SF;
     }
     /* 演算結果が0のとき、ZFは1 */
@@ -238,7 +235,7 @@ WORD srl(WORD val0, WORD val1)
 void reset()
 {
     int i;
-    for(i = 0; i <= 7; i++) {
+    for(i = 0; i < REGSIZE; i++) {
         GR[i] = 0x0;
     }
     SP = PR = FR = 0x0;

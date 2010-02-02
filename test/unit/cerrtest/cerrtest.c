@@ -9,7 +9,7 @@ int main(){
         121, 122, 123, 124, 201, 202, 203, 204, 205, 206, 207, 999
     };
     const char *str[] = {NULL, "foobar"};
-    
+
     for(i = 0; i < sizeof(str)/sizeof(str[0]); i++) {
         for(j = 0; j < sizeof(code)/sizeof(code[0]); j++) {
             setcerr(code[j], str[i]);

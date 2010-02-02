@@ -2,7 +2,7 @@
 #define YACASL2_CASL2_INCLUDED
 
 #include <stdio.h>
-#include <malloc.h>
+#include <stdlib.h>
 #include <stdbool.h>
 #include <time.h>
 #include <assert.h>

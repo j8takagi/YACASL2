@@ -1,7 +1,7 @@
 #ifndef YACASL2_CERR_H_INCLUDED
 #define YACASL2_CERR_H_INCLUDED
 
-#include <malloc.h>
+#include <stdlib.h>
 #include <string.h>
 #include <assert.h>
 
@@ -20,6 +20,10 @@ typedef struct {
     int num;
     char *msg;
 } CERRARRAY;
+
+enum {
+    MSGSIZE = 60,
+};
 
 /* エラー番号とエラーメッセージを設定 */
 void setcerr(int num, const char *val);
