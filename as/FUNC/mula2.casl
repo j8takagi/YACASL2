@@ -19,29 +19,21 @@ CHK1    AND     GR1,GR1         ; (GR1 > 0)の場合は、CHK2へジャンプ
         JOV     FIN             ; (GR1 = -32768)の場合は終了
         XOR     GR4,ONE         ; GR4 <- 1
 CHK2    AND     GR2,GR2         ; (GR1 > 0)の場合は、LOOPへジャンプ
-        JPL     LOOP            ; ↓
+        JPL     MUL             ; ↓
         XOR     GR2,ALLON       ; GR2の正負を反転
         ADDA    GR2,ONE         ; ↓
         JOV     FIN             ; (GR2 = -32768)の場合は終了
         XOR     GR4,ONE         ; マイナスフラグを反転
-LOOP    PUSH    0,GR3           ; ループ先頭。GR2のビット中でGR3の示したものが0の場合、NEXTへジャンプ
-        AND     GR3,GR2         ; ↓
-        POP     GR3             ; ↓
-        JZE     NEXT            ; ↓
-        ADDA    GR0,GR1         ; GR0 <- GR0 + GR1
-        JOV     FIN             ; オーバーフローした場合、終了
-NEXT    SLA     GR3,1           ; GR3を1回左シフト
-        AND     GR3,GR3         ; (GR3 = 0)の場合、ループ脱出
-        JZE     MIN             ; ↓
-        CPL     GR3,GR2         ; (GR3 > GR2)の場合、ループ脱出
-        JPL     MIN             ; ↓
-        SLA     GR1,1           ; GR1を1回左シフト
-        JOV     FIN             ; オーバーフローした場合、終了
-        JUMP    LOOP            ; ループ終端
+MUL     CALL    MULL            ; GR0 <- GR1 * GR2
+        JOV     FIN
+        AND     GR0,GR0
+        JMI     OV
 MIN     AND     GR4,GR4         ; マイナスフラグがオフの場合、終了
         JZE     FIN             ; ↓
         XOR     GR0,ALLON       ; GR1の正負を反転
         ADDA    GR0,ONE         ; ↓
+        JUMP    FIN
+OV      ADDL    GR0,=#8000
 FIN     RPOP
         RET
 ONE     DC      1

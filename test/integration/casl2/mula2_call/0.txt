@@ -1,4 +1,4 @@
-../../../../comet2 -M640 a.o
+../../../../casl2 -M640 ../../../../as/FUNC/mula_call.casl ../../../../as/FUNC/mula2.casl ../../../../as/FUNC/mull1.casl ../../../../as/FUNC/outa.casl
 0
 0
 0
