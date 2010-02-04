@@ -1,0 +1,8 @@
+;;; ABSを呼び出す
+;;; casl2 abs_call.casl abs.casl outa.casl
+MAIN    START
+        LD      GR1,MVAL
+        CALL    ABS
+MFIN    RET
+MVAL    DC      -32768
+        END

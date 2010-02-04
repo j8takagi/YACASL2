@@ -1,9 +1,17 @@
 ;;; GR1を絶対値に変換する
+;;; 入力 GR1:-32768〜32767の整数
+;;; 出力 GR1:入力された整数の絶対値
+;;;       OF:入力されたGR1が-32768の場合、1
+;;;       SF:入力されたGR1が負数(-32767〜-1)の場合、1
 ABS     START
         AND     GR1,GR1
         JPL     FIN
         JZE     FIN
-        XOR     GR1,=#FFFF
-        ADDA    GR1,=1
+        XOR     GR1,ALLON
+        ADDA    GR1,ONE
+        JOV     FIN
+        CPL     GR1,ALLON
 FIN     RET
+ONE     DC      1
+ALLON   DC      #FFFF
         END
