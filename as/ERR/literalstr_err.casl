@@ -1,5 +1,5 @@
 MAIN    START
-        LAD     GR1,='a'
+        LAD     GR1,='abcdeABCDE'
         LAD     GR2,10
 LOOP    CPA     GR2,=0
         JZE     LEND

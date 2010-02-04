@@ -75,8 +75,7 @@ WORD getliteral(const char *str, PASS pass)
 {
     WORD adr = lptr;
     assert(*str == '=');
-    str++;
-    if(*str == '\'') {    /* 文字定数 */
+    if(*(++str) == '\'') {    /* 文字定数 */
         writestr(str, true, pass);
     } else {
         writememory(nh2word(str), lptr++, pass);
@@ -89,19 +88,29 @@ WORD getliteral(const char *str, PASS pass)
 void writestr(const char *str, bool literal, PASS pass)
 {
     assert(cerrno == 0 && *str == '\'');
-    str++;
-    while(*str != '\0') {
-        if(*str == '\'') {
-            if(*(str+1) != '\'') {
-                break;
-            }
-            str++;
+    const char *p = str + 1;
+    bool lw = false;
+
+    for(; ;) {
+        /* 閉じ「'」がないまま文字列が終了した場合 */
+        if(*p == '\0') {
+            setcerr(123, str);    /* illegal string */
+            break;
+        }
+        /* 「'」の場合 */
+        /* 次の文字が「'」でない場合は正常終了 */
+        if(*p == '\'' && *(++p) != '\'') {
+            break;
+        } else if(literal == true && lw == true) {
+            setcerr(124, str);    /* more than one character in literal */
+            break;
         }
         /*リテラルの場合はリテラル領域に書込 */
         if(literal == true) {
-            writememory(*(str++), lptr++, pass);
+            writememory(*(p++), lptr++, pass);
+            lw = true;
         } else {
-            writememory(*(str++), ptr++, pass);
+            writememory(*(p++), ptr++, pass);
         }
     }
 }

@@ -1,0 +1,6 @@
+../../../../casl2 -td ../../../../as/ERR/literalstr_err.casl
+
+Assemble ../../../../as/ERR/literalstr_err.casl (0)
+Assemble error - 124: 'abcdeABCDE': more than one character in literal
+ ../../../../as/ERR/literalstr_err.casl:2:         LAD     GR1,='abcdeABCDE'
+

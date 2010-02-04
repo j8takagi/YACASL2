@@ -10,14 +10,14 @@ OPD *opdtok(const char *str)
     bool quoting = false;
 
     opd->opdc = 0;
-    if(str == NULL || strlen(str) == 0) {
+    if(str == NULL) {
         return opd;
     }
     p = q = strdup(str);
     do {
         /* オペランド数が多すぎる場合はエラー */
         if(opd->opdc >= OPDSIZE) {
-            setcerr(117, NULL);    /* operand is too many */
+            setcerr(117, str);    /* operand is too many */
             break;
         }
         /* 先頭が「=」の場合の処理 */
@@ -29,6 +29,11 @@ OPD *opdtok(const char *str)
             quoting = !quoting;
         }
         if(quoting == true) {
+            /* 閉じ「'」がないまま文字列が終了した場合 */
+            if(*q == '\0') {
+                setcerr(123, str);    /* illegal string */
+                break;
+            }
             q++;
         } else {
             sepp = q + strcspn(q, ", ");
