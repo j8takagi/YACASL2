@@ -1,4 +1,5 @@
 #include "casl2.h"
+#include "exec.h"
 
 /* COMET IIのメモリを表示 */
 void dumpmemory()
@@ -30,7 +31,7 @@ void dspregister()
 {
     int i;
     for(i = 0; i < REGSIZE; i++ ) {
-        if(logicalmode == true) {
+        if((&execmode)->logicalmode == true) {
             fprintf(stdout, "#%04X: GR%d: %6d = #%04X = %s\n",
                     PR, i, GR[i], GR[i], word2bit(GR[i]));
         } else {

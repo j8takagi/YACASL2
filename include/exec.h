@@ -8,6 +8,14 @@ enum {
     INSIZE = 256    /* CASL IIの、IN命令入力領域 */
 };
 
+/* 実行モード */
+typedef struct {
+    bool tracemode;           /* レジストリの内容を表示する場合はtrue */
+    bool logicalmode;         /* レジストリの内容を論理値（0〜65535）で表示する場合はtrue */
+    bool dumpmode;            /* メモリの内容を表示する場合はtrue */
+} EXECMODE;
+extern EXECMODE execmode;
+
 /* 指定されたファイルからアセンブル結果を読込 */
 bool inassemble(char *file);
 

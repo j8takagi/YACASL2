@@ -16,16 +16,13 @@ CERRARRAY cerr[] = {
     { 0, NULL },
 };
 
-/* レジストリの内容を論理値（0〜65535）で表示する場合はtrue */
-bool logicalmode = false;
-
 int main(int argc, char *argv[])
 {
+    bool logicalmode = false;    /* レジストリの内容を論理値（0〜65535）で表示する場合はtrue */
     int opt;
     WORD word;
     const char *usage = "Usage: %s [-alh] WORD\n";
 
-    logicalmode = false;
     while((opt = getopt_long(argc, argv, "alh", longopts, NULL)) != -1) {
         switch(opt) {
         case 'l':

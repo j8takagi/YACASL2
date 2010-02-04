@@ -39,30 +39,6 @@ CERRARRAY cerr[] = {
     { 0, NULL },
 };
 
-/* レジストリの内容を表示する場合はtrue */
-bool tracemode = false;
-
-/* レジストリの内容を論理値（0〜65535）で表示する場合はtrue */
-bool logicalmode = false;
-
-/* メモリの内容を表示する場合はtrue */
-bool dumpmode = false;
-
-/* ソースを表示する場合はtrue */
-bool srcmode = false;
-
-/* ラベル表を表示する場合はtrue */
-bool labelmode = false;
-
-/* ラベル表を表示して終了する場合はtrue */
-bool onlylabelmode = false;
-
-/* アセンブラ詳細結果を表示する場合はtrue */
-bool asdetailmode = false;
-
-/* アセンブルだけを行う場合はtrue */
-bool onlyassemblemode = false;
-
 /* メモリーサイズ */
 int memsize = DEFAULT_MEMSIZE;
 

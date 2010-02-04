@@ -61,7 +61,7 @@ bool writememory(WORD word, WORD adr, PASS pass)
     }
     if(cerrno == 0) {
         memory[adr] = word;
-        if(pass == SECOND && asdetailmode == true) {
+        if(pass == SECOND && (&asmode)->asdetailmode == true) {
             fprintf(stdout, "\t#%04X\t#%04X\n", adr, word);
         }
         status = true;
@@ -409,7 +409,9 @@ bool assemble(const char *file, PASS pass)
             break;
         }
         lineno++;
-        if((pass == FIRST && srcmode == true) || (pass == SECOND && asdetailmode == true)) {
+        if((pass == FIRST && (&asmode)->srcmode == true) ||
+           (pass == SECOND && (&asmode)->asdetailmode == true))
+        {
             fprintf(stdout, "%s:%5d:%s", file, lineno, line);
         }
         if((cmdl = linetok(line)) != NULL) {

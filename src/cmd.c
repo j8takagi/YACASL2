@@ -83,8 +83,8 @@ unsigned hash_cmdtype(const char *cmd, CMDTYPE type) {
     return hash(2, keys, cmdcodesize);
 }
 
-/* 命令と命令タイプから、命令コードを取得する。
-   無効な場合は0xFFFFを返す */
+/* 命令と命令タイプから、命令コードを取得する */
+/* 無効な場合は0xFFFFを返す */
 WORD getcmdcode(const char *cmd, CMDTYPE type)
 {
     CMDCODETAB *np;
@@ -162,8 +162,8 @@ unsigned hash_code(WORD code)
     return hash(1, keys, cmdcodesize);
 }
 
-/* 命令コードから命令タイプを取得する。
-   無効な場合はNONEを返す */
+/* 命令コードから命令タイプを取得する */
+/* 無効な場合はNONEを返す */
 CMDTYPE getcmdtype(WORD code)
 {
     CMDCODETAB *np;

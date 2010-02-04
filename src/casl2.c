@@ -4,18 +4,8 @@
 #define _GNU_SOURCE
 #include <getopt.h>
 
-/* 指定されたファイルにCOMET II仮想メモリ（アセンブル結果）を書込 */
-void outassemble(char *file) {
-    FILE *fp;
-    if((fp = fopen(file, "w")) == NULL) {
-        perror(file);
-        return;
-    }
-    fwrite(memory, sizeof(WORD), endptr, fp);
-    fclose(fp);
-}
-
-static struct option longopts[] = {
+static struct option longopts[] =
+{
     {"source", no_argument, NULL, 's'},
     {"label", no_argument, NULL, 'l'},
     {"labelonly", no_argument, NULL, 'L'},
@@ -33,6 +23,20 @@ static struct option longopts[] = {
     {0, 0, 0, 0},
 };
 
+ASMODE asmode = {false, false, false, false, false};
+EXECMODE execmode = {false, false, false};
+
+/* 指定されたファイルにCOMET II仮想メモリ（アセンブル結果）を書込 */
+void outassemble(char *file) {
+    FILE *fp;
+    if((fp = fopen(file, "w")) == NULL) {
+        perror(file);
+        exit(-1);
+    }
+    fwrite(memory, sizeof(WORD), endptr, fp);
+    fclose(fp);
+}
+
 int main(int argc, char *argv[])
 {
     int opt, i;
@@ -41,25 +45,27 @@ int main(int argc, char *argv[])
     WORD beginptr[argc];
     char *objfile = NULL;
     const char *default_objfile = "a.o";
-    const char *usage = "Usage: %s [-slLaAtTdh] [-oO<OUTFILE>] [-M <memorysize>] [-C <clocks>] FILE ...\n";
+    const char *usage =
+        "Usage: %s [-slLaAtTdh] [-oO<OUTFILE>] [-M <memorysize>] [-C <clocks>] FILE ...\n";
 
     while((opt = getopt_long(argc, argv, "tTdslLao::O::AM:C:h", longopts, NULL)) != -1) {
         switch(opt) {
         case 's':
-            srcmode = true;
+            (&asmode)->srcmode = true;
             break;
         case 'l':
-            labelmode = true;
+            (&asmode)->labelmode = true;
             break;
         case 'L':
-            onlylabelmode = true;
+            (&asmode)->labelmode = true;
+            (&asmode)->onlylabelmode = true;
             break;
         case 'a':
-            asdetailmode = true;
+            (&asmode)->asdetailmode = true;
             break;
         case 'A':
-            onlyassemblemode = true;
-            asdetailmode = true;
+            (&asmode)->onlyassemblemode = true;
+            (&asmode)->asdetailmode = true;
             break;
         case 'o':
             if(optarg == NULL) {
@@ -69,7 +75,7 @@ int main(int argc, char *argv[])
             }
             break;
         case 'O':
-            onlyassemblemode = true;
+            (&asmode)->onlyassemblemode = true;
             if(optarg == NULL) {
                 objfile = strdup(default_objfile);
             } else {
@@ -77,14 +83,14 @@ int main(int argc, char *argv[])
             }
             break;
         case 't':
-            tracemode = true;
+            (&execmode)->tracemode = true;
             break;
         case 'T':
-            tracemode = true;
-            logicalmode = true;
+            (&execmode)->tracemode = true;
+            (&execmode)->logicalmode = true;
             break;
         case 'd':
-            dumpmode = true;
+            (&execmode)->dumpmode = true;
             break;
         case 'M':
             memsize = atoi(optarg);
@@ -115,8 +121,10 @@ int main(int argc, char *argv[])
             } else if(pass == SECOND) {
                 ptr = beginptr[i];
             }
-            if(tracemode == true || dumpmode == true || srcmode == true ||
-               labelmode == true || asdetailmode == true) {
+            if((&execmode)->tracemode == true || (&execmode)->dumpmode == true ||
+               (&asmode)->srcmode == true || (&asmode)->labelmode == true ||
+               (&asmode)->asdetailmode == true)
+            {
                 fprintf(stdout, "\nAssemble %s (%d)\n", argv[i], pass);
             }
             if((status = assemble(argv[i], pass)) == false) {
@@ -127,10 +135,10 @@ int main(int argc, char *argv[])
                 exit(-1);
             }
         }
-        if(pass == FIRST && (labelmode == true || onlylabelmode == true)) {
+        if(pass == FIRST && (&asmode)->labelmode == true) {
             fprintf(stdout, "\nLabel::::\n");
             printlabel();
-            if(onlylabelmode == true) {
+            if((&asmode)->onlylabelmode == true) {
                 return 0;
             }
         }
@@ -140,7 +148,7 @@ int main(int argc, char *argv[])
         if(objfile != NULL) {
             outassemble(objfile);
         }
-        if(onlyassemblemode == false) {
+        if((&asmode)->onlyassemblemode == false) {
             exec();    /* プログラム実行 */
         }
     }

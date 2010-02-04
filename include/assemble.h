@@ -10,6 +10,16 @@ enum {
     OPDSIZE = 40,          /* オペラントの最大数 */
 };
 
+/* アセンブルモード */
+typedef struct {
+    bool srcmode;             /* ソースを表示する場合はtrue */
+    bool labelmode;           /* ラベル表を表示する場合はtrue */
+    bool onlylabelmode;       /* ラベル表を表示して終了する場合はtrue */
+    bool asdetailmode;        /* アセンブラ詳細結果を表示する場合はtrue */
+    bool onlyassemblemode;    /* アセンブルだけを行う場合はtrue */
+} ASMODE;
+extern ASMODE asmode;
+
 /* 値を格納するポインタ */
 extern WORD ptr;
 
