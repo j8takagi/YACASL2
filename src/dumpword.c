@@ -9,6 +9,16 @@ static struct option longopts[] = {
     {0, 0, 0, 0},
 };
 
+CERRARRAY cerr[] = {
+    { 114, "not integer" },
+    { 115, "not hex" },
+    { 116, "out of hex range" },
+    { 0, NULL },
+};
+
+/* レジストリの内容を論理値（0〜65535）で表示する場合はtrue */
+bool logicalmode = false;
+
 int main(int argc, char *argv[])
 {
     int opt;

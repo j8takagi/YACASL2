@@ -21,6 +21,9 @@ typedef struct {
     char *msg;
 } CERRARRAY;
 
+/* エラーメッセージ */
+extern CERRARRAY cerr[];
+
 enum {
     MSGSIZE = 60,
 };

@@ -1,7 +1,10 @@
 INCLUDE = ../include
 CC = gcc
 CFLAGS = -g -Wall -I $(INCLUDE)
-COMMONSRC = word.o struct.o hash.o cmd.o cerr.o
+HASHSRC = hash.o
+CERRSRC = cerr.o
+WORDSRC = word.o
+COMMONSRC = $(WORDSRC) $(HASHSRC) $(CERRSRC) struct.o cmd.o
 ASSRC = assemble.o token.o label.o macro.o
 EXECSRC = exec.o dump.o
 .PHPNY: all clean
@@ -10,7 +13,7 @@ all: ../casl2 ../comet2 ../dumpword TAGS
 	$(CC) $(CFLAGS) -o $@ $^
 ../comet2: comet2.o $(COMMONSRC) $(EXECSRC)
 	$(CC) $(CFLAGS) -o $@ $^
-../dumpword: dumpword.o $(COMMONSRC)
+../dumpword: dumpword.o $(WORDSRC) $(CERRSRC)
 	$(CC) $(CFLAGS) -o $@ $^
 %.o: %.c
 	$(CC) -c $(CFLAGS) $<
