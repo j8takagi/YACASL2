@@ -1,0 +1,55 @@
+\input texinfo   @c -*-texinfo-*-
+@c %**start of header
+@setfilename yacasl2
+@settitle YACASL2
+@c %**end of header
+
+@copying
+Copyright @copyright{} 2010 j8takagi
+@end copying
+
+@titlepage
+@title YACASL2 -Linux上で動作するCASL2処理系-
+
+@c The following two commands start the copyright page.
+@page
+@vskip 0pt plus 1filll
+@insertcopying
+@end titlepage
+
+@c Output the table of contents at the beginning.
+@contents
+
+@insertcopying
+
+@chapter YACASL2の概要
+
+@cindex chapter, first
+
+YACASL2は、Linux上で動作するオープンソースのCASL II処理系です。
+
+CASL IIは、情報処理試験で用いられるアセンブラ言語で、仕様も公開されています。
+
+@uref{http://www.jitec.ipa.go.jp/1_00topic/topic_20081027_hani_yougo.pdf, 試験で使用する情報処理用語・プログラム言語など（2008年10月版）［PDFファイル］-別紙 1 アセンブラ言語の仕様}
+
+YACASL2は、CASL IIの仕様に準拠した動作をします。
+そのため、情報処理試験の問題をはじめ、各種参考書やサイトに記載されたCASL IIのプログラムをそのまま動作させることができます。
+
+また、本パッケージ中にCASL IIプログラムのサンプルが多数収録されています。
+
+YACASL2は、「通常の処理系」として動作します。ほかの多くのCASL IIエミュレーターと違い、デバッガーとして動作したり、コンピューター内部の模式図を表示したりすることはありません。そのかわり、YACASL2は、次のような動作内容をすべてテキストで出力します。
+
+@enumerate
+@item
+ラベルとアドレスの対応
+@item
+アセンブラ結果
+@item
+実行時のレジスタの内容
+@item
+実行時のメモリの内容
+@end enumerate
+
+出力された動作内容は、GNU/Linuxのさまざまなツール、たとえばhead, tail, grep, diffなどを使って解析できます。
+
+@bye
