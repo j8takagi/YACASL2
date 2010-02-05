@@ -12,13 +12,13 @@ TESTSH = test.sh
 check: clean report.txt
 prepare: cleanall 0.txt
 clean:
-	@rm -f 1.txt diff.txt report.txt
+	@rm -f 1.txt diff.txt report.txt err.txt
 cleanall: clean
-	@rm -f 0.txt
+	@rm -f 0.txt test.sh
 0.txt 1.txt: $(DUMPWORD) $(TESTSH)
 	@sh $(TESTSH) >>$@ 2>$(ERRFILE); \
      if test -s $(ERRFILE); then cat err.txt >>$@; else rm -f $(ERRFILE); fi
-$(TESTSH): ../ARGS.txt
+$(TESTSH): $(ARGFILE)
 	@xargs -n1 echo "$(DUMPWORD) $(DUMPWORDFLAG) " <$^ >$@
 diff.txt: 1.txt
 	@-diff -c 0.txt 1.txt >$@ 2>&1

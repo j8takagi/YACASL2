@@ -12,7 +12,7 @@ UNITNAME = `pwd | xargs basename`
 check: clean report.txt
 prepare: cleanall 0.txt $(OBJFILE)
 clean:
-	@rm -f 1.txt diff.txt report.txt $(OBJFILE)
+	@rm -f 1.txt diff.txt report.txt
 cleanall: clean
 	@rm -f 0.txt $(OBJFILE)
 $(OBJFILE): $(CASL2) $(ASFILE)

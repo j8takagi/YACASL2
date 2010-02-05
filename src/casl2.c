@@ -4,8 +4,7 @@
 #define _GNU_SOURCE
 #include <getopt.h>
 
-static struct option longopts[] =
-{
+static struct option longopts[] = {
     {"source", no_argument, NULL, 's'},
     {"label", no_argument, NULL, 'l'},
     {"labelonly", no_argument, NULL, 'L'},

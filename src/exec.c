@@ -30,20 +30,20 @@ void svcin()
 void svcout()
 {
     int i;
-    char c;
+    WORD w;
 
     for(i = 0; i < GR[2]; i++) {
         if(GR[1] + i >= memsize - 1) {
             setcerr(203, NULL);    /* SVC output - out of Comet II memory */
             return;
         }
-        if(memory[GR[1]+i] == '\0') {
+        if((w = memory[GR[1]+i]) == '\0') {
             break;
         }
         /* 「文字の組」の符号表に記載された文字と、改行（CR）／タブを表示 */
         /* それ以外の文字は、「.」で表す */
-        if(((c = (char)(memory[GR[1]+i])) >= 0x20 && c <= 0x7E) || c == 0xA || c == '\t') {
-            putchar(c);
+        if((w >= 0x20 && w <= 0x7E) || w == 0xA || w == '\t') {
+            putchar((char)w);
         } else {
             putchar('.');
         }

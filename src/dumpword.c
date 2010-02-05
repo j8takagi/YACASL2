@@ -47,10 +47,7 @@ int main(int argc, char *argv[])
         fprintf(stderr, "Dumpword Error - %d: %s\n", cerrno, cerrmsg);
         exit(-1);
     }
-    if(logicalmode == true) {
-        fprintf(stdout, "%6s: %6d = #%04X = %s\n", argv[optind], word, word, word2bit(word));
-    } else {
-        fprintf(stdout, "%6s: %6d = #%04X = %s\n", argv[optind], (short)word, word, word2bit(word));
-    }
+    fprintf(stdout, "%6s: ", argv[optind]);
+    print_dumpword(word, logicalmode);
     return 0;
 }

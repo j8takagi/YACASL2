@@ -1,3 +1,3 @@
 include ../CMD.mk
-ARGFILE = ../ARGS.txt
+ARGFILE = CHARTBL_NUM.txt
 include ../TEST.mk

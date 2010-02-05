@@ -1,10 +1,13 @@
 #ifndef YACASL2_WORD_H_INCLUDED
 #define YACASL2_WORD_H_INCLUDED
 
+#include <stdio.h>
 #include <string.h>
 #include <assert.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <stdbool.h>
+
 #include "cerr.h"
 
 /* WORD - 16ビットデータ型 */
@@ -24,5 +27,8 @@ char *word2n(WORD word);
 
 /* WORD値を2進数の文字列に変換 */
 char *word2bit(const WORD word);
+
+/* WORD値を解析して表示 */
+void print_dumpword(WORD word, bool logicalmode);
 
 #endif
