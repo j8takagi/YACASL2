@@ -7,6 +7,8 @@ char *cerrmsg;
 /* エラー番号とエラーメッセージを設定する */
 void setcerr(int num, const char *val)
 {
+    assert(&cerr != NULL && num > 0);
+
     cerrno = num;
     cerrmsg = malloc(MSGSIZE + 1);
     if(val != NULL) {
@@ -21,9 +23,10 @@ void setcerr(int num, const char *val)
 /* エラー番号からメッセージを返す */
 char *getcerrmsg(int num)
 {
-    assert(num > 0);
+    assert(&cerr != NULL && num > 0);
     int i = 0;
     CERRARRAY *ptr;
+
     do {
         if((ptr = &cerr[i++])->num == num) {
             return ptr->msg;

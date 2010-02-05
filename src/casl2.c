@@ -26,8 +26,44 @@ static struct option longopts[] =
 ASMODE asmode = {false, false, false, false, false};
 EXECMODE execmode = {false, false, false};
 
-/* 指定されたファイルにCOMET II仮想メモリ（アセンブル結果）を書込 */
-void outassemble(char *file) {
+/* エラー番号とエラーメッセージ */
+CERRARRAY cerr[] = {
+    { 101, "label already defined" },
+    { 102, "label table is full" },
+    { 103, "label not found" },
+    { 104, "label length is too long" },
+    { 105, "no command in the line" },
+    { 106, "operand count mismatch" },
+    { 107, "no label in START" },
+    { 108, "not command of operand \"r\"" },
+    { 109, "not command of operand \"r1,r2\"" },
+    { 110, "not command of operand \"r,adr[,x]\"" },
+    { 111, "not command of operand \"adr[,x]\"" },
+    { 112, "not command of no operand" },
+    { 113, "command not defined" },
+    { 114, "not integer" },
+    { 115, "not hex" },
+    { 116, "out of hex range" },
+    { 117, "operand is too many" },
+    { 118, "operand length is too long" },
+    { 119, "out of COMET II memory" },
+    { 120, "GR0 in operand x" },
+    { 121, "cannot get operand token" },
+    { 122, "cannot create hash table" },
+    { 123, "illegal string" },
+    { 124, "more than one character in literal" },
+    { 201, "execute - out of COMET II memory" },
+    { 202, "SVC input - out of Input memory" },
+    { 203, "SVC output - out of COMET II memory" },
+    { 204, "Program Register (PR) - out of COMET II memory" },
+    { 205, "Stack Pointer (SP) - cannot allocate stack buffer" },
+    { 206, "Address - out of COMET II memory" },
+    { 207, "Stack Pointer (SP) - out of COMET II memory" },
+    { 0, NULL },
+};
+
+/* 指定されたファイルにアセンブル結果を書込 */
+void outassemble(const char *file) {
     FILE *fp;
     if((fp = fopen(file, "w")) == NULL) {
         perror(file);
@@ -37,6 +73,19 @@ void outassemble(char *file) {
     fclose(fp);
 }
 
+/* アセンブル結果を書き込むファイルの名前 */
+const char *objfile_name(const char *str)
+{
+    const char *default_name = "a.o";
+
+    if(optarg == NULL) {
+        return default_name;
+    } else {
+        return str;
+    }
+}
+
+/* casl2コマンド */
 int main(int argc, char *argv[])
 {
     int opt, i;
@@ -44,7 +93,6 @@ int main(int argc, char *argv[])
     bool status = false;
     WORD beginptr[argc];
     char *objfile = NULL;
-    const char *default_objfile = "a.o";
     const char *usage =
         "Usage: %s [-slLaAtTdh] [-oO<OUTFILE>] [-M <memorysize>] [-C <clocks>] FILE ...\n";
 
@@ -64,23 +112,15 @@ int main(int argc, char *argv[])
             (&asmode)->asdetailmode = true;
             break;
         case 'A':
-            (&asmode)->onlyassemblemode = true;
             (&asmode)->asdetailmode = true;
+            (&asmode)->onlyassemblemode = true;
             break;
         case 'o':
-            if(optarg == NULL) {
-                objfile = strdup(default_objfile);
-            } else {
-                objfile = strdup(optarg);
-            }
+            objfile = strdup(objfile_name(optarg));
             break;
         case 'O':
             (&asmode)->onlyassemblemode = true;
-            if(optarg == NULL) {
-                objfile = strdup(default_objfile);
-            } else {
-                objfile = strdup(optarg);
-            }
+            objfile = strdup(objfile_name(optarg));
             break;
         case 't':
             (&execmode)->tracemode = true;
@@ -106,11 +146,12 @@ int main(int argc, char *argv[])
             exit(-1);
         }
     }
+    /* ソースファイルが指定されていない場合は終了 */
     if(argv[optind] == NULL) {
         fprintf(stderr, "source file is not specified\n");
         exit(-1);
     }
-    /* ソースファイルが指定されていない場合は終了 */
+    /* COMET II仮想マシンのリセット */
     reset();
     /* アセンブル。ラベル表作成のため、2回行う */
     for(pass = FIRST; pass <= SECOND; pass++) {

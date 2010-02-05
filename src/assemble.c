@@ -97,8 +97,7 @@ void writestr(const char *str, bool literal, PASS pass)
             setcerr(123, str);    /* illegal string */
             break;
         }
-        /* 「'」の場合 */
-        /* 次の文字が「'」でない場合は正常終了 */
+        /* 「'」の場合、次の文字が「'」でない場合は正常終了 */
         if(*p == '\'' && *(++p) != '\'') {
             break;
         } else if(literal == true && lw == true) {

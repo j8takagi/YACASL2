@@ -40,10 +40,9 @@ void svcout()
         if(memory[GR[1]+i] == '\0') {
             break;
         }
-        /* 「文字の組」の符号表に記載された文字と、改行（CR）／タブを表示
-           それ以外の文字は、「.」で表す */
-        if(((c = (char)(memory[GR[1]+i])) >= 0x20 && c <= 0x7E) || c == 0xA || c == '\t')
-        {
+        /* 「文字の組」の符号表に記載された文字と、改行（CR）／タブを表示 */
+        /* それ以外の文字は、「.」で表す */
+        if(((c = (char)(memory[GR[1]+i])) >= 0x20 && c <= 0x7E) || c == 0xA || c == '\t') {
             putchar(c);
         } else {
             putchar('.');
@@ -231,7 +230,7 @@ WORD srl(WORD val0, WORD val1)
     return res;
 }
 
-/* 仮想マシンのリセット */
+/* COMET II仮想マシンのリセット */
 void reset()
 {
     int i;

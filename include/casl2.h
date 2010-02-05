@@ -124,6 +124,6 @@ void print_code_type();
 void free_code_type();
 
 /* 指定されたファイルにアセンブル結果を書込 */
-void outassemble(char *file);
+void outassemble(const char *file);
 
 #endif

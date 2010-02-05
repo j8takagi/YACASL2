@@ -16,7 +16,19 @@ static struct option longopts[] = {
 
 EXECMODE execmode = {false, false, false};
 
-/* 指定されたファイルからCOMET II仮想メモリ（アセンブル結果）を読込 */
+/* エラー番号とエラーメッセージ */
+CERRARRAY cerr[] = {
+    { 201, "execute - out of COMET II memory" },
+    { 202, "SVC input - out of Input memory" },
+    { 203, "SVC output - out of COMET II memory" },
+    { 204, "Program Register (PR) - out of COMET II memory" },
+    { 205, "Stack Pointer (SP) - cannot allocate stack buffer" },
+    { 206, "Address - out of COMET II memory" },
+    { 207, "Stack Pointer (SP) - out of COMET II memory" },
+    { 0, NULL },
+};
+
+/* 指定されたファイルからアセンブル結果を読込 */
 bool inassemble(char *file) {
     FILE *fp;
     reset();
@@ -29,6 +41,7 @@ bool inassemble(char *file) {
     return true;
 }
 
+/* comet2コマンド */
 int main(int argc, char *argv[])
 {
     int opt;
