@@ -139,12 +139,19 @@ void cpl(WORD val0, WORD val1)
 /* 算術演算なので、第15ビットは送り出されない */
 WORD sla(WORD val0, WORD val1)
 {
+    WORD sign, res, last;
+    int i;
+
     FR = 0x0;
-    WORD sign, res;
     sign = val0 & 0x8000;
-    res = ((val0 << val1) & 0x7FFF) | sign;
+    res = val0 & 0x7FFF;
+    for(i = 0; i < val1; i++) {
+        last = res & 0x4000;
+        res <<= 1;
+    }
+    res = sign | res;
     /* OFに、レジスタから最後に送り出されたビットの値を設定 */
-    if((val0 & (0x4000 >> (val1 - 1))) > 0x0) {
+    if(last > 0x0) {
         FR += OF;
     }
     /* 符号（第15ビット）が1のとき、SFは1 */
@@ -159,22 +166,26 @@ WORD sla(WORD val0, WORD val1)
 }
 
 /* 算術右シフト。フラグを設定して値を返す */
+/* 算術演算なので、第15ビットは送り出されない */
+/* 空いたビット位置には符号と同じものが入る */
 WORD sra(WORD val0, WORD val1)
 {
-    WORD sign, res, onbit = 0x8000;
+    WORD sign, res, last;
     int i;
+
     FR = 0x0;
-    res = (val0 & 0x7FFF) >> val1;
-    /* 符号（第15ビット）が1の場合、符号と空いたビット位置に1を設定
-       COMET IIの仕様で、シフトの結果空いたビット位置には符号と同じものが入る */
-    if((sign = val0 & 0x8000) == 0x8000) {
-        for(i = 0; i <= val1; i++) {
-            res |= onbit;
-            onbit >>= 1;
+    sign = val0 & 0x8000;
+    res = val0 & 0x7FFF;
+    for(i = 0; i < val1; i++) {
+        last = res & 0x1;
+        res >>= 1;
+        if(sign > 0) {
+            res |= 0x4000;
         }
     }
+    res = sign | res;
     /* OFに、レジスタから最後に送り出されたビットの値を設定 */
-    if((val0 & (0x1 << (val1 - 1))) > 0x0) {
+    if(last > 0x0) {
         FR += OF;
     }
     /* 符号（第15ビット）が1のとき、SFは1 */
@@ -191,11 +202,16 @@ WORD sra(WORD val0, WORD val1)
 /* 論理左シフト。フラグを設定して値を返す */
 WORD sll(WORD val0, WORD val1)
 {
+    WORD res = val0, last;
+    int i;
+
     FR = 0x0;
-    WORD res;
-    res = val0 << val1;
+    for(i = 0; i < val1; i++) {
+        last = res & 0x8000;
+        res <<= 1;
+    }
     /* OFに、レジスタから最後に送り出されたビットの値を設定 */
-    if((val0 & (0x8000 >> (val1 - 1))) > 0x0) {
+    if(last > 0x0) {
         FR += OF;
     }
     /* 第15ビットが1のとき、SFは1 */
@@ -212,15 +228,20 @@ WORD sll(WORD val0, WORD val1)
 /* 論理右シフト。フラグを設定して値を返す */
 WORD srl(WORD val0, WORD val1)
 {
+    WORD res = val0, last;
+    int i;
+
     FR = 0x0;
-    WORD res;
-    res = val0 >> val1;
+    for(i = 0; i < val1; i++) {
+        last = res & 0x0001;
+        res >>= 1;
+    }
     /* OFに、レジスタから最後に送り出されたビットの値を設定 */
-    if((val0 & (0x1 << (val1 - 1))) > 0x0) {
+    if(last > 0x0) {
         FR += OF;
     }
     /* 第15ビットが1のとき、SFは1 */
-    if((res & 0x8000) == 0x8000) {
+    if((res & 0x8000) > 0x0) {
         FR += SF;
     }
     /* 演算結果が0のとき、ZFは1 */
