@@ -1,0 +1,7 @@
+MAIN    START
+        LD      GR1,A
+        ADDA    GR1,B
+        RET
+A       DC      #8001           ; -32767
+B       DC      #FFF6           ; -10
+        END

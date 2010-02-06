@@ -1,0 +1,8 @@
+MAIN    START
+        LD      GR1,A
+        LD      GR2,B
+        AND     GR1,GR2
+        RET
+A       DC      #3000
+B       DC      #4FFF
+        END

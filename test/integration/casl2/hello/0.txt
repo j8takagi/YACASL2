@@ -1,21 +1,21 @@
 ../../../../casl2 -sla ../../../../as/hello.casl
 
 Assemble ../../../../as/hello.casl (0)
-../../../../as/hello.casl:    1:MAIN     START
-../../../../as/hello.casl:    2:         OUT    BUF,LEN
-../../../../as/hello.casl:    3:         RET
-../../../../as/hello.casl:    4:BUF      DC     'Hello, World!'
-../../../../as/hello.casl:    5:LEN      DC     13
-../../../../as/hello.casl:    6:         END
+../../../../as/hello.casl:    1:MAIN    START
+../../../../as/hello.casl:    2:        OUT     OBUF,LEN
+../../../../as/hello.casl:    3:        RET
+../../../../as/hello.casl:    4:OBUF    DC      'Hello, World!'
+../../../../as/hello.casl:    5:LEN     DC      13
+../../../../as/hello.casl:    6:        END
 
 Label::::
 MAIN.LEN ---> #0020
 MAIN ---> #0000
-MAIN.BUF ---> #0013
+MAIN.OBUF ---> #0013
 
 Assemble ../../../../as/hello.casl (1)
-../../../../as/hello.casl:    1:MAIN     START
-../../../../as/hello.casl:    2:         OUT    BUF,LEN
+../../../../as/hello.casl:    1:MAIN    START
+../../../../as/hello.casl:    2:        OUT     OBUF,LEN
 	#0000	#7001
 	#0001	#0000
 	#0002	#7002
@@ -35,9 +35,9 @@ Assemble ../../../../as/hello.casl (1)
 	#000F	#0002
 	#0010	#7120
 	#0011	#7110
-../../../../as/hello.casl:    3:         RET
+../../../../as/hello.casl:    3:        RET
 	#0012	#8100
-../../../../as/hello.casl:    4:BUF      DC     'Hello, World!'
+../../../../as/hello.casl:    4:OBUF    DC      'Hello, World!'
 	#0013	#0048
 	#0014	#0065
 	#0015	#006C
@@ -51,7 +51,7 @@ Assemble ../../../../as/hello.casl (1)
 	#001D	#006C
 	#001E	#0064
 	#001F	#0021
-../../../../as/hello.casl:    5:LEN      DC     13
+../../../../as/hello.casl:    5:LEN     DC      13
 	#0020	#000D
-../../../../as/hello.casl:    6:         END
+../../../../as/hello.casl:    6:        END
 Hello, World!

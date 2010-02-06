@@ -1,0 +1,8 @@
+;;; CASL IIマクロ命令「IN IBUF LEN」で生成される命令群
+        PUSH    0,GR1
+        PUSH    0,GR2
+        LAD     GR1,IBUF
+        LAD     GR2,LEN
+        SVC     1
+        POP     GR2
+        POP     GR1

@@ -1,0 +1,14 @@
+MAIN    START
+        PUSH    0,GR1
+        PUSH    0,GR2
+        LAD     GR1,IBUF
+        LAD     GR2,LEN
+        SVC     1
+        POP     GR2
+        POP     GR1
+        IN      IBUF,LEN
+        OUT     IBUF,LEN
+        RET
+IBUF    DS      100
+LEN     DC      1
+        END

@@ -1,0 +1,7 @@
+MAIN    START
+        IN      IBUF,LEN
+        OUT     IBUF,LEN
+        RET
+IBUF    DS      100
+LEN     DC      1
+        END

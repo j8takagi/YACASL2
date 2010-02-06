@@ -1,0 +1,8 @@
+MAIN    START
+        LD      GR1,A
+        LD      GR2,B
+        ADDA    GR1,GR2
+        RET
+A       DC      -32767
+B       DC      -10
+        END

@@ -11,9 +11,9 @@ SRCDIR = ../../../src
 INCLUDE = ../../../include
 CC = gcc
 CFLAGS = -g -Wall -I $(INCLUDE)
-COMMONSRC = $(SRCDIR)/word.c $(SRCDIR)/struct.c $(SRCDIR)/hash.c $(SRCDIR)/cmd.c $(SRCDIR)/cerr.c
-ASSRC = $(SRCDIR)/assemble.c $(SRCDIR)/token.c $(SRCDIR)/label.c $(SRCDIR)/macro.c
-EXECSRC = $(SRCDIR)/exec.c $(SRCDIR)/dump.c
+COMMONSRC = $(SRCDIR)/word.o $(SRCDIR)/struct.o $(SRCDIR)/hash.o $(SRCDIR)/cmd.o $(SRCDIR)/cerr.o
+ASSRC = $(SRCDIR)/assemble.o $(SRCDIR)/token.o $(SRCDIR)/label.o $(SRCDIR)/macro.o
+EXECSRC = $(SRCDIR)/exec.o $(SRCDIR)/dump.o
 
 ifeq "$(UCLASS)" "AS"
   SRC = $(COMMONSRC) $(ASSRC)
@@ -33,6 +33,7 @@ clean:
 cleanall: clean
 	@rm -f 0.txt
 a.out: $(SRC) $(TESTSRCFILE)
+	@make -C $(SRCDIR)
 	@gcc $(CFLAGS) $(SRC) $(TESTSRCFILE)
 0.txt 1.txt: a.out
 	@./a.out >$@ 2>&1

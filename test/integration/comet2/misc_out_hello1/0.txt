@@ -1,2 +1,2 @@
 ../../../../comet2 a.o
-abcd
+Hello, World!
