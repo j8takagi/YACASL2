@@ -32,7 +32,7 @@ void svcout()
     int i;
     WORD w;
 
-    for(i = 0; i < GR[2]; i++) {
+    for(i = 0; i < memory[GR[2]]; i++) {
         if(GR[1] + i >= memsize - 1) {
             setcerr(203, NULL);    /* SVC output - out of Comet II memory */
             return;

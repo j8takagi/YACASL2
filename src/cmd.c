@@ -38,7 +38,7 @@ CMDCODEARRAY cmdcodearray[] = {
     { "POP", R_, 0x7100 },
     { "CALL", ADR_X, 0x8000 },
     { "SVC", ADR_X, 0xF000 },
-    { "RET", NONE, 0x8100 }
+    { "RET", NONE, 0x8100 },
 };
 
 int cmdcodesize = ARRAYSIZE(cmdcodearray);
