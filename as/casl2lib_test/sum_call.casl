@@ -3,7 +3,7 @@
 MAIN    START
         LAD     GR1,361
         CALL    SUM
-        LD      GR1,GR2
+        LD      GR1,GR0
         CALL    OUTL
 MFIN    RET
         END

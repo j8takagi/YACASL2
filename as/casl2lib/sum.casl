@@ -1,16 +1,16 @@
 ;;; sum.casl
 ;;; 入力 GR1: 1以上の正数
-;;; 出力 GR2: 1からGR1で指定された値までの正数をすべて加算した値。
-;;;           オーバーフローした場合は、#FFFF
+;;; 出力 GR0: 1からGR1で指定された値までの正数をすべて加算した値。
+;;;           オーバーフローした場合は、0
 SUM     START
-        LAD     GR2,0
-        LAD     GR3,1
-LOOP    CPL     GR3,GR1
+        LAD     GR0,0
+        LAD     GR2,1
+LOOP    CPL     GR2,GR1
         JPL     FIN
-        ADDL    GR2,GR3
+        ADDL    GR0,GR2
         JOV     OV
-        LAD     GR3,1,GR3
+        LAD     GR2,1,GR2
         JUMP    LOOP
-OV      LAD     GR2,#FFFF
+OV      LAD     GR0,0
 FIN     RET
         END
