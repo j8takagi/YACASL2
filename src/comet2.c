@@ -3,6 +3,7 @@
 #define _GNU_SOURCE
 #include <getopt.h>
 
+/* comet2コマンドのオプション */
 static struct option longopts[] = {
     {"trace", no_argument, NULL, 't'},
     {"tracearithmetic", no_argument, NULL, 't'},
@@ -14,6 +15,7 @@ static struct option longopts[] = {
     {0, 0, 0, 0}
 };
 
+/* 実行モード: trace, logical, dump */
 EXECMODE execmode = {false, false, false};
 
 /* エラー番号とエラーメッセージ */
@@ -29,9 +31,8 @@ CERRARRAY cerr[] = {
 };
 
 /* 指定されたファイルからアセンブル結果を読込 */
-bool inassemble(char *file) {
+bool loadassemble(char *file) {
     FILE *fp;
-    reset();
     if((fp = fopen(file, "r")) == NULL) {
         perror(file);
         return false;
@@ -50,14 +51,14 @@ int main(int argc, char *argv[])
     while((opt = getopt_long(argc, argv, "tTdM:C:h", longopts, NULL)) != -1) {
         switch(opt) {
         case 't':
-            (&execmode)->tracemode = true;
+            (&execmode)->trace = true;
             break;
         case 'T':
-            (&execmode)->tracemode = true;
-            (&execmode)->logicalmode = true;
+            (&execmode)->trace = true;
+            (&execmode)->logical = true;
             break;
         case 'd':
-            (&execmode)->dumpmode = true;
+            (&execmode)->dump = true;
             break;
         case 'M':
             memsize = atoi(optarg);
@@ -73,7 +74,8 @@ int main(int argc, char *argv[])
             exit(-1);
         }
     }
-    if(inassemble(argv[optind]) == true) {
+    reset();
+    if(loadassemble(argv[optind]) == true) {
         exec();    /* プログラム実行 */
     }
     if(cerrno > 0) {

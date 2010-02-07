@@ -273,7 +273,7 @@ void exec()
     char *errpr = malloc(8);
     clock_t clock_begin, clock_end;
 
-    if((&execmode)->tracemode) {
+    if((&execmode)->trace) {
         fprintf(stdout, "\nExecuting machine codes\n");
     }
     /* フラグレジスタの初期値設定 */
@@ -309,15 +309,15 @@ void exec()
         if(cerrno > 0) {
             goto execerr;
         }
-        if((&execmode)->tracemode){
+        if((&execmode)->trace){
             fprintf(stdout, "#%04X: Register::::\n", PR);
             dspregister();
         }
-        if((&execmode)->dumpmode){
+        if((&execmode)->dump){
             fprintf(stdout, "#%04X: Memory::::\n", PR);
             dumpmemory();
         }
-        if((&execmode)->dumpmode || (&execmode)->tracemode) {
+        if((&execmode)->dump || (&execmode)->trace) {
             fprintf(stdout, "\n");
         }
         PR++;

@@ -32,7 +32,7 @@ void dspregister()
     int i;
     for(i = 0; i < REGSIZE; i++ ) {
         fprintf(stdout, "#%04X: GR%d: ", PR, i);
-        print_dumpword(GR[i], (&execmode)->logicalmode);
+        print_dumpword(GR[i], (&execmode)->logical);
     }
     fprintf(stdout, "#%04X: SP:  %6d = #%04X = %s\n", PR, SP, SP, word2bit(SP));
     fprintf(stdout, "#%04X: PR:  %6d = #%04X = %s\n", PR, PR, PR, word2bit(PR));

@@ -4,6 +4,7 @@
 #define _GNU_SOURCE
 #include <getopt.h>
 
+/* casl2コマンドのオプション */
 static struct option longopts[] = {
     {"source", no_argument, NULL, 's'},
     {"label", no_argument, NULL, 'l'},
@@ -22,7 +23,9 @@ static struct option longopts[] = {
     {0, 0, 0, 0},
 };
 
+/* アセンブルモード: src, label, onlylabel, asdetail, onlyassemble */
 ASMODE asmode = {false, false, false, false, false};
+/* 実行モード: trace, logical, dump */
 EXECMODE execmode = {false, false, false};
 
 /* エラー番号とエラーメッセージ */
@@ -84,7 +87,7 @@ const char *objfile_name(const char *str)
     }
 }
 
-/* casl2コマンド */
+/* casl2コマンドのメイン */
 int main(int argc, char *argv[])
 {
     int opt, i;
@@ -98,38 +101,38 @@ int main(int argc, char *argv[])
     while((opt = getopt_long(argc, argv, "tTdslLao::O::AM:C:h", longopts, NULL)) != -1) {
         switch(opt) {
         case 's':
-            (&asmode)->srcmode = true;
+            (&asmode)->src = true;
             break;
         case 'l':
-            (&asmode)->labelmode = true;
+            (&asmode)->label = true;
             break;
         case 'L':
-            (&asmode)->labelmode = true;
-            (&asmode)->onlylabelmode = true;
+            (&asmode)->label = true;
+            (&asmode)->onlylabel = true;
             break;
         case 'a':
-            (&asmode)->asdetailmode = true;
+            (&asmode)->asdetail = true;
             break;
         case 'A':
-            (&asmode)->asdetailmode = true;
-            (&asmode)->onlyassemblemode = true;
+            (&asmode)->asdetail = true;
+            (&asmode)->onlyassemble = true;
             break;
         case 'o':
             objfile = strdup(objfile_name(optarg));
             break;
         case 'O':
-            (&asmode)->onlyassemblemode = true;
+            (&asmode)->onlyassemble = true;
             objfile = strdup(objfile_name(optarg));
             break;
         case 't':
-            (&execmode)->tracemode = true;
+            (&execmode)->trace = true;
             break;
         case 'T':
-            (&execmode)->tracemode = true;
-            (&execmode)->logicalmode = true;
+            (&execmode)->trace = true;
+            (&execmode)->logical = true;
             break;
         case 'd':
-            (&execmode)->dumpmode = true;
+            (&execmode)->dump = true;
             break;
         case 'M':
             memsize = atoi(optarg);
@@ -161,9 +164,9 @@ int main(int argc, char *argv[])
             } else if(pass == SECOND) {
                 ptr = beginptr[i];
             }
-            if((&execmode)->tracemode == true || (&execmode)->dumpmode == true ||
-               (&asmode)->srcmode == true || (&asmode)->labelmode == true ||
-               (&asmode)->asdetailmode == true)
+            if((&execmode)->trace == true || (&execmode)->dump == true ||
+               (&asmode)->src == true || (&asmode)->label == true ||
+               (&asmode)->asdetail == true)
             {
                 fprintf(stdout, "\nAssemble %s (%d)\n", argv[i], pass);
             }
@@ -175,10 +178,10 @@ int main(int argc, char *argv[])
                 exit(-1);
             }
         }
-        if(pass == FIRST && (&asmode)->labelmode == true) {
+        if(pass == FIRST && (&asmode)->label == true) {
             fprintf(stdout, "\nLabel::::\n");
             printlabel();
-            if((&asmode)->onlylabelmode == true) {
+            if((&asmode)->onlylabel == true) {
                 return 0;
             }
         }
@@ -188,7 +191,7 @@ int main(int argc, char *argv[])
         if(objfile != NULL) {
             outassemble(objfile);
         }
-        if((&asmode)->onlyassemblemode == false) {
+        if((&asmode)->onlyassemble == false) {
             exec();    /* プログラム実行 */
         }
     }

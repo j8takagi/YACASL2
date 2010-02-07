@@ -126,4 +126,4 @@ void free_code_type();
 /* 指定されたファイルにアセンブル結果を書込 */
 void outassemble(const char *file);
 
-#endif
+#endif            /* YACASL2_CASL2_INCLUDEDの終端 */

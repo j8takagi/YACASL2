@@ -10,20 +10,21 @@ WORD lptr;
 /* 他のプログラムで参照する入口名 */
 char *prog;
 
-/* 汎用レジスタを表す文字列「GR[0-7]」をWORD値に変換 */
-/* is_xがtrueの場合は、指標レジスタとして用いる汎用レジスタ */
+/* 汎用レジスタを表す文字列「GR[0-7]」から、レジスタ番号[0-7]をWORD値で返す */
 /* 文字列が汎用レジスタを表さない場合は、0xFFFFを返す */
+/* is_xがtrueの場合は指標レジスタ。GR0は、COMET IIの仕様により、エラー発生 */
 WORD getgr(const char *str, bool is_x)
 {
     assert(str != NULL);
     WORD r;
+    /* 「GR[0-7]」以外の文字列では、0xFFFFを返して終了 */
     if(!(strlen(str) == 3 && strncmp(str, "GR", 2) == 0 &&
          (*(str+2) >= '0' && *(str+2) <= '7')))
     {
         return 0xFFFF;
     }
     r = (WORD)(*(str+2) - '0');
-    /* COMET IIの仕様により、GR0は指標レジスタとして用いることはできない */
+    /* 指標レジスタとして用いることはできない */
     if(is_x == true && r == 0x0) {
         setcerr(120, NULL);    /* GR0 in operand x */
         return 0x0;
@@ -61,7 +62,7 @@ bool writememory(WORD word, WORD adr, PASS pass)
     }
     if(cerrno == 0) {
         memory[adr] = word;
-        if(pass == SECOND && (&asmode)->asdetailmode == true) {
+        if(pass == SECOND && (&asmode)->asdetail == true) {
             fprintf(stdout, "\t#%04X\t#%04X\n", adr, word);
         }
         status = true;
@@ -417,8 +418,8 @@ bool assemble(const char *file, PASS pass)
             break;
         }
         lineno++;
-        if((pass == FIRST && (&asmode)->srcmode == true) ||
-           (pass == SECOND && (&asmode)->asdetailmode == true))
+        if((pass == FIRST && (&asmode)->src == true) ||
+           (pass == SECOND && (&asmode)->asdetail == true))
         {
             fprintf(stdout, "%s:%5d:%s", file, lineno, line);
         }
