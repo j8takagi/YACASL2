@@ -33,7 +33,6 @@ CERRARRAY cerr[] = {
 /* 指定されたファイルからアセンブル結果を読込 */
 bool loadassemble(char *file) {
     FILE *fp;
-    reset();
     if((fp = fopen(file, "r")) == NULL) {
         perror(file);
         return false;
@@ -75,6 +74,7 @@ int main(int argc, char *argv[])
             exit(-1);
         }
     }
+    reset();
     if(loadassemble(argv[optind]) == true) {
         exec();    /* プログラム実行 */
     }
