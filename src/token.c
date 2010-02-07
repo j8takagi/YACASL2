@@ -57,19 +57,28 @@ OPD *opdtok(const char *str)
 /* 空白またはタブで区切られた1行から、トークンを取得 */
 CMDLINE *linetok(const char *line)
 {
-    char *tokens, *p, *q, *sepp;
+    char *tokens, *p, *sepp;
+    bool quoting = false;
     CMDLINE *cmdl = malloc(sizeof(CMDLINE));
+
     if(line == NULL || strlen(line) == 0) {
         return NULL;
     }
-    tokens = p = strdup(line);
+    tokens = strdup(line);
     /* コメントを削除 */
-    if((q = strchr(tokens, ';')) != NULL) {
-        *q = '\0';
+    for(p = tokens; *p != '\0'; p++) {
+        /* 「'」で囲まれた文字列の処理。「''」は無視 */
+        if(*p == '\'' && *(p+1) != '\'' && !(p > tokens && *(p-1) == '\'')) {
+            quoting = !quoting;
+        } else if(quoting == false && *p == ';') {
+            *p = '\0';
+            break;
+        }
     }
-    if(*p == '\0') {
+    if(*tokens == '\0') {
         return NULL;
     }
+    p = tokens;
     /* 行の先頭が空白またはタブの場合、ラベルは空 */
     if((sepp = p + strcspn(p, " \t\n")) == p){
         cmdl->label = NULL;
