@@ -12,11 +12,11 @@ enum {
 
 /* アセンブルモード */
 typedef struct {
-    bool srcmode;             /* ソースを表示する場合はtrue */
-    bool labelmode;           /* ラベル表を表示する場合はtrue */
-    bool onlylabelmode;       /* ラベル表を表示して終了する場合はtrue */
-    bool asdetailmode;        /* アセンブラ詳細結果を表示する場合はtrue */
-    bool onlyassemblemode;    /* アセンブルだけを行う場合はtrue */
+    bool src;             /* ソースを表示する場合はtrue */
+    bool label;           /* ラベル表を表示する場合はtrue */
+    bool onlylabel;       /* ラベル表を表示して終了する場合はtrue */
+    bool asdetail;        /* アセンブラ詳細結果を表示する場合はtrue */
+    bool onlyassemble;    /* アセンブルだけを行う場合はtrue */
 } ASMODE;
 extern ASMODE asmode;
 
@@ -101,9 +101,9 @@ OPD *opdtok(const char *str);
 /* 1行を解析する */
 CMDLINE *linetok(const char *line);
 
-/* 汎用レジスタを表す文字列「GR[0-7]」をWORD値に変換
-   is_xがTRUEの場合は、指標レジスタとして用いる汎用レジスタ
-   文字列が汎用レジスタを表さない場合は、0xFFFFを返す */
+/* 汎用レジスタを表す文字列「GR[0-7]」から、レジスタ番号[0-7]をWORD値で返す */
+/* 文字列が汎用レジスタを表さない場合は、0xFFFFを返す */
+/* is_xがtrueの場合は指標レジスタ。GR0は、COMET IIの仕様により、エラー発生 */
 WORD getgr(const char *str, bool is_x);
 
 /* 10進定数をWORDに変換 */
@@ -162,4 +162,4 @@ bool writeRPUSH(PASS pass);
 /* マクロ命令「RPOP」をメモリに書込 */
 bool writeRPOP(PASS pass);
 
-#endif
+#endif            /* YACASL2_ASSEMBLE_INCLUDEDの終端 */
