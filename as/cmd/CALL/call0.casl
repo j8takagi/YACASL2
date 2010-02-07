@@ -1,10 +1,7 @@
-MAIN    START   BEGIN
-BEGIN   LD      GR1,A
+MAIN    START
+        LAD     GR1,29
         CALL    COPY
-        ST      GR2,B
         RET
-A       DC      29
-B       DS      1
         END
 COPY    START
         LD      GR2,GR1

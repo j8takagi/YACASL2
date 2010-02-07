@@ -5,8 +5,8 @@ OTEST   START
         OUT     BUF3,L3
         OUT     BUF4,L4
         RET
-BUF1    DC      9,10            ; TAB、改行
-L1      DC      2
+BUF1    DC      '0',9,'1',10            ; TAB、改行
+L1      DC      4
 BUF2    DC      ' !"#$%&''()*+,-./0123456789:;<=>?'
 L2      DC      32
 BUF3    DC      '@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_'

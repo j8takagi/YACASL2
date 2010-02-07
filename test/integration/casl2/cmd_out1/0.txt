@@ -1,4 +1,6 @@
 ../../../../casl2 ../../../../as/cmd/OUT/out1.casl
-Assemble error - 123: ' !"#$%&''()*+,-./0123456789:: illegal string
- ../../../../as/cmd/OUT/out1.casl:10: BUF2    DC      ' !"#$%&''()*+,-./0123456789:;<=>?'
+0	1
 
+ !"#$%&'()*+,-./0123456789:;<=>?
+@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_
+`abcdefghijklmnopqrstuvwxyz{|}~ 

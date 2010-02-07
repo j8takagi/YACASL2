@@ -1,0 +1,7 @@
+MAIN    START
+        LD      GR1,A
+        AND     GR1,B
+        RET
+A       DC      #8000
+B       DC      #FFFF
+        END
