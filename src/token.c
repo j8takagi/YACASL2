@@ -58,18 +58,27 @@ OPD *opdtok(const char *str)
 CMDLINE *linetok(const char *line)
 {
     char *tokens, *p, *q, *sepp;
+    bool quote = false;
     CMDLINE *cmdl = malloc(sizeof(CMDLINE));
     if(line == NULL || strlen(line) == 0) {
         return NULL;
     }
     tokens = p = strdup(line);
-    /* コメントを削除 */
-    if((q = strchr(tokens, ';')) != NULL) {
-        *q = '\0';
-    }
+    /* 空行の場合、NULLを返す */
     if(*p == '\0') {
         return NULL;
     }
+    /* ' 'で囲まれていない;以降の文字列は、コメントとして削除 */
+    while(p != NULL) {
+        if((q = strchr(tokens, '\'')) != NULL) {
+            quote = !quote;
+            p = q;
+        }
+        if(quote == false && (p = strchr(p, ';')) != NULL) {
+            *p = '\0';
+        }
+    }
+    p = tokens;
     /* 行の先頭が空白またはタブの場合、ラベルは空 */
     if((sepp = p + strcspn(p, " \t\n")) == p){
         cmdl->label = NULL;
