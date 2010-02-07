@@ -1,7 +1,16 @@
 ;;; OUTの使用例
 OTEST   START
-        OUT     IOBUF,IOLEN
+        OUT     BUF1,L1
+        OUT     BUF2,L2
+        OUT     BUF3,L3
+        OUT     BUF4,L4
         RET
-IOBUF   DC      'aaaa',10,'b','c',10,'as','qwerty','111111'
-IOLEN   DC      24
+BUF1    DC      9,10            ; TAB、改行
+L1      DC      2
+BUF2    DC      ' !"#$%&''()*+,-./0123456789:;<=>?'
+L2      DC      32
+BUF3    DC      '@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_'
+L3      DC      32
+BUF4    DC      '`abcdefghijklmnopqrstuvwxyz{|}~'
+L4      DC      32
         END

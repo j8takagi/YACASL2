@@ -1,0 +1,21 @@
+MAIN    START
+        OUT     STRT,L1
+LOOP    IN      IOBUF,IOLEN
+        LD      GR1,IOLEN
+        JZE     FIN
+        OUT     TYPD,L2
+        OUT     IOBUF,IOLEN
+        OUT     WHTNXT,L3
+        JUMP    LOOP
+FIN     RET
+;;; メッセージと長さ
+STRT    DC      'LET''S START. TYPE IN'
+L1      DC      20
+TYPD    DC      'YOU TYPED'
+L2      DC      9
+WHTNXT  DC      'WHAT''S NEXT?'
+L3      DC      12
+;;; 入出力領域
+IOBUF   DS      64
+IOLEN   DS      1
+        END

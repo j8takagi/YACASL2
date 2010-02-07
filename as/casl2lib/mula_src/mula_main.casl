@@ -39,34 +39,3 @@ FIN     RPOP
 ONE     DC      1
 ALLON   DC      #FFFF
         END
-;;; 0〜65535の範囲にある正数のかけ算（筆算方式）を行う
-;;; 入力 GR1:被乗数 GR2:乗数
-;;; 出力 GR0:積
-;;; 積が65535より大きい場合は、GR0は積の下位16ビットになり、オーバーフロー
-MULL    START
-        PUSH    0,GR1
-        PUSH    0,GR3
-        XOR     GR0,GR0         ; 積
-        AND     GR1,GR1         ; (GR1 = 0)の場合、終了
-        JZE     FIN             ; ↓
-        AND     GR2,GR2         ; (GR2 = 0)の場合、終了
-        JZE     FIN             ; ↓
-        LAD     GR3,1           ; 対象ビット
-LOOP    PUSH    0,GR3           ; ループ先頭。GR2のビット中でGR3が示すビットが0の場合、NEXTへジャンプ
-        AND     GR3,GR2         ; ↓
-        POP     GR3             ; ↓
-        JZE     NEXT            ; ↓
-        ADDL    GR0,GR1         ; GR0 <- GR0 + GR1
-        JOV     FIN             ; GR0がオーバーフローした場合、ループ脱出
-NEXT    SLL     GR3,1           ; GR3を1回左シフト
-        AND     GR3,GR3         ; (GR3 = 0)の場合、ループ脱出
-        JZE     FIN             ; ↓
-        CPL     GR3,GR2         ; (GR3 > GR2)の場合、ループ脱出
-        JPL     FIN             ; ↓
-        SLL     GR1,1           ; GR1を1回左シフト
-        JOV     FIN             ; GR1がオーバーフローした場合、ループ脱出
-        JUMP    LOOP            ; ループ終端
-FIN     POP     GR3
-        POP     GR1
-        RET
-        END

@@ -36,17 +36,19 @@ NCHAR   DC      '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 ;;; 0〜65535の範囲にある正数の割算（筆算方式）を行う
 ;;; 入力 GR1:被除数 GR2:除数
 ;;; 出力 GR0:商 GR3:剰余
-;;; GR2が0の場合は、GR0、GR3とも0になり、オーバーフロー
+;;; (GR2 = 0)の場合、GR0 GR3とも0になり、オーバーフロー
 DIVL    START
         PUSH    0,GR1
         PUSH    0,GR2
         PUSH    0,GR4
+        XOR     GR0,GR0         ; GR0:商 初期化
+        XOR     GR3,GR3         ; GR3:剰余 初期化
         AND     GR2,GR2         ; (GR2 = 0)の場合、DIVZEROへジャンプ
         JZE     DIVZERO         ; ↓
+        AND     GR1,GR1         ; (GR1 = 0)の場合、FINへジャンプ
+        JZE     FIN             ; ↓
         ST      GR2,Y           ; YにGR2の初期値を保存
-        LAD     GR0,0           ; GR0の初期化
-        LAD     GR3,0           ; GR3の初期化
-        LAD     GR4,1           ; GR4の初期化。対象ビットを表す
+        LAD     GR4,1           ; GR4:対象ビットのインデックス 初期化
 SL      CPL     GR2,GR1         ; ループ先頭。(GR2 > GR1)の場合、LOOPへループ脱出
         JPL     LOOP            ; ↓
         SLL     GR4,1           ; GR4を1回左シフト
@@ -70,7 +72,7 @@ LPIN    SUBL    GR1,GR2         ; GR1 <- GR1 - GR2
 DIVZERO LAD     GR3,#8000       ; 強制的にオーバーフローを発生させ、GR3 <- 0
         SLL     GR3,1           ; ↓
         JUMP    FIN             ; FIN へジャンプ
-SETMOD  LD      GR3,GR1
+SETMOD  LD      GR3,GR1         ; GR3 <- GR1。剰余の設定
 FIN     POP     GR4
         POP     GR2
         POP     GR1
@@ -78,16 +80,18 @@ FIN     POP     GR4
 Y       DS      1
 TMP     DS      1
         END
-;; アドレスがGR1、長さがGR2の文字列を逆順に並べ替える
-;; 例: 12345 -> 54321、54321- -> -12345
+;;; メモリー上にある指定されたアドレス、長さの文字列を逆順に並べ替える
+;;;     例: 12345 -> 54321、54321- -> -12345
+;;; 入力 GR1:文字列のアドレス GR2:文字列の長さ
+;;; 出力 （同上）
 REV     START
         RPUSH
         LAD     GR3,0           ; GR3の初期化
 PU      CPL     GR3,GR2         ; ループ先頭。(GR3 = GR2)の場合、ループ脱出
         JZE     NEXT            ; ↓
-        LD      GR4,GR1         ; GR4にGR1の値をコピー
+        LD      GR4,GR1         ; GR4 <- GR1
         ADDL    GR4,GR3         ; GR4 <- GR4 + GR3
-        LD      GR5,0,GR4       ; GR5にアドレスGR4の値を格納
+        LD      GR5,0,GR4       ; GR5 <- GR4アドレスの値
         PUSH    0,GR5           ; GR5をプッシュ
         LAD     GR3,1,GR3       ; GR3 <- GR3 + 1
         JUMP    PU              ; ループ終端
@@ -97,7 +101,7 @@ PO      CPL     GR3,GR2         ; ループ先頭。(GR3 = GR2)の場合、ル�
         POP     GR5             ; GR5にポップ
         LD      GR4,GR1         ; GR4にGR1の値をコピー
         ADDL    GR4,GR3         ; GR4 <- GR4 + GR3
-        ST      GR5,0,GR4       ; アドレスGR4にGR5の値を格納
+        ST      GR5,0,GR4       ; GR4のアドレス <- GR5の値
         LAD     GR3,1,GR3       ; GR3 <- GR3 + 1
         JUMP    PO              ; ループ終端
 FIN     RPOP
