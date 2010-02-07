@@ -1,22 +1,35 @@
 ;;; 2つの32ビット数値を加算する
 ;;; 32ビットの値は、連続する2語の領域に格納
-MAIN    START   BEGIN
-BEGIN   LAD     GR1,1           ; GR1にAの下位語を転送
-        LD      GR1,A,GR1       ; ↓
-        LAD     GR2,1           ; GR2にBの下位語を転送
-        LD      GR2,B,GR2       ; ↓
+;;; 入力 GR1:数値1の先頭アドレス GR2:数値2の先頭アドレス
+;;; 出力 GR0:和の先頭アドレス
+ADDL32  START
+        ST      GR1,A
+        ST      GR2,B
+        LD      GR3,LEN         ; GR3:語を表すインデックス 初期化
+        LAD     GR3,-1,GR3      ; ↓
+LOOP    AND     GR3,GR3         ; ループ先頭。(GR3 = 0)の場合は、ループ脱出
+        JMI     FIN             ; ↓
+        LD      GR1,GR3         ; GR1 <- (A + GR3)の値
+        ADDL    GR1,A           ; ↓
+        LD      GR1,0,GR1       ; ↓
+        LD      GR2,GR3         ; GR2 <- (B + GR3)の値
+        ADDL    GR2,B           ; ↓
+        LD      GR2,0,GR2       ; ↓
         ADDL    GR1,GR2         ; GR1 <- GR1 + GR2
-        JOV     CARR            ; オーバーフロー時は、CARRにジャンプ
-        JUMP    STL
-CARR    LAD     GR2,1           ; Cの上位語に1を格納
-        ST      GR2,C           ; ↓
-STL     LAD     GR2,1           ; Cの下位語にGR1の内容を格納
-        ST      GR1,C,GR2       ; ↓
-        LD      GR1,A           ; GR1にAの上位語を転送
-        ADDL    GR1,B           ; GR1 <- GR1 + B
-        ADDL    GR1,C           ; GR1 <- GR1 + C
+        ST      GR1,C,GR3       ; (C + GR3) <- GR1（フラグ不変）
+        LAD     GR3,-1,GR3      ; GR3 <- GR3 - 1（フラグ不変）
+        JOV     CRRY            ; オーバーフロー時は、CRRYへジャンプ
+        XOR     GR1,GR1         ; GR1 <- 0
+        JUMP    LOOP            ; ループ先頭へジャンプ
+CRRY    AND     GR3,GR3         ; 最上位の語でオーバーフローした場合
+        JZE     OV              ; ↓OVへジャンプ
+        LAD     GR1,1           ; GR1 <- 1
+        JUMP    LOOP            ; ループ終端
+OV      ADDL    GR1,=#FFFF      ; 強制的にオーバーフロー発生
+FIN     LAD     GR0,C           ; GR3 <- C
         RET
-A       DC      0,65534
-B       DC      0,65535
-C       DS      2
+A       DS      1               ; 数値1のアドレス
+B       DS      1               ; 数値2のアドレス
+C       DS      2               ; 和
+LEN     DC      2               ; 数値の語数
         END
