@@ -54,6 +54,7 @@ CERRARRAY cerr[] = {
     { 122, "cannot create hash table" },
     { 123, "illegal string" },
     { 124, "more than one character in literal" },
+    { 125, "not GR in operand x" },
     { 201, "execute - out of COMET II memory" },
     { 202, "SVC input - out of Input memory" },
     { 203, "SVC output - out of COMET II memory" },

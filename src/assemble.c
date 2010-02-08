@@ -314,6 +314,7 @@ bool cometcmd(const CMDLINE *cmdl, PASS pass)
             /* オペランド数3 */
             if(cmdl->opd->opdc == 3) {
                 if((x = getgr(cmdl->opd->opdv[2], true)) == 0xFFFF) {
+                    setcerr(125, cmdl->cmd);    /* not GR in operand x */
                     return false;
                 }
                 cmd |= x;
