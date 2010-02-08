@@ -1,9 +1,9 @@
-;;; ADDA r,adr,x 演算結果が負数(r > adr)
+;;; ADDA r1,adr,x 演算結果が零
 MAIN    START
         LD      GR1,A
         LAD     GR2,1
         ADDA    GR1,A,GR2
         RET
-A       DC      10
-        DC      #FFEC           ; -20
+A       DC      -10
+        DC      10
         END

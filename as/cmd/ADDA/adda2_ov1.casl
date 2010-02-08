@@ -1,4 +1,4 @@
-;;; ADDL r1,r2 負数でオーバーフロー発生
+;;; ADDA r1,r2 負数でオーバーフロー
 MAIN    START
         LD      GR1,A
         LD      GR2,B

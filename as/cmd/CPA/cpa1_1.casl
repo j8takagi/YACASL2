@@ -1,0 +1,6 @@
+MAIN    START   BEGIN
+BEGIN   LAD     GR1,#5000
+        LAD     GR2,#3000
+        CPA     GR2,GR1
+        RET
+        END

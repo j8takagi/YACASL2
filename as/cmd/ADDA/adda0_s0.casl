@@ -1,3 +1,4 @@
+;;; ADDA r,adr 演算結果が負数(r > adr)
 MAIN    START
         LD      GR1,A
         ADDA    GR1,B

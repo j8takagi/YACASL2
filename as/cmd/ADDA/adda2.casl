@@ -1,4 +1,4 @@
-;;; ADDL r1,r2
+;;; ADDA r1,r2
 MAIN    START
 BEGIN   LD      GR1,A
         LD      GR2,B

@@ -2,7 +2,7 @@
 MAIN    START
         LD      GR1,A
         LAD     GR2,1
-        ADDA    GR1,A,GR2
+        ADDA    GR1,A,1
         RET
 A       DC      -10
         DC      20

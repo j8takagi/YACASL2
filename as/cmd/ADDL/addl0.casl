@@ -1,3 +1,4 @@
+;;; ADDL r,addr[,x]
 MAIN    START
 BEGIN   LAD     GR1,A
         ADDL    GR1,B

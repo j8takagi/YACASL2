@@ -1,3 +1,4 @@
+;;; AND r,adr[,x] 演算結果が零
 MAIN    START
         LD      GR1,A
         AND     GR1,B

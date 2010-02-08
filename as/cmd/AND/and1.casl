@@ -1,3 +1,4 @@
+;;; AND r1,r2
 MAIN    START
         LD      GR1,A
         LD      GR2,B

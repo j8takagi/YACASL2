@@ -1,3 +1,4 @@
+;;; ADDL r1,r2 正数でオーバーフロー発生
 MAIN    START
         LD      GR1,A
         LD      GR2,B

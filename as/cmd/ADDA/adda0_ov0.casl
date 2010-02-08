@@ -1,3 +1,4 @@
+;;; ADDA r,adr 正数でオーバーフロー
 MAIN    START
         LD      GR1,A
         ADDA    GR1,B

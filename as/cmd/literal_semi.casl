@@ -1,0 +1,4 @@
+MAIN    START
+        LAD     GR1,=';'        ; 「;」の処理が正常にできるか
+FIN     RET
+        END

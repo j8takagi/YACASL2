@@ -1,3 +1,4 @@
+;;; AND r,adr[,x] 演算結果の符号が負
 MAIN    START
         LD      GR1,A
         AND     GR1,B

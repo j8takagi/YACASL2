@@ -1,6 +1,6 @@
 MAIN    START   BEGIN
 BEGIN   LAD     GR1,#5000
-        LAD     GR2,#F000
-        CPA     GR2,GR1
+        LAD     GR2,#5000
+        CPA     GR1,GR2
         RET
         END

@@ -1,9 +1,9 @@
-;;; ADDL r1,r2 負数でオーバーフロー発生
+;;; ADDA r1,r2 演算結果が負数(r1 < r2)
 MAIN    START
         LD      GR1,A
         LD      GR2,B
         ADDA    GR1,GR2
         RET
-A       DC      -32767
-B       DC      -10
+A       DC      -10
+B       DC      20
         END

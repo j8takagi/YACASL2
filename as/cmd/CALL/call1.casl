@@ -1,3 +1,4 @@
+;;; CALL 同じプログラムの中にあるラベルを指定
 MAIN    START   BEGIN
 BEGIN   LAD     GR1,29
         CALL    COPY
