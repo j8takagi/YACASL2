@@ -1,7 +1,8 @@
-;;; ADDL r,adr
+;;; ADDL r1,r2
 MAIN    START
 BEGIN   LD      GR1,A
-        ADDL    GR1,B
+        LD      GR2,B
+        ADDL    GR1,GR2
         RET
 A       DC      3
 B       DC      1

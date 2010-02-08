@@ -1,8 +1,0 @@
-;;; ADDL r,addr[,x] 負数でオーバーフロー発生
-MAIN    START
-        LD      GR1,A
-        ADDL    GR1,B
-        RET
-A       DC      #8001           ; -32767
-B       DC      #FFF6           ; -10
-        END

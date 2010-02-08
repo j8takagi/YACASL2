@@ -1,8 +1,8 @@
-;;; ADDL r,adr 演算結果が負数(r < adr)
+;;; ADDL r,adr ADDAでは正数でオーバーフロー
 MAIN    START
         LD      GR1,A
         ADDL    GR1,B
         RET
-A       DC      #FFEC           ; -20
+A       DC      #7FFE           ; 32766
 B       DC      #000A           ; 10
         END

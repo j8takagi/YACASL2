@@ -1,8 +1,8 @@
-;;; ADDL r,addr[,x] 正数でオーバーフロー発生
+;;; ADDL r,adr ADDAでは演算結果が零
 MAIN    START
         LD      GR1,A
         ADDL    GR1,B
         RET
-A       DC      32767
+A       DC      #FFF6           ; -10
 B       DC      10
         END

@@ -1,9 +1,0 @@
-;;; ADDL r1,r2 演算結果が零
-MAIN    START
-        LD      GR1,A
-        LD      GR2,B
-        ADDL    GR1,GR2
-        RET
-A       DC      10
-B       DC      #FFF6        ; -10
-        END

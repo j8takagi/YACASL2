@@ -1,9 +1,0 @@
-;;; AND r1,r2 演算結果の符号が負
-MAIN    START
-        LD      GR1,A
-        LD      GR2,B
-        AND     GR1,GR2
-        RET
-A       DC      #8000
-B       DC      #FFFF
-        END

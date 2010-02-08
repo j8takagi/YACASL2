@@ -1,9 +1,0 @@
-;;; ADDA r,adr,x 負数でオーバーフロー
-MAIN    START
-        LD      GR1,A
-        LAD     GR2,1
-        ADDA    GR1,A,GR2
-        RET
-A       DC      #8001           ; -32767
-        DC      #FFF6           ; -10
-        END

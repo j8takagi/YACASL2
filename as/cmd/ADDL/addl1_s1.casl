@@ -1,9 +1,0 @@
-;;; ADDL r1,r2 演算結果の符号が負(r1 < r2)
-MAIN    START
-        LD      GR1,A
-        LD      GR2,B
-        ADDL    GR1,GR2
-        RET
-A       DC      #FFEC       ; -20
-B       DC      10
-        END

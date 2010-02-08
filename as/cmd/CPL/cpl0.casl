@@ -1,7 +1,8 @@
+;;; CPL r,adr
 MAIN    START   BEGIN
 BEGIN   LD      GR1,A
-        CPA     GR1,B
+        CPL     GR1,B
         RET
 A       DC      #5000
-B       DC      #5000
+B       DC      #3000
         END

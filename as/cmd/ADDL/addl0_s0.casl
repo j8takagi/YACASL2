@@ -1,8 +1,8 @@
-;;; ADDL r,addr[,x] 演算結果の符号が負(r > adr)
+;;; ADDL r,adr 演算結果が負数(r > adr)
 MAIN    START
         LD      GR1,A
         ADDL    GR1,B
         RET
-A       DC      10
-B       DC      #FFEC        ; -20
+A       DC      #000A           ; 10
+B       DC      #FFEC           ; -20
         END

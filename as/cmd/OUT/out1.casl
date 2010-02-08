@@ -12,5 +12,5 @@ L2      DC      32
 BUF3    DC      '@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_'
 L3      DC      32
 BUF4    DC      '`abcdefghijklmnopqrstuvwxyz{|}~'
-L4      DC      32
+L4      DC      31
         END

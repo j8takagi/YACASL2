@@ -1,7 +1,8 @@
+;;; CPA r,adr SF:1
 MAIN    START   BEGIN
 BEGIN   LD      GR1,A
         CPA     GR1,B
         RET
 A       DC      #5000
-B       DC      #3000
+B       DC      #7000
         END

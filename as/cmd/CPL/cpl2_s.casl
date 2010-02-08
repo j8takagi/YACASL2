@@ -1,0 +1,9 @@
+;;; CPL r1,r2 SF:1
+MAIN    START   BEGIN
+BEGIN   LD      GR1,A
+        LD      GR2,B
+        CPL     GR1,GR2
+        RET
+A       DC      #5000
+B       DC      #7000
+        END

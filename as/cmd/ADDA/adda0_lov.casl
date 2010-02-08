@@ -1,0 +1,8 @@
+;;; ADDA r,adr ADDLではオーバーフロー
+MAIN    START
+        LD      GR1,A
+        ADDA    GR1,B
+        RET
+A       DC      #FFFE           ; -2
+B       DC      #000F           ; 15
+        END
