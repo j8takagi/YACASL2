@@ -1,0 +1,34 @@
+body {
+    margin-left: 6em;
+    margin-right: 12em;
+}
+
+p {
+    line-height: 1.5em;
+}
+
+a:hover {
+    color: red;
+    text-decoration: underline;
+}
+
+.command {
+    font-family: monospace;
+}
+
+pre.verbatim {
+    width: 75%;
+    padding: 0.5em 1em 0.5em 1em;
+    color: white;
+    background: black;
+}
+
+a {
+    text-decoration: none;
+}
+
+blockquote.p {
+    margin-top:0;
+    padding-top:0;
+    line-height: 100%;
+}
