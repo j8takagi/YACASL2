@@ -1,0 +1,11 @@
+;;; JOV OSZ:001
+MAIN    START
+        LD      GR1,A
+        AND     GR1,GR1
+        JOV     TO
+        LAD     GR1,0
+        JUMP    FIN
+TO      LAD     GR1,#FFFF
+FIN     RET
+A       DC      0
+        END

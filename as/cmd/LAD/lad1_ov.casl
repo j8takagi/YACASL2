@@ -1,0 +1,5 @@
+LAD1    START
+        LAD     GR1,10
+        LAD     GR1,65534,GR1
+        RET
+        END

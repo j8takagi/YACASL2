@@ -1,0 +1,11 @@
+;;; JNZ OSZ:000
+MAIN    START
+        LD      GR1,A
+        AND     GR1,GR1
+        JNZ     TO
+        LAD     GR1,0
+        JUMP    FIN
+TO      LAD     GR1,#FFFF
+FIN     RET
+A       DC      1
+        END
