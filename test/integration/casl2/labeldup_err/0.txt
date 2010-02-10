@@ -8,5 +8,4 @@ Assemble ../../../../as/ERR/labeldup_err.casl (0)
 ../../../../as/ERR/labeldup_err.casl:    5:A       DC      3
 ../../../../as/ERR/labeldup_err.casl:    6:A       DC      1
 Assemble error - 101: A: label already defined
- ../../../../as/ERR/labeldup_err.casl:6: A       DC      1
-
+../../../../as/ERR/labeldup_err.casl:    6:A       DC      1
