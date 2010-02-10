@@ -6,7 +6,7 @@ OPD *opdtok(const char *str)
 {
     OPD *opd = malloc(sizeof(OPD));
     char *p, *q, *sepp;
-    int sepc = ',', len = 0;
+    int sepc = ',', len;
     bool quoting = false;
 
     opd->opdc = 0;
@@ -15,6 +15,7 @@ OPD *opdtok(const char *str)
     }
     p = q = strdup(str);
     do {
+        len = 0;
         /* オペランド数が多すぎる場合はエラー */
         if(opd->opdc >= OPDSIZE) {
             setcerr(117, str);    /* operand is too many */
