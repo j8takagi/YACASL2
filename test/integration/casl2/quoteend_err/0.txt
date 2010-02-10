@@ -1,6 +1,6 @@
 ../../../../casl2 -td ../../../../as/ERR/quoteend_err.casl
 
 Assemble ../../../../as/ERR/quoteend_err.casl (0)
-Assemble error - 123: 'Hello, World!: illegal string
+Assemble error - 123: 'Hello, World!: unclosed quote
  ../../../../as/ERR/quoteend_err.casl:4: BUF      DC     'Hello, World!
 
