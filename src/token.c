@@ -5,7 +5,7 @@
 OPD *opdtok(const char *str)
 {
     OPD *opd = malloc(sizeof(OPD));
-    char *p, *q, *r, *sepp;
+    char *p, *q, *sepp;
     int sepc = ',', len;
     bool quoting = false;
 
@@ -15,6 +15,7 @@ OPD *opdtok(const char *str)
     }
     p = q = strdup(str);
     do {
+        len = 0;
         /* オペランド数が多すぎる場合はエラー */
         if(opd->opdc >= OPDSIZE) {
             setcerr(117, str);    /* operand is too many */
@@ -24,9 +25,16 @@ OPD *opdtok(const char *str)
         if(*q == '=') {
             q++;
         }
-        /* 「'」で囲まれた文字列の処理。「''」は無視 */
-        if(*q == '\'' && *(q+1) != '\'' && !(p < q && *(q-1) == '\'')) {
-            quoting = !quoting;
+        /* 「'」の場合 */
+        if(*q == '\'') {
+            /* 「''」以外の場合はquote値を反転 */
+            if(*(q+1) != '\'' && !(p < q && *(q-1) == '\'')) {
+                quoting = !quoting;
+            }
+            /* 「'」の分、文字列の長さを小さくする */
+            if(*(q+1) != '\'') {
+                len--;
+            }
         }
         if(quoting == true) {
             /* 閉じ「'」がないまま文字列が終了した場合 */
@@ -43,12 +51,8 @@ OPD *opdtok(const char *str)
                 setcerr(121, NULL);    /* cannot get operand token */
                 break;
             }
-            len = strlen(r = p);
-            while(*r != '\0' && (r = strstr(r, "''")) != NULL) {
-                len--;
-                r += 2;
-            };
-            if(len > OPDSIZE + 2) {    /* OPDSIZE + 「'」2文字分 */
+            len += strlen(p);
+            if(len > OPDSIZE) {
                 setcerr(118, NULL);    /* operand length is too long */
                 break;
             }
