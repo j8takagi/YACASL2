@@ -6,7 +6,7 @@ OPD *opdtok(const char *str)
 {
     OPD *opd = malloc(sizeof(OPD));
     char *p, *q, *sepp;
-    int sepc = ',', len = 0;
+    int sepc = ',', qcnt = 0;
     bool quoting = false;
 
     opd->opdc = 0;
@@ -32,7 +32,7 @@ OPD *opdtok(const char *str)
             }
             /* 「'」の分、文字列の長さを小さくする */
             if(*(q+1) != '\'') {
-                len--;
+                qcnt++;
             }
         }
         if(quoting == true) {
@@ -50,13 +50,13 @@ OPD *opdtok(const char *str)
                 setcerr(121, NULL);    /* cannot get operand token */
                 break;
             }
-            len += strlen(p);
-            if(len > OPDSIZE) {
+            if(strlen(p) - qcnt > OPDSIZE) {
                 setcerr(118, NULL);    /* operand length is too long */
                 break;
             }
             opd->opdv[(++opd->opdc)-1] = strdup(p);
             p = q = sepp + 1;
+            qcnt = 0;
         }
     } while(sepc == ',');
     return opd;
