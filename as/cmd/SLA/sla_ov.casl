@@ -1,5 +1,0 @@
-MAIN    START
-        LAD     GR1,#C000
-        SLA     GR1,1
-        RET
-        END

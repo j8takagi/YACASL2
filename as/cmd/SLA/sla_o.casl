@@ -1,3 +1,4 @@
+;;; SLA r,adr 正数のオーバーフロー
 MAIN    START
         LAD     GR1,#4000
         SLA     GR1,1

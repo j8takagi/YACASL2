@@ -1,3 +1,4 @@
+;;; SLA r,adr 負数のオーバーフロー
 MAIN    START
         LAD     GR1,#C000
         SLA     GR1,1
