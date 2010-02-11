@@ -1,0 +1,21 @@
+;;; PUSH / POP 値の復元
+MAIN    START
+        LD      GR1,A
+        LD      GR1,0,GR7
+        LD      GR2,1,GR7
+        LD      GR3,2,GR7
+        LD      GR4,3,GR7
+        LD      GR5,4,GR7
+        LD      GR6,5,GR7
+        LD      GR7,6,GR7
+        RPUSH
+        POP     GR7
+        POP     GR6
+        POP     GR5
+        POP     GR4
+        POP     GR3
+        POP     GR2
+        POP     GR1
+        RET
+A       DC      1,2,3,4,5,6,7
+        END

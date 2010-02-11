@@ -1,7 +1,7 @@
-;;; AND r,adr 演算結果が零
+;;; OR r,adr 演算結果が零
 MAIN    START
         LD      GR1,A
-        AND     GR1,B
+        OR      GR1,B
         RET
 A       DC      #0001
 B       DC      #FFFE

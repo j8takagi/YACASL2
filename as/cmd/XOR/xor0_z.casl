@@ -1,8 +1,8 @@
-;;; XOR r,adr
+;;; XOR r,adr 演算結果が零
 MAIN    START
         LD      GR1,A
         XOR     GR1,B
         RET
-A       DC      #3000
-B       DC      #4FFF
+A       DC      #0001
+B       DC      #FFFE
         END

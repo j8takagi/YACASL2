@@ -1,5 +1,5 @@
-;;; OUTの使用例
-OTEST   START
+;;; OUT buf.len
+MAIN    START
         OUT     BUF1,L1
         OUT     BUF2,L2
         OUT     BUF3,L3

@@ -1,7 +1,8 @@
-MAIN	START
-BEGIN	LAD	GR0,#3444
-	LD	GR1,A
-	XOR	GR0,A
-    RET
-A	DC	#00DD
-	END
+;;; XOR r,adr
+MAIN    START
+        LD      GR1,A
+        XOR     GR1,1,A
+        RET
+A       DC      #3000
+        DC      #4FFF
+        END

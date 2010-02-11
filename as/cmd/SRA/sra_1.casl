@@ -1,0 +1,6 @@
+;;; SRA r,adr
+MAIN    START
+        LAD     GR1,12
+        SRA     GR1,2
+        RET
+        END

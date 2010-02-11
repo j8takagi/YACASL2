@@ -1,4 +1,4 @@
-;;; AND r,adr[,x]
+;;; AND r,adr
 MAIN    START
         LD      GR1,A
         AND     GR1,B

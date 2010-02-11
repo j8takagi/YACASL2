@@ -1,0 +1,5 @@
+MAIN    START
+        LAD     GR1,3
+        SLA     GR1,2
+        RET
+        END

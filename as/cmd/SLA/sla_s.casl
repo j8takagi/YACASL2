@@ -1,0 +1,5 @@
+SLA2    START   BEGIN
+BEGIN   LAD     GR1,#8000
+        SLA     GR1,1
+        RET
+        END

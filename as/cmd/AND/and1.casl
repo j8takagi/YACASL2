@@ -1,9 +1,8 @@
-;;; AND r1,r2
+;;; AND r,adr
 MAIN    START
         LD      GR1,A
-        LD      GR2,B
-        AND     GR1,GR2
+        AND     GR1,1,A
         RET
 A       DC      #3000
-B       DC      #4FFF
+        DC      #4FFF
         END

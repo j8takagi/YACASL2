@@ -1,7 +1,0 @@
-MAIN    START
-BEGIN   LAD     GR0,#3444
-        LD      GR1,A
-        XOR     GR0,A
-        RET
-A       DC      #00DD
-        END

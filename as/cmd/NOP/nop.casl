@@ -1,3 +1,4 @@
+;;; NOP
 MAIN    START
         NOP
         NOP
@@ -10,4 +11,3 @@ MAIN    START
         NOP
         RET
         END
-        

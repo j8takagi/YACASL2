@@ -1,5 +1,0 @@
-;;; LAD r,adr
-MAIN    START
-        LAD     GR1,='A'
-        RET
-        END

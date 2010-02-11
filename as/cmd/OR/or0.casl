@@ -1,7 +1,7 @@
-;;; XOR r,adr
+;;; OR r,adr
 MAIN    START
         LD      GR1,A
-        XOR     GR1,B
+        OR      GR1,B
         RET
 A       DC      #3000
 B       DC      #4FFF
