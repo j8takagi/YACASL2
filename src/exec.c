@@ -149,7 +149,7 @@ WORD sla(WORD val0, WORD val1)
         last = res & 0x4000;
         res <<= 1;
     }
-    res = sign | res;
+    res = sign | (res & 0x7F);
     /* OFに、レジスタから最後に送り出されたビットの値を設定 */
     if(last > 0x0) {
         FR += OF;
