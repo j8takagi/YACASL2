@@ -1,5 +1,6 @@
-SLA2    START   BEGIN
-BEGIN   LAD     GR1,#8000
-        SLA     GR1,1
+;;; SRA r,adr 負数
+SRA2    START   BEGIN
+BEGIN   LAD     GR1,#A000
+        SRA     GR1,13
         RET
         END

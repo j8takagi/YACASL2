@@ -1,0 +1,6 @@
+;;; SLL r,adr 符号フラグオンで、オーバーフロー
+MAIN    START
+        LAD     GR1,3
+        SLL     GR1,15
+        RET
+        END

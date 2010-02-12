@@ -1,6 +1,6 @@
-;;; SLA r,adr オーバーフロー
+;;; SLA r,adr
 MAIN    START
         LAD     GR1,3
-        SLA     GR1,14
+        SLA     GR1,13
         RET
         END

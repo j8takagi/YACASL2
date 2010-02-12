@@ -1,0 +1,6 @@
+;;; SLL r,adr 結果は零
+MAIN    START
+        LAD     GR1,2
+        SLL     GR1,17
+        RET
+        END

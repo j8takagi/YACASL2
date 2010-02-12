@@ -1,5 +1,0 @@
-SLA2    START   BEGIN
-BEGIN   LAD     GR1,#FFFD
-        SLA     GR1,2
-        RET
-        END

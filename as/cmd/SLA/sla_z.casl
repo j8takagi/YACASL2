@@ -1,0 +1,6 @@
+;;; SLA r,adr 結果は零
+MAIN    START
+        LAD     GR1,2
+        SLA     GR1,15
+        RET
+        END

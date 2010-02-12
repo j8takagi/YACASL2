@@ -1,0 +1,6 @@
+;;; SLL r,adr 負数
+SLL2    START   BEGIN
+BEGIN   LAD     GR1,3
+        SLL     GR1,14
+        RET
+        END

@@ -1,6 +1,6 @@
-;;; SLA r,adr
+;;; SLL r,adr
 MAIN    START
         LAD     GR1,3
-        SLA     GR1,2
+        SLL     GR1,13
         RET
         END
