@@ -11,11 +11,10 @@ void svcin()
     char *buffer = malloc(INSIZE + 1);
 
     if(fgets(buffer, INSIZE, stdin) == NULL) {
-        memory[GR[1]] = 0x0;
-        memory[GR[2]] = 0x0;
+        memory[GR[1]] = memory[GR[2]] = 0x0;
         return;
     }
-    for(i = 0; i < GR[1] && i < INSIZE; i++) {
+    for(i = 0; i < INSIZE; i++) {
         if(*(buffer + i) == '\0' || *(buffer + i) == '\n') {
             --i;
             break;
