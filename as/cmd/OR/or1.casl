@@ -1,7 +1,8 @@
 ;;; OR r,adr
 MAIN    START
         LD      GR1,A
-        OR      GR1,1,A
+        LAD     GR2,1
+        OR      GR1,A,GR2
         RET
 A       DC      #3000
         DC      #4FFF

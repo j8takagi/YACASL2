@@ -1,0 +1,8 @@
+;;; SUBL r,adr 正数でオーバーフロー
+MAIN    START
+        LD      GR1,A
+        SUBL    GR1,B
+        RET
+A       DC      #7FFE           ; 32766
+B       DC      #FFF6           ; -10
+        END

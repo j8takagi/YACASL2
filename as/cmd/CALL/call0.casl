@@ -1,5 +1,5 @@
 ;;; CALL ほかのプログラムの入口名を指定
-        MAIN    START
+MAIN    START
         LAD     GR1,29
         CALL    COPY
         RET

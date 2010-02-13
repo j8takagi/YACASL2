@@ -1,6 +1,6 @@
-# slAオプションで、1から10まで加算するsum_10.caslを実行
+# slAオプションで、1から10まで加算するopt.caslを実行
 include ../CMD.mk               # YACASL2DIR, CASL2
-include ../sum_10_s/CMD.mk      # ASDIR, ASFILE
+include ../opt_s/CMD.mk         # ASDIR, ASFILE
 CASL2FLAG = -slA
 CMD = $(CASL2) $(CASL2FLAG) $(ASFILE)
 include ../TEST.mk

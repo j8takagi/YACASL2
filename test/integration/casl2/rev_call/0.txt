@@ -1,3 +1,0 @@
-../../../../casl2 ../../../../as/FUNC/rev_call.casl ../../../../as/FUNC/rev.casl
-12345
-54321

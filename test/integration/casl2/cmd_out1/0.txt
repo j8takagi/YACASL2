@@ -1,6 +1,0 @@
-../../../../casl2 ../../../../as/cmd/OUT/out1.casl
-0	1
-
- !"#$%&'()*+,-./0123456789:;<=>?
-@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_
-`abcdefghijklmnopqrstuvwxyz{|}~ 

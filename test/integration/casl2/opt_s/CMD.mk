@@ -1,2 +1,2 @@
-ASDIR = $(YACASL2DIR)/as/FUNC
+ASDIR = $(YACASL2DIR)/as
 ASFILE = $(ASDIR)/sum_10.casl

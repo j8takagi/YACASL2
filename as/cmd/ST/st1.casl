@@ -1,7 +1,9 @@
+;;; ST r,adr,x
 MAIN    START
-        LAD     GR0,286
-        LAD     GR1,3
-        ST      GR0,A,GR1
+        LD      GR1,A
+        LAD     GR2,A
+        ST      GR1,1,GR2
         RET
-A       DS      4
+A       DC      5
+B       DS      1
         END

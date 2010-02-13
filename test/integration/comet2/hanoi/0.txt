@@ -1,8 +1,0 @@
-../../../../comet2 a.o
-from A to C
-from A to B
-from C to B
-from A to C
-from B to A
-from B to C
-from A to C

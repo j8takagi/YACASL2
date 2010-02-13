@@ -3,8 +3,7 @@
 # make check   : ↓
 # make prepare : CMDで設定されたコマンドを実行した出力結果を0.txt（テストの想定結果）に出力
 # make clean   : 「make」で生成されたファイルをクリア
-# make cleanall: 「make」と「make report」で生成されたファイルをクリア
-# 要設定: CASL2, OBJFILE, COMET2, CMD
+# make cleanall: 「make」と「make clean」で生成されたファイルをクリア
 ERRFILE = err.txt
 UNITNAME = `pwd | xargs basename`
 
@@ -12,14 +11,14 @@ UNITNAME = `pwd | xargs basename`
 check: clean report.txt
 prepare: cleanall 0.txt $(OBJFILE)
 clean:
-	@rm -f 1.txt diff.txt report.txt
+	@rm -f 1.txt diff.txt report.txt err.txt
 cleanall: clean
 	@rm -f 0.txt $(OBJFILE)
 $(OBJFILE): $(CASL2) $(ASFILE)
-	@-$(CASL2) $(CASL2FLAG) -O $(ASFILE) 2>$(ERRFILE)
+	@-$(ASCMD)
 0.txt 1.txt: $(COMET2) $(OBJFILE)
-	@echo $(CMD) >$@; \
-     if test -s $(OBJFILE); then $(CMD) >>$@ 2>$(ERRFILE); fi; \
+	@echo $(EXECCMD) >$@; \
+     if test -s $(OBJFILE); then $(EXECCMD) >>$@ 2>$(ERRFILE); fi; \
      if test -s $(ERRFILE); then cat err.txt >>$@; else rm -f $(ERRFILE); fi
 diff.txt: 1.txt
 	@-diff -c 0.txt 1.txt >$@ 2>&1

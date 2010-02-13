@@ -1,2 +1,0 @@
-../../../../comet2: invalid option -- s
-Usage: ../../../../comet2 [-tTdh] [-M <memorysize>] [-C <clocks>] FILE

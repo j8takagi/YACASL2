@@ -1,7 +1,8 @@
-;;; XOR r,adr
+;;; XOR r,adr,x
 MAIN    START
         LD      GR1,A
-        XOR     GR1,1,A
+        LAD     GR2,1
+        XOR     GR1,1,GR2
         RET
 A       DC      #3000
         DC      #4FFF
