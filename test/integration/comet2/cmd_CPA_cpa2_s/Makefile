@@ -2,6 +2,6 @@ include ../CMD.mk    # YACASL2DIR, CASL2
 ASDIR = $(YACASL2DIR)/as
 CASL2LIBDIR = $(YACASL2DIR)/as/casl2lib
 ASFILE = $(YACASL2DIR)/as/cmd/CPA/cpa2_s.casl
-COMET2FLAG = -td -M8
+COMET2FLAG = -td -M16
 EXECCMD = $(COMET2) $(COMET2FLAG) $(OBJFILE)
 include ../TEST.mk
