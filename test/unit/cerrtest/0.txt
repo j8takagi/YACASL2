@@ -20,8 +20,8 @@
 120: (null) - 120	GR0 in operand x
 121: (null) - 121	cannot get operand token
 122: (null) - 122	cannot create hash table
-123: (null) - 123	unkown error
-124: (null) - 124	unkown error
+123: (null) - 123	unclosed quote
+124: (null) - 124	more than one character in literal
 201: (null) - 201	execute - out of COMET II memory
 202: (null) - 202	SVC input - out of Input memory
 203: (null) - 203	SVC output - out of COMET II memory
@@ -52,8 +52,8 @@
 120: foobar - 120	foobar: GR0 in operand x
 121: foobar - 121	foobar: cannot get operand token
 122: foobar - 122	foobar: cannot create hash table
-123: foobar - 123	foobar: unkown error
-124: foobar - 124	foobar: unkown error
+123: foobar - 123	foobar: unclosed quote
+124: foobar - 124	foobar: more than one character in literal
 201: foobar - 201	foobar: execute - out of COMET II memory
 202: foobar - 202	foobar: SVC input - out of Input memory
 203: foobar - 203	foobar: SVC output - out of COMET II memory

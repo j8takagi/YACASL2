@@ -1,3 +1,3 @@
 UCLASS = AS
-TESTSRCFILE = linetok.c
+TESTSRCFILE = ../CERRARRAY.c linetok.c
 include ../TEST.mk

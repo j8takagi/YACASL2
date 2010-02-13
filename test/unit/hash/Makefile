@@ -1,3 +1,3 @@
 UCLASS = COMMON
-TESTSRCFILE = hash.c
+TESTSRCFILE = ../CERRARRAY.c hash.c
 include ../TEST.mk

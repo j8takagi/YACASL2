@@ -15,7 +15,7 @@ int main(){
     for(i = 0; i <= 1; i++) {
         title = (is_x[i] == false) ? "Generel Register" : "Index Register";
         printf("== %s ==\n", title);
-        for(j = 0; j < sizeof(str)/sizeof(str[0]); j++) {
+        for(j = 0; j < ARRAYSIZE(str); j++) {
             r = getgr(str[j], is_x[i]);
             printf("%s\t#%04X", str[j], r);
             if(cerrno > 0) {

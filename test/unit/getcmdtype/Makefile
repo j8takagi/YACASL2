@@ -1,3 +1,3 @@
 UCLASS = COMMON
-TESTSRCFILE = getcmdtype.c
+TESTSRCFILE = ../CERRARRAY.c getcmdtype.c
 include ../TEST.mk

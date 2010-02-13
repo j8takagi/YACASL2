@@ -33,8 +33,8 @@ clean:
 cleanall: clean
 	@rm -f 0.txt
 a.out: $(SRC) $(TESTSRCFILE)
-	@make -C $(SRCDIR)
-	@gcc $(CFLAGS) $(SRC) $(TESTSRCFILE)
+	@make -sC $(SRCDIR)
+	gcc $(CFLAGS) $(SRC) $(TESTSRCFILE)
 0.txt 1.txt: a.out
 	@./a.out >$@ 2>&1
 diff.txt: 1.txt

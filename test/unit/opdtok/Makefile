@@ -1,3 +1,3 @@
 UCLASS = AS
-TESTSRCFILE = opdtok.c
+TESTSRCFILE = ../CERRARRAY.c opdtok.c
 include ../TEST.mk
