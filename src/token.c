@@ -6,7 +6,7 @@ OPD *opdtok(const char *str)
 {
     OPD *opd = malloc(sizeof(OPD));
     char *p, *q, *sepp;
-    int sepc = ',', len = 0;
+    int sepc = ',', qcnt = 0;
     bool quoting = false;
 
     opd->opdc = 0;
@@ -32,7 +32,7 @@ OPD *opdtok(const char *str)
             }
             /* 「'」の分、文字列の長さを小さくする */
             if(*(q+1) != '\'') {
-                len--;
+                qcnt++;
             }
         }
         if(quoting == true) {
@@ -50,13 +50,13 @@ OPD *opdtok(const char *str)
                 setcerr(121, NULL);    /* cannot get operand token */
                 break;
             }
-            len += strlen(p);
-            if(len > OPDSIZE) {
+            if(strlen(p) - qcnt > OPDSIZE) {
                 setcerr(118, NULL);    /* operand length is too long */
                 break;
             }
             opd->opdv[(++opd->opdc)-1] = strdup(p);
             p = q = sepp + 1;
+            qcnt = 0;
         }
     } while(sepc == ',');
     return opd;
@@ -65,27 +65,26 @@ OPD *opdtok(const char *str)
 /* 空白またはタブで区切られた1行から、トークンを取得 */
 CMDLINE *linetok(const char *line)
 {
-    char *tokens, *p, *q, *sepp;
-    bool quote = false;
+    char *tokens, *p, *sepp;
+    bool quoting = false;
     CMDLINE *cmdl = malloc(sizeof(CMDLINE));
 
     if(line == NULL || strlen(line) == 0) {
         return NULL;
     }
-    tokens = p = strdup(line);
-    /* 空行の場合、NULLを返す */
-    if(*p == '\0') {
-        return NULL;
-    }
-    /* ' 'で囲まれていない;以降の文字列は、コメントとして削除 */
-    while(p != NULL) {
-        if((q = strchr(tokens, '\'')) != NULL) {
-            quote = !quote;
-            p = q;
-        }
-        if(quote == false && (p = strchr(p, ';')) != NULL) {
+    tokens = strdup(line);
+    /* コメントを削除 */
+    for(p = tokens; *p != '\0'; p++) {
+        /* 「'」で囲まれた文字列の処理。「''」は無視 */
+        if(*p == '\'' && *(p+1) != '\'' && !(p > tokens && *(p-1) == '\'')) {
+            quoting = !quoting;
+        } else if(quoting == false && *p == ';') {
             *p = '\0';
+            break;
         }
+    }
+    if(*tokens == '\0') {
+        return NULL;
     }
     p = tokens;
     /* 行の先頭が空白またはタブの場合、ラベルは空 */
