@@ -1,6 +1,9 @@
 #include "casl2.h"
 #include "assemble.h"
 
+/* アセンブルモード: src, label, onlylabel, asdetail, onlyassemble */
+ASMODE asmode = {false, false, false, false, false};
+
 /* 値を格納するポインタ */
 WORD ptr;
 
@@ -9,9 +12,6 @@ WORD lptr;
 
 /* 他のプログラムで参照する入口名 */
 char *prog;
-
-/* アセンブルモード: src, label, onlylabel, asdetail, onlyassemble */
-ASMODE asmode = {false, false, false, false, false};
 
 /* 汎用レジスタを表す文字列「GR[0-7]」から、レジスタ番号[0-7]をWORD値で返す */
 /* 文字列が汎用レジスタを表さない場合は、0xFFFFを返す */
@@ -398,6 +398,10 @@ bool assembleline(const CMDLINE *cmdl, PASS pass)
     return status;
 }
 
+void printline(FILE *stream, const char *filename, int lineno, char *line) {
+    fprintf(stream, "%s:%5d:%s", filename, lineno, line);
+}
+
 /* 指定された名前のファイルをアセンブル */
 /* 2回実行される */
 bool assemble(const char *file, PASS pass)
@@ -425,7 +429,7 @@ bool assemble(const char *file, PASS pass)
         if((pass == FIRST && (&asmode)->src == true) ||
            (pass == SECOND && (&asmode)->asdetail == true))
         {
-            fprintf(stdout, "%s:%5d:%s", file, lineno, line);
+            printline(stdout, file, lineno, line);
         }
         if((cmdl = linetok(line)) != NULL) {
             if(pass == FIRST && cmdl->label != NULL) {
@@ -442,7 +446,8 @@ bool assemble(const char *file, PASS pass)
         }
     }
     if(cerrno > 0) {
-        fprintf(stderr, "Assemble error - %d: %s\n %s:%d: %s\n", cerrno, cerrmsg, file, lineno, line);
+        fprintf(stderr, "Assemble error - %d: %s\n", cerrno, cerrmsg);
+        printline(stderr, file, lineno, line);
         status = false;
     }
     fclose(fp);
