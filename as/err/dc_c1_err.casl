@@ -1,7 +1,0 @@
-;; DC 文字定数
-MAIN    START
-        RET
-        DC      ' !"#$%&''()*+,-./0123456789:;<=>?@ABCDEFG'
-        DC      'GHIJKLMNOPQRSTUVWXYZ[\]^_abcdefghijklmnop'
-        DC      'pqrstuvwxyz{|}~'
-        END

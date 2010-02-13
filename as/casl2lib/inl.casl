@@ -1,6 +1,8 @@
-;;; 数値の入力を受け付ける
+;;; *** This file is auto generated from inl_main.casl ../mull.casl of src_inl ***
+;;; 0〜65535の範囲にある整数の入力を受け付ける
 ;;; 入力 （SVC）
-;;; 出力 GR1: 入力された数値 GR0: 文字の長さ
+;;; 出力 GR1: 入力された数値 GR0: 文字の長さ。入力が数字以外の場合は、#FFFF
+;;;      65536以上の正数が入力された場合はエラー
 INL     START
         PUSH    0,GR2
         PUSH    0,GR3
@@ -15,10 +17,10 @@ INL     START
 STOL    CPL     GR4,ILEN        ; ループ先頭。(GR4 = ILEN)の場合、ループ脱出
         JZE     CP              ; ↓
         LD      GR1,IBUF,GR4    ; GR1に、入力文字列中の次の桁を格納
-        CPL     GR1,ZERO        ; (GR1 < '0')の場合、IOVへジャンプ
-        JMI     OV              ; ↓
-        CPL     GR1,NINE        ; (GR1 > '9')の場合、IOVへジャンプ
-        JPL     OV              ; ↓
+        CPL     GR1,ZERO        ; (GR1 < '0')の場合、NANへジャンプ
+        JMI     NAN              ; ↓
+        CPL     GR1,NINE        ; (GR1 > '9')の場合、NANへジャンプ
+        JPL     NAN              ; ↓
         SUBL    GR1,ZERO        ; GR1の文字を、対応する数値に変換
         ST      GR4,NLEN        ; GR4 <- ILEN - NLEN - 1
         LD      GR4,ILEN        ; ↓
@@ -27,15 +29,16 @@ MUL10   CPA     GR4,=1          ; ループ先頭。GR1 <- 10 ** GR4
         JZE     NEXT            ; (GR4 = 1)の場合、ループ脱出
         JMI     NEXT            ; ↓
         CALL    MULL            ; MULLを呼び出し、GR0 <- GR1 * GR2
+        JOV     FIN             ; ↓
         LD      GR1,GR0         ; GR1 <- GR0
         LAD     GR4,-1,GR4      ; GR4 <- GR4 -1
         JUMP    MUL10           ; ループ終端
 NEXT    LD      GR4,NLEN        ; GR4 <- NLEN。復元
         ADDL    GR3,GR1         ; GR3 <- GR3 + GR1
+        JOV     FIN             ; ↓
         LAD     GR4,1,GR4       ; GR4 <- GR4 + 1
         JUMP    STOL            ; ループ終端
-OV      LAD     GR0,#8000       ; GR0 <- 0。オーバーフローを強制的に発生させる
-        SLL     GR0,1           ; ↓
+NAN     LAD     GR0,#FFFF       ; GR0 <- #FFFF
         JUMP    FIN             ; FINへジャンプ
 CP      LD      GR1,GR3         ; GR0 <- GR3
         LD      GR0,ILEN        ; GR0 <- ILEN
@@ -49,6 +52,7 @@ IBUF    DS      5
 ILEN    DS      1
 NLEN    DS      1
         END
+
 ;;; 0〜65535の範囲にある正数のかけ算（筆算方式）を行う
 ;;; 入力 GR1:被乗数 GR2:乗数
 ;;; 出力 GR0:積

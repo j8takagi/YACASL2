@@ -4,24 +4,23 @@
 MAIN    START
         PUSH    0,GR1
         PUSH    0,GR2
-        ;; GR1に(初項 + 末項)を入力
-        LD      GR1,FST
-        ADDL    GR1,LST
-        ;; GR2に項数を入力
-        LD      GR2,LST
-        SUBL    GR2,GR1
-        RPUSH
-        LD      GR1,GR2
-        LD      GR2,STEP
-        CALL    DIVL
-        RPOP
-        LAD     GR2,1,GR0
-        CALL    MULL
-        SRL     GR0,1
+        LD      GR1,FST         ; GR1 <- (初項 + 末項)
+        ADDL    GR1,LST         ; ↓
+        PUSH    0,GR1           ; GR1を退避
+        LD      GR1,LST         ; GR1 <- (末項 - 初項)
+        SUBL    GR1,FST         ; ↓
+        LD      GR2,GR1         ; ↓
+        LD      GR2,STEP        ; GR2 <- STEP
+        CALL    DIVL            ; GR0 <- GR1 / GR2
+        LD      GR2,GR0         ; GR2 <- GR0
+        LAD     GR2,1,GR2       ; GR2 <- GR2 + 1
+        SRL     GR2,1           ; GR2 <- GR2 / 2
+        POP     GR1             ; GR1を復元
+        CALL    MULL            ; GR0 <- GR1 * GR2
         POP     GR2
         POP     GR1
         RET
-FST     DC      1
-LST     DC      10
-STEP    DC      1
+FST     DC      1               ; 初項
+LST     DC      10              ; 末項
+STEP    DC      1               ; 公差
         END

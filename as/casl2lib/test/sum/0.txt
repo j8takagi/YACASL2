@@ -1,0 +1,2 @@
+../../../../casl2 ../../../../as/FUNC/sum_call.casl ../../../../as/FUNC/sum.casl ../../../../as/FUNC/outl.casl
+65341

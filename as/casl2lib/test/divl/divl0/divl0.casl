@@ -1,0 +1,6 @@
+MAIN    START
+BEGIN   LAD     GR1,101
+        LAD     GR2,10
+        CALL    DIVL
+        RET
+        END

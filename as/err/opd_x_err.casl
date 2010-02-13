@@ -1,9 +1,5 @@
-;;; ADDA r,adr,x 演算結果が負数(r < adr)
 MAIN    START
-        LD      GR1,A
-        LAD     GR2,1
-        ADDA    GR1,A,1
+        LD      GR1,A,1
         RET
-A       DC      -10
-        DC      20
+A       DC      0,1
         END

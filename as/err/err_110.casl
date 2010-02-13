@@ -1,0 +1,5 @@
+MAIN    START
+        LEA     GR1,A
+        RET
+A       DC      3
+        END

@@ -11,6 +11,5 @@ LOOP    CPL     GR2,GR1
         JOV     OV
         LAD     GR2,1,GR2
         JUMP    LOOP
-OV      LAD     GR0,0
 FIN     RET
         END

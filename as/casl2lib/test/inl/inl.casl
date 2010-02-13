@@ -1,0 +1,20 @@
+;;; casl2 inl.casl ../casl2lib/inl.casl ../casl2lib/outl.casl
+MAIN    START
+LOOP    CALL    INL             ; GR1に数値、GR0に文字列の長さ
+        JOV     OV
+        AND     GR0,GR0
+        JZE     FIN
+        CPL     GR0,=#FFFF
+        JZE     NAN
+        CALL    OUTL
+        JUMP    LOOP
+OV      OUT     OVMSG,MLEN1
+        JUMP    LOOP
+NAN     OUT     NANMSG,MLEN2
+        JUMP    LOOP
+FIN     RET
+OVMSG   DC      'Over 65535'
+MLEN1   DC      10
+NANMSG  DC      'Not A Number'
+MLEN2   DC      12
+        END

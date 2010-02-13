@@ -1,0 +1,4 @@
+MAIN    START
+        LEA     GR1,GR2
+        RET
+        END

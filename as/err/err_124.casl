@@ -1,0 +1,4 @@
+MAIN    START
+        LAD     GR1,='ab'
+END     RET
+        END

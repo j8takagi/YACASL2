@@ -1,6 +1,7 @@
 .PHONY: clean
 
 $(TARGET): $(SRCFILE)
-	@cat $^ >$@
+	@echo ";;; *** This file is auto generated from $(SRCFILE) of `pwd | xargs basename` ***" >$@; \
+     cat $^ >>$@
 clean:
 	@rm $(TARGET)

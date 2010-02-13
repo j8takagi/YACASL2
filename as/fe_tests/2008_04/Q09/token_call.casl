@@ -5,5 +5,5 @@ MAIN    START
         RET
         DS      93
 STR     DC      '  THIS 1234  AN9999.'
-TBL     DS      100        
+TBL     DS      100
         END

@@ -15,7 +15,7 @@ CHK2    PUSH    0,GR1           ; GR1を退避
         POP     GR1             ; GR1を復元
         LAD     GR0,0           ; 積
         JUMP    MLOOP
-C2OV    POP     GR1             ; 
+C2OV    POP     GR1             ;
         JUMP    MFIN
 MLOOP   CPA     GR2,GR3         ; ループ先頭。(GR2 = GR3)の場合、ループ脱出
         JZE     MMIN            ; ↓

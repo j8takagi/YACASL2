@@ -1,0 +1,13 @@
+;;; クロック数100のプログラム
+;;; 「casl2 -O clocks.casl && time comet2 -C100 a.o」で、実行時間は約1秒
+MAIN    START
+        LAD     GR1,0
+        NOP
+LOOP    CPA     GR1,CNT
+        JZE     FIN
+        LAD     GR1,1,GR1
+        NOP
+        JUMP    LOOP
+FIN     RET
+CNT     DC      19
+        END
