@@ -34,7 +34,11 @@ bool loadassemble(char *file) {
         perror(file);
         return false;
     }
-    endptr = startptr + fread(memory, sizeof(WORD), memsize, fp);
+    if((endptr = startptr + fread(memory, sizeof(WORD), memsize-startptr, fp)) == memsize) {
+        setcerr(201, NULL);    /* Load object file - full of COMET II memory */
+        fprintf(stderr, "Execute error - %d: %s\n", cerrno, cerrmsg);
+        return false;
+    }
     fclose(fp);
     return true;
 }
