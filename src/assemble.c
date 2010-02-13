@@ -143,7 +143,7 @@ bool assemblecmd(const CMDLINE *cmdl, PASS pass)
     CMDARRAY ascmd[] = {
         { START, 0, 1, "START" },
         { END, 0, 0, "END" },
-        { DC, 0, OPDSIZE, "DC" },
+        { DC, 1, OPDSIZE, "DC" },
         { DS, 1, 1, "DS" },
         { 0, 0, 0, NULL }
     };
