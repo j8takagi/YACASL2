@@ -1,0 +1,3 @@
+../../../../casl2 ../../../../as/err/err_124.casl
+Assemble error - 124: 'ab': more than one character in literal
+../../../../as/err/err_124.casl:    2:        LAD     GR1,='ab'

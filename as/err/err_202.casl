@@ -1,0 +1,7 @@
+;;; casl2 -M32 err_202.casl <teststr.txt
+MAIN    START
+        IN      IBUF,ILEN
+FIN     RET
+IBUF    DS      10
+ILEN    DS      1
+        END

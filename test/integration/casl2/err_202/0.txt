@@ -1,0 +1,2 @@
+../../../../casl2 -M32 ../../../../as/err/err_202.casl
+Execute error - 202: SVC input - out of Input memory

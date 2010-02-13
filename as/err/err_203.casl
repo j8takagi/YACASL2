@@ -1,0 +1,7 @@
+;;; casl2 -M32 err_203.casl
+MAIN    START
+        OUT     BUF,LEN
+        RET
+BUF     DC      ' !'
+LEN     DC      60
+        END

@@ -1,0 +1,3 @@
+../../../../casl2 ../../../../as/err/err_116.casl
+Assemble error - 116: #10000: out of hex range
+../../../../as/err/err_116.casl:    2:        LD      GR1,#10000

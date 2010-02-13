@@ -1,0 +1,5 @@
+MAIN    START
+        LD      GR1,A23456789
+        RET
+A23456789 DC    7
+        END

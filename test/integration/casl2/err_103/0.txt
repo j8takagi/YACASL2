@@ -1,0 +1,3 @@
+../../../../casl2 ../../../../as/err/err_103.casl
+Assemble error - 103: B: label not found
+../../../../as/err/err_103.casl:    2:        LD      GR1,B

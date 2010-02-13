@@ -3,7 +3,7 @@
 Assemble ../../../../as/cmd/OUT/out.casl (0)
 
 Assemble ../../../../as/cmd/OUT/out.casl (1)
-../../../../as/cmd/OUT/out.casl:    1:;;; OUT buf.len
+../../../../as/cmd/OUT/out.casl:    1:;;; OUT buf,len
 ../../../../as/cmd/OUT/out.casl:    2:MAIN    START
 ../../../../as/cmd/OUT/out.casl:    3:        OUT     BUF1,L1
 	#0000	#7001

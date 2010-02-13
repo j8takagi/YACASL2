@@ -1,0 +1,3 @@
+../../../../casl2 ../../../../as/err/err_101.casl
+Assemble error - 101: A: label already defined
+../../../../as/err/err_101.casl:    6:A       DC      1

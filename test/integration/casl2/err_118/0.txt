@@ -1,0 +1,3 @@
+../../../../casl2 ../../../../as/err/err_118.casl
+Assemble error - 118: operand length too long
+../../../../as/err/err_118.casl:    3:        DC      '12345678901234567890123456789012345678901'

@@ -1,0 +1,5 @@
+;;; casl2 -M8  err_204.casl
+MAIN    START
+        JUMP    #FFFF
+FIN     RET
+        END

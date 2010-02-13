@@ -1,0 +1,3 @@
+../../../../casl2 ../../../../as/err/err_125.casl
+Assemble error - 125: LD: not GR in operand x
+../../../../as/err/err_125.casl:    2:        LD      GR1,A,1

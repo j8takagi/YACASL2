@@ -1,4 +1,4 @@
 MAIN    START
-        ST      GR1,GR2
+        LAD
         RET
         END

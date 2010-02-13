@@ -1,0 +1,10 @@
+;;; casl2 -M8 err_119.casl
+MAIN    START
+        LD      GR0,A
+        LD      GR0,B
+        LD      GR0,C
+        RET
+A       DC      7
+B       DC      -7
+C       DC      0
+        END

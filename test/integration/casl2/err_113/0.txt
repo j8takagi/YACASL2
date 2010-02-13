@@ -1,0 +1,3 @@
+../../../../casl2 ../../../../as/err/err_113.casl
+Assemble error - 113: LD: operand too many in machine command
+../../../../as/err/err_113.casl:    2:        LD      GR1,A,1,2

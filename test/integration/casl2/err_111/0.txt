@@ -1,0 +1,3 @@
+../../../../casl2 ../../../../as/err/err_111.casl
+Assemble error - 111: LD: not command of operand "adr[,x]"
+../../../../as/err/err_111.casl:    2:        LD      A

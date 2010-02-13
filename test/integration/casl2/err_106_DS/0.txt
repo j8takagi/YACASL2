@@ -1,0 +1,3 @@
+../../../../casl2 ../../../../as/err/err_106_DS.casl
+Assemble error - 106: operand mismatch in assemble command
+../../../../as/err/err_106_DS.casl:    4:A       DS

@@ -1,4 +1,4 @@
-;;; OUT buf.len
+;;; OUT buf,len
 MAIN    START
         OUT     BUF1,L1
         OUT     BUF2,L2

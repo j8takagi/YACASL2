@@ -1,4 +1,5 @@
 MAIN    START
-        ST      GR1,GR2
+        LD      A
         RET
+A       DC      3
         END

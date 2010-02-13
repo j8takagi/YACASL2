@@ -1,0 +1,3 @@
+../../../../casl2 ../../../../as/err/err_107.casl
+Assemble error - 107: no label in START
+../../../../as/err/err_107.casl:    1:        START
