@@ -44,6 +44,22 @@ CMDCODEARRAY cmdcodearray[] = {
 int cmdcodesize = ARRAYSIZE(cmdcodearray);
 CMDCODETAB *cmdtype_code[ARRAYSIZE(cmdcodearray)], *code_type[ARRAYSIZE(cmdcodearray)];
 
+/* 命令と命令タイプからハッシュ値を生成する */
+unsigned hash_cmdtype(const char *cmd, CMDTYPE type) {
+    HKEY *keys[2];
+
+    /* 命令をセット */
+    keys[0] = malloc(sizeof(HKEY));
+    keys[0]->type = CHARS;
+    keys[0]->val.s = strdup(cmd);
+    /* 命令タイプをセット */
+    keys[1] = malloc(sizeof(HKEY));
+    keys[1]->type = INT;
+    keys[1]->val.i = (int)(type & 070);
+    /* ハッシュ値を返す */
+    return hash(2, keys, cmdcodesize);
+}
+
 /* 命令と命令タイプがキーのハッシュ表を作成する */
 bool create_cmdtype_code()
 {
@@ -65,22 +81,6 @@ bool create_cmdtype_code()
         np->cca = &(cmdcodearray[i]);
     }
     return true;
-}
-
-/* 命令と命令タイプからハッシュ値を生成する */
-unsigned hash_cmdtype(const char *cmd, CMDTYPE type) {
-    HKEY *keys[2];
-
-    /* 命令をセット */
-    keys[0] = malloc(sizeof(HKEY));
-    keys[0]->type = CHARS;
-    keys[0]->val.s = strdup(cmd);
-    /* 命令タイプをセット */
-    keys[1] = malloc(sizeof(HKEY));
-    keys[1]->type = INT;
-    keys[1]->val.i = (int)(type & 070);
-    /* ハッシュ値を返す */
-    return hash(2, keys, cmdcodesize);
 }
 
 /* 命令と命令タイプから、命令コードを取得する */
@@ -127,6 +127,19 @@ void free_cmdtype_code()
     }
 }
 
+/* 命令コードからハッシュ値を生成する */
+unsigned hash_code(WORD code)
+{
+    HKEY *keys[1];
+
+    /* 命令コードをセット */
+    keys[0] = malloc(sizeof(HKEY));
+    keys[0]->type = INT;
+    keys[0]->val.i = (int)(code >> 8);
+    /* ハッシュ値を返す */
+    return hash(1, keys, cmdcodesize);
+}
+
 /* 命令コードがキーのハッシュ表を作成する */
 bool create_code_type()
 {
@@ -147,19 +160,6 @@ bool create_code_type()
         np->cca = &cmdcodearray[i];
     }
     return true;
-}
-
-/* 命令コードからハッシュ値を生成する */
-unsigned hash_code(WORD code)
-{
-    HKEY *keys[1];
-
-    /* 命令コードをセット */
-    keys[0] = malloc(sizeof(HKEY));
-    keys[0]->type = INT;
-    keys[0]->val.i = (int)(code >> 8);
-    /* ハッシュ値を返す */
-    return hash(1, keys, cmdcodesize);
 }
 
 /* 命令コードから命令タイプを取得する */

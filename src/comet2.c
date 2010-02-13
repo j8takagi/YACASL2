@@ -37,7 +37,7 @@ bool loadassemble(char *file) {
         perror(file);
         return false;
     }
-    fread(memory, sizeof(WORD), memsize, fp);
+    endptr = startptr + fread(memory, sizeof(WORD), memsize, fp);
     fclose(fp);
     return true;
 }
@@ -75,6 +75,7 @@ int main(int argc, char *argv[])
         }
     }
     reset();
+    startptr = 0;
     if(loadassemble(argv[optind]) == true) {
         exec();    /* プログラム実行 */
     }
