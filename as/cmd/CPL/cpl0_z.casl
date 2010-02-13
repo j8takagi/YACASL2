@@ -1,0 +1,8 @@
+;;; CPL r,adr ZF:0
+MAIN    START   BEGIN
+BEGIN   LD      GR1,A
+        CPL     GR1,B
+        RET
+A       DC      #5000
+B       DC      #5000
+        END

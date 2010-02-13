@@ -1,0 +1,8 @@
+;;; ADDL r,adr オーバーフロー
+MAIN    START
+        LD      GR1,A
+        ADDL    GR1,B
+        RET
+A       DC      #8002           ; 32770
+B       DC      #8001           ; 32769
+        END

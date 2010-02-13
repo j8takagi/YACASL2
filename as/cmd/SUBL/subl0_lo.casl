@@ -1,0 +1,8 @@
+;;; SUBL r,adr SUBLではオーバーフロー
+MAIN    START
+        LD      GR1,A
+        SUBL    GR1,B
+        RET
+A       DC      2
+B       DC      15
+        END

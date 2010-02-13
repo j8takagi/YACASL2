@@ -1,0 +1,7 @@
+;;; LAD r,adr,x
+MAIN    START
+        LD      GR1,A
+        LAD     GR1,-1,GR1
+        RET
+A       DC      3
+        END

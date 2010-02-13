@@ -1,0 +1,5 @@
+MAIN    START
+        LD      GR1,A,1
+        RET
+A       DC      0,1
+        END

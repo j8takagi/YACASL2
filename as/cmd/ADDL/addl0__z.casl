@@ -1,0 +1,8 @@
+;;; ADDL r,adr 演算結果が零
+MAIN    START
+        LD      GR1,A
+        ADDL    GR1,B
+        RET
+A       DC      0
+B       DC      0
+        END

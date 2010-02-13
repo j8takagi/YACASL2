@@ -1,0 +1,9 @@
+;;; XOR r1,r2
+MAIN    START
+        LD      GR1,A
+        LD      GR2,B
+        XOR     GR1,GR2
+        RET
+A       DC      #3000
+B       DC      #4FFF
+        END

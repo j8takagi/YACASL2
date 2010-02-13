@@ -1,0 +1,7 @@
+include ../CMD.mk    # YACASL2DIR, CASL2
+ASDIR = $(YACASL2DIR)/as
+CASL2LIBDIR = $(YACASL2DIR)/as/casl2lib
+ASFILE = $(YACASL2DIR)/as/cmd/LD/ld0_l.casl
+COMET2FLAG = -td
+EXECCMD = $(COMET2) $(COMET2FLAG) $(OBJFILE)
+include ../TEST.mk

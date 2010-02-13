@@ -1,0 +1,15 @@
+;;; sum.casl
+;;; 入力 GR1: 1以上の正数
+;;; 出力 GR0: 1からGR1で指定された値までの正数をすべて加算した値。
+;;;           オーバーフローした場合は、0
+SUM     START
+        LAD     GR0,0
+        LAD     GR2,1
+LOOP    CPL     GR2,GR1
+        JPL     FIN
+        ADDL    GR0,GR2
+        JOV     OV
+        LAD     GR2,1,GR2
+        JUMP    LOOP
+FIN     RET
+        END

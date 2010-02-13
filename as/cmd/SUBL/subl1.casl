@@ -1,0 +1,9 @@
+;;; SUBL r,adr,x
+MAIN    START
+BEGIN   LD      GR1,A
+        LAD     GR2,1
+        SUBL    GR1,A,GR2
+        RET
+A       DC      3
+        DC      1
+        END

@@ -1,6 +1,0 @@
-MAIN    START
-BEGIN   LAD     GR1,#5000
-        LAD     GR2,#F000
-        CPL     GR1,GR2
-        RET
-        END

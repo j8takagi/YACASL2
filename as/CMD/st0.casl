@@ -1,6 +1,0 @@
-MAIN    START
-        LAD     GR0,286
-        ST      GR0,A
-        RET
-A       DS      1
-        END

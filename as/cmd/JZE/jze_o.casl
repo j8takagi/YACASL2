@@ -1,0 +1,11 @@
+;;; JZE OSZ:001
+MAIN    START
+        LD      GR1,A
+        SRL     GR1,1
+        JZE     TO
+        LAD     GR1,0
+        JUMP    FIN
+TO      LAD     GR1,#FFFF
+FIN     RET
+A       DC      #0003
+        END

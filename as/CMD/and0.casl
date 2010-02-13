@@ -1,6 +1,0 @@
-MAIN    START
-BEGIN   LAD     GR1,#8001
-        LAD     GR2,#3521
-        AND     GR1,GR2
-        RET
-        END

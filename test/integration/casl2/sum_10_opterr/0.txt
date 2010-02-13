@@ -1,3 +1,0 @@
-../../../../casl2 -z ../../../../as/FUNC/sum_10.casl
-../../../../casl2: invalid option -- z
-Usage: ../../../../casl2 [-slLaAtTdh] [-oO<OUTFILE>] [-M <memorysize>] [-C <clocks>] FILE ...

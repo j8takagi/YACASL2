@@ -1,5 +1,0 @@
-MAIN    START
-        LAD     GR1,3
-        LD      GR0,GR1
-        RET
-        END

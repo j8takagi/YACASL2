@@ -98,9 +98,6 @@ bool create_cmdtype_code();
 /* 無効な場合は0xFFFFを返す */
 WORD getcmdcode(const char *cmd, CMDTYPE type);
 
-/* 命令と命令タイプからハッシュ値を生成する */
-unsigned hash_cmdtype(const char *cmd, CMDTYPE type);
-
 /* 命令と命令タイプがキーのハッシュ表を表示する */
 void print_cmdtype_code();
 
@@ -109,9 +106,6 @@ void free_cmdtype_code();
 
 /* 命令コードがキーのハッシュ表を作成する */
 bool create_code_type();
-
-/* 命令コードからハッシュ値を生成する */
-unsigned hash_code(WORD code);
 
 /* 命令コードから命令タイプを取得する */
 /* 無効な場合はNONEを返す */

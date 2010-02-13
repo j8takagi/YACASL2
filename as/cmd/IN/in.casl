@@ -1,0 +1,7 @@
+;;; IN IBUF,ILEN
+MAIN    START
+LOOP    IN      IBUF,ILEN
+FIN     RET
+IBUF    DS      20
+ILEN    DS      1
+        END

@@ -1,0 +1,26 @@
+;;; sum_10.casl
+;;; 入力 GR0: 正数
+;;; 出力 GR0: 1からGR1で指定された値までの正数をすべて加算した値。
+;;;           オーバーフローした場合は、0
+;;; 依存プログラム: mull1.casl divl1.casl
+MAIN    START
+        PUSH    0,GR1
+        PUSH    0,GR2
+        ADDL    GR1,FST         ; GR1 <- (初項 + 末項)
+        PUSH    0,GR1           ; GR1を退避
+        LD      GR1,LST         ; GR1 <- (末項 - 初項)
+        SUBL    GR1,FST         ; ↓
+        LD      GR2,GR1         ; ↓
+        LD      GR2,STEP        ; GR2 <- STEP
+        CALL    DIVL            ; GR0 <- GR1 / GR2
+        LD      GR2,GR0         ; GR2 <- GR0
+        LAD     GR2,1,GR2       ; GR2 <- GR2 + 1
+        SRL     GR2,1           ; GR2 <- GR2 / 2
+        POP     GR1             ; GR1を復元
+        CALL    MULL            ; GR0 <- GR1 * GR2
+        POP     GR2
+        POP     GR1
+        RET
+FST     DC      1               ; 初項
+STEP    DC      1               ; 公差
+        END

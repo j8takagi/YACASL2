@@ -1,0 +1,8 @@
+;;; SUBL r,adr オーバーフロー
+MAIN    START
+        LD      GR1,A
+        SUBL    GR1,B
+        RET
+A       DC      #8002           ; -32766
+B       DC      #7FFF           ; 32767
+        END

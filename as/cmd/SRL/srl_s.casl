@@ -1,0 +1,6 @@
+;;; SRL r,adr 負数
+SRL2    START   BEGIN
+BEGIN   LAD     GR1,#C000
+        SRL     GR1,0
+        RET
+        END

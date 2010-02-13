@@ -1,0 +1,9 @@
+;;; SUBA r1,r2
+MAIN    START
+BEGIN   LD      GR1,A
+        LD      GR2,B
+        SUBA    GR1,GR2
+        RET
+A       DC      3
+B       DC      1
+        END

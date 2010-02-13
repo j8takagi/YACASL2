@@ -1,9 +1,0 @@
-;;; sum.caslを呼び出し、1から361までの数値の合計を求める
-;;; casl2 sum_call.casl sum.call outl.casl
-MAIN    START
-        LAD     GR1,361
-        CALL    SUM
-        LD      GR1,GR2
-        CALL    OUTL
-MFIN    RET
-        END

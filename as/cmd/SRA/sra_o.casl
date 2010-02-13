@@ -1,0 +1,6 @@
+;;; SRA r,adr 正数のオーバーフロー
+MAIN    START
+        LAD     GR1,#6000
+        SRA     GR1,14
+        RET
+        END

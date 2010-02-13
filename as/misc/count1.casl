@@ -1,0 +1,19 @@
+;;; 「アセンブラ言語の使用」に掲載されているサンプル
+COUNT1  START
+;       入力    GR1:検索する語
+;       処理    GR1中の'1'のビットの個数を求める
+;       出力    GR0:GR1中の'1'のビットの個数
+        PUSH    0,GR1           ;
+        PUSH    0,GR2           ;
+        SUBA    GR2,GR2         ; Count = 0
+        AND     GR1,GR1         ; 全部のビットが'0'?
+        JZE     RETURN          ; 全部のビットが'0'なら終了
+MORE    LAD     GR2,1,GR2       ; Count = Count + 1
+        LAD     GR0,-1,GR1      ; 最下位の'1'のビット1個を
+        AND     GR1,GR0         ;  '0'に変える
+        JNZ     MORE            ; '1'のビットが残っていれば繰返し
+RETURN  LD      GR0,GR2         ; GR0 = Count
+        POP     GR2             ;
+        POP     GR1             ;
+        RET                     ; 呼び出しプログラムへ戻る
+        END                     ;

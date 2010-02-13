@@ -42,29 +42,22 @@ prepare:
          $(MAKE) prepare -C $$target ;\
      done
 create:
-ifdef UNITNAME
+ifndef UNITNAME
+	@echo "no test created. set UNITNAME"
+else
 	@mkdir $(UNITNAME)
 	@echo 'include ../CMD.mk    # YACASL2DIR, CASL2, COMET2' >$(UNITNAME)/Makefile
-ifdef CASL2FLAG
-	@echo 'CASL2FLAG = $(CASL2FLAG)' >>$(UNITNAME)/Makefile
-else
-	@echo 'CASL2FLAG = -la' >>$(UNITNAME)/Makefile
+ifdef COMET2FLAG
+	@echo 'COMET2FLAG = $(COMET2FLAG)' >>$(UNITNAME)/Makefile
 endif
-ifdef ASDIR
-	@echo 'ASDIR = $(ASDIR)' >>$(UNITNAME)/Makefile
-else
 	@echo 'ASDIR = $$(YACASL2DIR)/as' >>$(UNITNAME)/Makefile
-endif
+	@echo 'CASL2LIBDIR = $$(YACASL2DIR)/as/casl2lib' >>$(UNITNAME)/Makefile
 ifdef ASFILE
 	@echo 'ASFILE = $(ASFILE)' >>$(UNITNAME)/Makefile
-else
-	@echo 'ASFILE = $$(ASDIR)/$(UNITNAME).casl' >>$(UNITNAME)/Makefile
 endif
 ifdef INFILE
-	@echo 'IN = <$(INFILE)' >>$(UNITNAME)/Makefile
+	@echo 'INFILE = $(INFILE)' >>$(UNITNAME)/Makefile
 endif
-	@echo 'CMD = $$(COMET2) $$(COMET2FLAG) $$(OBJFILE)' >>$(UNITNAME)/Makefile; \
+	@echo -n 'CMD = $$(COMET2) $$(COMET2FLAG) $$(OBJFILE)' >>$(UNITNAME)/Makefile; \
      echo 'include ../TEST.mk' >>$(UNITNAME)/Makefile
-else
-	@echo "no test created. set UNITNAME"
 endif

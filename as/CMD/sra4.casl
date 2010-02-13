@@ -1,8 +1,0 @@
-SRA4    START   BEGIN
-BEGIN   LD  GR0,X
-        LD  GR1,Y
-        SRA GR0,1,GR1
-        RET
-X   DC  #A238
-Y   DC  2
-        END

@@ -1,0 +1,8 @@
+;;; SUBL r,adr 演算結果が零
+MAIN    START
+        LD      GR1,A
+        SUBL    GR1,B
+        RET
+A       DC      #FFF6           ; -10
+B       DC      #FFF6           ; -10
+        END

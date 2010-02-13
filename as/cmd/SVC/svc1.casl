@@ -1,0 +1,9 @@
+;;; SVC 1 1文字を入力
+MAIN    START
+        LAD     GR1,IBUF
+        LAD     GR2,ILEN
+        SVC     1
+        RET
+IBUF    DS      6
+ILEN    DS      1
+        END

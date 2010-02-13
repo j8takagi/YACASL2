@@ -1,0 +1,6 @@
+;;; SRL r,adr 結果は零
+MAIN    START
+        LAD     GR1,#C000
+        SRL     GR1,17
+        RET
+        END

@@ -4,7 +4,6 @@
 # make prepare : CMDで設定されたコマンドを実行した出力結果を0.txt（テストの想定結果）に出力
 # make clean   : 「make」で生成されたファイルをクリア
 # make cleanall: 「make」と「make clean」で生成されたファイルをクリア
-LOGFILE = ../TEST.log
 ERRFILE = err.txt
 UNITNAME = `pwd | xargs basename`
 # 要定義: CMD, CMDFILE, OBJFILE
@@ -13,7 +12,7 @@ UNITNAME = `pwd | xargs basename`
 check: clean report.txt
 prepare: cleanall 0.txt
 clean:
-	@rm -f 1.txt diff.txt report.txt
+	@rm -f 1.txt diff.txt report.txt err.txt
 cleanall: clean
 	@rm -f 0.txt
 0.txt 1.txt: $(CMDFILE) $(OBJFILE)

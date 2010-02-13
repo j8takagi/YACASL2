@@ -1,5 +1,0 @@
-SRA2    START   BEGIN
-BEGIN   LAD     GR4,124
-        SRA     GR4,2
-        RET
-        END

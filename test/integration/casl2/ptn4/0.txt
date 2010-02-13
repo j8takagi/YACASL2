@@ -1,2 +1,0 @@
-../../../../casl2 ../../../../as/FE_TESTS/2008_10/Q09/ptn4_call.casl ../../../../as/FE_TESTS/2008_10/Q09/ptn4.casl ../../../../as/FE_TESTS/2008_10/Q09/ptn1.casl ../../../../as/FE_TESTS/2008_10/Q09/ptn2.casl ../../../../as/FUNC/outb.casl
-1111100000011111

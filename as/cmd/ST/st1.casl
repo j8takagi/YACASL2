@@ -1,0 +1,9 @@
+;;; ST r,adr,x
+MAIN    START
+        LD      GR1,A
+        LAD     GR2,A
+        ST      GR1,1,GR2
+        RET
+A       DC      5
+B       DS      1
+        END

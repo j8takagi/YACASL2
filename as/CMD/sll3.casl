@@ -1,7 +1,0 @@
-SLA2	START	BEGIN
-BEGIN	LD	    GR1,X
-	    SLL	    GR1,1
-	    RET
-X	    DC	    #4000
-	    END
-        

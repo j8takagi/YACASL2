@@ -1,5 +1,0 @@
-MAIN    START
-BEGIN   LAD     GR0,#0460
-        AND     GR0,=#00FF
-        RET
-        END

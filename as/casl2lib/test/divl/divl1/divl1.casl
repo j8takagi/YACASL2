@@ -1,0 +1,18 @@
+;;; casl2 divl1.casl ../casl2lib/outl.casl
+MAIN    START
+BEGIN   LD      GR1,X
+        CALL    OUTL
+        LD      GR2,Y
+        PUSH    0,GR1
+        LD      GR1,GR2
+        CALL    OUTL
+        POP     GR1
+        CALL    DIVL
+        LD      GR1,GR0
+        CALL    OUTL
+        LD      GR1,GR3
+        CALL    OUTL
+        RET
+X       DC      123
+Y       DC      10
+        END

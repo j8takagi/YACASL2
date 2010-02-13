@@ -1,0 +1,9 @@
+MAIN    START
+        LAD     GR1,STR
+        LAD     GR2,TBL
+        CALL    TOKEN
+        RET
+        DS      93
+STR     DC      '  THIS 1234  AN9999.'
+TBL     DS      100
+        END

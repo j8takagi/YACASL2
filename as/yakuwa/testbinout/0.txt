@@ -1,0 +1,5 @@
+../../../casl2 testbinout.casl ../binout.casl
+0
+1
+100111001101
+1000000000000001

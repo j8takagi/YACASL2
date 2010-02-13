@@ -1,0 +1,13 @@
+;;; BINOUTを呼び出す
+MAIN    START
+        LAD     GR2,0
+MLOOP   CPA     GR2,MLEN
+        JZE     MFIN
+        LD      GR1,MWORD,GR2
+        CALL    BINOUT
+        LAD     GR2,1,GR2
+        JUMP    MLOOP
+MFIN    RET
+MWORD   DC      #0000,#0001,#09CD,#8001
+MLEN    DC      4
+        END

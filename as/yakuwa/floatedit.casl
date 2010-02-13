@@ -1,0 +1,64 @@
+EDIT    START
+RETRY   IN      INAREA,INLENG
+        LAD     GR1,0
+        OR      GR1,INLENG
+        JZE     FINISH
+        CPA     GR1,TEN
+        JZE     BEGIN
+        OUT     ERRMSG,MSGLNG
+        JUMP    RETRY
+BEGIN   LAD     GR0,1
+        ST      GR0,ZSFLAG
+        LAD     GR1,0
+        LAD     GR2,-1
+        LAD     GR3,0
+LOOP    LD      GR0,MASK,GR3
+        PUSH    1,GR3
+        LD      GR3,INAREA,GR1
+        LAD     GR1,1,GR1
+        CPL     GR0,DIGIT0
+        JZE     ENDSPR
+        CPL     GR0,DIGIT9
+        JNZ     NONDGT
+        CPL     GR3,DIGIT0
+        JNZ     ENDSPR
+        LAD     GR0,0
+        OR      GR0,ZSFLAG
+        JNZ     SUPPRS
+ENDSPR  LD      GR0,OTAREA,GR2
+        CPL     GR0,SPACE
+        JNZ     NOT1ST
+        LD      GR0,MASK
+        ST      GR0,OTAREA,GR2
+        LAD     GR0,0
+        ST      GR0,ZSFLAG
+NOT1ST  LAD     GR0,0,GR3
+        JUMP    STORE
+NONDGT  LAD     GR1,-1,GR1
+        LAD     GR3,0
+        OR      GR3,ZSFLAG
+        JZE     STORE
+SUPPRS  LD      GR0,SPACE
+STORE   LAD     GR2,1,GR2
+        ST      GR0,OTAREA,GR2
+        POP     GR3
+        CPA     GR1,INLENG
+        JNZ     LOOP
+        LAD     GR2,1,GR2
+        ST      GR2,OTLENG
+        OUT     OTAREA,OTLENG
+        JUMP    RETRY
+FINISH  RET
+MASK    DC      '\99,999,990.99'
+SPACE   DC      ' '
+DIGIT0  DC      '0'
+DIGIT9  DC      '9'
+TEN     DC      10
+ERRMSG  DC      'input error!'
+MSGLNG  DC      12
+INAREA  DS      80
+INLENG  DS      1
+OTAREA  DS      80
+OTLENG  DS      1
+ZSFLAG  DS      1
+        END

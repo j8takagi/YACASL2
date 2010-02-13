@@ -1,0 +1,11 @@
+;;; CASL IIマクロ命令「OUT OBUF LEN」で生成される命令群
+        PUSH    0,GR1
+        PUSH    0,GR2
+        LAD     GR1,OBUF
+        LAD     GR2,LEN
+        SVC     2
+        LAD     GR1,=#A
+        LAD     GR2,=1
+        SVC     2
+        POP     GR2
+        POP     GR1

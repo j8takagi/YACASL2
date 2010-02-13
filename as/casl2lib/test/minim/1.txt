@@ -1,0 +1,2 @@
+../../../../casl2 ../../../../as/FUNC/minim_call.casl ../../../../as/FUNC/minim.casl ../../../../as/FUNC/outa.casl
+-39
