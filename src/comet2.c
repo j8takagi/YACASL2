@@ -15,9 +15,6 @@ static struct option longopts[] = {
     {0, 0, 0, 0}
 };
 
-/* 実行モード: trace, logical, dump */
-EXECMODE execmode = {false, false, false};
-
 /* エラー番号とエラーメッセージ */
 CERRARRAY cerr[] = {
     { 201, "execute - out of COMET II memory" },

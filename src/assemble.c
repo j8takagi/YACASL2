@@ -10,6 +10,9 @@ WORD lptr;
 /* 他のプログラムで参照する入口名 */
 char *prog;
 
+/* アセンブルモード: src, label, onlylabel, asdetail, onlyassemble */
+ASMODE asmode = {false, false, false, false, false};
+
 /* 汎用レジスタを表す文字列「GR[0-7]」から、レジスタ番号[0-7]をWORD値で返す */
 /* 文字列が汎用レジスタを表さない場合は、0xFFFFを返す */
 /* is_xがtrueの場合は指標レジスタ。GR0は、COMET IIの仕様により、エラー発生 */

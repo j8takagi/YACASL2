@@ -1,6 +1,9 @@
 #include "casl2.h"
 #include "exec.h"
 
+/* 実行モード: trace, logical, dump */
+EXECMODE execmode = {false, false, false};
+
 /* 標準入力から文字データを読込（SVC 1） */
 void svcin()
 {

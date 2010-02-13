@@ -23,11 +23,6 @@ static struct option longopts[] = {
     {0, 0, 0, 0},
 };
 
-/* アセンブルモード: src, label, onlylabel, asdetail, onlyassemble */
-ASMODE asmode = {false, false, false, false, false};
-/* 実行モード: trace, logical, dump */
-EXECMODE execmode = {false, false, false};
-
 /* エラー番号とエラーメッセージ */
 CERRARRAY cerr[] = {
     { 101, "label already defined" },
