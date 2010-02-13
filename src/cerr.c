@@ -5,16 +5,14 @@ int cerrno = 0;
 char *cerrmsg;
 
 /* エラー番号とエラーメッセージを設定する */
-void setcerr(int num, const char *val)
+void setcerr(int num, const char *str)
 {
     assert(cerr != NULL && num > 0);
 
     cerrno = num;
-    cerrmsg = malloc(MSGSIZE + 1);
-    if(val != NULL) {
-        strcpy(cerrmsg, val);
-        strcat(cerrmsg, ": ");
-        strcat(cerrmsg, getcerrmsg(cerrno));
+    cerrmsg = malloc(CERRMSGSIZE + 1);
+    if(str != NULL && strlen(str) < 10) {
+        sprintf(cerrmsg, "%s: %s", str, getcerrmsg(cerrno));
     } else {
         strcpy(cerrmsg, getcerrmsg(cerrno));
     }

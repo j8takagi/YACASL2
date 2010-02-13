@@ -1,6 +1,7 @@
 #ifndef YACASL2_CERR_H_INCLUDED
 #define YACASL2_CERR_H_INCLUDED
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
@@ -25,11 +26,12 @@ typedef struct {
 extern CERRARRAY cerr[];
 
 enum {
-    MSGSIZE = 60,
+    CERRSTRSIZE = 10,    /* エラーメッセージ中に挿入できる文字列のサイズ */
+    CERRMSGSIZE = 70,    /* エラーメッセージのサイズ */
 };
 
 /* エラー番号とエラーメッセージを設定 */
-void setcerr(int num, const char *val);
+void setcerr(int num, const char *str);
 
 /* エラー番号からメッセージを返す */
 char *getcerrmsg(int num);

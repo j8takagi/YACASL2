@@ -17,7 +17,7 @@ static struct option longopts[] = {
 
 /* エラー番号とエラーメッセージ */
 CERRARRAY cerr[] = {
-    { 201, "execute - out of COMET II memory" },
+    { 201, "Load object file - full of COMET II memory" },
     { 202, "SVC input - out of Input memory" },
     { 203, "SVC output - out of COMET II memory" },
     { 204, "Program Register (PR) - out of COMET II memory" },

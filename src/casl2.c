@@ -30,19 +30,19 @@ CERRARRAY cerr[] = {
     { 103, "label not found" },
     { 104, "label length is too long" },
     { 105, "no command in the line" },
-    { 106, "operand count mismatch" },
+    { 106, "operand mismatch in assemble command" },
     { 107, "no label in START" },
     { 108, "not command of operand \"r\"" },
     { 109, "not command of operand \"r1,r2\"" },
     { 110, "not command of operand \"r,adr[,x]\"" },
     { 111, "not command of operand \"adr[,x]\"" },
     { 112, "not command of no operand" },
-    { 113, "command not defined" },
+    { 113, "operand too many in machine command" },
     { 114, "not integer" },
     { 115, "not hex" },
     { 116, "out of hex range" },
-    { 117, "operand is too many" },
-    { 118, "operand length is too long" },
+    { 117, "operand too many in DC" },
+    { 118, "operand length too long" },
     { 119, "out of COMET II memory" },
     { 120, "GR0 in operand x" },
     { 121, "cannot get operand token" },
@@ -76,7 +76,7 @@ const char *objfile_name(const char *str)
 {
     const char *default_name = "a.o";
 
-    if(optarg == NULL) {
+    if(str == NULL) {
         return default_name;
     } else {
         return str;

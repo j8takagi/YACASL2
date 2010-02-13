@@ -17,7 +17,7 @@ OPD *opdtok(const char *str)
     do {
         /* オペランド数が多すぎる場合はエラー */
         if(opd->opdc >= OPDSIZE) {
-            setcerr(117, str);    /* operand is too many */
+            setcerr(117, NULL);    /* operand is too many */
             break;
         }
         /* 先頭が「=」の場合の処理 */
