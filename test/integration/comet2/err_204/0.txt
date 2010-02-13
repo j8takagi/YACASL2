@@ -1,0 +1,2 @@
+../../../../comet2 -M8 a.o
+Execute error - 204: PR:#FFFF: Program Register (PR) - out of COMET II memory

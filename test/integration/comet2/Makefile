@@ -55,9 +55,14 @@ endif
 ifdef ASFILE
 	@echo 'ASFILE = $(ASFILE)' >>$(UNITNAME)/Makefile
 endif
+	@echo 'ASCMD = $$(CASL2) $$(CASL2FLAG) -O $(ASFILE)' >>$(UNITNAME)/Makefile
 ifdef INFILE
-	@echo 'INFILE = $(INFILE)' >>$(UNITNAME)/Makefile
+	@echo 'INFILE = $$(INFILE)' >>$(UNITNAME)/Makefile
 endif
-	@echo -n 'CMD = $$(COMET2) $$(COMET2FLAG) $$(OBJFILE)' >>$(UNITNAME)/Makefile; \
+	@echo -n 'EXECCMD = $$(COMET2) $$(COMET2FLAG) $$(OBJFILE)' >>$(UNITNAME)/Makefile
+ifdef INFILE
+	@echo '< $(INFILE)' >>$(UNITNAME)/Makefile
+endif
+	@echo >>$(UNITNAME)/Makefile; \
      echo 'include ../TEST.mk' >>$(UNITNAME)/Makefile
 endif
