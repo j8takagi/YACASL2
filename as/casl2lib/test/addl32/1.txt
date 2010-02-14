@@ -1,3 +1,0 @@
-../../../../casl2 addl32_1.casl ../../../../as/casl2lib/addl32.casl ../../../../as/casl2lib/outl.casl
-4
-9
