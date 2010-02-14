@@ -1,0 +1,6 @@
+MAIN    START
+        OUT     OBUF,LEN
+        RET
+OBUF    DC      'abc'
+LEN     DC      3
+        END

@@ -1,1 +1,0 @@
-hanoi: Test Success 2010-02-12 01:12:42

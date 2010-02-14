@@ -4,4 +4,4 @@ CASL2FLAG = -M640
 LIBDIR = $(YACASL2DIR)/as/casl2lib
 ASFILE = mula.casl $(LIBDIR)/mula.casl $(LIBDIR)/outa.casl
 CMD = $(CASL2) $(CASL2FLAG) $(ASFILE)
-include $(YACASL2DIR)/test/TEST.mk
+include $(YACASL2DIR)/test/integration/casl2/TEST.mk

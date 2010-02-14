@@ -1,6 +1,0 @@
-MAIN    START
-        OUT     OBUF,LEN
-        RET
-OBUF    DC      'Hello, World!'
-LEN     DC      13
-        END

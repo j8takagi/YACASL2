@@ -1,0 +1,13 @@
+;;; マクロ命令INが生成する命令群
+MAIN    START
+        PUSH    0,GR1
+        PUSH    0,GR2
+        LAD     GR1,IBUF
+        LAD     GR2,LEN
+        SVC     1
+        POP     GR2
+        POP     GR1
+        RET
+IBUF    DS      8
+LEN     DC      1
+        END

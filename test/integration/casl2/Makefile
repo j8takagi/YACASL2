@@ -9,9 +9,9 @@
 TESTS = `ls | grep "^[^A-Z].*"`
 LOGFILE = Test.log
 
-.PHONY: all check report clean cleanall prepare create
-all: check report
-check:
+.PHONY: all check checkeach report clean cleanall prepare create
+check: checkeach report
+checkeach:
 	@rm -f $(LOGFILE)
 	@for target in $(TESTS); do \
          $(MAKE) check -C $$target; \

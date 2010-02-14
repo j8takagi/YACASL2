@@ -1,0 +1,7 @@
+;;; マクロ命令IN
+MAIN    START
+        IN      IBUF,LEN
+        RET
+IBUF    DS      8
+LEN     DC      1
+        END

@@ -1,5 +1,6 @@
-include ../CMD.mk    # YACASL2DIR, CASL2
-ASDIR = $(YACASL2DIR)/as/FUNC
-ASFILE = $(ASDIR)/outb_call.casl $(ASDIR)/outb.casl
+YACASL2DIR= ../../../..
+CASL2 = $(YACASL2DIR)/casl2
+LIBDIR = $(YACASL2DIR)/as/casl2lib
+ASFILE = outb.casl $(LIBDIR)/outb.casl
 CMD = $(CASL2) $(ASFILE)
-include ../TEST.mk
+include $(YACASL2DIR)/test/integration/casl2/TEST.mk

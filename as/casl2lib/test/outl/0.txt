@@ -1,4 +1,4 @@
-../../../../casl2 ../../../../as/FUNC/outl_call.casl ../../../../as/FUNC/outl.casl
+../../../../casl2 outl.casl ../../../../as/casl2lib/outl.casl
 0
 1
 2

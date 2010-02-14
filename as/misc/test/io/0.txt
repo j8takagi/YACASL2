@@ -1,0 +1,20 @@
+../../../../casl2 ../../../../as/misc/io.casl
+LET'S START. TYPE IN
+YOU TYPED
+aaaaaaaaaaaaaaaaaaaa
+WHAT'S NEXT?
+YOU TYPED
+qwerty
+WHAT'S NEXT?
+YOU TYPED
+1234567890
+WHAT'S NEXT?
+YOU TYPED
+cccccccccccccccccccccccccccccccccccccccc
+WHAT'S NEXT?
+YOU TYPED
+	a	b	c
+WHAT'S NEXT?
+YOU TYPED
+	
+WHAT'S NEXT?

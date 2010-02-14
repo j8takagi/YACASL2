@@ -2,9 +2,9 @@
 ;;; 入力 GR1:被除数 GR2:除数
 ;;; 出力 GR0:商 GR3:剰余
 ;;; GR2が0の場合は、GR0、GR3とも0になり、オーバーフロー
-DIVL    START
+DIVL0   START
         PUSH    0,GR1
-        AND     GR2,GR2         ; (GR2 = 0)の場合、DYZへジャンプ
+        AND     GR2,GR2         ; (GR2 = 0)の場合、DIVZEROへジャンプ
         JZE     DIVZERO         ; ↓
         LAD     GR0,0           ; GR0を初期化
         LD      GR3,GR1         ; GR3 <- GR1
