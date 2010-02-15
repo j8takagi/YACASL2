@@ -5,7 +5,7 @@ Assemble ../../../../as/cmd/ADDL/addl0.casl (0)
 Assemble ../../../../as/cmd/ADDL/addl0.casl (1)
 ../../../../as/cmd/ADDL/addl0.casl:    1:;;; ADDL r,adr
 ../../../../as/cmd/ADDL/addl0.casl:    2:MAIN    START
-../../../../as/cmd/ADDL/addl0.casl:    3:BEGIN   LD      GR1,A
+../../../../as/cmd/ADDL/addl0.casl:    3:        LD      GR1,A
 	#0000	#1010
 	#0001	#0005
 ../../../../as/cmd/ADDL/addl0.casl:    4:        ADDL    GR1,B

@@ -10,11 +10,6 @@ Copyright @copyright{} 2010 j8takagi
 
 @titlepage
 @title
-
-@c The following two commands start the copyright page.
-@page
-@vskip 0pt plus 1filll
-@insertcopying
 @end titlepage
 
 @c Output the table of contents at the beginning.
@@ -44,7 +39,7 @@ YACASL2は、「ふつうの処理系」として動作します。ほかの多�
 ラベルとアドレスの対応
 
 @item
-アセンブラ結果
+アセンブル結果
 
 @item
 実行時のレジスタの内容
@@ -54,25 +49,6 @@ YACASL2は、「ふつうの処理系」として動作します。ほかの多�
 @end itemize
 
 出力された動作内容は、GNU/Linuxのさまざまなツール、たとえば@command{head}、@command{tail}、@command{grep}、@command{diff}などを使って解析できます。
-
-@chapter YACASL2のインストール
-
-YACASL2をインストールするには、Linux上で次の作業をします。
-
-@enumerate
-
-@item
-@file{yacasl2.tar.gz}のダウンロード
-
-@item
-@file{yacasl2.tar.gz}の展開
-
-@item
-@command{casl2}、@command{comet2}、@command{dumpword}のビルド
-
-@item
-レグレッションテスト
-@end enumerate
 
 @unnumberedsec 要件
 YACASL2は、Linux上で動作します。インストール時に、@command{tar}、@command{gcc}、@command{make}が必要です。
@@ -88,41 +64,349 @@ Ubuntu Linux 9.04 / 8.04
 Vine Linux 4.2
 @end itemize
 
+@chapter YACASL2のインストール
+
+YACASL2をインストールするには、Linux上で次の作業をします。
+
+@enumerate
+
+@item
+@file{yacasl2.tar.gz}のダウンロード
+
+@item
+@file{yacasl2.tar.gz}の検証
+
+@item
+@file{yacasl2.tar.gz}の展開
+
+@item
+@command{casl2}、@command{comet2}、@command{dumpword}のビルド
+
+@item
+@command{casl2}の実行テスト
+
+@item
+詳細なテスト
+
+@item
+環境設定@var{PATH}の設定
+@end enumerate
+
+以下の操作は、端末を開きコマンドを実行します。
+
 @section @file{yacasl2.tar.gz}のダウンロード
 （詳細未定）
 
-@verbatim
-$ cd
-$ wget somewhere
-@end verbatim
+@example
+$ @b{cd}
+$ @b{wget somewhere/yacasl2.tar.gz}
+$ @b{wget somewhere/yacasl2.tar.gz.md5sum}
+@end example
 
 @section @file{yacasl2.tar.gz}の検証
 （PGPを使った検証も導入予定）
 
-ダウンロードが完了したら、次のコマンドで正しくファイルがダウンロードができているかを検証します。
+ダウンロードが完了したら、@command{md5sum}と@command{diff}で正しくファイルがダウンロードができているかを検証します。
 
-@verbatim
-$ md5sum
-@end verbatim
+@example
+$ @b{md5sum yacasl2.tar.gz | diff -s yacasl2.tar.gz.md5sum -}
+Files yacasl2.tar.gz.md5sum and - are identical
+@end example
 
 @section @file{yacasl2.tar.gz}の展開
 @file{yacasl2.tar.gz}をダウンロードしたら、次のコマンドで展開します。
 
-@verbatim
-$ tar xvzf yacasl2.tar.gz
-@end verbatim
+@example
+$ @b{tar xvzf yacasl2.tar.gz}
+@end example
 
 @section @command{casl2}、@command{comet2}、@command{dumpword}のビルド
+展開したら、次のコマンドで@command{casl2}、@command{comet2}、@command{dumpword}をビルドします。
 
-@verbatim
-$ cd yacasl2
-$ make
-@end verbatim
+@example
+$ @b{cd yacasl2}
+$ @b{make}
+make -C src
+make[1]: Entering directory ‘/home/kazubito/yacasl2/src’
+gcc -c -g -Wall -I ../include casl2.c
+gcc -c -g -Wall -I ../include word.c
+gcc -c -g -Wall -I ../include hash.c
+gcc -c -g -Wall -I ../include cerr.c
+gcc -c -g -Wall -I ../include struct.c
+gcc -c -g -Wall -I ../include cmd.c
+gcc -c -g -Wall -I ../include assemble.c
+gcc -c -g -Wall -I ../include token.c
+gcc -c -g -Wall -I ../include label.c
+gcc -c -g -Wall -I ../include macro.c
+gcc -c -g -Wall -I ../include exec.c
+gcc -c -g -Wall -I ../include dump.c
+gcc -g -Wall -I ../include -o ../casl2 casl2.o word.o hash.o cerr.o st
+ruct.o cmd.o assemble.o token.o label.o macro.o exec.o dump.o
+gcc -c -g -Wall -I ../include comet2.c
+gcc -g -Wall -I ../include -o ../comet2 comet2.o word.o hash.o cerr.o
+struct.ocmd.o exec.o dump.o
+gcc -c -g -Wall -I ../include dumpword.c
+gcc -g -Wall -I ../include -o ../dumpword dumpword.o word.o cerr.o
+make[1]: Leaving directory ‘/home/kazubito/yacasl2/src’
+@end example
 
-@section レグレッションテスト
+@section @command{casl2}の実行テスト
+ビルドしたら、次のコマンドが正常に実行できるかを確認します。
+正常に実行された場合は、「Hello, World!」と表示されます。
 
-@verbatim
-$ make check
-@end verbatim
+@example
+$ @b{./casl2 as/hello.casl}
+Hello, World!
+@end example
 
+@section 詳細なテスト
+次のコマンドを実行すると、正常にビルドできているかどうかを詳細にテストできます。
+@example
+$ @b{make check}
+@end example
+
+@section 環境設定@var{PATH}の設定
+環境変数@var{PATH}にYACASL2のディレクトリーを追加すると、どのディレクトリーでも@command{casl2}、@command{comet2}、@command{dumpword}を実行できます。
+
+環境変数の設定方法は使っているシェルによって異なります。現在もっとも多く使われているシェルは、Bashでしょう。次のコマンドで使っているシェルを確認できます。
+@example
+$ @b{echo $SHELL}
+/bin/bash
+@end example
+
+シェルがBashの場合、次のコマンドを実行すると環境変数@var{PATH}にYACASL2のディレクトリーが追加されます。
+@example
+$ @b{PATH=$PATH:~/yacasl2 && export PATH}
+@end example
+
+シェルの初期設定ファイルに上記のコマンドを追加すれば、今後ログインした後は自動的にどのディレクトリーでも @command{casl2}、@command{comet2}、@command{dumpword}を実行できるようになります。Bashの場合はホームディレクトリーにある@file{.bashrc}が初期設定ファイルのため、コマンドは次のようになります。
+@example
+$ @b{echo ’PATH=$PATH:~/yacasl2 && export PATH’ >>~/.bashrc}
+@end example
+
+@chapter YACASL2 の使い方
+YACASL2 は、テキストファイルに記述されたCASLプログラムを処理します。以下の例で用いられるCASLプログラムのファイルは、テキストエディタなどで作成してください。また、インストールしたディレクトリーの中にある@file{as}ディレクトリーからコピーして作成することもできます。
+
+@section 実行結果の出力だけを表示
+
+@subsection @file{hello.casl}
+インストール時にコマンド実行の確認に使った@file{hello.casl}は、次のような内容です。CASL IIのマクロ命令OUTは、文字列を出力します。
+@example
+$ @b{cat hello.casl}
+MAIN     START
+         OUT     OBUF,LEN
+         RET
+OBUF     DC      ’Hello, World!’
+LEN      DC      13
+         END
+@end example
+
+次のコマンドを実行すると、CASL II のアセンブルと仮想マシン COMET II 上での実行が連続で行われ、文字列が出力されます。
+@example
+$ @b{casl2 hello.casl}
+Hello, World!
+@end example
+
+@subsection @file{addl.casl}
+3 と 1 の和を求める@file{addl.casl}は、次のような内容です。
+@example
+$ @b{cat addl.casl}
+;;; ADDL r,adr
+MAIN     START
+         LD      GR1,A
+         ADDL    GR1,B
+         RET
+A        DC      3
+B        DC      1
+         END
+@end example
+
+このプログラムには出力命令がないため、オプションなしで実行した場合には結果が出力されません。
+@example
+$ @b{casl2 addl.casl}
+$
+@end example
+
+実行内容を確認するには、後述のようにCPU 内にあるレジスターやメモリーの内容を表示するか、結果を出力するための処理を追加する必要があります。
+
+@section アセンブル結果の確認
+casl2の処理途中で行われるアセンブルの結果を表示するには、オプション@option{-a}を指定します。また、ラベルとアドレスの対応表を表示するには、オプション@option{-l}を指定します。
+
+@subsection @file{hello.casl}
+次のコマンドでは、@file{hello.casl}のラベルとアドレスの対応表と、アセンブル結果と、実行結果が表示されます。OUTはアセンブラ命令で複数の機械語命令で構成されているため、命令行1行に対して、複数行のコードが生成されます。
+
+@example
+$ @b{casl2 -a -l hello.casl}
+
+Assemble hello.casl (0)
+
+Label::::
+MAIN.LEN ---> #0020
+MAIN ---> #0000
+MAIN.OBUF ---> #0013
+
+Assemble hello.casl (1)
+hello.casl:    1:MAIN    START
+hello.casl:    2:        OUT     OBUF,LEN
+    #0000   #7001
+    #0001   #0000
+    #0002   #7002
+    #0003   #0000
+    #0004   #1210
+    #0005   #0013
+    #0006   #1220
+    #0007   #0020
+    #0008   #F000
+    #0009   #0002
+    #000A   #1210
+    #000B   #0021
+    #0021   #000A
+    #000C   #1220
+    #000D   #0022
+    #0022   #0001
+    #000E   #F000
+    #000F   #0002
+    #0010   #7120
+    #0011   #7110
+hello.casl:    3:        RET
+    #0012   #8100
+hello.casl:    4:OBUF    DC      'Hello, World!'
+    #0013   #0048
+    #0014   #0065
+    #0015   #006C
+    #0016   #006C
+    #0017   #006F
+    #0018   #002C
+    #0019   #0020
+    #001A   #0057
+    #001B   #006F
+    #001C   #0072
+    #001D   #006C
+    #001E   #0064
+    #001F   #0021
+hello.casl:    5:LEN     DC      13
+    #0020   #000D
+hello.casl:    6:        END
+Hello, World!
+@end example
+
+@subsection @file{addl.casl}
+@file{addl.casl}のラベルとアドレスの対応表と、アセンブル結果は、次のようになります。
+
+@example
+$ @b{casl2 -a -l addl.casl}
+
+Assemble addl.casl (0)
+
+Label::::
+MAIN.A ---> #0005
+MAIN.B ---> #0006
+MAIN ---> #0000
+
+Assemble addl.casl (1)
+addl.casl:    1:;;; ADDL r,adr
+addl.casl:    2:MAIN    START
+addl.casl:    3:        LD      GR1,A
+    #0000   #1010
+    #0001   #0005
+addl.casl:    4:        ADDL    GR1,B
+    #0002   #2210
+    #0003   #0006
+addl.casl:    5:        RET
+    #0004   #8100
+addl.casl:    6:A       DC      3
+    #0005   #0003
+addl.casl:    7:B       DC      1
+    #0006   #0001
+addl.casl:    8:        END
+@end example
+
+なお、オプション@option{-A}を指定すると、アセンブル結果だけが表示され、仮想マシンCOMET II での実行は行われません。
+
+@section 実行時のレジスターとメモリーを表示
+YACASL2では実行中のCPUのレジスターとメモリーの内容をそれぞれ、@option{-t}と@option{-d}を指定することで表示できます。
+
+また、@option{-M}で、仮想マシンCOMET II のメモリー容量を語(16 ビット)単位で指定できます。小さいプログラムを実行するときは、メモリー容量を小さくすれば結果が見やすくなります。
+
+@subsection @file{addl.casl}
+@file{addl.casl}に必要なメモリー容量は8語のため、次のようにCPUのレジスターとメモリーの内容を表示できます。
+
+@example
+$ @b{casl2 -t -d -M8 addl.casl | less}
+
+Assemble addl.casl (0)
+
+Assemble addl.casl (1)
+
+Executing machine codes
+#0000: Register::::
+#0000: GR0:      0 = #0000 = 0000000000000000
+#0000: GR1:      0 = #0000 = 0000000000000000
+#0000: GR2:      0 = #0000 = 0000000000000000
+#0000: GR3:      0 = #0000 = 0000000000000000
+#0000: GR4:      0 = #0000 = 0000000000000000
+#0000: GR5:      0 = #0000 = 0000000000000000
+#0000: GR6:      0 = #0000 = 0000000000000000
+#0000: GR7:      0 = #0000 = 0000000000000000
+#0000: SP:       8 = #0008 = 0000000000001000
+#0000: PR:       0 = #0000 = 0000000000000000
+#0000: FR (OF SF ZF): 000
+#0000: Memory::::
+#0000: adr : 0000 0001 0002 0003 0004 0005 0006 0007
+#0000: 0000: 1010 0005 2210 0006 8100 0003 0001 0000 
+#0002: Register::::
+#0002: GR0:      0 = #0000 = 0000000000000000
+#0002: GR1:      3 = #0003 = 0000000000000011
+#0002: GR2:      0 = #0000 = 0000000000000000
+#0002: GR3:      0 = #0000 = 0000000000000000
+#0002: GR4:      0 = #0000 = 0000000000000000
+#0002: GR5:      0 = #0000 = 0000000000000000
+#0002: GR6:      0 = #0000 = 0000000000000000
+#0002: GR7:      0 = #0000 = 0000000000000000
+#0002: SP:       8 = #0008 = 0000000000001000
+#0002: PR:       2 = #0002 = 0000000000000010
+#0002: FR (OF SF ZF): 000
+#0002: Memory::::
+#0002: adr : 0000 0001 0002 0003 0004 0005 0006 0007
+#0002: 0000: 1010 0005 2210 0006 8100 0003 0001 0000 
+#0004: Register::::
+#0004: GR0:      0 = #0000 = 0000000000000000
+#0004: GR1:      4 = #0004 = 0000000000000100
+#0004: GR2:      0 = #0000 = 0000000000000000
+#0004: GR3:      0 = #0000 = 0000000000000000
+#0004: GR4:      0 = #0000 = 0000000000000000
+#0004: GR5:      0 = #0000 = 0000000000000000
+#0004: GR6:      0 = #0000 = 0000000000000000
+#0004: GR7:      0 = #0000 = 0000000000000000
+#0004: SP:       8 = #0008 = 0000000000001000
+#0004: PR:       4 = #0004 = 0000000000000100
+#0004: FR (OF SF ZF): 000
+#0004: Memory::::
+#0004: adr : 0000 0001 0002 0003 0004 0005 0006 0007
+#0004: 0000: 1010 0005 2210 0006 8100 0003 0001 0000 
+@end example
+
+@file{addl.casl}のレジスターやメモリーの中で、実行中に値が変化しているのはGR1だけです。こうした場合は、@command{grep}を使って表示される内容を絞り込むことで動作を検証しやすくなります。
+
+@example
+$ @b{casl2 -t addl.casl | grep 'GR1:'}
+#0000: GR1:      0 = #0000 = 0000000000000000
+#0002: GR1:      3 = #0003 = 0000000000000011
+#0004: GR1:      4 = #0004 = 0000000000000100
+@end example
+
+ここで、先に実行した@file{addl.casl}のアセンブル結果をもう一度見てください。
+次の表のように、PRとGR1、命令行が対応していることがわかります。
+
+@multitable @columnfractions .3 .3 .4
+@item PR @tab GR1 @tab 命令行
+@item #0000
+@tab #0000
+@item #0002
+@tab #0003
+@tab @code{LD GR1,A}
+@item #0004
+@tab #0004
+@tab @code{ADDL GR1,B}
+@end multitable
 @bye

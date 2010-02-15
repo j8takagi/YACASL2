@@ -3,8 +3,25 @@ body {
     margin-right: 12em;
 }
 
+h1, h2 {
+    margin-left: -2em;
+}
+
+h2 {
+    color: white;
+    background-color: navy;
+    padding: 0.25em;
+}
+
+h3, h4 {
+    color: navy;
+    margin-left: -1em;
+}
+
 p {
     line-height: 1.5em;
+    margin-top: 0;
+    margin-bottom: 0.5em;
 }
 
 a:hover {
@@ -16,9 +33,10 @@ a:hover {
     font-family: monospace;
 }
 
-pre.verbatim {
-    width: 75%;
-    padding: 0.5em 1em 0.5em 1em;
+pre.example {
+    width: 90%;
+    margin-left: 0;
+    padding: 0.5em 1em 0.5em 0;
     color: white;
     background: black;
 }
@@ -31,4 +49,9 @@ blockquote.p {
     margin-top:0;
     padding-top:0;
     line-height: 100%;
+}
+
+table, th, td {
+    border: 1px solid #CCC;
+    border-collapse: collapse; /* 枠線の表示方法 */
 }
