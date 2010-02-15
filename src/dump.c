@@ -8,7 +8,7 @@ void dumpmemory()
     int i;
     /* Header */
     fprintf(stdout, "#%04X: adr :", PR);
-    for(i = 0; i < col; i++) {
+    for(i = 0; i < memsize && i < col; i++) {
         fprintf(stdout, " %04X", i);
     }
     fprintf(stdout, "\n");
