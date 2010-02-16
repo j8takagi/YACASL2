@@ -1,7 +1,7 @@
 \input texinfo   @c -*-texinfo-*-
 @c %**start of header
 @setfilename yacasl2
-@settitle YACASL2 -Linux上のCASL2処理系-
+@settitle YACASL2 - Linux上のCASL2処理系
 @c %**end of header
 
 @copying
@@ -48,12 +48,10 @@ YACASL2は、「ふつうの処理系」として動作します。ほかの多�
 実行時のメモリの内容
 @end itemize
 
-出力された動作内容は、GNU/Linuxのさまざまなツール、たとえば@command{head}、@command{tail}、@command{grep}、@command{diff}などを使って解析できます。
+出力された動作内容は、GNU/Linuxのさまざまなツール、たとえば@command{cat}、@command{less}、@command{grep}、@command{wc}などを使って解析できます。
 
 @unnumberedsec 要件
-YACASL2は、Linux上で動作します。インストール時に、@command{tar}、@command{gcc}、@command{make}が必要です。
-
-現在動作を確認しているのは、次のディストリビューションです。
+YACASL2は、Linux上で動作します。現在動作を確認しているのは、次のディストリビューションです。
 
 @itemize @bullet
 
@@ -63,6 +61,8 @@ Ubuntu Linux 9.04 / 8.04
 @item
 Vine Linux 4.2
 @end itemize
+
+インストール時に、@command{tar}、@command{gcc}、@command{make}が必要です。
 
 @chapter YACASL2のインストール
 
@@ -104,6 +104,7 @@ $ @b{wget somewhere/yacasl2.tar.gz.md5sum}
 @end example
 
 @section @file{yacasl2.tar.gz}の検証
+
 （PGPを使った検証も導入予定）
 
 ダウンロードが完了したら、@command{md5sum}と@command{diff}で正しくファイルがダウンロードができているかを検証します。
@@ -114,6 +115,7 @@ Files yacasl2.tar.gz.md5sum and - are identical
 @end example
 
 @section @file{yacasl2.tar.gz}の展開
+
 @file{yacasl2.tar.gz}をダウンロードしたら、次のコマンドで展開します。
 
 @example
@@ -121,6 +123,7 @@ $ @b{tar xvzf yacasl2.tar.gz}
 @end example
 
 @section @command{casl2}、@command{comet2}、@command{dumpword}のビルド
+
 展開したら、次のコマンドで@command{casl2}、@command{comet2}、@command{dumpword}をビルドします。
 
 @example
@@ -151,6 +154,7 @@ make[1]: Leaving directory ‘/home/kazubito/yacasl2/src’
 @end example
 
 @section @command{casl2}の実行テスト
+
 ビルドしたら、次のコマンドが正常に実行できるかを確認します。
 正常に実行された場合は、「Hello, World!」と表示されます。
 
@@ -160,15 +164,18 @@ Hello, World!
 @end example
 
 @section 詳細なテスト
+
 次のコマンドを実行すると、正常にビルドできているかどうかを詳細にテストできます。
+
 @example
 $ @b{make check}
 @end example
 
 @section 環境設定@var{PATH}の設定
+
 環境変数@var{PATH}にYACASL2のディレクトリーを追加すると、どのディレクトリーでも@command{casl2}、@command{comet2}、@command{dumpword}を実行できます。
 
-環境変数の設定方法は使っているシェルによって異なります。現在もっとも多く使われているシェルは、Bashでしょう。次のコマンドで使っているシェルを確認できます。
+環境変数の設定方法は使っているシェルによって異なります。シェルは、次のコマンドで確認できます。現在もっとも多く使われているのは、BASHでしょう。
 @example
 $ @b{echo $SHELL}
 /bin/bash
@@ -179,17 +186,17 @@ $ @b{echo $SHELL}
 $ @b{PATH=$PATH:~/yacasl2 && export PATH}
 @end example
 
-シェルの初期設定ファイルに上記のコマンドを追加すれば、今後ログインした後は自動的にどのディレクトリーでも @command{casl2}、@command{comet2}、@command{dumpword}を実行できるようになります。Bashの場合はホームディレクトリーにある@file{.bashrc}が初期設定ファイルのため、コマンドは次のようになります。
+シェルの初期設定ファイルに上記のコマンドを追加すれば、今後ログインした後は自動的にどのディレクトリーでも @command{casl2}、@command{comet2}、@command{dumpword}を実行できるようになります。BASHの場合はホームディレクトリーにある@file{.bashrc}が初期設定ファイルのため、コマンドは次のようになります。
 @example
 $ @b{echo ’PATH=$PATH:~/yacasl2 && export PATH’ >>~/.bashrc}
 @end example
 
 @chapter YACASL2 の使い方
+
 YACASL2 は、テキストファイルに記述されたCASLプログラムを処理します。以下の例で用いられるCASLプログラムのファイルは、テキストエディタなどで作成してください。また、インストールしたディレクトリーの中にある@file{as}ディレクトリーからコピーして作成することもできます。
 
 @section 実行結果の出力だけを表示
 
-@subsection @file{hello.casl}
 インストール時にコマンド実行の確認に使った@file{hello.casl}は、次のような内容です。CASL IIのマクロ命令OUTは、文字列を出力します。
 @example
 $ @b{cat hello.casl}
@@ -207,8 +214,8 @@ $ @b{casl2 hello.casl}
 Hello, World!
 @end example
 
-@subsection @file{addl.casl}
-3 と 1 の和を求める@file{addl.casl}は、次のような内容です。
+@file{addl.casl}は、3と1の和を求めます。
+
 @example
 $ @b{cat addl.casl}
 ;;; ADDL r,adr
@@ -222,6 +229,7 @@ B        DC      1
 @end example
 
 このプログラムには出力命令がないため、オプションなしで実行した場合には結果が出力されません。
+
 @example
 $ @b{casl2 addl.casl}
 $
@@ -229,10 +237,38 @@ $
 
 実行内容を確認するには、後述のようにCPU 内にあるレジスターやメモリーの内容を表示するか、結果を出力するための処理を追加する必要があります。
 
+@file{sum_10.casl}は、1から10までの整数の和を求めます。
+
+@example
+$ @b{cat sum_10.casl}
+;;; sum_10.casl
+;;; 出力 GR0: 1から10までの整数をすべて加算した値
+MAIN    START
+        PUSH    0,GR1
+        LAD     GR0,0           ; GR0を初期化
+        LD      GR1,FST         ; GR1に初項を転送
+LOOP    ADDL    GR0,GR1         ; ループ先頭
+        ADDL    GR1,STEP        ; GR1 <- GR1 + 公差
+        CPL     GR1,LST         ; GR1が末項より大きい場合は終了
+        JPL     FIN             ; ↓
+        JUMP    LOOP            ; ループ終端
+FIN     POP     GR1
+        RET
+FST     DC      1               ; 初項
+LST     DC      10              ; 末項
+STEP    DC      1               ; 公差
+        END
+@end example
+
+このプログラムも、オプションなしで実行した場合には結果が出力されません。
+@example
+$ @b{casl2 sum_10.casl}
+$
+@end example
+
 @section アセンブル結果の確認
 casl2の処理途中で行われるアセンブルの結果を表示するには、オプション@option{-a}を指定します。また、ラベルとアドレスの対応表を表示するには、オプション@option{-l}を指定します。
 
-@subsection @file{hello.casl}
 次のコマンドでは、@file{hello.casl}のラベルとアドレスの対応表と、アセンブル結果と、実行結果が表示されます。OUTはアセンブラ命令で複数の機械語命令で構成されているため、命令行1行に対して、複数行のコードが生成されます。
 
 @example
@@ -290,7 +326,6 @@ hello.casl:    6:        END
 Hello, World!
 @end example
 
-@subsection @file{addl.casl}
 @file{addl.casl}のラベルとアドレスの対応表と、アセンブル結果は、次のようになります。
 
 @example
@@ -328,7 +363,6 @@ YACASL2では実行中のCPUのレジスターとメモリーの内容をそれ�
 
 また、@option{-M}で、仮想マシンCOMET II のメモリー容量を語(16 ビット)単位で指定できます。小さいプログラムを実行するときは、メモリー容量を小さくすれば結果が見やすくなります。
 
-@subsection @file{addl.casl}
 @file{addl.casl}に必要なメモリー容量は8語のため、次のようにCPUのレジスターとメモリーの内容を表示できます。
 
 @example
@@ -386,6 +420,8 @@ Executing machine codes
 #0004: 0000: 1010 0005 2210 0006 8100 0003 0001 0000 
 @end example
 
+@subsection 特定のレジスターを表示
+
 @file{addl.casl}のレジスターやメモリーの中で、実行中に値が変化しているのはGR1だけです。こうした場合は、@command{grep}を使って表示される内容を絞り込むことで動作を検証しやすくなります。
 
 @example
@@ -409,4 +445,42 @@ $ @b{casl2 -t addl.casl | grep 'GR1:'}
 @tab #0004
 @tab @code{ADDL GR1,B}
 @end multitable
+
+@subsection プログラム終了時の値を表示
+
+@command{grep}と@command{tail}を組み合わせれば、プログラム終了時の値を表示できます。
+
+@example
+$ @b{casl2 -t addl.casl | grep 'GR1:' | tail -1}
+#0004: GR1:      4 = #0004 = 0000000000000100
+@end example
+
+@example
+$ @b{casl2 -t sum_10.casl | grep 'GR0:' | tail -1}
+#0010: GR0:     55 = #0037 = 0000000000110111 = '7'
+@end example
+
+@subsection プログラムのステップ数を表示
+
+@command{grep}と@command{wc}を組み合わせれば、プログラムのステップ数を表示できます。
+
+@example
+$ @b{casl2 -t hello.casl | grep 'GR1:' | wc -l}
+11
+@end example
+
+@example
+$ @b{casl2 -t addl.casl | grep 'GR1:' | wc -l}
+3
+@end example
+
+@file{sum_10.casl}はプログラム内にループがあるため、ステップ数が大きくなります。
+
+@example
+$ @b{casl2 -t sum_10.casl | grep 'GR0:' | wc -l}
+54
+@end example
+
+@section アセンブルと実行を別に行う
+
 @bye
