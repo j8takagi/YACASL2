@@ -1,6 +1,8 @@
 body {
     margin-left: 6em;
     margin-right: 12em;
+    color: black;
+    background-color: #EEC;
 }
 
 h1, h2 {
@@ -37,8 +39,13 @@ pre.example {
     width: 90%;
     margin-left: 0;
     padding: 0.5em 1em 0.5em 0;
-    color: white;
+    color: #CCC;
     background: black;
+}
+
+pre.example b {
+    color: white;
+    background-color: black;
 }
 
 a {

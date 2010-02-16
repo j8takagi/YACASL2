@@ -147,7 +147,7 @@ gcc -g -Wall -I ../include -o ../casl2 casl2.o word.o hash.o cerr.o st
 ruct.o cmd.o assemble.o token.o label.o macro.o exec.o dump.o
 gcc -c -g -Wall -I ../include comet2.c
 gcc -g -Wall -I ../include -o ../comet2 comet2.o word.o hash.o cerr.o
-struct.ocmd.o exec.o dump.o
+struct.o cmd.o exec.o dump.o
 gcc -c -g -Wall -I ../include dumpword.c
 gcc -g -Wall -I ../include -o ../dumpword dumpword.o word.o cerr.o
 make[1]: Leaving directory ‘/home/kazubito/yacasl2/src’
@@ -169,6 +169,12 @@ Hello, World!
 
 @example
 $ @b{make check}
+194 / 194 tests passed. Details in /home/kazubito/yacasl2/test/integration/casl2/Test.log
+All tests are succeded.
+149 / 149 tests passed. Details in /home/kazubito/yacasl2/test/integration/comet2/Test.log
+All tests are succeded.
+4 / 4 tests passed. Details in /home/kazubito/yacasl2/test/integration/dumpword/Test.log
+All tests are succeded.
 @end example
 
 @section 環境設定@var{PATH}の設定
@@ -181,7 +187,7 @@ $ @b{echo $SHELL}
 /bin/bash
 @end example
 
-シェルがBashの場合、次のコマンドを実行すると環境変数@var{PATH}にYACASL2のディレクトリーが追加されます。
+シェルがBASHの場合、次のコマンドを実行すると環境変数@var{PATH}にYACASL2のディレクトリーが追加されます。
 @example
 $ @b{PATH=$PATH:~/yacasl2 && export PATH}
 @end example
@@ -269,7 +275,7 @@ $
 @section アセンブル結果の確認
 casl2の処理途中で行われるアセンブルの結果を表示するには、オプション@option{-a}を指定します。また、ラベルとアドレスの対応表を表示するには、オプション@option{-l}を指定します。
 
-次のコマンドでは、@file{hello.casl}のラベルとアドレスの対応表と、アセンブル結果と、実行結果が表示されます。OUTはアセンブラ命令で複数の機械語命令で構成されているため、命令行1行に対して、複数行のコードが生成されます。
+次のコマンドでは@file{hello.casl}の、ラベルとアドレスの対応表と、アセンブル結果と、実行結果が表示されます。OUTはアセンブラ命令で複数の機械語命令で構成されているため、命令行1行に対して、複数行のコードが生成されます。
 
 @example
 $ @b{casl2 -a -l hello.casl}
@@ -326,7 +332,7 @@ hello.casl:    6:        END
 Hello, World!
 @end example
 
-@file{addl.casl}のラベルとアドレスの対応表と、アセンブル結果は、次のようになります。
+@file{addl.casl}の、ラベルとアドレスの対応表と、アセンブル結果は、次のようになります。
 
 @example
 $ @b{casl2 -a -l addl.casl}
@@ -356,7 +362,7 @@ addl.casl:    7:B       DC      1
 addl.casl:    8:        END
 @end example
 
-なお、オプション@option{-A}を指定すると、アセンブル結果だけが表示され、仮想マシンCOMET II での実行は行われません。
+なお、オプション@option{-A}を指定すると、アセンブル結果が表示される時点で処理が終了します。仮想マシンCOMET II での実行は行われません。
 
 @section 実行時のレジスターとメモリーを表示
 YACASL2では実行中のCPUのレジスターとメモリーの内容をそれぞれ、@option{-t}と@option{-d}を指定することで表示できます。
@@ -431,7 +437,7 @@ $ @b{casl2 -t addl.casl | grep 'GR1:'}
 #0004: GR1:      4 = #0004 = 0000000000000100
 @end example
 
-ここで、先に実行した@file{addl.casl}のアセンブル結果をもう一度見てください。
+この内容を、先に出力したアセンブル結果と引き比べてください。
 次の表のように、PRとGR1、命令行が対応していることがわかります。
 
 @multitable @columnfractions .3 .3 .4
@@ -483,4 +489,53 @@ $ @b{casl2 -t sum_10.casl | grep 'GR0:' | wc -l}
 
 @section アセンブルと実行を別に行う
 
+@command{casl2}に@option{-O}<@file{ファイル名}>を指定すると、オブジェクトファイルを作成できます。
+
+@example
+$ @b{casl2 -Ohello.o hello.casl}
+@end example
+
+作成されたオブジェクトファイルの内容は、@command{od}を使って確認できます。テキストファイルではないため、@command{cat}などでは確認できません。
+
+@example
+$ @b{od -t x2 hello.o}
+0000000 7001 0000 7002 0000 1210 0013 1220 0020
+0000020 f000 0002 1210 0021 1220 0022 f000 0002
+0000040 7120 7110 8100 0048 0065 006c 006c 006f
+0000060 002c 0020 0057 006f 0072 006c 0064 0021
+0000100 000d 000a 0001
+0000106
+@end example
+
+オブジェクトファイルの実行には、@command{comet2}を使います。
+
+@example
+$ @b{comet2 hello.o}
+Hello, World!
+@end example
+
+@section 1語を解析する
+
+CASL2では、1語（16ビット）を単位としてデータが処理されます。
+@command{dumpword}は、指定した1語を10進数、16進数、2進数で表示します。
+
+@example
+$ @b{dumpword 72}
+    72:     72 = #0048 = 0000000001001000 = 'H'
+@end example
+
+マイナスの数は、次のように指定します。
+
+@example
+$ @b{dumpword -- -72}
+   -72:    -72 = #FFB8 = 1111111110111000
+@end example
+
+16進数で指定する場合は、次のように指定します。
+
+@example
+$ @b{dumpword '#0048'}
+ #0048:     72 = #0048 = 0000000001001000 = 'H'
+@end example
 @bye
+@example
