@@ -1,3 +1,5 @@
-yacasl2/*.html
-temp_pdf
+html
+texobj
 yacasl2.pdf
+yacasl2.dvi
+yacasl2.html

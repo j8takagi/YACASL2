@@ -1,8 +1,10 @@
 \input texinfo   @c -*-texinfo-*-
 @c %**start of header
-@setfilename yacasl2
+@setfilename yacasl2.info
 @settitle YACASL2 - Linux上のCASL2処理系
 @c %**end of header
+
+@exampleindent 2
 
 @copying
 Copyright @copyright{} 2010 j8takagi
@@ -11,12 +13,21 @@ Copyright @copyright{} 2010 j8takagi
 @titlepage
 @title
 @end titlepage
+@node Top
+
+@menu
+* YACASL2の概要:about.
+* YACASL2のインストール:install.
+* YACASL2の使い方:tutorial.
+@end menu
+
 
 @c Output the table of contents at the beginning.
 @contents
 
 @insertcopying
 
+@node about, install, Top, Top
 @chapter YACASL2の概要
 
 @cindex chapter, first
@@ -64,6 +75,7 @@ Vine Linux 4.2
 
 インストール時に、@command{tar}、@command{gcc}、@command{make}が必要です。
 
+@node install, tutorial, about, Top
 @chapter YACASL2のインストール
 
 YACASL2をインストールするには、Linux上で次の作業をします。
@@ -97,11 +109,13 @@ YACASL2をインストールするには、Linux上で次の作業をします�
 @section @file{yacasl2.tar.gz}のダウンロード
 （詳細未定）
 
+@cartouche
 @example
 $ @b{cd}
 $ @b{wget somewhere/yacasl2.tar.gz}
 $ @b{wget somewhere/yacasl2.tar.gz.md5sum}
 @end example
+@end cartouche
 
 @section @file{yacasl2.tar.gz}の検証
 
@@ -109,23 +123,28 @@ $ @b{wget somewhere/yacasl2.tar.gz.md5sum}
 
 ダウンロードが完了したら、@command{md5sum}と@command{diff}で正しくファイルがダウンロードができているかを検証します。
 
+@cartouche
 @example
 $ @b{md5sum yacasl2.tar.gz | diff -s yacasl2.tar.gz.md5sum -}
 Files yacasl2.tar.gz.md5sum and - are identical
 @end example
+@end cartouche
 
 @section @file{yacasl2.tar.gz}の展開
 
 @file{yacasl2.tar.gz}をダウンロードしたら、次のコマンドで展開します。
 
+@cartouche
 @example
 $ @b{tar xvzf yacasl2.tar.gz}
 @end example
+@end cartouche
 
 @section @command{casl2}、@command{comet2}、@command{dumpword}のビルド
 
 展開したら、次のコマンドで@command{casl2}、@command{comet2}、@command{dumpword}をビルドします。
 
+@cartouche
 @example
 $ @b{cd yacasl2}
 $ @b{make}
@@ -152,51 +171,69 @@ gcc -c -g -Wall -I ../include dumpword.c
 gcc -g -Wall -I ../include -o ../dumpword dumpword.o word.o cerr.o
 make[1]: Leaving directory ‘/home/kazubito/yacasl2/src’
 @end example
+@end cartouche
 
 @section @command{casl2}の実行テスト
 
 ビルドしたら、次のコマンドが正常に実行できるかを確認します。
 正常に実行された場合は、「Hello, World!」と表示されます。
 
+@cartouche
 @example
 $ @b{./casl2 as/hello.casl}
 Hello, World!
 @end example
+@end cartouche
 
 @section 詳細なテスト
 
 次のコマンドを実行すると、正常にビルドできているかどうかを詳細にテストできます。
 
+@cartouche
 @example
 $ @b{make check}
-194 / 194 tests passed. Details in /home/kazubito/yacasl2/test/integration/casl2/Test.log
+194 / 194 tests passed. Details in /home/kazubito/yacasl2/test/integra
+tion/casl2/Test.log
 All tests are succeded.
-149 / 149 tests passed. Details in /home/kazubito/yacasl2/test/integration/comet2/Test.log
+149 / 149 tests passed. Details in /home/kazubito/yacasl2/test/integra
+tion/comet2/Test.log
 All tests are succeded.
-4 / 4 tests passed. Details in /home/kazubito/yacasl2/test/integration/dumpword/Test.log
+4 / 4 tests passed. Details in /home/kazubito/yacasl2/test/integration
+/dumpword/Test.log
 All tests are succeded.
 @end example
+@end cartouche
 
 @section 環境設定@var{PATH}の設定
 
 環境変数@var{PATH}にYACASL2のディレクトリーを追加すると、どのディレクトリーでも@command{casl2}、@command{comet2}、@command{dumpword}を実行できます。
 
 環境変数の設定方法は使っているシェルによって異なります。シェルは、次のコマンドで確認できます。現在もっとも多く使われているのは、BASHでしょう。
+
+@cartouche
 @example
 $ @b{echo $SHELL}
 /bin/bash
 @end example
+@end cartouche
 
 シェルがBASHの場合、次のコマンドを実行すると環境変数@var{PATH}にYACASL2のディレクトリーが追加されます。
+
+@cartouche
 @example
 $ @b{PATH=$PATH:~/yacasl2 && export PATH}
 @end example
+@end cartouche
 
 シェルの初期設定ファイルに上記のコマンドを追加すれば、今後ログインした後は自動的にどのディレクトリーでも @command{casl2}、@command{comet2}、@command{dumpword}を実行できるようになります。BASHの場合はホームディレクトリーにある@file{.bashrc}が初期設定ファイルのため、コマンドは次のようになります。
+
+@cartouche
 @example
 $ @b{echo ’PATH=$PATH:~/yacasl2 && export PATH’ >>~/.bashrc}
 @end example
+@end cartouche
 
+@node tutorial,, install, Top
 @chapter YACASL2 の使い方
 
 YACASL2 は、テキストファイルに記述されたCASLプログラムを処理します。以下の例で用いられるCASLプログラムのファイルは、テキストエディタなどで作成してください。また、インストールしたディレクトリーの中にある@file{as}ディレクトリーからコピーして作成することもできます。
@@ -204,6 +241,8 @@ YACASL2 は、テキストファイルに記述されたCASLプログラムを�
 @section 実行結果の出力だけを表示
 
 インストール時にコマンド実行の確認に使った@file{hello.casl}は、次のような内容です。CASL IIのマクロ命令OUTは、文字列を出力します。
+
+@cartouche
 @example
 $ @b{cat hello.casl}
 MAIN     START
@@ -213,15 +252,20 @@ OBUF     DC      ’Hello, World!’
 LEN      DC      13
          END
 @end example
+@end cartouche
 
 次のコマンドを実行すると、CASL II のアセンブルと仮想マシン COMET II 上での実行が連続で行われ、文字列が出力されます。
+
+@cartouche
 @example
 $ @b{casl2 hello.casl}
 Hello, World!
 @end example
+@end cartouche
 
 @file{addl.casl}は、3と1の和を求めます。
 
+@cartouche
 @example
 $ @b{cat addl.casl}
 ;;; ADDL r,adr
@@ -233,18 +277,22 @@ A        DC      3
 B        DC      1
          END
 @end example
+@end cartouche
 
 このプログラムには出力命令がないため、オプションなしで実行した場合には結果が出力されません。
 
+@cartouche
 @example
 $ @b{casl2 addl.casl}
 $
 @end example
+@end cartouche
 
 実行内容を確認するには、後述のようにCPU 内にあるレジスターやメモリーの内容を表示するか、結果を出力するための処理を追加する必要があります。
 
 @file{sum_10.casl}は、1から10までの整数の和を求めます。
 
+@cartouche
 @example
 $ @b{cat sum_10.casl}
 ;;; sum_10.casl
@@ -265,18 +313,22 @@ LST     DC      10              ; 末項
 STEP    DC      1               ; 公差
         END
 @end example
+@end cartouche
 
 このプログラムも、オプションなしで実行した場合には結果が出力されません。
+@cartouche
 @example
 $ @b{casl2 sum_10.casl}
 $
 @end example
+@end cartouche
 
 @section アセンブル結果の確認
 casl2の処理途中で行われるアセンブルの結果を表示するには、オプション@option{-a}を指定します。また、ラベルとアドレスの対応表を表示するには、オプション@option{-l}を指定します。
 
 次のコマンドでは@file{hello.casl}の、ラベルとアドレスの対応表と、アセンブル結果と、実行結果が表示されます。OUTはアセンブラ命令で複数の機械語命令で構成されているため、命令行1行に対して、複数行のコードが生成されます。
 
+@cartouche
 @example
 $ @b{casl2 -a -l hello.casl}
 
@@ -331,9 +383,11 @@ hello.casl:    5:LEN     DC      13
 hello.casl:    6:        END
 Hello, World!
 @end example
+@end cartouche
 
 @file{addl.casl}の、ラベルとアドレスの対応表と、アセンブル結果は、次のようになります。
 
+@cartouche
 @example
 $ @b{casl2 -a -l addl.casl}
 
@@ -361,6 +415,7 @@ addl.casl:    7:B       DC      1
     #0006   #0001
 addl.casl:    8:        END
 @end example
+@end cartouche
 
 なお、オプション@option{-A}を指定すると、アセンブル結果が表示される時点で処理が終了します。仮想マシンCOMET II での実行は行われません。
 
@@ -371,6 +426,7 @@ YACASL2では実行中のCPUのレジスターとメモリーの内容をそれ�
 
 @file{addl.casl}に必要なメモリー容量は8語のため、次のようにCPUのレジスターとメモリーの内容を表示できます。
 
+@cartouche
 @example
 $ @b{casl2 -t -d -M8 addl.casl | less}
 
@@ -425,17 +481,20 @@ Executing machine codes
 #0004: adr : 0000 0001 0002 0003 0004 0005 0006 0007
 #0004: 0000: 1010 0005 2210 0006 8100 0003 0001 0000 
 @end example
+@end cartouche
 
 @subsection 特定のレジスターを表示
 
 @file{addl.casl}のレジスターやメモリーの中で、実行中に値が変化しているのはGR1だけです。こうした場合は、@command{grep}を使って表示される内容を絞り込むことで動作を検証しやすくなります。
 
+@cartouche
 @example
 $ @b{casl2 -t addl.casl | grep 'GR1:'}
 #0000: GR1:      0 = #0000 = 0000000000000000
 #0002: GR1:      3 = #0003 = 0000000000000011
 #0004: GR1:      4 = #0004 = 0000000000000100
 @end example
+@end cartouche
 
 この内容を、先に出力したアセンブル結果と引き比べてください。
 次の表のように、PRとGR1、命令行が対応していることがわかります。
@@ -456,47 +515,60 @@ $ @b{casl2 -t addl.casl | grep 'GR1:'}
 
 @command{grep}と@command{tail}を組み合わせれば、プログラム終了時の値を表示できます。
 
+@cartouche
 @example
 $ @b{casl2 -t addl.casl | grep 'GR1:' | tail -1}
 #0004: GR1:      4 = #0004 = 0000000000000100
 @end example
+@end cartouche
 
+@cartouche
 @example
 $ @b{casl2 -t sum_10.casl | grep 'GR0:' | tail -1}
 #0010: GR0:     55 = #0037 = 0000000000110111 = '7'
 @end example
+@end cartouche
 
 @subsection プログラムのステップ数を表示
 
 @command{grep}と@command{wc}を組み合わせれば、プログラムのステップ数を表示できます。
 
+@cartouche
 @example
 $ @b{casl2 -t hello.casl | grep 'GR1:' | wc -l}
 11
 @end example
+@end cartouche
 
+@cartouche
 @example
 $ @b{casl2 -t addl.casl | grep 'GR1:' | wc -l}
 3
 @end example
+@end cartouche
 
 @file{sum_10.casl}はプログラム内にループがあるため、ステップ数が大きくなります。
 
+@cartouche
 @example
 $ @b{casl2 -t sum_10.casl | grep 'GR0:' | wc -l}
 54
 @end example
+@end cartouche
 
 @section アセンブルと実行を別に行う
 
 @command{casl2}に@option{-O}<@file{ファイル名}>を指定すると、オブジェクトファイルを作成できます。
 
+@cartouche
 @example
 $ @b{casl2 -Ohello.o hello.casl}
 @end example
+@end cartouche
 
 作成されたオブジェクトファイルの内容は、@command{od}を使って確認できます。テキストファイルではないため、@command{cat}などでは確認できません。
 
+@cartouche
 @example
 $ @b{od -t x2 hello.o}
 0000000 7001 0000 7002 0000 1210 0013 1220 0020
@@ -506,36 +578,44 @@ $ @b{od -t x2 hello.o}
 0000100 000d 000a 0001
 0000106
 @end example
+@end cartouche
 
 オブジェクトファイルの実行には、@command{comet2}を使います。
 
+@cartouche
 @example
 $ @b{comet2 hello.o}
 Hello, World!
 @end example
+@end cartouche
 
 @section 1語を解析する
 
 CASL2では、1語（16ビット）を単位としてデータが処理されます。
 @command{dumpword}は、指定した1語を10進数、16進数、2進数で表示します。
 
+@cartouche
 @example
 $ @b{dumpword 72}
     72:     72 = #0048 = 0000000001001000 = 'H'
 @end example
+@end cartouche
 
 マイナスの数は、次のように指定します。
 
+@cartouche
 @example
 $ @b{dumpword -- -72}
    -72:    -72 = #FFB8 = 1111111110111000
 @end example
+@end cartouche
 
 16進数で指定する場合は、次のように指定します。
 
+@cartouche
 @example
 $ @b{dumpword '#0048'}
  #0048:     72 = #0048 = 0000000001001000 = 'H'
 @end example
+@end cartouche
 @bye
-@example

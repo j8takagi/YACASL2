@@ -2,7 +2,7 @@ body {
     margin-left: 6em;
     margin-right: 12em;
     color: black;
-    background-color: #EEC;
+    background-color: #EEE;
 }
 
 h1, h2 {
@@ -36,11 +36,11 @@ a:hover {
 }
 
 pre.example {
-    width: 90%;
-    margin-left: 0;
-    padding: 0.5em 1em 0.5em 0;
+    width: 100%;
+    padding: 0.5em 1em 0.5em 1em;
     color: #CCC;
     background: black;
+    font-size: 90%;
 }
 
 pre.example b {
