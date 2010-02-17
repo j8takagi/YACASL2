@@ -138,7 +138,7 @@ void cpl(WORD val0, WORD val1)
 /* 算術演算なので、第15ビットは送り出されない */
 WORD sla(WORD val0, WORD val1)
 {
-    WORD sign, res, last;
+    WORD sign, res, last = 0x0;
     int i;
 
     FR = 0x0;
@@ -169,7 +169,7 @@ WORD sla(WORD val0, WORD val1)
 /* 空いたビット位置には符号と同じものが入る */
 WORD sra(WORD val0, WORD val1)
 {
-    WORD sign, res, last;
+    WORD sign, res, last = 0x0;
     int i;
 
     FR = 0x0;
@@ -201,7 +201,7 @@ WORD sra(WORD val0, WORD val1)
 /* 論理左シフト。フラグを設定して値を返す */
 WORD sll(WORD val0, WORD val1)
 {
-    WORD res = val0, last;
+    WORD res = val0, last = 0x0;
     int i;
 
     FR = 0x0;
@@ -227,7 +227,7 @@ WORD sll(WORD val0, WORD val1)
 /* 論理右シフト。フラグを設定して値を返す */
 WORD srl(WORD val0, WORD val1)
 {
-    WORD res = val0, last;
+    WORD res = val0, last = 0x0;
     int i;
 
     FR = 0x0;
