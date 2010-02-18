@@ -9,10 +9,14 @@ h1, h2 {
     margin-left: -2em;
 }
 
+.node{
+    margin-left: -3em;
+}
+
 h2 {
+    padding: 0.25em;
     color: white;
     background-color: navy;
-    padding: 0.25em;
 }
 
 h3, h4 {
@@ -35,17 +39,15 @@ a:hover {
     font-family: monospace;
 }
 
+table.cartouche {
+    width: 60%;
+}
+
 pre.example {
-    width: 100%;
     padding: 0.5em 1em 0.5em 1em;
     color: #CCC;
     background: black;
     font-size: 90%;
-}
-
-pre.example b {
-    color: white;
-    background-color: black;
 }
 
 a {
@@ -61,4 +63,14 @@ blockquote.p {
 table, th, td {
     border: 1px solid #CCC;
     border-collapse: collapse; /* 枠線の表示方法 */
+}
+
+table.cartouche, table.cartouche th, table.cartouche td  {
+    border: none;
+}
+
+pre.example .command {
+    font-weight: bold;
+    background-color: inherit;
+    color: white;
 }
