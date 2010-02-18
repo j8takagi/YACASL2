@@ -29,7 +29,7 @@ PRT     ST      GR4,LEN         ; LEN <- GR4
         OUT     STR,LEN         ; 文字列を出力
         RPOP
         RET
-STR     DS      17
+STR     DS      17              ; 符号付き2進数で表記した場合を想定
 LEN     DS      1
 NCHAR   DC      '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
         END

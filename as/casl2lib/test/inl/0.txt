@@ -1,4 +1,4 @@
-../../../../casl2 inl.casl ../../../../as/casl2lib/inl.casl ../../../../as/casl2lib/outl.casl
+../../../../casl2 -M640 inl.casl ../../../../as/casl2lib/inl.casl ../../../../as/casl2lib/outl.casl
 0
 1
 2

@@ -1,10 +1,15 @@
 prefix = $(HOME)
-CLEANDIR = src test/integration test/unit
-.PHPNY: all clean check install uninstall
-all:
+CLEANDIR = src test/integration test/unit as/casl2lib
+.PHPNY: all build clean check doc casl2lib install uninstall
+all: build casl2lib
+build:
 	make -C src
+casl2lib:
+	@make -C as/casl2lib
 check:
 	@make -sC test/integration
+doc:
+	@make -sC doc
 clean:
 	@for target in $(CLEANDIR); do $(MAKE) -sC $$target clean; done
 install: all
