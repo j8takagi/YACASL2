@@ -98,7 +98,7 @@ void writestr(const char *str, bool literal, PASS pass)
     for(; ;) {
         /* 閉じ「'」がないまま文字列が終了した場合 */
         if(*p == '\0') {
-            setcerr(123, str);    /* illegal string */
+            setcerr(123, str);    /* unclosed quote */
             break;
         }
         /* 「'」の場合、次の文字が「'」でない場合は正常終了 */
