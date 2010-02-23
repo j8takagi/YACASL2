@@ -8,7 +8,10 @@ DVI2PDF = $(TEXBIN)/dvipdfmx
 TEXOBJDIR = texobj
 
 .PHONY: all htmlnosplit pdf clean
-all: htmlnosplit html pdf
+all: info htmlnosplit html pdf
+info: $(DOCNAME).info
+$(DOCNAME).info: $(SRC)
+	@makeinfo -o $@ $^
 htmlnosplit: $(DOCNAME).html
 $(DOCNAME).html: $(SRC) $(CSS)
 	@makeinfo -o $@ --no-split --no-headers --html --css-include=$(CSS) $(SRC)
@@ -25,4 +28,4 @@ $(DOCNAME).dvi: $(SRC)
      TEX=ptex texi2dvi --texinfo=@afourpaper -o ../$@ ../$^; \
      cd -
 clean:
-	@rm -rf html $(TEXOBJDIR) $(DOCNAME).html $(DOCNAME).dvi $(DOCNAME).pdf
+	@rm -rf html $(TEXOBJDIR) $(DOCNAME).info $(DOCNAME).html $(DOCNAME).dvi $(DOCNAME).pdf

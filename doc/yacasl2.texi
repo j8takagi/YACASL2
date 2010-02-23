@@ -2,6 +2,8 @@
 @c %**start of header
 @setfilename yacasl2.info
 @settitle YACASL2 - Linux上のCASL II処理系
+@firstparagraphindent insert
+@paragraphindent 1
 @c %**end of header
 
 @copying
@@ -594,7 +596,7 @@ Hello, World!
 
 @section 1語を解析する
 
-CASL2では、1語（16ビット）を単位としてデータが処理されます。
+CASL IIでは、1語（16ビット）を単位としてデータが処理されます。
 @command{dumpword}は、指定した1語を10進数、16進数、2進数で表示します。
 
 @cartouche
