@@ -1,0 +1,23 @@
+;;; フィボナッチ数列
+;;; 入力 GR1:整数
+;;; 出力 GR0:フィボナッチ数
+FIB     START
+        PUSH    0,GR1
+        PUSH    0,GR2
+        LAD     GR0,0           ; フィボナッチ数
+        LAD     GR2,0           ; インデックス
+        CPA     GR1,=1
+        JPL     O2
+        LD      GR0,GR1
+        JUMP    FIN
+O2      LAD     GR1,-1,GR1
+        CALL    FIB
+        LD      GR2,GR0
+        LAD     GR1,-1,GR1
+        CALL    FIB
+        ADDL    GR0,GR2
+        JUMP    FIN
+FIN     POP     GR2
+        POP     GR1
+        RET
+        END

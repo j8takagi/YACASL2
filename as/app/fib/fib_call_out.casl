@@ -1,0 +1,9 @@
+;;; FIBの結果を表示
+MAIN    START
+        LD      GR1,NUM
+        CALL    FIB
+        LD      GR1,GR0
+        CALL    OUTL
+FIN     RET
+NUM     DC      10
+        END
