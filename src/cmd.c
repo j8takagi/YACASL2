@@ -97,21 +97,6 @@ WORD getcmdcode(const char *cmd, CMDTYPE type)
     return 0xFFFF;
 }
 
-/* 命令と命令タイプがキーのハッシュ表を表示する */
-void print_cmdtype_code()
-{
-    int i;
-    CMDCODETAB *np;
-    for(i = 0; i < cmdcodesize; i++){
-        np = cmdtype_code[i];
-        while(np != NULL) {
-            fprintf(stdout, "(%2d) - %s\t0%02o\t#%04X\n",
-                    i, np->cca->cmd, np->cca->type, np->cca->code);
-            np = np->next;
-        }
-    }
-}
-
 /* 命令と命令タイプがキーのハッシュ表を解放する */
 void free_cmdtype_code()
 {
@@ -173,19 +158,6 @@ CMDTYPE getcmdtype(WORD code)
         }
     }
     return NONE;
-}
-
-/* 命令コードがキーのハッシュ表を表示する */
-void print_code_type()
-{
-    int i;
-    CMDCODETAB *np;
-    for(i = 0; i < cmdcodesize; i++){
-        for(np = code_type[i]; np != NULL; np = np->next) {
-            fprintf(stdout, "(%2d) - #%04X\t0%02o\t%s\n",
-                    i, np->cca->code, np->cca->type, np->cca->cmd);
-        }
-    }
 }
 
 /* 命令コードがキーのハッシュ表を解放する */

@@ -78,6 +78,8 @@ typedef enum {
     NONE = 0,
 } CMDTYPE;
 
+extern int cmdcodesize;
+
 /* 命令コードの配列 */
 typedef struct {
     char *cmd;
@@ -90,6 +92,9 @@ typedef struct _CMDCODETAB {
     struct _CMDCODETAB *next;
     CMDCODEARRAY *cca;
 } CMDCODETAB;
+
+extern CMDCODETAB *cmdtype_code[];
+extern CMDCODETAB *code_type[];
 
 /* 命令と命令タイプがキーのハッシュ表を作成する */
 bool create_cmdtype_code();
