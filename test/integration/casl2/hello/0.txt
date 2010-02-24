@@ -9,9 +9,9 @@ Assemble ../../../../as/hello.casl (0)
 ../../../../as/hello.casl:    6:        END
 
 Label::::
-MAIN.LEN ---> #0020
 MAIN ---> #0000
 MAIN.OBUF ---> #0013
+MAIN.LEN ---> #0020
 
 Assemble ../../../../as/hello.casl (1)
 ../../../../as/hello.casl:    1:MAIN    START

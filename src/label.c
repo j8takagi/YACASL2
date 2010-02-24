@@ -1,7 +1,8 @@
 #include "casl2.h"
 #include "assemble.h"
 
-LABELTAB *labels[LABELTABSIZE];
+int labelcnt = 0;                    /* ラベル数 */
+LABELTAB *labels[LABELTABSIZE];  /* ラベル表 */
 
 /* プログラム名とラベルに対応するハッシュ値を返す */
 unsigned labelhash(const char *prog, const char *label)
@@ -46,7 +47,7 @@ bool addlabel(const char *prog, const char *label, WORD adr)
         setcerr(101, label);    /* label already defined */
         return false;
     }
-    np = (LABELTAB *) malloc(sizeof(*np));
+    np = malloc(sizeof(*np));
     if(np == NULL || (np->label = strdup(label)) == NULL ||
        (prog != NULL && (np->prog = strdup(prog)) == NULL))
     {
@@ -56,7 +57,8 @@ bool addlabel(const char *prog, const char *label, WORD adr)
     if(prog != NULL) {
         keys[i++] = strdup(prog);
     }
-    keys[i] = strdup(label);;
+    labelcnt++;
+    keys[i] = strdup(label);
     hashval = labelhash(prog, label);
     np->next = labels[hashval];
     labels[hashval] = np;
@@ -64,19 +66,33 @@ bool addlabel(const char *prog, const char *label, WORD adr)
     return true;
 }
 
+int compare_adr(const void *a, const void *b)
+{
+    return (**(const LABELARRAY **)a).adr - (**(const LABELARRAY **)b).adr;
+}
+
 /* ラベル表を表示する */
 void printlabel()
 {
-    int i;
-    LABELTAB *np;
+    int i, asize = 0;
+    LABELTAB *np = malloc(sizeof(LABELTAB *));
+    LABELARRAY **ar = malloc(labelcnt * sizeof(LABELARRAY **));
+
     for(i = 0; i < LABELTABSIZE; i++) {
         for(np = labels[i]; np != NULL; np = np->next) {
-            if(np->prog == NULL) {
-                fprintf(stdout, "%s ---> #%04X\n", np->label, np->adr);
-            } else {
-                fprintf(stdout, "%s.%s ---> #%04X\n", np->prog, np->label, np->adr);
-            }
+            ar[asize] = malloc(sizeof(LABELARRAY *));
+            ar[asize]->prog = (np->prog == NULL ? NULL : strdup(np->prog));
+            ar[asize]->label = strdup(np->label);
+            ar[asize]->adr = np->adr;
+            asize++;
         }
+    }
+    qsort(ar, asize, sizeof(*ar), compare_adr);
+    for(i = 0; i < asize; i++) {
+        if(ar[i]->prog != NULL) {
+            fprintf(stdout, "%s.", ar[i]->prog);
+        }
+        fprintf(stdout, "%s ---> #%04X\n", ar[i]->label, ar[i]->adr);
     }
 }
 
@@ -86,7 +102,7 @@ void freelabel()
     int i;
     LABELTAB *np, *nq;
     for(i = 0; i < LABELTABSIZE; i++) {
-        for(np = labels[i]; np != NULL; np = nq){
+        for(np = labels[i]; np != NULL; np = nq) {
             nq = np->next;
             free(np->prog);
             free(np->label);

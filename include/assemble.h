@@ -1,13 +1,16 @@
 #ifndef YACASL2_ASSEMBLE_INCLUDED
 #define YACASL2_ASSEMBLE_INCLUDED
 
-/* CASL IIの制限 */
+/* CASL IIの仕様 */
+enum {
+    LABELSIZE = 8,         /* ラベルの最大文字数 */
+    OPDSIZE = 40,          /* オペラントの最大数。CASL IIシミュレータの制限 */
+};
+
+/* YACASL2の制限 */
 enum {
     LINESIZE = 1024,       /* 行の最大文字数 */
     TOKENSIZE = 256,       /* トークンの最大文字数 */
-    LABELSIZE = 8,         /* ラベルの最大文字数 */
-    LABELTABSIZE = 256,    /* ラベルの最大数 */
-    OPDSIZE = 40,          /* オペラントの最大数 */
 };
 
 /* アセンブルモード */
@@ -49,6 +52,13 @@ typedef struct {
     char *cmd;
 } CMDARRAY;
 
+/* ラベル配列 */
+typedef struct {
+    char *prog;
+    char *label;
+    WORD adr;
+} LABELARRAY;
+
 /* ラベル表 */
 typedef struct _LABELTAB {
     struct _LABELTAB *next;
@@ -56,6 +66,10 @@ typedef struct _LABELTAB {
     char *label;
     WORD adr;
 } LABELTAB;
+
+enum {
+    LABELTABSIZE = 251,    /* ラベル表のサイズ */
+};
 
 /* アセンブラが、1回目か、2回目か、を表す */
 typedef enum {
