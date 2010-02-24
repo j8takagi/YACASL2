@@ -8,13 +8,18 @@ LOOP    CALL    INL             ; GR1に数値、GR0に文字列の長さ
         JZE     NAN
         CALL    OUTL
         JUMP    LOOP
-OV      OUT     OVMSG,MLEN1
+OV      CPL     GR0,=#FFFF
+        JZE     LENOV
+        OUT     OVMSG,MLEN1
         JUMP    LOOP
 NAN     OUT     NANMSG,MLEN2
         JUMP    LOOP
+LENOV   OUT     LENOVMSG,MLEN3
 FIN     RET
 OVMSG   DC      'Over 65535'
 MLEN1   DC      10
 NANMSG  DC      'Not A Number'
 MLEN2   DC      12
+LENOVMSG DC     'Str too long. Stop'
+MLEN3   DC      18
         END

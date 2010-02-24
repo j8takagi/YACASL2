@@ -1,4 +1,4 @@
-../../../../casl2 -M640 inl.casl ../../../../as/casl2lib/inl.casl ../../../../as/casl2lib/outl.casl
+../../../../casl2 -M720 inl.casl ../../../../as/casl2lib/inl.casl ../../../../as/casl2lib/outl.casl
 0
 1
 2
@@ -9,6 +9,7 @@
 65535
 Over 65535
 Over 65535
-Over 65535
 Not A Number
 Not A Number
+12345
+Str too long. Stop
