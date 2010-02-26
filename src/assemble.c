@@ -421,7 +421,7 @@ bool assemble(const char *file, PASS pass)
     }
     for(; ;) {
         cmdl = malloc(sizeof(CMDLINE));
-        line = malloc(LINESIZE+1);
+        line = malloc(LINESIZE + 1);
         if((line = fgets(line, LINESIZE, fp)) == NULL) {
             break;
         }

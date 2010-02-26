@@ -74,8 +74,7 @@ char *word2n(WORD word)
 char *word2bit(const WORD word)
 {
     WORD mask = 0x8000;
-    char *bit, *p;
-    bit = malloc(16 + 1);
+    char *bit = malloc(16 + 1), *p;
     p = bit;
     do {
         *p++ = (word & mask) ? '1' : '0';
