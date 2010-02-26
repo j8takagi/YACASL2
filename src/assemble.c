@@ -412,7 +412,7 @@ bool assemble(const char *file, PASS pass)
     char *line;
     FILE *fp;
 
-    if(create_cmdtype_code() == false) {
+    if(pass == FIRST && create_cmdtype_code() == false) {
         return false;
     }
     if((fp = fopen(file, "r")) == NULL) {

@@ -68,7 +68,7 @@ bool create_cmdtype_code()
     int i;
 
     for(i = 0; i < cmdcodesize; i++) {
-        np = (CMDCODETAB *) malloc(sizeof(*np));
+        np = malloc(sizeof(CMDCODETAB *));
         if(np == NULL) {
             setcerr(122, NULL);    /* cannot create hash table */
             return false;
@@ -133,7 +133,7 @@ bool create_code_type()
     int i;
 
     for(i = 0; i < cmdcodesize; i++) {
-        if((np = (CMDCODETAB *) malloc(sizeof(*np))) == NULL) {
+        if((np = malloc(sizeof(CMDCODETAB *))) == NULL) {
             setcerr(122, NULL);    /* cannot create hash table */
             return false;
         }
