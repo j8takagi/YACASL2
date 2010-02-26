@@ -1,0 +1,8 @@
+MAIN    START
+        LD      GR1,A
+        ADDL    GR1,B
+        CALL    OUTL
+        RET
+A       DC      3
+B       DC      1
+        END
