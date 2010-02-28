@@ -1,4 +1,6 @@
-prefix = $(HOME)
+ifndef prefix
+    prefix = $(HOME)
+endif
 CLEANDIR = src test/integration test/unit as/casl2lib
 .PHPNY: all build clean check doc casl2lib install uninstall
 all: build casl2lib
@@ -11,7 +13,8 @@ check:
 doc:
 	@make -sC doc
 clean:
-	@for target in $(CLEANDIR); do $(MAKE) -sC $$target clean; done
+	@for target in $(CLEANDIR); do $(MAKE) -sC $$target clean; done; \
+     rm -f casl2 comet2 dumpword
 install: all
 	@if test -d $(prefix); then \
        install -s ./casl2 $(prefix)/casl2; \
