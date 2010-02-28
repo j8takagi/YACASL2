@@ -42,7 +42,7 @@ CMDCODEARRAY cmdcodearray[] = {
 };
 
 int cmdcodesize = ARRAYSIZE(cmdcodearray);
-int hashtabsize;
+int cmdtabsize;
 CMDCODETAB **cmdtype_code, **code_type;
 
 /* 命令と命令タイプからハッシュ値を生成する */
@@ -58,7 +58,7 @@ unsigned hash_cmdtype(const char *cmd, CMDTYPE type) {
     keys[1]->type = INT;
     keys[1]->val.i = (int)(type & 070);
     /* ハッシュ値を返す */
-    return hash(2, keys, cmdcodesize);
+    return hash(2, keys, cmdtabsize);
 }
 
 /* 命令と命令タイプがキーのハッシュ表を作成する */
@@ -68,8 +68,8 @@ bool create_cmdtype_code()
     unsigned hashval;
     int i;
 
-    hashtabsize = cmdcodesize;
-    cmdtype_code = malloc(cmdcodesize * sizeof(CMDCODETAB *));
+    cmdtabsize = cmdcodesize;
+    cmdtype_code = malloc(cmdtabsize * sizeof(CMDCODETAB *));
     for(i = 0; i < cmdcodesize; i++) {
         np = malloc(sizeof(CMDCODETAB));
         if(np == NULL) {
@@ -105,7 +105,7 @@ void free_cmdtype_code()
 {
     int i;
     CMDCODETAB *np, *nq;
-    for(i = 0; i < cmdcodesize; i++){
+    for(i = 0; i < cmdtabsize; i++){
         np = cmdtype_code[i];
         while(np != NULL) {
             nq = np->next;
@@ -125,7 +125,7 @@ unsigned hash_code(WORD code)
     keys[0]->type = INT;
     keys[0]->val.i = (int)(code >> 8);
     /* ハッシュ値を返す */
-    return hash(1, keys, cmdcodesize);
+    return hash(1, keys, cmdtabsize);
 }
 
 /* 命令コードがキーのハッシュ表を作成する */
@@ -135,8 +135,8 @@ bool create_code_type()
     unsigned hashval;
     int i;
 
-    hashtabsize = cmdcodesize;
-    code_type = malloc(cmdcodesize * sizeof(CMDCODETAB *));
+    cmdtabsize = hashtabsize(cmdcodesize);
+    code_type = malloc(cmdtabsize * sizeof(CMDCODETAB *));
     for(i = 0; i < cmdcodesize; i++) {
         if((np = malloc(sizeof(CMDCODETAB))) == NULL) {
             setcerr(122, NULL);    /* cannot create hash table */
@@ -170,7 +170,7 @@ void free_code_type()
 {
     int i;
     CMDCODETAB *np, *nq;
-    for(i = 0; i < cmdcodesize; i++){
+    for(i = 0; i < cmdtabsize; i++){
         np = code_type[i];
         while(np != NULL) {
             nq = np->next;

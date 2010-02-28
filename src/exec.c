@@ -264,7 +264,7 @@ void reset()
     }
 }
 
-/* コードの実行 */
+/* 仮想マシンCOMET IIでの実行 */
 void exec()
 {
     WORD op, r_r1, x_r2, val;
@@ -272,7 +272,7 @@ void exec()
     char *errpr = malloc(CERRSTRSIZE + 1);
     clock_t clock_begin, clock_end;
 
-    if((&execmode)->trace) {
+    if(execmode.trace) {
         fprintf(stdout, "\nExecuting machine codes\n");
     }
     /* フラグレジスタの初期値設定 */
@@ -300,7 +300,9 @@ void exec()
             sprintf(errpr, "PR:#%04X", PR);
             setcerr(205, errpr);    /* Stack Pointer (SP) - cannot allocate stack buffer */
         }
+        /* 命令の取り出し */
         op = memory[PR] & 0xFF00;
+        /* 命令の解読 */
         cmdtype = getcmdtype(op);
         r_r1 = (memory[PR] >> 4) & 0xF;
         x_r2 = memory[PR] & 0xF;
@@ -308,19 +310,19 @@ void exec()
         if(cerrno > 0) {
             goto execerr;
         }
-        if((&execmode)->trace){
+        if(execmode.trace){
             fprintf(stdout, "#%04X: Register::::\n", PR);
             dspregister();
         }
-        if((&execmode)->dump){
+        if(execmode.dump){
             fprintf(stdout, "#%04X: Memory::::\n", PR);
             dumpmemory();
         }
-        if((&execmode)->dump || (&execmode)->trace) {
+        if(execmode.dump || execmode.trace) {
             fprintf(stdout, "\n");
         }
         PR++;
-        /* 処理対象の値を取得 */
+        /* オペランドの取り出し */
         if(cmdtype == R1_R2) {
             assert(x_r2 < REGSIZE);
             val = GR[x_r2];
@@ -346,7 +348,7 @@ void exec()
         if(op >= 0x1000 && op <= 0x4FFF) {
             op &= 0xFB00;
         }
-        /* 命令ごとの処理を実行 */
+        /* 命令の実行 */
         switch(op)
         {
         case 0x0:  /* NOP */

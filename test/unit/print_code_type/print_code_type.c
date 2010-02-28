@@ -13,7 +13,7 @@ void print_code_type()
     CMDCODETAB *np;
     CMDCODEARRAY **ar;
     ar = malloc(sizeof(*ar) * cmdcodesize);
-    for(i = 0; i < cmdcodesize; i++) {
+    for(i = 0; i < cmdtabsize; i++) {
         np = code_type[i];
         while(np != NULL) {
             ar[j++] = np->cca;

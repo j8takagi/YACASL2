@@ -95,6 +95,7 @@ typedef struct _CMDCODETAB {
 
 extern CMDCODETAB **cmdtype_code;
 extern CMDCODETAB **code_type;
+extern int cmdtabsize;
 
 /* 命令と命令タイプがキーのハッシュ表を作成する */
 bool create_cmdtype_code();

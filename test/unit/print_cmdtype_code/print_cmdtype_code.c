@@ -21,7 +21,7 @@ void print_cmdtype_code()
     CMDCODETAB *np;
     CMDCODEARRAY **ar;
     ar = malloc(sizeof(*ar) * cmdcodesize);
-    for(i = 0; i < cmdcodesize; i++) {
+    for(i = 0; i < cmdtabsize; i++) {
         np = cmdtype_code[i];
         while(np != NULL) {
             ar[j++] = np->cca;

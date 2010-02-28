@@ -6,7 +6,7 @@ void print_code_type()
 {
     int i;
     CMDCODETAB *np;
-    for(i = 0; i < cmdcodesize; i++){
+    for(i = 0; i < cmdtabsize; i++){
         for(np = code_type[i]; np != NULL; np = np->next) {
             fprintf(stdout, "(%2d) - #%04X\t0%02o\t%s\n", i, np->cca->code, np->cca->type, np->cca->cmd);
         }
