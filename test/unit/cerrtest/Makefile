@@ -1,3 +1,3 @@
 UCLASS = COMMON
-TESTSRCFILE = ../CERRARRAY.c cerrtest.c
+TESTSRCFILE = cerrtest.c
 include ../TEST.mk

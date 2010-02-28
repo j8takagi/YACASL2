@@ -9,11 +9,10 @@ static struct option longopts[] = {
     {0, 0, 0, 0},
 };
 
-CERRARRAY cerr[] = {
+CERRARRAY cerr_dumpword[] = {
     { 114, "not integer" },
     { 115, "not hex" },
     { 116, "out of hex range" },
-    { 0, NULL },
 };
 
 int main(int argc, char *argv[])
@@ -41,6 +40,8 @@ int main(int argc, char *argv[])
         fprintf(stderr, usage, argv[0]);
         exit(-1);
     }
+    /* エラーリストにerr_casl2を追加 */
+    addcerrlist(ARRAYSIZE(cerr_dumpword), cerr_dumpword);
     /* WORD値に変換 */
     word = nh2word(argv[optind]);
     if(cerrno > 0) {

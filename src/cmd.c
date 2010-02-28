@@ -71,13 +71,12 @@ bool create_cmdtype_code()
     cmdtabsize = cmdcodesize;
     cmdtype_code = malloc(cmdtabsize * sizeof(CMDCODETAB *));
     for(i = 0; i < cmdcodesize; i++) {
-        np = malloc(sizeof(CMDCODETAB));
-        if(np == NULL) {
+        if((np = malloc(sizeof(CMDCODETAB))) == NULL) {
             setcerr(122, NULL);    /* cannot create hash table */
             return false;
         }
         /* ハッシュ値の生成 */
-        hashval = hash_cmdtype((&cmdcodearray[i])->cmd, (&cmdcodearray[i])->type);
+        hashval = hash_cmdtype(cmdcodearray[i].cmd, cmdcodearray[i].type);
         /* ハッシュ表に値を追加 */
         np->next = cmdtype_code[hashval];
         cmdtype_code[hashval] = np;

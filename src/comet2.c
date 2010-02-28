@@ -16,7 +16,7 @@ static struct option longopts[] = {
 };
 
 /* エラー番号とエラーメッセージ */
-CERRARRAY cerr[] = {
+CERRARRAY cerr_comet2[] = {
     { 201, "Load object file - full of COMET II memory" },
     { 202, "SVC input - out of Input memory" },
     { 203, "SVC output - out of COMET II memory" },
@@ -24,7 +24,6 @@ CERRARRAY cerr[] = {
     { 205, "Stack Pointer (SP) - cannot allocate stack buffer" },
     { 206, "Address - out of COMET II memory" },
     { 207, "Stack Pointer (SP) - out of COMET II memory" },
-    { 0, NULL },
 };
 
 /* 指定されたファイルからアセンブル結果を読込 */
@@ -52,14 +51,14 @@ int main(int argc, char *argv[])
     while((opt = getopt_long(argc, argv, "tTdM:C:h", longopts, NULL)) != -1) {
         switch(opt) {
         case 't':
-            (&execmode)->trace = true;
+            execmode.trace = true;
             break;
         case 'T':
-            (&execmode)->trace = true;
-            (&execmode)->logical = true;
+            execmode.trace = true;
+            execmode.logical = true;
             break;
         case 'd':
-            (&execmode)->dump = true;
+            execmode.dump = true;
             break;
         case 'M':
             memsize = atoi(optarg);
@@ -75,6 +74,8 @@ int main(int argc, char *argv[])
             exit(-1);
         }
     }
+    /* エラーリストにerr_comet2を追加 */
+    addcerrlist(ARRAYSIZE(cerr_comet2), cerr_comet2);
     reset();
     startptr = 0;
     if(loadassemble(argv[optind]) == true) {

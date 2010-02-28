@@ -24,7 +24,7 @@ static struct option longopts[] = {
 };
 
 /* エラー番号とエラーメッセージ */
-CERRARRAY cerr[] = {
+CERRARRAY cerr_casl2[] = {
     { 101, "label already defined" },
     { 102, "label table is full" },
     { 103, "label not found" },
@@ -58,7 +58,6 @@ CERRARRAY cerr[] = {
     { 205, "Stack Pointer (SP) - cannot allocate stack buffer" },
     { 206, "Address - out of COMET II memory" },
     { 207, "Stack Pointer (SP) - out of COMET II memory" },
-    { 0, NULL },
 };
 
 /* 指定されたファイルにアセンブル結果を書込 */
@@ -145,6 +144,8 @@ int main(int argc, char *argv[])
             exit(-1);
         }
     }
+    /* エラーリストにerr_casl2を追加 */
+    addcerrlist(ARRAYSIZE(cerr_casl2), cerr_casl2);
     /* ソースファイルが指定されていない場合は終了 */
     if(argv[optind] == NULL) {
         setcerr(126, NULL);    /* source file is not specified */
@@ -196,6 +197,6 @@ int main(int argc, char *argv[])
     }
     return 0;
 casl2err:
-    fprintf(stderr, "Casl2 error - %d: %s\n", cerrno, cerrmsg);
+    fprintf(stderr, "CASL2 error - %d: %s\n", cerrno, cerrmsg);
     exit(-1);
 }

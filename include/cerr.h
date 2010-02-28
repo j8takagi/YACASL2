@@ -16,19 +16,28 @@ extern int cerrno;
 /* エラーメッセージ */
 extern char *cerrmsg;
 
-/* エラーコードリスト */
+/* エラーコード配列 */
 typedef struct {
     int num;
     char *msg;
 } CERRARRAY;
 
+/* エラーコードリスト */
+typedef struct _CERRLIST {
+    struct _CERRLIST *next;
+    CERRARRAY *err;
+} CERRLIST;
+
 /* エラーメッセージ */
-extern CERRARRAY cerr[];
+extern CERRLIST *cerr;
 
 enum {
     CERRSTRSIZE = 10,    /* エラーメッセージ中に挿入できる文字列のサイズ */
     CERRMSGSIZE = 70,    /* エラーメッセージのサイズ */
 };
+
+/* エラーを追加する */
+void addcerrlist(int cerrc, CERRARRAY cerrv[]);
 
 /* エラー番号とエラーメッセージを設定 */
 void setcerr(int num, const char *str);

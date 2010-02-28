@@ -1,7 +1,7 @@
 #include "cerr.h"
 
 /* エラー番号とエラーメッセージ */
-CERRARRAY cerr[] = {
+CERRARRAY cerr_utest[] = {
     { 101, "label already defined" },
     { 102, "label table is full" },
     { 103, "label not found" },
@@ -34,5 +34,9 @@ CERRARRAY cerr[] = {
     { 205, "Stack Pointer (SP) - cannot allocate stack buffer" },
     { 206, "Address - out of COMET II memory" },
     { 207, "Stack Pointer (SP) - out of COMET II memory" },
-    { 0, NULL },
 };
+
+void addcerr_utest()
+{
+    addcerrlist((sizeof(cerr_utest)/sizeof(cerr_utest[0])), cerr_utest);
+}
