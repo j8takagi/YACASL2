@@ -269,7 +269,7 @@ void exec()
 {
     WORD op, r_r1, x_r2, val;
     CMDTYPE cmdtype;
-    char *errpr = malloc(8);
+    char *errpr = malloc(CERRSTRSIZE + 1);
     clock_t clock_begin, clock_end;
 
     if((&execmode)->trace) {
@@ -466,7 +466,9 @@ void exec()
         do {
             clock_end = clock();
         } while(clock_end - clock_begin < CLOCKS_PER_SEC / clocks);
-/*        printf("PR:%04X; time: %f\n", PR, (double)((clock_end - clock_begin) * CLOCKS_PER_SEC)); */
+        #if 0
+        printf("PR:%04X; time: %f\n", PR, (double)((clock_end - clock_begin) * CLOCKS_PER_SEC));
+        #endif
     }
 execerr:
     fprintf(stderr, "Execute error - %d: %s\n", cerrno, cerrmsg);

@@ -27,7 +27,7 @@ WORD getgr(const char *str, bool is_x)
         return 0xFFFF;
     }
     r = (WORD)(*(str+2) - '0');
-    /* 指標レジスタとして用いることはできない */
+    /* GR0は指標レジスタとして用いることができない */
     if(is_x == true && r == 0x0) {
         setcerr(120, NULL);    /* GR0 in operand x */
         return 0x0;
@@ -412,9 +412,6 @@ bool assemble(const char *file, PASS pass)
     char *line;
     FILE *fp;
 
-    if(pass == FIRST && create_cmdtype_code() == false) {
-        return false;
-    }
     if((fp = fopen(file, "r")) == NULL) {
         perror(file);
         return false;

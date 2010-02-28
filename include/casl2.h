@@ -93,8 +93,8 @@ typedef struct _CMDCODETAB {
     CMDCODEARRAY *cca;
 } CMDCODETAB;
 
-extern CMDCODETAB *cmdtype_code[];
-extern CMDCODETAB *code_type[];
+extern CMDCODETAB **cmdtype_code;
+extern CMDCODETAB **code_type;
 
 /* 命令と命令タイプがキーのハッシュ表を作成する */
 bool create_cmdtype_code();

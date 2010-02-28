@@ -75,8 +75,8 @@ int compare_adr(const void *a, const void *b)
 void printlabel()
 {
     int i, asize = 0;
-    LABELTAB *np = malloc(sizeof(LABELTAB *));
-    LABELARRAY **ar = malloc(labelcnt * sizeof(LABELARRAY **));
+    LABELTAB *np;
+    LABELARRAY *ar[labelcnt];
 
     for(i = 0; i < LABELTABSIZE; i++) {
         for(np = labels[i]; np != NULL; np = np->next) {

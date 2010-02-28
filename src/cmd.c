@@ -42,7 +42,8 @@ CMDCODEARRAY cmdcodearray[] = {
 };
 
 int cmdcodesize = ARRAYSIZE(cmdcodearray);
-CMDCODETAB *cmdtype_code[ARRAYSIZE(cmdcodearray)], *code_type[ARRAYSIZE(cmdcodearray)];
+int hashtabsize;
+CMDCODETAB **cmdtype_code, **code_type;
 
 /* 命令と命令タイプからハッシュ値を生成する */
 unsigned hash_cmdtype(const char *cmd, CMDTYPE type) {
@@ -67,8 +68,10 @@ bool create_cmdtype_code()
     unsigned hashval;
     int i;
 
+    hashtabsize = cmdcodesize;
+    cmdtype_code = malloc(cmdcodesize * sizeof(CMDCODETAB *));
     for(i = 0; i < cmdcodesize; i++) {
-        np = malloc(sizeof(CMDCODETAB *));
+        np = malloc(sizeof(CMDCODETAB));
         if(np == NULL) {
             setcerr(122, NULL);    /* cannot create hash table */
             return false;
@@ -132,8 +135,10 @@ bool create_code_type()
     unsigned hashval;
     int i;
 
+    hashtabsize = cmdcodesize;
+    code_type = malloc(cmdcodesize * sizeof(CMDCODETAB *));
     for(i = 0; i < cmdcodesize; i++) {
-        if((np = malloc(sizeof(CMDCODETAB *))) == NULL) {
+        if((np = malloc(sizeof(CMDCODETAB))) == NULL) {
             setcerr(122, NULL);    /* cannot create hash table */
             return false;
         }

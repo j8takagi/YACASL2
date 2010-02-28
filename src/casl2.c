@@ -50,6 +50,7 @@ CERRARRAY cerr[] = {
     { 123, "unclosed quote" },
     { 124, "more than one character in literal" },
     { 125, "not GR in operand x" },
+    { 126, "source file is not specified" },
     { 201, "execute - out of COMET II memory" },
     { 202, "SVC input - out of Input memory" },
     { 203, "SVC output - out of COMET II memory" },
@@ -97,38 +98,38 @@ int main(int argc, char *argv[])
     while((opt = getopt_long(argc, argv, "tTdslLao::O::AM:C:h", longopts, NULL)) != -1) {
         switch(opt) {
         case 's':
-            (&asmode)->src = true;
+            asmode.src = true;
             break;
         case 'l':
-            (&asmode)->label = true;
+            asmode.label = true;
             break;
         case 'L':
-            (&asmode)->label = true;
-            (&asmode)->onlylabel = true;
+            asmode.label = true;
+            asmode.onlylabel = true;
             break;
         case 'a':
-            (&asmode)->asdetail = true;
+            asmode.asdetail = true;
             break;
         case 'A':
-            (&asmode)->asdetail = true;
-            (&asmode)->onlyassemble = true;
+            asmode.asdetail = true;
+            asmode.onlyassemble = true;
             break;
         case 'o':
             objfile = strdup(objfile_name(optarg));
             break;
         case 'O':
-            (&asmode)->onlyassemble = true;
+            asmode.onlyassemble = true;
             objfile = strdup(objfile_name(optarg));
             break;
         case 't':
-            (&execmode)->trace = true;
+            execmode.trace = true;
             break;
         case 'T':
-            (&execmode)->trace = true;
-            (&execmode)->logical = true;
+            execmode.trace = true;
+            execmode.logical = true;
             break;
         case 'd':
-            (&execmode)->dump = true;
+            execmode.dump = true;
             break;
         case 'M':
             memsize = atoi(optarg);
@@ -146,13 +147,16 @@ int main(int argc, char *argv[])
     }
     /* ソースファイルが指定されていない場合は終了 */
     if(argv[optind] == NULL) {
-        fprintf(stderr, "source file is not specified\n");
-        exit(-1);
+        setcerr(126, NULL);    /* source file is not specified */
+        goto casl2err;
     }
     /* COMET II仮想マシンのリセット */
     reset();
     /* アセンブル。ラベル表作成のため、2回行う */
     for(pass = FIRST; pass <= SECOND; pass++) {
+        if(pass == FIRST && create_cmdtype_code() == false) {
+            goto casl2err;
+        }
         for(i = optind; i < argc; i++) {
             /* データの格納開始位置 */
             if(pass == FIRST) {
@@ -160,24 +164,19 @@ int main(int argc, char *argv[])
             } else if(pass == SECOND) {
                 ptr = beginptr[i];
             }
-            if((&execmode)->trace == true || (&execmode)->dump == true ||
-               (&asmode)->src == true || (&asmode)->label == true ||
-               (&asmode)->asdetail == true)
+            if(execmode.trace == true || execmode.dump == true || asmode.src == true ||
+               asmode.label == true || asmode.asdetail == true)
             {
                 fprintf(stdout, "\nAssemble %s (%d)\n", argv[i], pass);
             }
             if((status = assemble(argv[i], pass)) == false) {
-                freelabel();    /* ラベル表の解放 */
-                if(cerrno > 0) {
-                    freecerr();    /* エラーの解放 */
-                }
                 exit(-1);
             }
         }
-        if(pass == FIRST && (&asmode)->label == true) {
+        if(pass == FIRST && asmode.label == true) {
             fprintf(stdout, "\nLabel::::\n");
             printlabel();
-            if((&asmode)->onlylabel == true) {
+            if(asmode.onlylabel == true) {
                 return 0;
             }
         }
@@ -187,7 +186,7 @@ int main(int argc, char *argv[])
         if(objfile != NULL) {
             outassemble(objfile);
         }
-        if((&asmode)->onlyassemble == false) {
+        if(asmode.onlyassemble == false) {
             exec();    /* プログラム実行 */
         }
     }
@@ -196,4 +195,7 @@ int main(int argc, char *argv[])
         exit(-1);
     }
     return 0;
+casl2err:
+    fprintf(stderr, "Casl2 error - %d: %s\n", cerrno, cerrmsg);
+    exit(-1);
 }
