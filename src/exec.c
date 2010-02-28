@@ -310,14 +310,17 @@ void exec()
         if(cerrno > 0) {
             goto execerr;
         }
+        /* traceオプション指定時、レジスタを出力 */
         if(execmode.trace){
             fprintf(stdout, "#%04X: Register::::\n", PR);
             dspregister();
         }
+        /* dumpオプション指定時、メモリを出力 */
         if(execmode.dump){
             fprintf(stdout, "#%04X: Memory::::\n", PR);
             dumpmemory();
         }
+        /* どちらかのオプション指定時、改行を出力 */
         if(execmode.dump || execmode.trace) {
             fprintf(stdout, "\n");
         }
@@ -328,6 +331,7 @@ void exec()
             val = GR[x_r2];
         }
         else if(cmdtype ==  R_ADR_X || cmdtype == R_ADR_X_ || cmdtype == ADR_X) {
+            assert(x_r2 < REGSIZE);
             /* 実効アドレス（値または値が示す番地）を取得  */
             val = memory[PR++];
             /* 指標アドレスを加算  */
@@ -351,7 +355,7 @@ void exec()
         /* 命令の実行 */
         switch(op)
         {
-        case 0x0:  /* NOP */
+        case 0x0:       /* NOP */
             break;
         case 0x1000:    /* LD */
             setfr(GR[r_r1] = val);
@@ -362,87 +366,87 @@ void exec()
         case 0x1200:    /* LAD */
             GR[r_r1] = val;
             break;
-        case 0x2000:  /* ADDA */
+        case 0x2000:    /* ADDA */
             GR[r_r1] = adda(GR[r_r1], val);
             break;
-        case 0x2100:  /* SUBA */
+        case 0x2100:    /* SUBA */
             GR[r_r1] = suba(GR[r_r1], val);
             break;
-        case 0x2200:  /* ADDL */
+        case 0x2200:    /* ADDL */
             GR[r_r1] = addl(GR[r_r1], val);
             break;
-        case 0x2300:  /* SUBL */
+        case 0x2300:    /* SUBL */
             GR[r_r1] = subl(GR[r_r1], val);
             break;
-        case 0x3000:  /* AND */
+        case 0x3000:    /* AND */
             setfr(GR[r_r1] &= val);
             break;
-        case 0x3100:  /* OR */
+        case 0x3100:    /* OR */
             setfr(GR[r_r1] |= val);
             break;
-        case 0x3200:  /* XOR */
+        case 0x3200:    /* XOR */
             setfr(GR[r_r1] ^= val);
             break;
-        case 0x4000:  /* CPA */
+        case 0x4000:    /* CPA */
             cpa(GR[r_r1], val);
             break;
-        case 0x4100:  /* CPL */
+        case 0x4100:    /* CPL */
             cpl(GR[r_r1], val);
             break;
-        case 0x5000:  /* SLA */
+        case 0x5000:    /* SLA */
             GR[r_r1] = sla(GR[r_r1], val);
             break;
-        case 0x5100:  /* SRA */
+        case 0x5100:    /* SRA */
             GR[r_r1] = sra(GR[r_r1], val);
             break;
-        case 0x5200:  /* SLL */
+        case 0x5200:    /* SLL */
             GR[r_r1] = sll(GR[r_r1], val);
             break;
-        case 0x5300:  /* SRL */
+        case 0x5300:    /* SRL */
             GR[r_r1] = srl(GR[r_r1], val);
             break;
-        case 0x6100:  /* JMI */
+        case 0x6100:    /* JMI */
             if((FR & SF) > 0) {
                 PR = val;
             }
             break;
-        case 0x6200:  /* JNZ */
+        case 0x6200:    /* JNZ */
             if((FR & ZF) == 0) {
                 PR = val;
             }
             break;
-        case 0x6300:  /* JZE */
+        case 0x6300:    /* JZE */
             if((FR & ZF) > 0) {
                 PR = val;
             }
             break;
-        case 0x6400:  /* JUMP */
+        case 0x6400:    /* JUMP */
             PR = val;
             break;
-        case 0x6500:  /* JPL */
+        case 0x6500:    /* JPL */
             if((FR & (SF | ZF)) == 0) {
                 PR = val;
             }
             break;
-        case 0x6600:  /* JOV */
+        case 0x6600:    /* JOV */
             if((FR & OF) > 0) {
                 PR = val;
             }
             break;
-        case 0x7000:  /* PUSH */
+        case 0x7000:    /* PUSH */
             assert(SP > endptr && SP <= memsize);
             memory[--SP] = val;
             break;
-        case 0x7100:  /* POP */
+        case 0x7100:    /* POP */
             assert(SP > endptr && SP <= memsize);
             GR[r_r1] = memory[SP++];
             break;
-        case 0x8000:  /* CALL */
+        case 0x8000:    /* CALL */
             assert(SP > endptr && SP <= memsize);
             memory[--SP] = PR;
             PR = val;
             break;
-        case 0x8100:  /* RET */
+        case 0x8100:    /* RET */
             assert(SP > endptr && SP <= memsize);
             if(SP == memsize) {
                 return;
@@ -450,7 +454,7 @@ void exec()
                 PR = memory[SP++];
                 break;
             }
-        case 0xf000:  /* SVC */
+        case 0xF000:    /* SVC */
             switch(val)
             {
             case 0x0: /* EXIT */
