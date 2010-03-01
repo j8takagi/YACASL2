@@ -1,3 +1,3 @@
 UCLASS = COMMON
-TESTSRCFILE = getcmdcode.c
+TESTSRCFILE = addcerrlist.c
 include ../TEST.mk

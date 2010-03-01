@@ -13,6 +13,38 @@ WORD lptr;
 /* 他のプログラムで参照する入口名 */
 char *prog;
 
+
+/* アセンブルのエラー定義 */
+CERRARRAY cerr_assemble[] = {
+    { 101, "label already defined" },
+    { 102, "label table is full" },
+    { 103, "label not found" },
+    { 104, "label length is too long" },
+    { 105, "no command in the line" },
+    { 106, "operand mismatch in assemble command" },
+    { 107, "no label in START" },
+    { 108, "not command of operand \"r\"" },
+    { 109, "not command of operand \"r1,r2\"" },
+    { 110, "not command of operand \"r,adr[,x]\"" },
+    { 111, "not command of operand \"adr[,x]\"" },
+    { 112, "not command of no operand" },
+    { 113, "operand too many in COMET II command" },
+    { 117, "operand too many in DC" },
+    { 118, "operand length too long" },
+    { 119, "out of COMET II memory" },
+    { 120, "GR0 in operand x" },
+    { 121, "cannot get operand token" },
+    { 122, "cannot create hash table" },
+    { 123, "unclosed quote" },
+    { 124, "more than one character in literal" },
+    { 125, "not GR in operand x" },
+};
+
+bool addcerrlist_assemble()
+{
+    return addcerrlist(ARRAYSIZE(cerr_assemble), cerr_assemble);
+}
+
 /* 汎用レジスタを表す文字列「GR[0-7]」から、レジスタ番号[0-7]をWORD値で返す */
 /* 文字列が汎用レジスタを表さない場合は、0xFFFFを返す */
 /* is_xがtrueの場合は指標レジスタ。GR0は、COMET IIの仕様により、エラー発生 */
@@ -59,6 +91,7 @@ WORD getadr(const char *prog, const char *str, PASS pass)
 bool writememory(WORD word, WORD adr, PASS pass)
 {
     bool status = false;
+
     /* COMET IIメモリオーバーの場合 */
     if(adr >= memsize) {
         setcerr(119, word2n(adr));    /* out of COMET II memory */
@@ -329,7 +362,7 @@ bool cometcmd(const CMDLINE *cmdl, PASS pass)
                 status = true;
             }
         } else {
-            setcerr(113, cmdl->cmd);    /* command not defined */
+            setcerr(113, cmdl->cmd);    /* operand too many in COMET II command */
             return false;
         }
     }
@@ -389,7 +422,7 @@ bool assembleline(const CMDLINE *cmdl, PASS pass)
         ;
     }
     else if(cerrno == 0) {
-        setcerr(113, cmdl->cmd);    /* command not defined */
+        setcerr(113, cmdl->cmd);    /* operand too many in COMET II command */
     }
     /* エラーが発生していないか確認 */
     if(cerrno == 0) {
@@ -412,6 +445,7 @@ bool assemble(const char *file, PASS pass)
     char *line;
     FILE *fp;
 
+    addcerrlist_assemble();
     if((fp = fopen(file, "r")) == NULL) {
         perror(file);
         return false;

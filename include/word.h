@@ -10,6 +10,9 @@
 
 #include "cerr.h"
 
+/* wordのエラー定義 */
+bool addcerrlist_word();
+
 /* WORD - 16ビットデータ型 */
 typedef unsigned short WORD;
 

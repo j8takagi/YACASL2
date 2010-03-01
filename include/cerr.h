@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+#include <stdbool.h>
 
 #ifndef ARRAYSIZE
 #define ARRAYSIZE(array) (sizeof(array)/sizeof(array[0]))
@@ -37,7 +38,7 @@ enum {
 };
 
 /* エラーを追加する */
-void addcerrlist(int cerrc, CERRARRAY cerrv[]);
+bool addcerrlist(int cerrc, CERRARRAY cerrv[]);
 
 /* エラー番号とエラーメッセージを設定 */
 void setcerr(int num, const char *str);

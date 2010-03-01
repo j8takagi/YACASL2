@@ -9,12 +9,6 @@ static struct option longopts[] = {
     {0, 0, 0, 0},
 };
 
-CERRARRAY cerr_dumpword[] = {
-    { 114, "not integer" },
-    { 115, "not hex" },
-    { 116, "out of hex range" },
-};
-
 int main(int argc, char *argv[])
 {
     bool logicalmode = false;    /* レジストリの内容を論理値（0〜65535）で表示する場合はtrue */
@@ -40,8 +34,6 @@ int main(int argc, char *argv[])
         fprintf(stderr, usage, argv[0]);
         exit(-1);
     }
-    /* エラーリストにerr_casl2を追加 */
-    addcerrlist(ARRAYSIZE(cerr_dumpword), cerr_dumpword);
     /* WORD値に変換 */
     word = nh2word(argv[optind]);
     if(cerrno > 0) {

@@ -1,3 +1,3 @@
 UCLASS = AS
-TESTSRCFILE = ../CERRARRAY.c getgr.c
+TESTSRCFILE = getgr.c
 include ../TEST.mk

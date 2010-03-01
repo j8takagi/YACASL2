@@ -77,6 +77,9 @@ typedef enum {
     SECOND = 1,
 } PASS;
 
+/* アセンブルのエラー定義 */
+bool addcerrlist_assemble();
+
 /* プログラム名とラベルに対応するハッシュ値を返す */
 unsigned labelhash(const char *prog, const char *label);
 

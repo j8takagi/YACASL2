@@ -1,9 +1,21 @@
 #include "word.h"
 
+/* wordのエラー定義 */
+CERRARRAY cerr_word[] = {
+    { 114, "not integer" },
+    { 115, "not hex" },
+    { 116, "out of hex range" },
+};
+bool addcerrlist_word()
+{
+    return addcerrlist(ARRAYSIZE(cerr_word), cerr_word);
+}
+
 /* 10進数の文字列をWORD値に変換 */
 WORD n2word(const char *str)
 {
     assert(isdigit(*str) || *str == '-');
+
     char *check;
     int n;
     /* WORD値に変換 */
@@ -23,6 +35,7 @@ WORD n2word(const char *str)
 WORD h2word(const char *str)
 {
     assert(*str == '#');
+
     WORD word = 0x0;
     char *check;
     str++;
@@ -42,6 +55,7 @@ WORD h2word(const char *str)
 /* 10進数または16進数の文字列をWORD値に変換 */
 WORD nh2word(const char *str)
 {
+    addcerrlist_word();
     WORD word;
     if(!isdigit(*str) && *str != '-' && *str != '#') {
         setcerr(114, str);    /* not integer */

@@ -1,6 +1,21 @@
 #include "casl2.h"
 #include "exec.h"
 
+/* 実行のエラー定義 */
+CERRARRAY cerr_exec[] = {
+    { 202, "SVC input - out of Input memory" },
+    { 203, "SVC output - out of COMET II memory" },
+    { 204, "Program Register (PR) - out of COMET II memory" },
+    { 205, "Stack Pointer (SP) - cannot allocate stack buffer" },
+    { 206, "Address - out of COMET II memory" },
+    { 207, "Stack Pointer (SP) - out of COMET II memory" },
+};
+
+bool addcerrlist_exec()
+{
+    return addcerrlist(ARRAYSIZE(cerr_exec), cerr_exec);
+}
+
 /* 実行モード: trace, logical, dump */
 EXECMODE execmode = {false, false, false};
 
@@ -272,6 +287,7 @@ void exec()
     char *errpr = malloc(CERRSTRSIZE + 1);
     clock_t clock_begin, clock_end;
 
+    addcerrlist_exec();
     if(execmode.trace) {
         fprintf(stdout, "\nExecuting machine codes\n");
     }

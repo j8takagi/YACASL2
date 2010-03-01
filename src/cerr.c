@@ -10,33 +10,37 @@ char *cerrmsg;
 CERRLIST *cerr;
 
 /* エラーリストを作成する */
-void addcerrlist(int newerrc, CERRARRAY newerrv[])
+bool addcerrlist(int newerrc, CERRARRAY newerrv[])
 {
     int i;
-    CERRLIST *p = cerr, *q;
+    CERRLIST *p, *q;
 
+    assert(newerrc > 0 && newerrv != NULL);
     if(cerr != NULL) {
-        for(p = cerr; p != NULL; p = p->next) {
-            ;
+        p = cerr;
+        while (p != NULL) {
+            q = p;
+            p = p->next;
         }
-        if((p = malloc(sizeof(CERRLIST *))) == NULL) {
-            fprintf(stderr, "addcerrlist: cannot allocate memory\n");
-            exit(-1);
+        if((p = q->next = malloc(sizeof(CERRLIST *))) == NULL) {
+            goto addcerrlisterr;
         }
     } else if((p = cerr = malloc(sizeof(CERRLIST *))) == NULL) {
-        fprintf(stderr, "addcerrlist: cannot allocate memory\n");
-        exit(-1);
+        goto addcerrlisterr;
     }
     for(i = 0; i < newerrc; i++) {
         p->err = &(newerrv[i]);
         if((p->next = malloc(sizeof(CERRLIST *))) == NULL) {
-            fprintf(stderr, "addcerrlist: cannot allocate memory\n");
-            exit(-1);
+            goto addcerrlisterr;
         }
         q = p;
         p = p->next;
     }
     q->next = NULL;
+    return true;
+addcerrlisterr:
+    fprintf(stderr, "addcerrlist: cannot allocate memory\n");
+    exit(-1);
 }
 
 /* エラー番号とエラーメッセージを設定する */

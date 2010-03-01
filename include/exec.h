@@ -16,6 +16,9 @@ typedef struct {
 } EXECMODE;
 extern EXECMODE execmode;
 
+/* 実行のエラー定義 */
+bool addcerrlist_exec();
+
 /* 仮想マシンのリセット */
 void reset();
 
