@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
     WORD beginptr[argc];
     char *objfile = NULL;
     const char *usage =
-        "Usage: %s [-slLaAtTdh] [-oO<OUTFILE>] [-M <memorysize>] [-C <clocks>] FILE ...\n";
+        "Usage: %s [-slLaAtTdh] [-oO<OBJECTFILE>] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE ...\n";
 
     while((opt = getopt_long(argc, argv, "tTdslLao::O::AM:C:h", longopts, NULL)) != -1) {
         switch(opt) {

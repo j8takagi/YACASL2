@@ -18,6 +18,7 @@ static struct option longopts[] = {
 /* comet2のエラー定義 */
 CERRARRAY cerr_comet2[] = {
     { 201, "Load object file - full of COMET II memory" },
+    { 208, "object file is not specified" },
 };
 bool addcerrlist_comet2()
 {
@@ -27,6 +28,7 @@ bool addcerrlist_comet2()
 /* 指定されたファイルからアセンブル結果を読込 */
 bool loadassemble(char *file) {
     FILE *fp;
+    bool status = true;
 
     if((fp = fopen(file, "r")) == NULL) {
         perror(file);
@@ -35,17 +37,17 @@ bool loadassemble(char *file) {
     if((endptr = startptr + fread(memory, sizeof(WORD), memsize-startptr, fp)) == memsize) {
         setcerr(201, NULL);    /* Load object file - full of COMET II memory */
         fprintf(stderr, "Execute error - %d: %s\n", cerrno, cerrmsg);
-        return false;
+        status = false;
     }
     fclose(fp);
-    return true;
+    return status;
 }
 
 /* comet2コマンド */
 int main(int argc, char *argv[])
 {
     int opt;
-    const char *usage = "Usage: %s [-tTdh] [-M <memorysize>] [-C <clocks>] FILE\n";
+    const char *usage = "Usage: %s [-tTdh] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE\n";
 
     addcerrlist_comet2();
     while((opt = getopt_long(argc, argv, "tTdM:C:h", longopts, NULL)) != -1) {
@@ -74,14 +76,21 @@ int main(int argc, char *argv[])
             exit(-1);
         }
     }
+    if(argv[optind] == NULL) {
+        setcerr(208, NULL);    /* object file is not specified */
+        fprintf(stderr, "comet2 error - %d: %s\n", cerrno, cerrmsg);
+        goto comet2err;
+    }
     reset();
     startptr = 0;
     if(loadassemble(argv[optind]) == true) {
         exec();    /* プログラム実行 */
     }
     if(cerrno > 0) {
-        freecerr();
-        exit(-1);
+        goto comet2err;
     }
     return 0;
+comet2err:
+    freecerr();
+    exit(-1);
 }
