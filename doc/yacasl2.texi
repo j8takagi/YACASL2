@@ -818,8 +818,8 @@ YACASL2のコマンドとオプションについて解説します。
 
 @menu
 * casl2::
-@c * comet2::
-@c * dumpword
+* comet2::
+* dumpword::
 @end menu
 
 @node casl2
@@ -840,7 +840,7 @@ $ @command{casl2 hello.casl}
 $ @command{casl2 addl_outl.casl ~/yacasl2/as/casl2lib/outl.casl}
 @end example
 
-@subsection オプション
+@unnumberedsubsec オプション
 
 @command{casl2}は、次のオプションを指定できます。
 
@@ -865,13 +865,13 @@ CASLファイルの内容を表示します。
 @itemx --show-all
 アセンブル詳細結果を表示して終了します。
 
-@item -o[オブジェクトファイル]
+@item -o<OBJECTFILE>
 @itemx --assembleout
-アセンブル結果をオブジェクトファイルに出力し、ほかの作業を続行します。出力されたオブジェクトファイルは、@command{comet2}で実行できます。オブジェクトファイルを指定しない場合、出力先は@file{a.o}です。
+アセンブル結果をオブジェクトファイル@file{<OBJECTFILE>}に出力し、ほかの作業を続行します。出力されたオブジェクトファイルは、@command{comet2}で実行できます。オブジェクトファイルを指定しない場合、出力先は@file{a.o}です。オブジェクトファイルは1つだけ指定できます。
 
-@item -O[オブジェクトファイル]
+@item -O<OBJECTFILE>
 @itemx --assembleoutonly
-アセンブル結果をオブジェクトファイルに出力し、終了します。出力されたオブジェクトファイルは、@command{comet2}で実行できます。オブジェクトファイルを指定しない場合、出力先は@file{a.o}です。
+アセンブル結果をオブジェクトファイル@file{<OBJECTFILE>}に出力し、終了します。出力されたオブジェクトファイルは、@command{comet2}で実行できます。オブジェクトファイルを指定しない場合、出力先は@file{a.o}です。オブジェクトファイルは1つだけ指定できます。
 
 @item -t
 @itemx --trace
@@ -886,13 +886,96 @@ CASLファイルの内容を表示します。
 @itemx --dump
 メモリの内容をすべて表示します。
 
-@item -M メモリサイズ
-@itemx --memorysize メモリサイズ
-アセンブルおよび実行時のメモリサイズを0〜6555の範囲で指定します。指定しない場合、メモリサイズは512です。
+@item -M <MEMORYSIZE>
+@itemx --memorysize <MEMORYSIZE>
+アセンブルおよび実行時のメモリサイズ@option{<MEMORYSIZE>}を0〜65535の範囲で指定します。指定しない場合、メモリサイズは512です。
 
-@item -C クロック周波数
-@itemx --clocks クロック周波数
-実行時のクロック周波数を指定します。指定しない場合、クロック周波数は5000000です。
+@item -C <CLOCKS>
+@itemx --clocks <CLOCKS>
+実行時のクロック周波数@option{<CLOCKS>}を0より大きい整数で指定します。指定しない場合、クロック周波数は5000000です。
+
+@item -h
+@itemx --help
+@command{casl2}の使用方法を表示して終了します。
+@end table
+
+@node comet2
+@section @command{comet2}
+
+@pindex comet2
+@cindex comet2
+
+@command{comet2}は、引数として指定されたオブジェクトファイルを仮想マシンCOMET II上で実行します。オブジェクトファイルは、@command{casl}に@option{-o}または@option{-O}を指定して出力します。
+
+@example
+$ @command{comet2 hello.o}
+@end example
+
+引数で指定できるオブジェクトファイルは1つだけです。引数が指定されない場合は、エラーメッセージを表示して終了します。複数の引数を指定した場合、2番目以降の引数は無視されます。
+
+@unnumberedsubsec オプション
+
+@command{comet2}は、次のオプションを指定できます。
+
+@table @samp
+
+@item -t
+@itemx --trace
+@itemx --tracearithmetic
+実行時のレジスタをトレースします。レジスタには、GR0〜GR7という8個の汎用レジスタと、SP（スタックポインタ）、PR（プログラムレジスタ）、FR（フラグレジスタ）があります。レジストリの内容は、-32768〜32767の範囲の整数、#0000〜#FFFFの範囲の16進数、2進数で表示されます。文字の組に該当する場合は、「 = 」のうしろに文字が表示されます。-32768〜32767の範囲の整数が表示されるので、算術演算の結果を確認する場合に使えます。
+
+@item -T
+@itemx --tracelogical
+@option{-t}と同じく、レジスタの内容をトレースします。@option{-t}と異なり0〜65535の範囲の整数を表示するので、論理演算の結果を確認する場合に使えます。
+
+@item -d
+@itemx --dump
+メモリの内容をすべて表示します。
+
+@item -M <MEMORYSIZE>
+@itemx --memorysize <MEMORYSIZE>
+実行時のメモリサイズ@option{<MEMORYSIZE>}を0〜65535の範囲で指定します。指定しない場合、メモリサイズは512です。
+
+@item -C <CLOCKS>
+@itemx --clocks <CLOCKS>
+実行時のクロック周波数@option{<CLOCKS>}を0より大きい整数で指定します。指定しない場合、クロック周波数は5000000です。
+
+@item -h
+@itemx --help
+@command{comet2}の使用方法を表示して終了します。
+@end table
+
+@node dumpword
+@section @command{dumpword}
+
+@pindex dumpword
+@cindex dumpword
+
+@command{comet2}は、引数として指定された数値を、整数、#0000〜#FFFFの範囲の16進数、2進数で表示します。文字の組に該当する場合は、「 = 」のうしろに文字が表示されます。引数は、10進数または先頭に「#」の付いた16進数で指定します。表示される整数は、オプションにより-32768〜32767または0〜65535の範囲です。オプションなしの場合は、-32768〜32767です。
+
+@example
+$ @command{dumpword 10}
+@end example
+
+引数で指定できる1つだけです。引数が指定されない場合は、使い方を表示して終了します。複数の引数を指定した場合、2番目以降の引数は無視されます。
+
+@unnumberedsubsec オプション
+
+@command{dumpword}は、次のオプションを指定できます。
+
+@table @samp
+
+@item -a
+@itemx --arithmetic
+出力される整数の範囲を-32768〜32767にします。オプションなしの場合と同じです。
+
+@item -l
+@itemx --logical
+出力される整数の範囲を0〜65535にします。
+
+@item -h
+@itemx --help
+@command{comet2}の使用方法を表示して終了します。
 @end table
 
 @bye
