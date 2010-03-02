@@ -1,9 +1,0 @@
-../../../casl2 ../floatedit.casl
-input error!
-input error!
-input error!
-\12,345,678.90
-\12,345,678.09
- \2,234,568.19
- \2,234,068.19
-         \0.01
