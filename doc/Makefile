@@ -28,4 +28,4 @@ $(DOCNAME).dvi: $(SRC)
      TEX=ptex texi2dvi --texinfo=@afourpaper -o ../$@ ../$^; \
      cd -
 clean:
-	@rm -rf html $(TEXOBJDIR) $(DOCNAME).info $(DOCNAME).html $(DOCNAME).dvi $(DOCNAME).pdf
+	@rm -rf html $(TEXOBJDIR) $(DOCNAME).info $(DOCNAME).dvi $(DOCNAME).pdf
