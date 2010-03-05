@@ -1,0 +1,39 @@
+;;; -32767〜32767の範囲にある整数の割算（筆算方式）を行う
+;;; 入力 GR1:被除数 GR2:除数
+;;; 出力 GR0:商 GR3:剰余
+;;; GR2が0の場合は、GR0、GR3とも0になり、オーバーフロー
+DIVA    START
+        PUSH    0,GR1
+        PUSH    0,GR2
+        PUSH    0,GR4
+        XOR     GR0,GR0         ; 積
+        AND     GR2,GR2         ; (GR2 = 0)の場合、終了
+        JZE     DIVZERO         ; ↓
+        AND     GR1,GR1         ; (GR1 = 0)の場合、終了
+        JZE     FIN             ; ↓
+        XOR     GR4,GR4         ; マイナスフラグ
+CHK1    AND     GR1,GR1         ; (GR1 > 0)の場合は、CHK2へジャンプ
+        JPL     CHK2            ; ↓
+        XOR     GR1,ALLON       ; GR1の正負を反転
+        ADDA    GR1,ONE         ; ↓
+        JOV     FIN             ; (GR1 = -32768)の場合は終了
+        XOR     GR4,ONE         ; GR4 <- 1
+CHK2    AND     GR2,GR2         ; (GR1 > 0)の場合は、LOOPへジャンプ
+        JPL     MUL             ; ↓
+        XOR     GR2,ALLON       ; GR2の正負を反転
+        ADDA    GR2,ONE         ; ↓
+        JOV     FIN             ; (GR2 = -32768)の場合は終了
+        XOR     GR4,ONE         ; マイナスフラグを反転
+DIV     CALL    DIVL            ; GR0 <- GR1 / GR2; GR3 <- GR1 mod GR2
+        JOV     FIN
+MIN     AND     GR4,GR4         ; マイナスフラグがオフの場合、終了
+        JZE     FIN             ; ↓
+        XOR     GR0,ALLON       ; GR1の正負を反転
+        ADDA    GR0,ONE         ; ↓
+        JUMP    FIN
+OV      ADDL    GR0,=#8000
+FIN     RPOP
+        RET
+ONE     DC      1
+ALLON   DC      #FFFF
+        END

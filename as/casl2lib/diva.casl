@@ -2,6 +2,6 @@
 ;;; 入力 GR1:被除数 GR2:除数
 ;;; 出力 GR0:商 GR3:剰余
 ;;; GR2が0の場合は、GR0、GR3とも0になり、オーバーフロー
-DIVL    START
+DIVA    START
         RET
         END
