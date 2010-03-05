@@ -1,7 +1,7 @@
 <html lang="en">
 <head>
 <title>YACASL2 - Linux上のCASL II処理系</title>
-<meta http-equiv="Content-Type" content="text/html">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="description" content="YACASL2 - Linux上のCASL II処理系">
 <meta name="generator" content="makeinfo 4.11">
 <link title="Top" rel="top" href="#Top">
@@ -106,7 +106,7 @@ pre.example strong {
 <h1 class="settitle">YACASL2 - Linux上のCASL II処理系</h1>
 <a name="Top"></a>
 
- <div class="contents">
+<div class="contents">
 <h2>Table of Contents</h2>
 <ul>
 <li><a name="toc_YACASL2_00e3_0081_00ae_00e6_00a6_0082_00e8_00a6_0081" href="#YACASL2_00e3_0081_00ae_00e6_00a6_0082_00e8_00a6_0081">1 YACASL2の概要</a>
@@ -115,9 +115,9 @@ pre.example strong {
 </li></ul>
 <li><a name="toc_YACASL2_00e3_0081_00ae_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00b9_00e3_0083_0088_00e3_0083_00bc_00e3_0083_00ab" href="#YACASL2_00e3_0081_00ae_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00b9_00e3_0083_0088_00e3_0083_00bc_00e3_0083_00ab">2 YACASL2のインストール</a>
 <ul>
-<li><a href="#YACASL2_00e3_0081_00ae_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00b9_00e3_0083_0088_00e3_0083_00bc_00e3_0083_00ab">2.1 <samp><span class="file">yacasl2.tar.gz</span></samp>のダウンロード</a>
-<li><a href="#YACASL2_00e3_0081_00ae_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00b9_00e3_0083_0088_00e3_0083_00bc_00e3_0083_00ab">2.2 <samp><span class="file">yacasl2.tar.gz</span></samp>の検証</a>
-<li><a href="#YACASL2_00e3_0081_00ae_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00b9_00e3_0083_0088_00e3_0083_00bc_00e3_0083_00ab">2.3 <samp><span class="file">yacasl2.tar.gz</span></samp>の展開</a>
+<li><a href="#YACASL2_00e3_0081_00ae_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00b9_00e3_0083_0088_00e3_0083_00bc_00e3_0083_00ab">2.1 YACASL2ファイルのダウンロード</a>
+<li><a href="#YACASL2_00e3_0081_00ae_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00b9_00e3_0083_0088_00e3_0083_00bc_00e3_0083_00ab">2.2 YACASL2ファイルの検証</a>
+<li><a href="#YACASL2_00e3_0081_00ae_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00b9_00e3_0083_0088_00e3_0083_00bc_00e3_0083_00ab">2.3 YACASL2ファイルの展開</a>
 <li><a href="#YACASL2_00e3_0081_00ae_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00b9_00e3_0083_0088_00e3_0083_00bc_00e3_0083_00ab">2.4 <samp><span class="command">casl2</span></samp>、<samp><span class="command">comet2</span></samp>、<samp><span class="command">dumpword</span></samp>のビルド</a>
 <li><a href="#YACASL2_00e3_0081_00ae_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00b9_00e3_0083_0088_00e3_0083_00bc_00e3_0083_00ab">2.5 <samp><span class="command">casl2</span></samp>の実行テスト</a>
 <li><a href="#YACASL2_00e3_0081_00ae_00e3_0082_00a4_00e3_0083_00b3_00e3_0082_00b9_00e3_0083_0088_00e3_0083_00bc_00e3_0083_00ab">2.6 詳細なテスト</a>
@@ -155,6 +155,48 @@ pre.example strong {
 <li><a href="#dumpword">オプション</a>
 </li></ul>
 </li></ul>
+<li><a name="toc_CASL2LIB_00e3_0083_009e_00e3_0083_008b_00e3_0083_00a5_00e3_0082_00a2_00e3_0083_00ab" href="#CASL2LIB_00e3_0083_009e_00e3_0083_008b_00e3_0083_00a5_00e3_0082_00a2_00e3_0083_00ab">5 CASL2LIBマニュアル</a>
+<ul>
+<li><a href="#ABS">5.1 <samp><span class="command">ABS</span></samp> - <samp><span class="file">abs.casl</span></samp></a>
+<ul>
+<li><a href="#ABS">入力</a>
+<li><a href="#ABS">出力</a>
+<li><a href="#ABS">依存する副プログラム</a>
+<li><a href="#ABS">使用例</a>
+</li></ul>
+<li><a href="#ADDL32">5.2 <samp><span class="command">ADDL32</span></samp> - <samp><span class="file">addl32.casl</span></samp></a>
+<ul>
+<li><a href="#ADDL32">入力</a>
+<li><a href="#ADDL32">出力</a>
+<li><a href="#ADDL32">使用例</a>
+<li><a href="#ADDL32">依存する副プログラム</a>
+</li></ul>
+<li><a href="#DIVA">5.3 <samp><span class="command">DIVA</span></samp> -<samp><span class="file">diva.casl</span></samp></a>
+<ul>
+<li><a href="#DIVA">入力</a>
+<li><a href="#DIVA">出力</a>
+<li><a href="#DIVA">依存する副プログラム</a>
+</li></ul>
+<li><a href="#DIVL">5.4 <samp><span class="command">DIVL</span></samp> - <samp><span class="file">divl.casl</span></samp></a>
+<ul>
+<li><a href="#DIVL">入力</a>
+<li><a href="#DIVL">出力</a>
+<li><a href="#DIVL">依存する副プログラム</a>
+<li><a href="#DIVL">使用例</a>
+</li></ul>
+<li><a href="#INL">5.5 <samp><span class="command">INL</span></samp> - <samp><span class="file">inl.casl</span></samp></a>
+<li><a href="#L2STR">5.6 <samp><span class="command">L2STR</span></samp> - <samp><span class="file">l2str.casl</span></samp></a>
+<li><a href="#MAX">5.7 <samp><span class="command">MAX</span></samp> - <samp><span class="file">max.casl</span></samp></a>
+<li><a href="#MINIM">5.8 <samp><span class="command">MINIM</span></samp> - <samp><span class="file">minim.casl</span></samp></a>
+<li><a href="#MULA">5.9 <samp><span class="command">MULA</span></samp> - <samp><span class="file">mula.casl</span></samp></a>
+<li><a href="#MULL">5.10 <samp><span class="command">MULL</span></samp> - <samp><span class="file">mull.casl</span></samp></a>
+<li><a href="#OUTA">5.11 <samp><span class="command">OUTA</span></samp> - <samp><span class="file">outa.casl</span></samp></a>
+<li><a href="#OUTB">5.12 <samp><span class="command">OUTB</span></samp> - <samp><span class="file">outb.casl</span></samp></a>
+<li><a href="#OUTD_005fQ15">5.13 <samp><span class="command">OUTD_Q15</span></samp> - <samp><span class="file">outd_q15.casl</span></samp></a>
+<li><a href="#OUTL">5.14 <samp><span class="command">OUTL</span></samp> - <samp><span class="file">outl.casl</span></samp></a>
+<li><a href="#REV">5.15 <samp><span class="command">REV</span></samp> - <samp><span class="file">rev.casl</span></samp></a>
+<li><a href="#STR2L">5.16 <samp><span class="command">STR2L</span></samp> - <samp><span class="file">str2l.casl</span></samp></a>
+</li></ul>
 </li></ul>
 </div>
 
@@ -163,7 +205,7 @@ pre.example strong {
 
 <h2 class="chapter">1 YACASL2の概要</h2>
 
- <p>YACASL2は、Linux上で動作するオープンソースのCASL II処理系です。CASL IIは情報処理試験で用いられるアセンブラ言語で、次の資料により仕様が公開されています。
+<p>YACASL2は、Linux上で動作するオープンソースのCASL II処理系です。CASL IIは情報処理試験で用いられるアセンブラ言語で、次の資料により仕様が公開されています。
 
  <blockquote>
 <a href="http://www.jitec.ipa.go.jp/1_00topic/topic_20081027_hani_yougo.pdf">試験で使用する情報処理用語・プログラム言語など（2008年10月版）</a>［PDFファイル］
@@ -191,7 +233,7 @@ YACASL2の動作はCASL IIの仕様に準拠しているため、情報処理試
 
 <h3 class="unnumberedsec">要件</h3>
 
- <p>YACASL2は、Linux上で動作します。現在動作を確認しているのは、次のディストリビューションです。
+<p>YACASL2は、Linux上で動作します。現在動作を確認しているのは、次のディストリビューションです。
 
      <ul>
 <li>Ubuntu Linux 9.04 / 8.04
@@ -206,15 +248,15 @@ YACASL2の動作はCASL IIの仕様に準拠しているため、情報処理試
 
 <h2 class="chapter">2 YACASL2のインストール</h2>
 
- <p>YACASL2をインストールするには、Linux上で次の作業をします。
+<p>YACASL2をインストールするには、Linux上で次の作業をします。
 
      <ol type=1 start=1>
 
-     <li><samp><span class="file">yacasl2.tar.gz</span></samp>のダウンロード
+     <li>YACASL2ファイルのダウンロード
 
-     <li><samp><span class="file">yacasl2.tar.gz</span></samp>の検証
+     <li>YACASL2ファイルの検証
 
-     <li><samp><span class="file">yacasl2.tar.gz</span></samp>の展開
+     <li>YACASL2ファイルの展開
 
      <li><samp><span class="command">casl2</span></samp>、<samp><span class="command">comet2</span></samp>、<samp><span class="command">dumpword</span></samp>のビルド
 
@@ -225,32 +267,28 @@ YACASL2の動作はCASL IIの仕様に準拠しているため、情報処理試
      <li>環境変数<var>PATH</var>の設定
       </ol>
 
-<h3 class="section">2.1 <samp><span class="file">yacasl2.tar.gz</span></samp>のダウンロード</h3>
+<h3 class="section">2.1 YACASL2ファイルのダウンロード</h3>
 
- <p>（詳細未定）
+<p><a href="http://github.com/j8takagi/YACASL2">GitHub/j8takagi/YACASL2</a>の<a href="http://github.com/j8takagi/YACASL2/downloads">ダウンロードページ</a>から最新版のtgzファイルをダウンロードします（2010年3月6日現在、<var>v0.1</var>の<samp><span class="file">j8takagi-YACASL2-6323ce4.tar.gz</span></samp>）。
 
-<pre class="example">  $ <samp><span class="command">cd</span></samp>
-  $ <samp><span class="command">wget somewhere/yacasl2.tar.gz</span></samp>
-  $ <samp><span class="command">wget somewhere/yacasl2.tar.gz.md5sum</span></samp>
-</pre>
- <h3 class="section">2.2 <samp><span class="file">yacasl2.tar.gz</span></samp>の検証</h3>
+ <p>続けて、対応する<samp><span class="file">md5sum</span></samp>フィルをダウンロードします（2010年3月6日現在、<samp><span class="file">j8takagi-YACASL2-6323ce4.tar.gz.md5sum</span></samp>）。
 
- <p>（PGPを使った検証も導入予定）
+<h3 class="section">2.2 YACASL2ファイルの検証</h3>
 
- <p>ダウンロードが完了したら、<samp><span class="command">md5sum</span></samp>と<samp><span class="command">diff</span></samp>で正しくファイルがダウンロードができているかを検証します。
+<p>ダウンロードが完了したら、<samp><span class="command">md5sum</span></samp>と<samp><span class="command">diff</span></samp>で正しくファイルがダウンロードができているかを検証します。
 
 <pre class="example">  $ <samp><span class="command">md5sum yacasl2.tar.gz | diff -s yacasl2.tar.gz.md5sum -</span></samp>
   Files yacasl2.tar.gz.md5sum and - are identical
 </pre>
- <h3 class="section">2.3 <samp><span class="file">yacasl2.tar.gz</span></samp>の展開</h3>
+ <h3 class="section">2.3 YACASL2ファイルの展開</h3>
 
- <p><samp><span class="file">yacasl2.tar.gz</span></samp>をダウンロードしたら、次のコマンドで展開します。
+<p>YACASL2ファイルをダウンロードしたら、次のコマンドで展開します。
 
 <pre class="example">  $ <samp><span class="command">tar xvzf yacasl2.tar.gz</span></samp>
 </pre>
  <h3 class="section">2.4 <samp><span class="command">casl2</span></samp>、<samp><span class="command">comet2</span></samp>、<samp><span class="command">dumpword</span></samp>のビルド</h3>
 
- <p>展開したら、次のコマンドで<samp><span class="command">casl2</span></samp>、<samp><span class="command">comet2</span></samp>、<samp><span class="command">dumpword</span></samp>をビルドします。
+<p>展開したら、次のコマンドで<samp><span class="command">casl2</span></samp>、<samp><span class="command">comet2</span></samp>、<samp><span class="command">dumpword</span></samp>をビルドします。
 
 <pre class="example">  $ <samp><span class="command">cd yacasl2</span></samp>
   $ <samp><span class="command">make</span></samp>
@@ -279,7 +317,7 @@ YACASL2の動作はCASL IIの仕様に準拠しているため、情報処理試
 </pre>
  <h3 class="section">2.5 <samp><span class="command">casl2</span></samp>の実行テスト</h3>
 
- <p>ビルドしたら、次のコマンドが正常に実行できるかを確認します。
+<p>ビルドしたら、次のコマンドが正常に実行できるかを確認します。
 正常に実行された場合は、「Hello, World!」と表示されます。
 
 <pre class="example">  $ <samp><span class="command">./casl2 as/hello.casl</span></samp>
@@ -287,7 +325,7 @@ YACASL2の動作はCASL IIの仕様に準拠しているため、情報処理試
 </pre>
  <h3 class="section">2.6 詳細なテスト</h3>
 
- <p>次のコマンドを実行すると、正常にビルドできているかどうかを詳細にテストできます。
+<p>次のコマンドを実行すると、正常にビルドできているかどうかを詳細にテストできます。
 
 <pre class="example">  $ <samp><span class="command">make check</span></samp>
   194 / 194 tests passed. Details in /home/kazubito/yacasl2/test/integra
@@ -302,7 +340,7 @@ YACASL2の動作はCASL IIの仕様に準拠しているため、情報処理試
 </pre>
  <h3 class="section">2.7 環境変数<var>PATH</var>の設定</h3>
 
- <p>環境変数<var>PATH</var>にYACASL2のディレクトリを追加すると、どのディレクトリでも<samp><span class="command">casl2</span></samp>、<samp><span class="command">comet2</span></samp>、<samp><span class="command">dumpword</span></samp>を実行できます。
+<p>環境変数<var>PATH</var>にYACASL2のディレクトリを追加すると、どのディレクトリでも<samp><span class="command">casl2</span></samp>、<samp><span class="command">comet2</span></samp>、<samp><span class="command">dumpword</span></samp>を実行できます。
 
  <p>環境変数の設定方法は使っているシェルによって異なります。シェルは、次のコマンドで確認できます。
 
@@ -322,11 +360,11 @@ YACASL2の動作はCASL IIの仕様に準拠しているため、情報処理試
 
 <h2 class="chapter">3 YACASL2 の使い方</h2>
 
- <p>YACASL2 は、テキストファイルに記述されたCASLプログラムを処理します。以下の例で用いられるCASLプログラムのファイルは、テキストエディタなどで作成してください。また、インストールしたディレクトリの中にある<samp><span class="file">as</span></samp>ディレクトリからコピーして作成することもできます。
+<p>YACASL2 は、テキストファイルに記述されたCASLプログラムを処理します。以下の例で用いられるCASLプログラムのファイルは、テキストエディタなどで作成してください。また、インストールしたディレクトリの中にある<samp><span class="file">as</span></samp>ディレクトリからコピーして作成することもできます。
 
 <h3 class="section">3.1 実行結果の出力だけを表示</h3>
 
- <p>インストール時にコマンド実行の確認に使った<samp><span class="file">hello.casl</span></samp>は、次のような内容です。CASL IIのマクロ命令OUTは、文字列を出力します。
+<p>インストール時にコマンド実行の確認に使った<samp><span class="file">hello.casl</span></samp>は、次のような内容です。CASL IIのマクロ命令OUTは、文字列を出力します。
 
 <pre class="example">  $ <samp><span class="command">cat hello.casl</span></samp>
   MAIN     START
@@ -387,7 +425,7 @@ YACASL2の動作はCASL IIの仕様に準拠しているため、情報処理試
 </pre>
  <h3 class="section">3.2 アセンブル結果の確認</h3>
 
- <p>casl2の処理途中で行われるアセンブルの結果を表示するには、オプション<samp><span class="option">-a</span></samp>を指定します。また、ラベルとアドレスの対応表を表示するには、オプション<samp><span class="option">-l</span></samp>を指定します。
+<p>casl2の処理途中で行われるアセンブルの結果を表示するには、オプション<samp><span class="option">-a</span></samp>を指定します。また、ラベルとアドレスの対応表を表示するには、オプション<samp><span class="option">-l</span></samp>を指定します。
 
  <p>次のコマンドでは<samp><span class="file">hello.casl</span></samp>の、ラベルとアドレスの対応表と、アセンブル結果と、実行結果が表示されます。OUTはアセンブラ命令で複数の機械語命令で構成されているため、命令行1行に対して、複数行のコードが生成されます。
 
@@ -476,7 +514,7 @@ YACASL2の動作はCASL IIの仕様に準拠しているため、情報処理試
 
 <h3 class="section">3.3 実行時のレジスタとメモリを表示</h3>
 
- <p>YACASL2では実行中のCPUのレジスタとメモリの内容をそれぞれ、<samp><span class="option">-t</span></samp>と<samp><span class="option">-d</span></samp>を指定することで表示できます。
+<p>YACASL2では実行中のCPUのレジスタとメモリの内容をそれぞれ、<samp><span class="option">-t</span></samp>と<samp><span class="option">-d</span></samp>を指定することで表示できます。
 
  <p>また、<samp><span class="option">-M</span></samp>で、仮想マシンCOMET II のメモリ容量を語(16 ビット)単位で指定できます。小さいプログラムを実行するときは、メモリ容量を小さくすれば結果が見やすくなります。
 
@@ -537,7 +575,7 @@ YACASL2の動作はCASL IIの仕様に準拠しているため、情報処理試
 </pre>
  <h4 class="subsection">3.3.1 特定のレジスタを表示</h4>
 
- <p><samp><span class="file">addl.casl</span></samp>のレジスタやメモリの中で、実行中に値が変化しているのはGR1だけです。こうした場合は、<samp><span class="command">grep</span></samp>を使って表示される内容を絞り込むことで動作を検証しやすくなります。
+<p><samp><span class="file">addl.casl</span></samp>のレジスタやメモリの中で、実行中に値が変化しているのはGR1だけです。こうした場合は、<samp><span class="command">grep</span></samp>を使って表示される内容を絞り込むことで動作を検証しやすくなります。
 
 <pre class="example">  $ <samp><span class="command">casl2 -t addl.casl | grep 'GR1:'</span></samp>
   #0000: GR1:      0 = #0000 = 0000000000000000
@@ -560,7 +598,7 @@ YACASL2の動作はCASL IIの仕様に準拠しているため、情報処理試
 
 <h4 class="subsection">3.3.2 プログラム終了時の値を表示</h4>
 
- <p><samp><span class="command">grep</span></samp>と<samp><span class="command">tail</span></samp>を組み合わせれば、プログラム終了時の値を表示できます。
+<p><samp><span class="command">grep</span></samp>と<samp><span class="command">tail</span></samp>を組み合わせれば、プログラム終了時の値を表示できます。
 
 <pre class="example">  $ <samp><span class="command">casl2 -t addl.casl | grep 'GR1:' | tail -1</span></samp>
   #0004: GR1:      4 = #0004 = 0000000000000100
@@ -570,7 +608,7 @@ YACASL2の動作はCASL IIの仕様に準拠しているため、情報処理試
 </pre>
  <h4 class="subsection">3.3.3 プログラムのステップ数を表示</h4>
 
- <p><samp><span class="command">grep</span></samp>と<samp><span class="command">wc</span></samp>を組み合わせれば、プログラムのステップ数を表示できます。
+<p><samp><span class="command">grep</span></samp>と<samp><span class="command">wc</span></samp>を組み合わせれば、プログラムのステップ数を表示できます。
 
 <pre class="example">  $ <samp><span class="command">casl2 -t hello.casl | grep 'GR1:' | wc -l</span></samp>
   11
@@ -585,7 +623,7 @@ YACASL2の動作はCASL IIの仕様に準拠しているため、情報処理試
 </pre>
  <h3 class="section">3.4 アセンブルと実行を別に行う</h3>
 
- <p><samp><span class="command">casl2</span></samp>に<samp><span class="option">-O</span></samp><samp><span class="file">ファイル名</span></samp>を指定すると、オブジェクトファイルを作成できます。
+<p><samp><span class="command">casl2</span></samp>に<samp><span class="option">-O</span></samp><samp><span class="file">ファイル名</span></samp>を指定すると、オブジェクトファイルを作成できます。
 
 <pre class="example">  $ <samp><span class="command">casl2 -Ohello.o hello.casl</span></samp>
 </pre>
@@ -606,7 +644,7 @@ YACASL2の動作はCASL IIの仕様に準拠しているため、情報処理試
 </pre>
  <h3 class="section">3.5 1語の解析</h3>
 
- <p>CASL IIでは、1語（16ビット）を単位としてデータが処理されます。
+<p>CASL IIでは、1語（16ビット）を単位としてデータが処理されます。
 <samp><span class="command">dumpword</span></samp>は、指定した1語を10進数、16進数、2進数で表示します。
 
 <pre class="example">  $ <samp><span class="command">dumpword 72</span></samp>
@@ -614,7 +652,7 @@ YACASL2の動作はCASL IIの仕様に準拠しているため、情報処理試
 </pre>
  <p>マイナスの数は、次のように指定します。
 
-<pre class="example">  $ <samp><span class="command">dumpword</span></samp> <samp><span class="option">--</span></samp> <samp><span class="command">-72</span></samp>
+<pre class="example">  $ <samp><span class="command">dumpword -- -72</span></samp>
      -72:    -72 = #FFB8 = 1111111110111000
 </pre>
  <p>16進数は、次のように指定します。
@@ -624,23 +662,23 @@ YACASL2の動作はCASL IIの仕様に準拠しているため、情報処理試
 </pre>
  <h3 class="section">3.6 CASL2ライブラリの使用</h3>
 
- <p>YACASL2の<samp><span class="file">as/casl2lib</span></samp>ディレクトリには、CASL IIで記述されたライブラリファイルが格納されています。
+<p>YACASL2の<samp><span class="file">as/casl2lib</span></samp>ディレクトリには、CASL IIで記述されたライブラリファイルが格納されています。
 
  <p>このフォルダには、たとえば次のようなプログラムが含まれています。
 
      <dl>
-<dt>&lsquo;<samp><span class="samp">OUTL</span></samp>&rsquo;<dd><samp><span class="file">outl.casl</span></samp>。GR1に格納された値を、0〜65535の数値として出力します。
+<dt><samp><span class="option">OUTL</span></samp><dd><samp><span class="file">outl.casl</span></samp>。GR1に格納された値を、0〜65535の数値として出力します。
 
-     <br><dt>&lsquo;<samp><span class="samp">OUTA</span></samp>&rsquo;<dd><samp><span class="file">outa.casl</span></samp>。GR1に格納された値を、-32767〜32767の数値として出力します。
+     <br><dt><samp><span class="option">OUTA</span></samp><dd><samp><span class="file">outa.casl</span></samp>。GR1に格納された値を、-32767〜32767の数値として出力します。
 
-     <br><dt>&lsquo;<samp><span class="samp">MULL</span></samp>&rsquo;<dd><samp><span class="file">mull.casl</span></samp>。GR1とGR2に格納された値を0〜65535の整数と見なし、積をGR3に格納します。
+     <br><dt><samp><span class="option">MULL</span></samp><dd><samp><span class="file">mull.casl</span></samp>。GR1とGR2に格納された値を0〜65535の整数と見なし、積をGR3に格納します。
 
-     <br><dt>&lsquo;<samp><span class="samp">DIVL</span></samp>&rsquo;<dd><samp><span class="file">divl.casl</span></samp>。GR1とGR2に格納された値を0〜65535の整数と見なし、商をGR3、剰余をGR0に格納します。
+     <br><dt><samp><span class="option">DIVL</span></samp><dd><samp><span class="file">divl.casl</span></samp>。GR1とGR2に格納された値を0〜65535の整数と見なし、商をGR3、剰余をGR0に格納します。
 </dl>
 
 <h4 class="subsection">3.6.1 数値を出力する</h4>
 
- <p>3と1の和を求める<samp><span class="file">addl.casl</span></samp>で演算結果を出力するには、まず<samp><span class="file">addl.casl</span></samp>を編集します。CASL IIの<samp><span class="command">CALL</span></samp>命令で<samp><span class="command">OUTL</span></samp>を副プログラムとして呼び出すようにします。
+<p>3と1の和を求める<samp><span class="file">addl.casl</span></samp>で演算結果を出力するには、まず<samp><span class="file">addl.casl</span></samp>を編集します。CASL IIの<samp><span class="command">CALL</span></samp>命令で<samp><span class="command">OUTL</span></samp>を副プログラムとして呼び出すようにします。
 
 <pre class="example">  $ <samp><span class="command">cat addl_outl.casl</span></samp>
   MAIN    START
@@ -662,14 +700,14 @@ YACASL2の動作はCASL IIの仕様に準拠しているため、情報処理試
 
 <h2 class="chapter">4 YACASL2コマンドマニュアル</h2>
 
- <p><a name="index-YACASL2_00e3_0082_00b3_00e3_0083_009e_00e3_0083_00b3_00e3_0083_0089_00e3_0083_009e_00e3_0083_008b_00e3_0083_00a5_00e3_0082_00a2_00e3_0083_00ab-1"></a>
+<p><a name="index-YACASL2_00e3_0082_00b3_00e3_0083_009e_00e3_0083_00b3_00e3_0083_0089_00e3_0083_009e_00e3_0083_008b_00e3_0083_00a5_00e3_0082_00a2_00e3_0083_00ab-1"></a>
 YACASL2のコマンドとオプションについて解説します。
 
 <p><a name="casl2"></a>
 
 <h3 class="section">4.1 <samp><span class="command">casl2</span></samp></h3>
 
- <p><a name="index-casl2-2"></a><a name="index-casl2-3"></a>
+<p><a name="index-casl2-2"></a><a name="index-casl2-3"></a>
 <samp><span class="command">casl2</span></samp>は、引数として指定されたCASLファイルをアセンブルし、仮想マシンCOMET II上で実行します。CASLファイルは、アセンブラ言語CASL IIで記述されたテキストファイルです。引数が指定されない場合は、エラーメッセージを表示して終了します。
 
 <pre class="example">  $ <samp><span class="command">casl2 hello.casl</span></samp>
@@ -680,41 +718,41 @@ YACASL2のコマンドとオプションについて解説します。
 </pre>
  <h4 class="unnumberedsubsec">オプション</h4>
 
- <p><samp><span class="command">casl2</span></samp>は、次のオプションを指定できます。
+<p><samp><span class="command">casl2</span></samp>は、次のオプションを指定できます。
 
      <dl>
-<dt>&lsquo;<samp><span class="samp">-s</span></samp>&rsquo;<dt>&lsquo;<samp><span class="samp">--source</span></samp>&rsquo;<dd>CASLファイルの内容を表示します。
+<dt><samp><span class="option">-s</span></samp><dt><samp><span class="option">--source</span></samp><dd>CASLファイルの内容を表示します。
 
-     <br><dt>&lsquo;<samp><span class="samp">-l</span></samp>&rsquo;<dt>&lsquo;<samp><span class="samp">--label</span></samp>&rsquo;<dd>ラベルの一覧を表示し、ほかの作業を続行します。
+     <br><dt><samp><span class="option">-l</span></samp><dt><samp><span class="option">--label</span></samp><dd>ラベルの一覧を表示し、ほかの作業を続行します。
 
-     <br><dt>&lsquo;<samp><span class="samp">-L</span></samp>&rsquo;<dt>&lsquo;<samp><span class="samp">--labelonly</span></samp>&rsquo;<dd>ラベルの一覧を表示して終了します。
+     <br><dt><samp><span class="option">-L</span></samp><dt><samp><span class="option">--labelonly</span></samp><dd>ラベルの一覧を表示して終了します。
 
-     <br><dt>&lsquo;<samp><span class="samp">-a</span></samp>&rsquo;<dt>&lsquo;<samp><span class="samp">--assembledetail</span></samp>&rsquo;<dd>アセンブル詳細結果を表示し、ほかの作業を続行します。
+     <br><dt><samp><span class="option">-a</span></samp><dt><samp><span class="option">--assembledetail</span></samp><dd>アセンブル詳細結果を表示し、ほかの作業を続行します。
 
-     <br><dt>&lsquo;<samp><span class="samp">-A</span></samp>&rsquo;<dt>&lsquo;<samp><span class="samp">--show-all</span></samp>&rsquo;<dd>アセンブル詳細結果を表示して終了します。
+     <br><dt><samp><span class="option">-A</span></samp><dt><samp><span class="option">--show-all</span></samp><dd>アセンブル詳細結果を表示して終了します。
 
-     <br><dt>&lsquo;<samp><span class="samp">-o&lt;OBJECTFILE&gt;</span></samp>&rsquo;<dt>&lsquo;<samp><span class="samp">--assembleout</span></samp>&rsquo;<dd>アセンブル結果をオブジェクトファイル<samp><span class="file">&lt;OBJECTFILE&gt;</span></samp>に出力し、ほかの作業を続行します。出力されたオブジェクトファイルは、<samp><span class="command">comet2</span></samp>で実行できます。オブジェクトファイルを指定しない場合、出力先は<samp><span class="file">a.o</span></samp>です。オブジェクトファイルは1つだけ指定できます。
+     <br><dt><samp><span class="option">-o&lt;OBJECTFILE&gt;</span></samp><dt><samp><span class="option">--assembleout</span></samp><dd>アセンブル結果をオブジェクトファイル<samp><span class="file">&lt;OBJECTFILE&gt;</span></samp>に出力し、ほかの作業を続行します。出力されたオブジェクトファイルは、<samp><span class="command">comet2</span></samp>で実行できます。オブジェクトファイルを指定しない場合、出力先は<samp><span class="file">a.o</span></samp>です。オブジェクトファイルは1つだけ指定できます。
 
-     <br><dt>&lsquo;<samp><span class="samp">-O&lt;OBJECTFILE&gt;</span></samp>&rsquo;<dt>&lsquo;<samp><span class="samp">--assembleoutonly</span></samp>&rsquo;<dd>アセンブル結果をオブジェクトファイル<samp><span class="file">&lt;OBJECTFILE&gt;</span></samp>に出力し、終了します。出力されたオブジェクトファイルは、<samp><span class="command">comet2</span></samp>で実行できます。オブジェクトファイルを指定しない場合、出力先は<samp><span class="file">a.o</span></samp>です。オブジェクトファイルは1つだけ指定できます。
+     <br><dt><samp><span class="option">-O&lt;OBJECTFILE&gt;</span></samp><dt><samp><span class="option">--assembleoutonly</span></samp><dd>アセンブル結果をオブジェクトファイル<samp><span class="file">&lt;OBJECTFILE&gt;</span></samp>に出力し、終了します。出力されたオブジェクトファイルは、<samp><span class="command">comet2</span></samp>で実行できます。オブジェクトファイルを指定しない場合、出力先は<samp><span class="file">a.o</span></samp>です。オブジェクトファイルは1つだけ指定できます。
 
-     <br><dt>&lsquo;<samp><span class="samp">-t</span></samp>&rsquo;<dt>&lsquo;<samp><span class="samp">--trace</span></samp>&rsquo;<dt>&lsquo;<samp><span class="samp">--tracearithmetic</span></samp>&rsquo;<dd>実行時のレジスタをトレースします。レジスタには、GR0〜GR7という8個の汎用レジスタと、SP（スタックポインタ）、PR（プログラムレジスタ）、FR（フラグレジスタ）があります。レジストリの内容は、-32,768〜32,767の範囲の整数、#0000〜#FFFFの範囲の16進数、2進数で表示されます。文字の組に該当する場合は、「 = 」のうしろに文字が表示されます。-32768〜32767の範囲の整数を表示するので、算術演算の結果を確認する場合に使えます。
+     <br><dt><samp><span class="option">-t</span></samp><dt><samp><span class="option">--trace</span></samp><dt><samp><span class="option">--tracearithmetic</span></samp><dd>実行時のレジスタをトレースします。レジスタには、GR0〜GR7という8個の汎用レジスタと、SP（スタックポインタ）、PR（プログラムレジスタ）、FR（フラグレジスタ）があります。レジストリの内容は、-32,768〜32,767の範囲の整数、#0000〜#FFFFの範囲の16進数、2進数で表示されます。文字の組に該当する場合は、「 = 」のうしろに文字が表示されます。-32768〜32767の範囲の整数を表示するので、算術演算の結果を確認する場合に使えます。
 
-     <br><dt>&lsquo;<samp><span class="samp">-T</span></samp>&rsquo;<dt>&lsquo;<samp><span class="samp">--tracelogical</span></samp>&rsquo;<dd><samp><span class="option">-t</span></samp>と同じく、実行時のレジスタをトレースします。<samp><span class="option">-t</span></samp>と異なり0〜65,535の範囲の整数を表示するので、論理演算の結果を確認する場合に使えます。
+     <br><dt><samp><span class="option">-T</span></samp><dt><samp><span class="option">--tracelogical</span></samp><dd><samp><span class="option">-t</span></samp>と同じく、実行時のレジスタをトレースします。<samp><span class="option">-t</span></samp>と異なり0〜65,535の範囲の整数を表示するので、論理演算の結果を確認する場合に使えます。
 
-     <br><dt>&lsquo;<samp><span class="samp">-d</span></samp>&rsquo;<dt>&lsquo;<samp><span class="samp">--dump</span></samp>&rsquo;<dd>メモリの内容をすべて表示します。
+     <br><dt><samp><span class="option">-d</span></samp><dt><samp><span class="option">--dump</span></samp><dd>メモリの内容をすべて表示します。
 
-     <br><dt>&lsquo;<samp><span class="samp">-M &lt;MEMORYSIZE&gt;</span></samp>&rsquo;<dt>&lsquo;<samp><span class="samp">--memorysize &lt;MEMORYSIZE&gt;</span></samp>&rsquo;<dd>アセンブルおよび実行時のメモリサイズ<samp><span class="option">&lt;MEMORYSIZE&gt;</span></samp>を0〜65,535の範囲で指定します。指定しない場合、メモリサイズは512です。
+     <br><dt><samp><span class="option">-M &lt;MEMORYSIZE&gt;</span></samp><dt><samp><span class="option">--memorysize &lt;MEMORYSIZE&gt;</span></samp><dd>アセンブルおよび実行時のメモリサイズ<samp><span class="option">&lt;MEMORYSIZE&gt;</span></samp>を0〜65,535の範囲で指定します。指定しない場合、メモリサイズは512です。
 
-     <br><dt>&lsquo;<samp><span class="samp">-C &lt;CLOCKS&gt;</span></samp>&rsquo;<dt>&lsquo;<samp><span class="samp">--clocks &lt;CLOCKS&gt;</span></samp>&rsquo;<dd>実行時のクロック周波数<samp><span class="option">&lt;CLOCKS&gt;</span></samp>を0より大きい整数で指定します。指定しない場合、クロック周波数は5000000です。
+     <br><dt><samp><span class="option">-C &lt;CLOCKS&gt;</span></samp><dt><samp><span class="option">--clocks &lt;CLOCKS&gt;</span></samp><dd>実行時のクロック周波数<samp><span class="option">&lt;CLOCKS&gt;</span></samp>を0より大きい整数で指定します。指定しない場合、クロック周波数は5000000です。
 
-     <br><dt>&lsquo;<samp><span class="samp">-h</span></samp>&rsquo;<dt>&lsquo;<samp><span class="samp">--help</span></samp>&rsquo;<dd><samp><span class="command">casl2</span></samp>の使用方法を表示して終了します。
+     <br><dt><samp><span class="option">-h</span></samp><dt><samp><span class="option">--help</span></samp><dd><samp><span class="command">casl2</span></samp>の使用方法を表示して終了します。
 </dl>
 
 <p><a name="comet2"></a>
 
 <h3 class="section">4.2 <samp><span class="command">comet2</span></samp></h3>
 
- <p><a name="index-comet2-4"></a><a name="index-comet2-5"></a>
+<p><a name="index-comet2-4"></a><a name="index-comet2-5"></a>
 <samp><span class="command">comet2</span></samp>は、引数として指定されたオブジェクトファイルを仮想マシンCOMET II上で実行します。オブジェクトファイルは、<samp><span class="command">casl</span></samp>に<samp><span class="option">-o</span></samp>または<samp><span class="option">-O</span></samp>を指定して出力します。
 
 <pre class="example">  $ <samp><span class="command">comet2 hello.o</span></samp>
@@ -723,27 +761,27 @@ YACASL2のコマンドとオプションについて解説します。
 
 <h4 class="unnumberedsubsec">オプション</h4>
 
- <p><samp><span class="command">comet2</span></samp>は、次のオプションを指定できます。
+<p><samp><span class="command">comet2</span></samp>は、次のオプションを指定できます。
 
      <dl>
-<dt>&lsquo;<samp><span class="samp">-t</span></samp>&rsquo;<dt>&lsquo;<samp><span class="samp">--trace</span></samp>&rsquo;<dt>&lsquo;<samp><span class="samp">--tracearithmetic</span></samp>&rsquo;<dd>実行時のレジスタをトレースします。レジスタには、GR0〜GR7という8個の汎用レジスタと、SP（スタックポインタ）、PR（プログラムレジスタ）、FR（フラグレジスタ）があります。レジストリの内容は、-32,768〜32,767の範囲の整数、#0000〜#FFFFの範囲の16進数、2進数で表示されます。文字の組に該当する場合は、「 = 」のうしろに文字が表示されます。-32768〜32767の範囲の整数が表示されるので、算術演算の結果を確認する場合に使えます。
+<dt><samp><span class="option">-t</span></samp><dt><samp><span class="option">--trace</span></samp><dt><samp><span class="option">--tracearithmetic</span></samp><dd>実行時のレジスタをトレースします。レジスタには、GR0〜GR7という8個の汎用レジスタと、SP（スタックポインタ）、PR（プログラムレジスタ）、FR（フラグレジスタ）があります。レジストリの内容は、-32,768〜32,767の範囲の整数、#0000〜#FFFFの範囲の16進数、2進数で表示されます。文字の組に該当する場合は、「 = 」のうしろに文字が表示されます。-32768〜32767の範囲の整数が表示されるので、算術演算の結果を確認する場合に使えます。
 
-     <br><dt>&lsquo;<samp><span class="samp">-T</span></samp>&rsquo;<dt>&lsquo;<samp><span class="samp">--tracelogical</span></samp>&rsquo;<dd><samp><span class="option">-t</span></samp>と同じく、実行時のレジスタをトレースします。<samp><span class="option">-t</span></samp>と異なり0〜65,535の範囲の整数を表示するので、論理演算の結果を確認する場合に使えます。
+     <br><dt><samp><span class="option">-T</span></samp><dt><samp><span class="option">--tracelogical</span></samp><dd><samp><span class="option">-t</span></samp>と同じく、実行時のレジスタをトレースします。<samp><span class="option">-t</span></samp>と異なり0〜65,535の範囲の整数を表示するので、論理演算の結果を確認する場合に使えます。
 
-     <br><dt>&lsquo;<samp><span class="samp">-d</span></samp>&rsquo;<dt>&lsquo;<samp><span class="samp">--dump</span></samp>&rsquo;<dd>メモリの内容をすべて表示します。
+     <br><dt><samp><span class="option">-d</span></samp><dt><samp><span class="option">--dump</span></samp><dd>メモリの内容をすべて表示します。
 
-     <br><dt>&lsquo;<samp><span class="samp">-M &lt;MEMORYSIZE&gt;</span></samp>&rsquo;<dt>&lsquo;<samp><span class="samp">--memorysize &lt;MEMORYSIZE&gt;</span></samp>&rsquo;<dd>実行時のメモリサイズ<samp><span class="option">&lt;MEMORYSIZE&gt;</span></samp>を0〜65,535の範囲で指定します。指定しない場合、メモリサイズは512です。
+     <br><dt><samp><span class="option">-M &lt;MEMORYSIZE&gt;</span></samp><dt><samp><span class="option">--memorysize &lt;MEMORYSIZE&gt;</span></samp><dd>実行時のメモリサイズ<samp><span class="option">&lt;MEMORYSIZE&gt;</span></samp>を0〜65,535の範囲で指定します。指定しない場合、メモリサイズは512です。
 
-     <br><dt>&lsquo;<samp><span class="samp">-C &lt;CLOCKS&gt;</span></samp>&rsquo;<dt>&lsquo;<samp><span class="samp">--clocks &lt;CLOCKS&gt;</span></samp>&rsquo;<dd>実行時のクロック周波数<samp><span class="option">&lt;CLOCKS&gt;</span></samp>を0より大きい整数で指定します。指定しない場合、クロック周波数は5,000,000です。
+     <br><dt><samp><span class="option">-C &lt;CLOCKS&gt;</span></samp><dt><samp><span class="option">--clocks &lt;CLOCKS&gt;</span></samp><dd>実行時のクロック周波数<samp><span class="option">&lt;CLOCKS&gt;</span></samp>を0より大きい整数で指定します。指定しない場合、クロック周波数は5,000,000です。
 
-     <br><dt>&lsquo;<samp><span class="samp">-h</span></samp>&rsquo;<dt>&lsquo;<samp><span class="samp">--help</span></samp>&rsquo;<dd><samp><span class="command">comet2</span></samp>の使用方法を表示して終了します。
+     <br><dt><samp><span class="option">-h</span></samp><dt><samp><span class="option">--help</span></samp><dd><samp><span class="command">comet2</span></samp>の使用方法を表示して終了します。
 </dl>
 
 <p><a name="dumpword"></a>
 
 <h3 class="section">4.3 <samp><span class="command">dumpword</span></samp></h3>
 
- <p><a name="index-dumpword-6"></a><a name="index-dumpword-7"></a>
+<p><a name="index-dumpword-6"></a><a name="index-dumpword-7"></a>
 <samp><span class="command">dumpword</span></samp>は、引数として指定された数値を、整数、#0000〜#FFFFの範囲の16進数、2進数で表示します。文字の組に該当する場合は、「 = 」のうしろに文字が表示されます。引数は、10進数または先頭に「#」の付いた16進数で指定します。表示される整数は、オプションにより-32,768〜32,767または0〜65,535の範囲です。オプションなしの場合は、-32,768〜32,767です。
 
 <pre class="example">  $ <samp><span class="command">dumpword 10</span></samp>
@@ -752,15 +790,310 @@ YACASL2のコマンドとオプションについて解説します。
 
 <h4 class="unnumberedsubsec">オプション</h4>
 
- <p><samp><span class="command">dumpword</span></samp>は、次のオプションを指定できます。
+<p><samp><span class="command">dumpword</span></samp>は、次のオプションを指定できます。
 
      <dl>
-<dt>&lsquo;<samp><span class="samp">-a</span></samp>&rsquo;<dt>&lsquo;<samp><span class="samp">--arithmetic</span></samp>&rsquo;<dd>出力される整数の範囲を-32,768〜32,767にします。オプションなしの場合と同じです。
+<dt><samp><span class="option">-a</span></samp><dt><samp><span class="option">--arithmetic</span></samp><dd>出力される整数の範囲を-32,768〜32,767にします。オプションなしの場合と同じです。
 
-     <br><dt>&lsquo;<samp><span class="samp">-l</span></samp>&rsquo;<dt>&lsquo;<samp><span class="samp">--logical</span></samp>&rsquo;<dd>出力される整数の範囲を0〜65,535にします。
+     <br><dt><samp><span class="option">-l</span></samp><dt><samp><span class="option">--logical</span></samp><dd>出力される整数の範囲を0〜65,535にします。
 
-     <br><dt>&lsquo;<samp><span class="samp">-h</span></samp>&rsquo;<dt>&lsquo;<samp><span class="samp">--help</span></samp>&rsquo;<dd><samp><span class="command">dumpword</span></samp>の使用方法を表示して終了します。
+     <br><dt><samp><span class="option">-h</span></samp><dt><samp><span class="option">--help</span></samp><dd><samp><span class="command">dumpword</span></samp>の使用方法を表示して終了します。
 </dl>
+
+<p><a name="CASL2LIB%e3%83%9e%e3%83%8b%e3%83%a5%e3%82%a2%e3%83%ab"></a>
+<a name="CASL2LIB_00e3_0083_009e_00e3_0083_008b_00e3_0083_00a5_00e3_0082_00a2_00e3_0083_00ab"></a>
+
+<h2 class="chapter">5 CASL2LIBマニュアル</h2>
+
+<p><a name="ABS"></a>
+
+<h3 class="section">5.1 <samp><span class="command">ABS</span></samp> - <samp><span class="file">abs.casl</span></samp></h3>
+
+<p>入力された整数を絶対値に変換して出力
+
+<h4 class="unnumberedsubsec">入力</h4>
+
+     <dl>
+<dt><var>GR1</var><dd>-32768〜32767の整数
+</dl>
+
+<h4 class="unnumberedsubsec">出力</h4>
+
+     <dl>
+<dt><var>GR1</var><dd>入力された整数の絶対値
+
+     <br><dt><var>OF</var><dd>入力されたGR1が-32768の場合、1
+
+     <br><dt><var>SF</var><dd>入力されたGR1が負数(-32767〜-1)の場合、1
+</dl>
+
+<h4 class="unnumberedsubsec">依存する副プログラム</h4>
+
+<p>なし
+
+<h4 class="unnumberedsubsec">使用例</h4>
+
+<pre class="example"><pre class="verbatim">  ;;; ABSを呼び出す
+  MAIN    START
+          LAD     GR2,0
+  MLOOP   CPA     GR2,MLEN
+          JZE     MFIN
+          LD      GR1,MVAL,GR2
+          CALL    OUTA
+          CALL    ABS
+          JOV     PUTOV
+          JMI     PUTM
+          OUT     PLUS,=1
+          JUMP    PUTD
+  PUTM    OUT     MINUS,=1
+          JUMP    PUTD
+  PUTOV   OUT     OV,=2
+  PUTD    CALL    OUTA
+          OUT     SEP,MLEN
+          LAD     GR2,1,GR2
+          JUMP    MLOOP
+  MFIN    RET
+  MVAL    DC      12,-12,1,-1,32767,-32767,0,-32768
+  MLEN    DC      8
+  SEP     DC      '--------'
+  PLUS    DC      '+'
+  MINUS   DC      '-'
+  OV      DC      'OV'
+          END
+</pre></pre>
+<pre class="example"><pre class="verbatim">  ../../../../casl2 abs.casl ../../../../as/casl2lib/outa.casl
+  12
+  +
+  12
+  --------
+  -12
+  -
+  12
+  --------
+  1
+  +
+  1
+  --------
+  -1
+  -
+  1
+  --------
+  32767
+  +
+  32767
+  --------
+  -32767
+  -
+  32767
+  --------
+  0
+  +
+  0
+  --------
+  -32768
+  OV
+  -32768
+  --------
+</pre></pre>
+ <p><a name="ADDL32"></a>
+
+<h3 class="section">5.2 <samp><span class="command">ADDL32</span></samp> - <samp><span class="file">addl32.casl</span></samp></h3>
+
+<p>32ビットの値を、連続する2語の領域に格納
+
+<h4 class="unnumberedsubsec">入力</h4>
+
+     <dl>
+<dt><var>GR1</var><dd>32ビット値1の先頭アドレス
+
+     <br><dt><var>GR2</var><dd>32ビット値2の先頭アドレス
+</dl>
+
+<h4 class="unnumberedsubsec">出力</h4>
+
+     <dl>
+<dt><var>GR0</var><dd>和の先頭アドレス
+
+     <br><dt><var>OF</var><dd>上位アドレスでオーバーフローした場合、1
+
+     <br><dt><var>SF</var><dd>和が負数(-32767〜-1)の場合、1
+
+     <br><dt><var>ZF</var><dd>和が0の場合、1
+</dl>
+
+<h4 class="unnumberedsubsec">使用例</h4>
+
+<pre class="example"><pre class="verbatim">  MAIN    START
+          LAD     GR1,A
+          LAD     GR2,B
+          CALL    ADDL32
+          LD      GR2,GR0
+          LD      GR1,1,GR2
+          CALL    OUTL
+          LD      GR1,0,GR2
+          CALL    OUTL
+          RET
+  A       DC      6,10
+  B       DC      2,65530
+          END
+</pre></pre>
+<pre class="example"><pre class="verbatim">  ../../../../casl2 addl32_1.casl ../../../../as/casl2lib/addl32.casl ../../../../as/casl2lib/outl.casl
+  4
+  9
+</pre></pre>
+ <h4 class="unnumberedsubsec">依存する副プログラム</h4>
+
+<p>なし
+
+<p><a name="DIVA"></a>
+
+<h3 class="section">5.3 <samp><span class="command">DIVA</span></samp> -<samp><span class="file">diva.casl</span></samp></h3>
+
+<p>-32,767〜32,767の範囲にある整数の割算（筆算方式）を行う
+
+<h4 class="unnumberedsubsec">入力</h4>
+
+     <dl>
+<dt><var>GR1</var><dd>被除数
+
+     <br><dt><var>GR2</var><dd>除数
+</dl>
+
+<h4 class="unnumberedsubsec">出力</h4>
+
+     <dl>
+<dt><var>GR0</var><dd>商
+
+     <br><dt><var>GR3</var><dd>剰余
+
+     <br><dt><var>OF</var><dd>除数が0の場合、1
+
+     <br><dt><var>SF</var><dd>商が負数(-32767〜-1)の場合、1
+
+     <br><dt><var>ZF</var><dd>商が0の場合、1
+</dl>
+
+<h4 class="unnumberedsubsec">依存する副プログラム</h4>
+
+     <ul>
+<li><samp><span class="command">DIVL</span></samp>
+</ul>
+
+<!-- @unnumberedsubsec 使用例 -->
+<!-- @iftex -->
+<!-- @cartouche -->
+<!-- @end iftex -->
+<!-- @example -->
+<!-- @verbatiminclude ../as/casl2lib/test/diva/diva.casl -->
+<!-- @end example -->
+<!-- @iftex -->
+<!-- @end cartouche -->
+<!-- @end iftex -->
+<!-- @iftex -->
+<!-- @cartouche -->
+<!-- @end iftex -->
+<!-- @example -->
+<!-- @verbatiminclude ../as/casl2lib/test/diva/0.txt -->
+<!-- @end example -->
+<!-- @iftex -->
+<!-- @end cartouche -->
+<!-- @end iftex -->
+<p><a name="DIVL"></a>
+
+<h3 class="section">5.4 <samp><span class="command">DIVL</span></samp> - <samp><span class="file">divl.casl</span></samp></h3>
+
+<p>0〜65,535の範囲にある整数の割算（筆算方式）を行う
+
+<h4 class="unnumberedsubsec">入力</h4>
+
+     <dl>
+<dt><var>GR1</var><dd>被除数
+
+     <br><dt><var>GR2</var><dd>除数
+</dl>
+
+<h4 class="unnumberedsubsec">出力</h4>
+
+     <dl>
+<dt><var>GR0</var><dd>商
+
+     <br><dt><var>GR3</var><dd>剰余
+
+     <br><dt><var>OF</var><dd>除数が0の場合、1
+
+     <br><dt><var>SF</var><dd>商が32,768〜65535の場合、1
+
+     <br><dt><var>ZF</var><dd>商が0の場合、1
+</dl>
+
+<h4 class="unnumberedsubsec">依存する副プログラム</h4>
+
+<p>なし
+
+<h4 class="unnumberedsubsec">使用例</h4>
+
+<pre class="example"><pre class="verbatim">  MAIN    START
+  BEGIN   LAD     GR1,101
+          LAD     GR2,10
+          CALL    DIVL
+          RET
+          END
+</pre></pre>
+<p><a name="INL"></a>
+
+<h3 class="section">5.5 <samp><span class="command">INL</span></samp> - <samp><span class="file">inl.casl</span></samp></h3>
+
+<p><a name="L2STR"></a>
+
+<h3 class="section">5.6 <samp><span class="command">L2STR</span></samp> - <samp><span class="file">l2str.casl</span></samp></h3>
+
+<p><a name="MAX"></a>
+
+<h3 class="section">5.7 <samp><span class="command">MAX</span></samp> - <samp><span class="file">max.casl</span></samp></h3>
+
+<p><a name="MINIM"></a>
+
+<h3 class="section">5.8 <samp><span class="command">MINIM</span></samp> - <samp><span class="file">minim.casl</span></samp></h3>
+
+<p><a name="MULA"></a>
+
+<h3 class="section">5.9 <samp><span class="command">MULA</span></samp> - <samp><span class="file">mula.casl</span></samp></h3>
+
+<p><a name="MULL"></a>
+
+<h3 class="section">5.10 <samp><span class="command">MULL</span></samp> - <samp><span class="file">mull.casl</span></samp></h3>
+
+<p><a name="OUTA"></a>
+
+<h3 class="section">5.11 <samp><span class="command">OUTA</span></samp> - <samp><span class="file">outa.casl</span></samp></h3>
+
+<p><a name="OUTB"></a>
+
+<h3 class="section">5.12 <samp><span class="command">OUTB</span></samp> - <samp><span class="file">outb.casl</span></samp></h3>
+
+<p><a name="OUTD_Q15"></a>
+<a name="OUTD_005fQ15"></a>
+
+<h3 class="section">5.13 <samp><span class="command">OUTD_Q15</span></samp> - <samp><span class="file">outd_q15.casl</span></samp></h3>
+
+<p><a name="OUTL"></a>
+
+<h3 class="section">5.14 <samp><span class="command">OUTL</span></samp> - <samp><span class="file">outl.casl</span></samp></h3>
+
+<p><a name="REV"></a>
+
+<h3 class="section">5.15 <samp><span class="command">REV</span></samp> - <samp><span class="file">rev.casl</span></samp></h3>
+
+<p><a name="STR2L"></a>
+
+<h3 class="section">5.16 <samp><span class="command">STR2L</span></samp> - <samp><span class="file">str2l.casl</span></samp></h3>
 
 </body></html>
 
+<!--
+
+Local Variables:
+coding: utf-8
+End:
+
+-->

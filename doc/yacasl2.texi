@@ -4,8 +4,9 @@
 @documentlanguage ja_JP
 @end ifnottex
 @setfilename yacasl2.info
+@documentencoding UTF-8
 @settitle YACASL2 - Linux上のCASL II処理系
-@firstparagraphindent insert
+@firstparagraphindent none
 @paragraphindent 1
 @c %**end of header
 
@@ -36,6 +37,7 @@ Copyright @copyright{} 2010 j8takagi
 * YACASL2のインストール::
 * YACASL2の使い方::
 * YACASL2コマンドマニュアル::
+* CASL2LIBマニュアル::
 @end menu
 
 @contents
@@ -101,13 +103,13 @@ YACASL2をインストールするには、Linux上で次の作業をします�
 @enumerate
 
 @item
-@file{yacasl2.tar.gz}のダウンロード
+YACASL2ファイルのダウンロード
 
 @item
-@file{yacasl2.tar.gz}の検証
+YACASL2ファイルの検証
 
 @item
-@file{yacasl2.tar.gz}の展開
+YACASL2ファイルの展開
 
 @item
 @command{casl2}、@command{comet2}、@command{dumpword}のビルド
@@ -122,25 +124,12 @@ YACASL2をインストールするには、Linux上で次の作業をします�
 環境変数@var{PATH}の設定
 @end enumerate
 
-@section @file{yacasl2.tar.gz}のダウンロード
-（詳細未定）
+@section YACASL2ファイルのダウンロード
+@uref{http://github.com/j8takagi/YACASL2, GitHub/j8takagi/YACASL2}の@uref{http://github.com/j8takagi/YACASL2/downloads, ダウンロードページ}から最新版のtgzファイルをダウンロードします（2010年3月6日現在、@var{v0.1}の@file{j8takagi-YACASL2-6323ce4.tar.gz}）。
 
-@iftex
-@cartouche
-@end iftex
-@example
-$ @command{cd}
-$ @command{wget somewhere/yacasl2.tar.gz}
-$ @command{wget somewhere/yacasl2.tar.gz.md5sum}
-@end example
-@iftex
-@end cartouche
-@end iftex
+続けて、対応する@file{md5sum}フィルをダウンロードします（2010年3月6日現在、@file{j8takagi-YACASL2-6323ce4.tar.gz.md5sum}）。
 
-@section @file{yacasl2.tar.gz}の検証
-
-（PGPを使った検証も導入予定）
-
+@section YACASL2ファイルの検証
 ダウンロードが完了したら、@command{md5sum}と@command{diff}で正しくファイルがダウンロードができているかを検証します。
 
 @iftex
@@ -154,9 +143,9 @@ Files yacasl2.tar.gz.md5sum and - are identical
 @end cartouche
 @end iftex
 
-@section @file{yacasl2.tar.gz}の展開
+@section YACASL2ファイルの展開
 
-@file{yacasl2.tar.gz}をダウンロードしたら、次のコマンドで展開します。
+YACASL2ファイルをダウンロードしたら、次のコマンドで展開します。
 
 @iftex
 @cartouche
@@ -734,7 +723,7 @@ $ @command{dumpword 72}
 @cartouche
 @end iftex
 @example
-$ @command{dumpword} @option{--} @command{-72}
+$ @command{dumpword -- -72}
    -72:    -72 = #FFB8 = 1111111110111000
 @end example
 @iftex
@@ -760,7 +749,7 @@ YACASL2の@file{as/casl2lib}ディレクトリには、CASL IIで記述された
 
 このフォルダには、たとえば次のようなプログラムが含まれています。
 
-@table @samp
+@table @option
 @item OUTL
 @file{outl.casl}。GR1に格納された値を、0〜65535の数値として出力します。
 
@@ -809,7 +798,7 @@ $ @command{casl2 addl_outl.casl ~/yacasl2/as/casl2lib/outl.casl}
 @end cartouche
 @end iftex
 
-@node YACASL2コマンドマニュアル,, YACASL2の使い方, Top
+@node YACASL2コマンドマニュアル,CASL2LIBマニュアル,YACASL2の使い方,TOP
 @chapter YACASL2コマンドマニュアル
 
 @cindex YACASL2コマンドマニュアル
@@ -844,7 +833,7 @@ $ @command{casl2 addl_outl.casl ~/yacasl2/as/casl2lib/outl.casl}
 
 @command{casl2}は、次のオプションを指定できます。
 
-@table @samp
+@table @option
 @item -s
 @itemx --source
 CASLファイルの内容を表示します。
@@ -917,7 +906,7 @@ $ @command{comet2 hello.o}
 
 @command{comet2}は、次のオプションを指定できます。
 
-@table @samp
+@table @option
 
 @item -t
 @itemx --trace
@@ -963,7 +952,7 @@ $ @command{dumpword 10}
 
 @command{dumpword}は、次のオプションを指定できます。
 
-@table @samp
+@table @option
 
 @item -a
 @itemx --arithmetic
@@ -977,5 +966,265 @@ $ @command{dumpword 10}
 @itemx --help
 @command{dumpword}の使用方法を表示して終了します。
 @end table
+
+@node CASL2LIBマニュアル,,YACASL2コマンドマニュアル,TOP
+@chapter CASL2LIBマニュアル
+
+@menu
+* ABS::
+* ADDL32::
+* DIVA::
+* DIVL::
+* INL::
+* L2STR::
+* MAX::
+* MINIM::
+* MULA::
+* MULL::
+* OUTA::
+* OUTB::
+* OUTD_Q15::
+* OUTL::
+* REV::
+* STR2L::
+@end menu
+
+@node ABS
+@section @command{ABS} - @file{abs.casl}
+入力された整数を絶対値に変換して出力
+
+@unnumberedsubsec 入力
+@table @var
+
+@item GR1
+-32768〜32767の整数
+@end table
+
+@unnumberedsubsec 出力
+@table @var
+
+@item GR1
+入力された整数の絶対値
+
+@item OF
+入力されたGR1が-32768の場合、1
+
+@item SF
+入力されたGR1が負数(-32767〜-1)の場合、1
+@end table
+
+@unnumberedsubsec 依存する副プログラム
+なし
+
+@unnumberedsubsec 使用例
+@iftex
+@cartouche
+@end iftex
+@example
+@verbatiminclude ../as/casl2lib/test/abs/abs.casl
+@end example
+@iftex
+@end cartouche
+@end iftex
+
+@iftex
+@cartouche
+@end iftex
+@example
+@verbatiminclude ../as/casl2lib/test/abs/0.txt
+@end example
+@iftex
+@end cartouche
+@end iftex
+
+@node ADDL32
+@section @command{ADDL32} - @file{addl32.casl}
+32ビットの値を、連続する2語の領域に格納
+
+@unnumberedsubsec 入力
+@table @var
+@item GR1
+32ビット値1の先頭アドレス
+
+@item GR2
+32ビット値2の先頭アドレス
+@end table
+
+@unnumberedsubsec 出力
+@table @var
+@item GR0
+和の先頭アドレス
+
+@item OF
+上位アドレスでオーバーフローした場合、1
+
+@item SF
+和が負数(-32767〜-1)の場合、1
+
+@item ZF
+和が0の場合、1
+@end table
+
+@unnumberedsubsec 使用例
+@iftex
+@cartouche
+@end iftex
+@example
+@verbatiminclude ../as/casl2lib/test/addl32/addl32_1.casl
+@end example
+@iftex
+@end cartouche
+@end iftex
+
+@iftex
+@cartouche
+@end iftex
+@example
+4
+9
+@iftex
+@end cartouche
+@end iftex
+
+@unnumberedsubsec 依存する副プログラム
+なし
+
+@node DIVA
+@section @command{DIVA} -@file{diva.casl}
+-32,767〜32,767の範囲にある整数の割算（筆算方式）を行う
+
+@unnumberedsubsec 入力
+@table @var
+@item GR1
+被除数
+
+@item GR2
+除数
+@end table
+
+@unnumberedsubsec 出力
+@table @var
+@item GR0
+商
+
+@item GR3
+剰余
+
+@item OF
+除数が0の場合、1
+
+@item SF
+商が負数(-32767〜-1)の場合、1
+
+@item ZF
+商が0の場合、1
+@end table
+
+@unnumberedsubsec 依存する副プログラム
+@itemize
+@item @command{DIVL}
+@end itemize
+
+@c @unnumberedsubsec 使用例
+@c @iftex
+@c @cartouche
+@c @end iftex
+@c @example
+@c @verbatiminclude ../as/casl2lib/test/diva/diva.casl
+@c @end example
+@c @iftex
+@c @end cartouche
+@c @end iftex
+
+@c @iftex
+@c @cartouche
+@c @end iftex
+@c @example
+@c @verbatiminclude ../as/casl2lib/test/diva/0.txt
+@c @end example
+@c @iftex
+@c @end cartouche
+@c @end iftex
+
+@node DIVL
+@section @command{DIVL} - @file{divl.casl}
+0〜65,535の範囲にある整数の割算（筆算方式）を行う
+
+@unnumberedsubsec 入力
+@table @var
+@item GR1
+被除数
+
+@item GR2
+除数
+@end table
+
+@unnumberedsubsec 出力
+@table @var
+@item GR0
+商
+
+@item GR3
+剰余
+
+@item OF
+除数が0の場合、1
+
+@item SF
+商が32,768〜65535の場合、1
+
+@item ZF
+商が0の場合、1
+@end table
+
+@unnumberedsubsec 依存する副プログラム
+なし
+
+@unnumberedsubsec 使用例
+@iftex
+@cartouche
+@end iftex
+@example
+@verbatiminclude ../as/casl2lib/test/divl/divl0/divl0.casl
+@end example
+@iftex
+@end cartouche
+@end iftex
+
+@node INL
+@section @command{INL} - @file{inl.casl}
+
+@node L2STR
+@section @command{L2STR} - @file{l2str.casl}
+
+@node MAX
+@section @command{MAX} - @file{max.casl}
+
+@node MINIM
+@section @command{MINIM} - @file{minim.casl}
+
+@node MULA
+@section @command{MULA} - @file{mula.casl}
+
+@node MULL
+@section @command{MULL} - @file{mull.casl}
+
+@node OUTA
+@section @command{OUTA} - @file{outa.casl}
+
+@node OUTB
+@section @command{OUTB} - @file{outb.casl}
+
+@node OUTD_Q15
+@section @command{OUTD_Q15} - @file{outd_q15.casl}
+
+@node OUTL
+@section @command{OUTL} - @file{outl.casl}
+
+@node REV
+@section @command{REV} - @file{rev.casl}
+
+@node STR2L
+@section @command{STR2L} - @file{str2l.casl}
 
 @bye

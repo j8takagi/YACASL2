@@ -24,8 +24,6 @@ $(DOCNAME).pdf: $(DOCNAME).dvi
 	@$(DVI2PDF) $^
 $(DOCNAME).dvi: $(SRC)
 	@if test ! -s $(TEXOBJDIR); then mkdir $(TEXOBJDIR); fi; \
-     cd $(TEXOBJDIR); \
-     TEX=ptex texi2dvi --texinfo=@afourpaper -o ../$@ ../$^; \
-     cd -
+     TEX=ptex texi2dvi -q --texinfo=@afourpaper $^
 clean:
-	@rm -rf html $(TEXOBJDIR) $(DOCNAME).info $(DOCNAME).dvi $(DOCNAME).pdf
+	@rm -rf html $(TEXOBJDIR) $(DOCNAME).info $(DOCNAME).?? $(DOCNAME).???
