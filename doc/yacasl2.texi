@@ -1082,6 +1082,7 @@ $ @command{dumpword 10}
 @example
 4
 9
+@end example
 @iftex
 @end cartouche
 @end iftex
