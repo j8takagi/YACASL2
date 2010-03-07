@@ -273,7 +273,7 @@ void reset()
         GR[i] = 0x0;
     }
     SP = PR = FR = 0x0;
-    memory = malloc(memsize);
+    memory = malloc(memsize * sizeof(WORD));
     for(i = 0; i < memsize; i++) {
         memory[i] = 0x0;
     }
