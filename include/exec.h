@@ -19,7 +19,7 @@ extern EXECMODE execmode;
 /* 実行のエラー定義 */
 bool addcerrlist_exec();
 
-/* 仮想マシンのリセット */
+/* COMET II仮想マシンのリセット */
 void reset();
 
 /* コードの実行 */

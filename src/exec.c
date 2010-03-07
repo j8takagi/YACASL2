@@ -265,20 +265,6 @@ WORD srl(WORD val0, WORD val1)
     return res;
 }
 
-/* COMET II仮想マシンのリセット */
-void reset()
-{
-    int i;
-    for(i = 0; i < REGSIZE; i++) {
-        GR[i] = 0x0;
-    }
-    SP = PR = FR = 0x0;
-    memory = malloc(memsize * sizeof(WORD));
-    for(i = 0; i < memsize; i++) {
-        memory[i] = 0x0;
-    }
-}
-
 /* 仮想マシンCOMET IIでの実行 */
 void exec()
 {
