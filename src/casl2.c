@@ -29,7 +29,7 @@ CERRARRAY cerr_casl2[] = {
 };
 bool addcerrlist_casl2()
 {
-    return addcerrlist_casl2(ARRAYSIZE(cerr_casl2), cerr_casl2);
+    return addcerrlist(sizeof(cerr_casl2), cerr_casl2);
 }
 
 /* 指定されたファイルにアセンブル結果を書込 */
@@ -117,9 +117,7 @@ int main(int argc, char *argv[])
         }
     }
 
-    #if 0
     addcerrlist_casl2();
-    #endif
     /* ソースファイルが指定されていない場合は終了 */
     if(argv[optind] == NULL) {
         setcerr(126, NULL);    /* source file is not specified */
