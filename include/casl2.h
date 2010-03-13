@@ -101,6 +101,9 @@ extern int cmdtabsize;
 /* COMET II仮想マシンのリセット */
 void reset();
 
+/* COMET II仮想マシンのシャットダウン */
+void shutdown();
+
 /* 命令と命令タイプがキーのハッシュ表を作成する */
 bool create_cmdtype_code();
 

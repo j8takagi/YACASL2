@@ -31,3 +31,9 @@ void reset()
         memory[i] = 0x0;
     }
 }
+
+/* COMET II仮想マシンのシャットダウン */
+void shutdown()
+{
+    free(memory);
+}

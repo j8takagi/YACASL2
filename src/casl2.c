@@ -121,6 +121,7 @@ int main(int argc, char *argv[])
     /* ソースファイルが指定されていない場合は終了 */
     if(argv[optind] == NULL) {
         setcerr(126, NULL);    /* source file is not specified */
+        fprintf(stderr, "CASL2 error - %d: %s\n", cerrno, cerrmsg);
         goto casl2err;
     }
     /* COMET II仮想マシンのリセット */
@@ -143,7 +144,7 @@ int main(int argc, char *argv[])
                 fprintf(stdout, "\nAssemble %s (%d)\n", argv[i], pass);
             }
             if((status = assemble(argv[i], pass)) == false) {
-                exit(-1);
+                goto casl2err;
             }
         }
         if(pass == FIRST && asmode.label == true) {
@@ -164,12 +165,12 @@ int main(int argc, char *argv[])
             exec();    /* プログラム実行 */
         }
     }
+    shutdown();
     if(cerrno > 0) {
-        freecerr();
-        exit(-1);
+        goto casl2err;
     }
     return 0;
 casl2err:
-    fprintf(stderr, "CASL2 error - %d: %s\n", cerrno, cerrmsg);
+    freecerr();
     exit(-1);
 }
