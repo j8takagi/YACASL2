@@ -24,6 +24,7 @@ unsigned labelhash(const char *prog, const char *label)
 /* ラベル表からアドレスを検索する */
 WORD getlabel(const char *prog, const char *label)
 {
+    assert(label != NULL);
     LABELTAB *np;
     for(np = labels[labelhash(prog, label)]; np != NULL; np = np->next) {
         if((prog == NULL || (np->prog != NULL && strcmp(prog, np->prog) == 0)) &&
@@ -35,40 +36,38 @@ WORD getlabel(const char *prog, const char *label)
     return 0xFFFF;
 }
 
-/* ラベルを表に追加する */
+/* プログラム名、ラベル、アドレスをラベル表に追加する */
 bool addlabel(const char *prog, const char *label, WORD adr)
 {
+    assert(label != NULL);
     LABELTAB *np;
     unsigned hashval;
-    char *keys[2];
-    int i = 0;
 
+    /* 登録されたラベルを検索。すでに登録されている場合はエラー発生 */
     if(getlabel(prog, label) != 0xFFFF) {
         setcerr(101, label);    /* label already defined */
         return false;
     }
-    np = malloc(sizeof(*np));
-    if(np == NULL || (np->label = strdup(label)) == NULL ||
+    /* プログラム名、ラベル、アドレスを設定。メモリーを確保できない場合はエラー発生 */
+    if((np = malloc(sizeof(LABELTAB))) == NULL || (np->label = strdup(label)) == NULL ||
        (prog != NULL && (np->prog = strdup(prog)) == NULL))
     {
         setcerr(102, NULL);    /* label table is full */
         return false;
     }
-    if(prog != NULL) {
-        keys[i++] = strdup(prog);
-    }
+    np->adr = adr;
+    /* ラベル数の設定 */
     labelcnt++;
-    keys[i] = strdup(label);
+    /* ハッシュ表の設定 */
     hashval = labelhash(prog, label);
     np->next = labels[hashval];
     labels[hashval] = np;
-    np->adr = adr;
     return true;
 }
 
 int compare_adr(const void *a, const void *b)
 {
-    return (**(const LABELARRAY **)a).adr - (**(const LABELARRAY **)b).adr;
+    return (**(LABELARRAY **)a).adr - (**(LABELARRAY **)b).adr;
 }
 
 /* ラベル表を表示する */
@@ -80,11 +79,11 @@ void printlabel()
 
     for(i = 0; i < LABELTABSIZE; i++) {
         for(np = labels[i]; np != NULL; np = np->next) {
-            ar[asize] = malloc(sizeof(LABELARRAY *));
+            assert(np->label != NULL);
+            ar[asize] = malloc(sizeof(LABELARRAY));
             ar[asize]->prog = (np->prog == NULL ? NULL : strdup(np->prog));
             ar[asize]->label = strdup(np->label);
-            ar[asize]->adr = np->adr;
-            asize++;
+            ar[asize++]->adr = np->adr;
         }
     }
     qsort(ar, asize, sizeof(*ar), compare_adr);
@@ -104,7 +103,9 @@ void freelabel()
     for(i = 0; i < LABELTABSIZE; i++) {
         for(np = labels[i]; np != NULL; np = nq) {
             nq = np->next;
-            free(np->prog);
+            if(np->prog != NULL) {
+                free(np->prog);
+            }
             free(np->label);
             free(np);
         }
