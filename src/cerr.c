@@ -17,20 +17,18 @@ bool addcerrlist(int newerrc, CERRARRAY newerrv[])
 
     assert(newerrc > 0 && newerrv != NULL);
     if(cerr != NULL) {
-        p = cerr;
-        while (p != NULL) {
+        for(p = cerr; p != NULL; p = p->next) {
             q = p;
-            p = p->next;
         }
-        if((p = q->next = malloc(sizeof(CERRLIST *))) == NULL) {
+        if((p = q->next = malloc(sizeof(CERRLIST))) == NULL) {
             goto addcerrlisterr;
         }
-    } else if((p = cerr = malloc(sizeof(CERRLIST *))) == NULL) {
+    } else if((p = cerr = malloc(sizeof(CERRLIST))) == NULL) {
         goto addcerrlisterr;
     }
     for(i = 0; i < newerrc; i++) {
         p->err = &(newerrv[i]);
-        if((p->next = malloc(sizeof(CERRLIST *))) == NULL) {
+        if((p->next = malloc(sizeof(CERRLIST))) == NULL) {
             goto addcerrlisterr;
         }
         q = p;
