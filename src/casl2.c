@@ -165,6 +165,7 @@ int main(int argc, char *argv[])
             exec();    /* プログラム実行 */
         }
     }
+    /* COMET II仮想マシンのシャットダウン */
     shutdown();
     if(cerrno > 0) {
         goto casl2err;
