@@ -6,26 +6,27 @@
 # make cleanall: すべてのテストで、「make」と「make prepare」で生成されたファイルをクリア
 # make prepare : すべてのテストの、想定結果を出力
 # make create  : UNITNAMEで指定されたテストを新規に作成
+GROUPNAME = `pwd | xargs basename`
 TESTS = `ls | grep "^[^A-Z].*"`
 LOGFILE = Test.log
 
-.PHONY: all check report clean cleanall prepare create
-all: check report
-check:
+.PHONY: all check checkeach report clean cleanall prepare create
+check: checkeach report
+checkeach:
 	@rm -f $(LOGFILE)
 	@for target in $(TESTS); do \
          $(MAKE) check -C $$target; \
      done
 $(LOGFILE):
 	@for target in $(TESTS); do \
-         cat <$$target/report.txt >>$(LOGFILE); \
+         cat <$$target/report.txt >>$(LOGFILE) || echo $$target ": no report" >>$(LOGFILE); \
      done
 report: $(LOGFILE)
 	@success=`grep "Success" $(LOGFILE) | wc -l`; \
      all=`cat $(LOGFILE) | wc -l`; \
-     echo "$$success / $$all tests passed. Details in `pwd`/$(LOGFILE)"; \
+     echo "$(GROUPNAME): $$success / $$all tests passed. Details in `pwd`/$(LOGFILE)"; \
      if test $$success -eq $$all; then \
-       echo "All tests are succeded."; \
+       echo "$(GROUPNAME): All tests are succeded."; \
      fi
 clean:
 	@for target in $(TESTS); do $(MAKE) clean -C $$target; done
@@ -36,10 +37,10 @@ cleanall:
 prepare:
 	@for target in $(TESTS) ; do $(MAKE) prepare -C $$target ; done
 create:
-ifdef UNITNAME
+ifndef UNITNAME
+	@echo "no test created. set UNITNAME"
+else
 	@mkdir $(UNITNAME)
 	@echo 'CMD = ' >>$(UNITNAME)/Makefile; \
      echo 'include ../TEST.mk' >>$(UNITNAME)/Makefile
-else
-	@echo "no test created. set UNITNAME"
 endif
