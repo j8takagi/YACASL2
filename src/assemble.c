@@ -13,7 +13,6 @@ WORD lptr;
 /* 他のプログラムで参照する入口名 */
 char *prog;
 
-
 /* アセンブルのエラー定義 */
 CERRARRAY cerr_assemble[] = {
     { 101, "label already defined" },
@@ -337,8 +336,8 @@ bool cometcmd(const CMDLINE *cmdl, PASS pass)
                 status = true;
             }
         }
-        /* オペランド数2〜3。第2オペランドはアドレス、
-           第3オペランドは指標レジスタとして用いる汎用レジスタ */
+        /* オペランド数2〜3。第2オペランドはアドレス、 */
+        /* 第3オペランドは指標レジスタとして用いる汎用レジスタ */
         else if(cmdl->opd->opdc == 2 || cmdl->opd->opdc == 3) {
             if((cmd = getcmdcode(cmdl->cmd, R_ADR_X_)) == 0xFFFF &&
                (cmd = getcmdcode(cmdl->cmd, R_ADR_X)) == 0xFFFF)
