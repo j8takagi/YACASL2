@@ -48,21 +48,34 @@ bool addlabel(const char *prog, const char *label, WORD adr)
         setcerr(101, label);    /* label already defined */
         return false;
     }
-    /* プログラム名、ラベル、アドレスを設定。メモリを確保できない場合はエラー発生 */
-    if((np = malloc(sizeof(LABELTAB))) == NULL || (np->label = strdup(label)) == NULL ||
-       (prog != NULL && (np->prog = strdup(prog)) == NULL))
-    {
-        setcerr(102, NULL);    /* label table is full */
-        return false;
+    /* メモリを確保 */
+    if((np = malloc(sizeof(LABELTAB))) == NULL) {
+        goto cerr102;
     }
+    /* プログラム名を設定 */
+    if(prog == NULL) {
+        np->prog = NULL;
+    } else {
+        if((np->prog = strdup(prog)) == NULL) {
+            goto cerr102;
+        }
+    }
+    /* ラベルを設定 */
+    if((np->label = strdup(label)) == NULL) {
+        goto cerr102;
+    }
+    /* アドレスを設定 */
     np->adr = adr;
-    /* ラベル数の設定 */
+    /* ラベル数を設定 */
     labelcnt++;
-    /* ハッシュ表の設定 */
+    /* ハッシュ表へ追加 */
     hashval = labelhash(prog, label);
     np->next = labels[hashval];
     labels[hashval] = np;
     return true;
+cerr102:
+    setcerr(102, NULL);    /* label table is full */
+    return false;
 }
 
 int compare_adr(const void *a, const void *b)
