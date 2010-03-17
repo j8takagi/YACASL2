@@ -73,7 +73,7 @@ WORD getadr(const char *prog, const char *str, PASS pass)
     WORD adr = 0x0;
     if(*str == '=') {
         adr = getliteral(str, pass);
-    } else if((*str == '#') || isdigit(*str) || *str == '-') {
+    } else if(isdigit(*str) || *str == '-' || *str == '#') {
         adr = nh2word(str);
     } else {
         if(pass == SECOND && (adr = getlabel(prog, str)) == 0xFFFF) {

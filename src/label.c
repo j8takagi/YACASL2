@@ -1,7 +1,7 @@
 #include "casl2.h"
 #include "assemble.h"
 
-int labelcnt = 0;                    /* ラベル数 */
+int labelcnt = 0;                /* ラベル数 */
 LABELTAB *labels[LABELTABSIZE];  /* ラベル表 */
 
 /* プログラム名とラベルに対応するハッシュ値を返す */
@@ -48,7 +48,7 @@ bool addlabel(const char *prog, const char *label, WORD adr)
         setcerr(101, label);    /* label already defined */
         return false;
     }
-    /* プログラム名、ラベル、アドレスを設定。メモリーを確保できない場合はエラー発生 */
+    /* プログラム名、ラベル、アドレスを設定。メモリを確保できない場合はエラー発生 */
     if((np = malloc(sizeof(LABELTAB))) == NULL || (np->label = strdup(label)) == NULL ||
        (prog != NULL && (np->prog = strdup(prog)) == NULL))
     {
