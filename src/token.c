@@ -4,7 +4,7 @@
 /* 「,」区切りの文字列から、オペランドのトークンを取得 */
 OPD *opdtok(const char *str)
 {
-    OPD *opd = malloc(sizeof(OPD));
+    OPD *opd = malloc_chk(sizeof(OPD), "opd");
     char *p, *q, *sepp;
     int sepc = ',', qcnt = 0;
     bool quoting = false;
@@ -67,7 +67,7 @@ CMDLINE *linetok(const char *line)
 {
     char *tokens, *p, *sepp;
     bool quoting = false;
-    CMDLINE *cmdl = malloc(sizeof(CMDLINE));
+    CMDLINE *cmdl = malloc_chk(sizeof(CMDLINE), "cmdl");
 
     if(line == NULL || strlen(line) == 0) {
         return NULL;
@@ -119,7 +119,7 @@ CMDLINE *linetok(const char *line)
         p++;
     }
     /* オペランドを取得 */
-    cmdl->opd = malloc(sizeof(OPD));
+    cmdl->opd = malloc_chk(sizeof(OPD), "cmdl->opd");
     /* 改行かタブまでの文字列を取得。
        「'」で囲まれた文字列に含まれる場合があるため、空白は無視 */
     if((sepp = p + strcspn(p, "\t\n")) > p) {

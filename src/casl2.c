@@ -24,7 +24,7 @@ static struct option longopts[] = {
 };
 
 /* casl2のエラー定義 */
-CERRARRAY cerr_casl2[] = {
+CERR cerr_casl2[] = {
     { 126, "source file is not specified" },
 };
 bool addcerrlist_casl2()
@@ -39,7 +39,7 @@ void outassemble(const char *file) {
         perror(file);
         exit(-1);
     }
-    fwrite(memory, sizeof(WORD), endptr, fp);
+    fwrite(memory, sizeof(WORD), progprop->end, fp);
     fclose(fp);
 }
 
@@ -58,7 +58,7 @@ const char *objfile_name(const char *str)
 /* casl2コマンドのメイン */
 int main(int argc, char *argv[])
 {
-    int opt, i;
+    int opt, i, retval = 0;
     PASS pass;
     bool status = false;
     WORD beginptr[argc];
@@ -66,6 +66,10 @@ int main(int argc, char *argv[])
     const char *usage =
         "Usage: %s [-slLaAtTdh] [-oO<OBJECTFILE>] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE ...\n";
 
+    /* エラーの初期化 */
+    cerr = malloc_chk(sizeof(CERR), "cerr");
+    addcerrlist_casl2();
+    /* オプションの処理 */
     while((opt = getopt_long(argc, argv, "tTdslLao::O::AM:C:h", longopts, NULL)) != -1) {
         switch(opt) {
         case 's':
@@ -116,27 +120,26 @@ int main(int argc, char *argv[])
             exit(-1);
         }
     }
-
-    addcerrlist_casl2();
     /* ソースファイルが指定されていない場合は終了 */
     if(argv[optind] == NULL) {
         setcerr(126, NULL);    /* source file is not specified */
-        fprintf(stderr, "CASL2 error - %d: %s\n", cerrno, cerrmsg);
-        goto casl2err;
+        fprintf(stderr, "CASL2 error - %d: %s\n", cerr->num, cerr->msg);
+        exit(-1);
     }
     /* COMET II仮想マシンのリセット */
     reset();
     /* アセンブル。ラベル表作成のため、2回行う */
     for(pass = FIRST; pass <= SECOND; pass++) {
-        if(pass == FIRST && create_cmdtype_code() == false) {
-            goto casl2err;
+        if(pass == FIRST) {
+            create_cmdtype_code();        /* 命令と命令タイプがキーのハッシュ表を作成 */
+            asprop = malloc_chk(sizeof(ASPROP), "asprop");
         }
         for(i = optind; i < argc; i++) {
             /* データの格納開始位置 */
             if(pass == FIRST) {
-                beginptr[i] = ptr;
+                beginptr[i] = asprop->ptr;
             } else if(pass == SECOND) {
-                ptr = beginptr[i];
+                asprop->ptr = beginptr[i];
             }
             if(execmode.trace == true || execmode.dump == true || asmode.src == true ||
                asmode.label == true || asmode.asdetail == true)
@@ -144,7 +147,7 @@ int main(int argc, char *argv[])
                 fprintf(stdout, "\nAssemble %s (%d)\n", argv[i], pass);
             }
             if((status = assemble(argv[i], pass)) == false) {
-                goto casl2err;
+                exit(-1);
             }
         }
         if(pass == FIRST && asmode.label == true) {
@@ -154,24 +157,27 @@ int main(int argc, char *argv[])
                 return 0;
             }
         }
+        if(pass == SECOND) {
+            free_cmdtype_code();    /* 命令と命令タイプがキーのハッシュ表を解放 */
+            freelabel();            /* ラベルハッシュ表を解放 */
+        }
     }
-    free_cmdtype_code();    /* 命令表の解放 */
-    freelabel();            /* ラベル表の解放 */
     if(status == true) {
         if(objfile != NULL) {
             outassemble(objfile);
         }
         if(asmode.onlyassemble == false) {
-            exec();    /* プログラム実行 */
+            create_code_type();    /* 命令と命令タイプがキーのハッシュ表を作成 */
+            status = exec();       /* プログラム実行 */
+            free_code_type();      /* 命令と命令タイプがキーのハッシュ表を解放 */
         }
     }
     /* COMET II仮想マシンのシャットダウン */
     shutdown();
-    if(cerrno > 0) {
-        goto casl2err;
+    if(cerr->num > 0) {
+        retval = -1;
     }
-    return 0;
-casl2err:
+    /* エラーの解放 */
     freecerr();
-    exit(-1);
+    return retval;
 }

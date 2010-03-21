@@ -10,11 +10,11 @@ unsigned labelhash(const char *prog, const char *label)
     HKEY *keys[2];
     int i = 0;
     if(prog != NULL) {
-        keys[i] = malloc(sizeof(HKEY));
+        keys[i] = malloc_chk(sizeof(HKEY), "labelhash.key");
         keys[i]->type = CHARS;
         keys[i++]->val.s = strdup(prog);
     }
-    keys[i] = malloc(sizeof(HKEY));
+    keys[i] = malloc_chk(sizeof(HKEY), "labelhash.key");
     keys[i]->type = CHARS;
     keys[i]->val.s = strdup(label);
     /* ハッシュ値を返す */
@@ -49,7 +49,7 @@ bool addlabel(const char *prog, const char *label, WORD adr)
         return false;
     }
     /* メモリを確保 */
-    if((np = malloc(sizeof(LABELTAB))) == NULL) {
+    if((np = malloc_chk(sizeof(LABELTAB), "addlabel.np")) == NULL) {
         goto cerr102;
     }
     /* プログラム名を設定 */
@@ -93,7 +93,7 @@ void printlabel()
     for(i = 0; i < LABELTABSIZE; i++) {
         for(np = labels[i]; np != NULL; np = np->next) {
             assert(np->label != NULL);
-            ar[asize] = malloc(sizeof(LABELARRAY));
+            ar[asize] = malloc_chk(sizeof(LABELARRAY), "ar[asize]");
             ar[asize]->prog = (np->prog == NULL ? NULL : strdup(np->prog));
             ar[asize]->label = strdup(np->label);
             ar[asize++]->adr = np->adr;

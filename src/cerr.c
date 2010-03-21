@@ -1,77 +1,85 @@
 #include "cerr.h"
 
-/* エラー番号 */
-int cerrno = 0;
+/* mallocを実行し、メモリを確保できない場合は */
+/* エラーを出力して終了 */
+void *malloc_chk(size_t size, char *tag)
+{
+    void *p;
 
-/* エラーメッセージ */
-char *cerrmsg;
+    if((p = malloc(size)) == NULL) {
+        fprintf(stderr, "%s: cannot allocate memory\n", tag);
+        exit(-1);
+    }
+    return p;
+}
+
+/* 現在のエラー */
+CERR *cerr;
 
 /* エラーリスト */
-CERRLIST *cerr;
+CERRLIST *cerrlist;
 
-/* エラーリストを作成する */
-bool addcerrlist(int newerrc, CERRARRAY newerrv[])
+/* エラーリストを作成・追加する */
+bool addcerrlist(int newerrc, CERR newerrv[])
 {
     int i;
     CERRLIST *p, *q;
 
     assert(newerrc > 0 && newerrv != NULL);
-    if(cerr != NULL) {
-        for(p = cerr; p != NULL; p = p->next) {
+    if(cerrlist == NULL) {
+        p = cerrlist = malloc_chk(sizeof(CERRLIST), "cerrlist");
+    } else {
+        for(p = cerrlist; p != NULL; p = p->next) {
             q = p;
         }
-        if((p = q->next = malloc(sizeof(CERRLIST))) == NULL) {
-            goto addcerrlisterr;
-        }
-    } else if((p = cerr = malloc(sizeof(CERRLIST))) == NULL) {
-        goto addcerrlisterr;
+        p = q->next = malloc_chk(sizeof(CERRLIST), "cerrlist.next");
     }
     for(i = 0; i < newerrc; i++) {
-        p->err = &(newerrv[i]);
-        if((p->next = malloc(sizeof(CERRLIST))) == NULL) {
-            goto addcerrlisterr;
-        }
+        p->cerr = &(newerrv[i]);
+        p->next = malloc_chk(sizeof(CERRLIST), "cerrlist.next");
         q = p;
         p = p->next;
     }
     q->next = NULL;
     return true;
-addcerrlisterr:
-    fprintf(stderr, "addcerrlist: cannot allocate memory\n");
-    exit(-1);
 }
 
-/* エラー番号とエラーメッセージを設定する */
+/* 現在のエラーを設定する */
 void setcerr(int num, const char *str)
 {
-    cerrno = num;
-    cerrmsg = malloc(CERRMSGSIZE + 1);
+    cerr->num = num;
+    cerr->msg = malloc_chk(CERRMSGSIZE + 1, "cerr.msg");
     if(str != NULL && strlen(str) <= CERRSTRSIZE) {
-        sprintf(cerrmsg, "%s: %s", str, getcerrmsg(cerrno));
+        sprintf(cerr->msg, "%s: %s", str, getcerrmsg(cerr->num));
     } else {
-        strcpy(cerrmsg, getcerrmsg(cerrno));
+        strcpy(cerr->msg, getcerrmsg(cerr->num));
     }
 }
 
-/* リストから、エラー番号に対応するメッセージを返す */
+/* エラーリストから、エラー番号に対応するメッセージを返す */
 char *getcerrmsg(int num)
 {
     CERRLIST *p;
 
-    for(p = cerr; p != NULL; p = p->next) {
-        if(num == p->err->num) {
-            return p->err->msg;
+    for(p = cerrlist; p != NULL; p = p->next) {
+        if(num == p->cerr->num) {
+            return p->cerr->msg;
         }
     }
     return "unkown error";
 }
 
-/* エラーを解放する */
+/* エラーリストと現在のエラーを解放する */
 void freecerr()
 {
-    assert(cerrno > 0);
-    cerrno = 0;
-    if(strlen(cerrmsg) > 0) {
-        free(cerrmsg);
+    CERRLIST *p = cerrlist, *q;
+
+    /* エラーリストを解放 */
+    while(p != NULL) {
+        q = p->next;
+        free(p);
+        p = q;
     }
+    /* 現在のエラーを解放 */
+    free(cerr);
 }

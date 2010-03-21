@@ -14,25 +14,25 @@ bool writeIN(const char *ibuf, const char *len, PASS pass)
     bool status = false;
 
     /* PUSH 0,GR1 */
-    writememory(0x7001, ptr++, pass);
-    writememory(0x0, ptr++, pass);
+    writememory(0x7001, (asprop->ptr)++, pass);
+    writememory(0x0, (asprop->ptr)++, pass);
     /* PUSH 0,GR2 */
-    writememory(0x7002, ptr++, pass);
-    writememory(0x0, ptr++, pass);
+    writememory(0x7002, (asprop->ptr)++, pass);
+    writememory(0x0, (asprop->ptr)++, pass);
     /* LAD GR1,IBUF */
-    writememory(0x1210, ptr++, pass);
-    writememory(getadr(prog, ibuf, pass), ptr++, pass);
+    writememory(0x1210, (asprop->ptr)++, pass);
+    writememory(getadr(asprop->prog, ibuf, pass), (asprop->ptr)++, pass);
     /* LAD GR2,LEN */
-    writememory(0x1220, ptr++, pass);
-    writememory(getadr(prog, len, pass), ptr++, pass);
+    writememory(0x1220, (asprop->ptr)++, pass);
+    writememory(getadr(asprop->prog, len, pass), (asprop->ptr)++, pass);
     /* SVC 1 */
-    writememory(0xF000, ptr++, pass);
-    writememory(0x0001, ptr++, pass);
+    writememory(0xF000, (asprop->ptr)++, pass);
+    writememory(0x0001, (asprop->ptr)++, pass);
     /* POP GR2 */
-    writememory(0x7120, ptr++, pass);
+    writememory(0x7120, (asprop->ptr)++, pass);
     /* POP GR1 */
-    writememory(0x7110, ptr++, pass);
-    if(cerrno == 0) {
+    writememory(0x7110, (asprop->ptr)++, pass);
+    if(cerr->num == 0) {
         status = true;
     }
     return status;
@@ -54,44 +54,44 @@ bool writeOUT(const char *obuf, const char *len, PASS pass)
     bool status = false;
 
     /* PUSH 0,GR1 */
-    writememory(0x7001, ptr++, pass);
-    writememory(0x0, ptr++, pass);
+    writememory(0x7001, (asprop->ptr)++, pass);
+    writememory(0x0, (asprop->ptr)++, pass);
     /* PUSH 0,GR2 */
-    writememory(0x7002, ptr++, pass);
-    writememory(0x0, ptr++, pass);
+    writememory(0x7002, (asprop->ptr)++, pass);
+    writememory(0x0, (asprop->ptr)++, pass);
     /* LAD GR1,OBUF */
-    writememory(0x1210, ptr++, pass);
-    writememory(getadr(prog, obuf, pass), ptr++, pass);
+    writememory(0x1210, (asprop->ptr)++, pass);
+    writememory(getadr(asprop->prog, obuf, pass), (asprop->ptr)++, pass);
     /* LAD GR2,OLEN */
-    writememory(0x1220, ptr++, pass);
-    writememory(getadr(prog, len, pass), ptr++, pass);
+    writememory(0x1220, (asprop->ptr)++, pass);
+    writememory(getadr(asprop->prog, len, pass), (asprop->ptr)++, pass);
     /* SVC 2 */
-    writememory(0xF000, ptr++, pass);
-    writememory(0x0002, ptr++, pass);
+    writememory(0xF000, (asprop->ptr)++, pass);
+    writememory(0x0002, (asprop->ptr)++, pass);
     /* LAD GR1,=#A */
-    writememory(0x1210, ptr++, pass);
+    writememory(0x1210, (asprop->ptr)++, pass);
     if(pass == FIRST) {
-        ptr++;
+        (asprop->ptr)++;
     } else {
-        writememory(lptr, ptr++, pass);    /* リテラルのアドレスを書込 */
+        writememory(asprop->lptr, (asprop->ptr)++, pass);    /* リテラルのアドレスを書込 */
     }
-    writememory(0xA, lptr++, pass);
+    writememory(0xA, (asprop->lptr)++, pass);
     /* LAD GR2,=1 */
-    writememory(0x1220, ptr++, pass);
+    writememory(0x1220, (asprop->ptr)++, pass);
     if(pass == FIRST) {
-        ptr++;
+        (asprop->ptr)++;
     } else {
-        writememory(lptr, ptr++, pass);    /* リテラルのアドレスを書込 */
+        writememory(asprop->lptr, (asprop->ptr)++, pass);    /* リテラルのアドレスを書込 */
     }
-    writememory(0x1, lptr++, pass);
+    writememory(0x1, (asprop->lptr)++, pass);
     /* SVC 2 */
-    writememory(0xF000, ptr++, pass);
-    writememory(0x0002, ptr++, pass);
+    writememory(0xF000, (asprop->ptr)++, pass);
+    writememory(0x0002, (asprop->ptr)++, pass);
     /* POP GR2 */
-    writememory(0x7120, ptr++, pass);
+    writememory(0x7120, (asprop->ptr)++, pass);
     /* POP GR1 */
-    writememory(0x7110, ptr++, pass);
-    if(cerrno == 0) {
+    writememory(0x7110, (asprop->ptr)++, pass);
+    if(cerr->num == 0) {
         status = true;
     }
     return status;
@@ -111,10 +111,10 @@ bool writeRPUSH(PASS pass) {
     bool status = false;
 
     for(i = 1; i <= 7; i++) {
-        writememory(0x7000 + i, ptr++, pass);   /* PUSH GRn */
-        writememory(0x0, ptr++, pass);
+        writememory(0x7000 + i, (asprop->ptr)++, pass);   /* PUSH GRn */
+        writememory(0x0, (asprop->ptr)++, pass);
     }
-    if(cerrno == 0) {
+    if(cerr->num == 0) {
         status = true;
     }
     return status;
@@ -134,9 +134,9 @@ bool writeRPOP(PASS pass) {
     int i;
     bool status = false;
     for(i = 7; i >= 1; i--) {
-        writememory((0x7100 + (i << 4)), ptr++, pass);  /* POP GRn */
+        writememory((0x7100 + (i << 4)), (asprop->ptr)++, pass);  /* POP GRn */
     }
-    if(cerrno == 0) {
+    if(cerr->num == 0) {
         status = true;
     }
     return status;

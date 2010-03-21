@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "casl2.h"
 
-static CERRARRAY cerr_utest[] = {
+static CERR cerr_utest[] = {
     { 101, "label already defined" },
     { 102, "label table is full" },
     { 103, "label not found" },
@@ -45,14 +45,14 @@ int main(){
     };
     const char *str[] = {NULL, "foobar"};
     addcerrlist(ARRAYSIZE(cerr_utest), cerr_utest);
+    /* エラーの初期化 */
+    cerr = malloc_chk(sizeof(CERR), "cerr");
     for(i = 0; i < ARRAYSIZE(str); i++) {
         for(j = 0; j < ARRAYSIZE(code); j++) {
             setcerr(code[j], str[i]);
-            printf("%d: %s - %d\t%s\n", code[j], str[i], cerrno, cerrmsg);
-            if(cerrno != 0) {
-                freecerr();
-            }
+            printf("%d: %s - %d\t%s\n", code[j], str[i], cerr->num, cerr->msg);
         }
     }
+    freecerr();
     return 0;
 }

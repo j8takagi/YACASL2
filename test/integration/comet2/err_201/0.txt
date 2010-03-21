@@ -1,2 +1,2 @@
 ../../../../comet2 -M8 a.o
-Execute error - 201: Load object file - full of COMET II memory
+Execute error - 201: load object file - full of COMET II memory

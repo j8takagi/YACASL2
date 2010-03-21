@@ -19,8 +19,8 @@
 
 /* COMET IIの規格 */
 enum {
-    CMDSIZE = 4,      /* 命令の最大文字数 */
-    REGSIZE = 8,      /* 汎用レジスタの数 */
+    CMDSIZE = 4,              /* 命令の最大文字数 */
+    GRSIZE = 8,               /* 汎用レジスタの数。COMET II規格で、7 */
     DEFAULT_MEMSIZE = 512,    /* デフォルトのメモリ容量。COMET II規格では、65536語 */
     DEFAULT_CLOCKS = 5000000, /* デフォルトのクロック周波数。COMET II規格では、未定義 */
 };
@@ -28,8 +28,8 @@ enum {
 /* COMET IIのメモリ */
 extern WORD *memory;
 
-/* COMET IIのCPUレジスタ */
-extern WORD GR[REGSIZE], SP, PR, FR;
+/* メモリサイズ */
+extern int memsize;
 
 /* COMET II フラグのマスク値 */
 enum {
@@ -38,17 +38,19 @@ enum {
     ZF = 0x1,    /* Zero Flag */
 };
 
-/* メモリーサイズ */
-extern int memsize;
+/* COMET IIのCPU */
+typedef struct {
+    WORD gr[GRSIZE]; /* 汎用レジスタ */
+    WORD sp;         /* スタックポインタ */
+    WORD pr;         /* プログラムレジスタ */
+    WORD fr;         /* フラグレジスタ */
+} CPU;
+
+/* COMET IIのCPU */
+extern CPU *cpu;
 
 /* クロック周波数 */
 extern int clocks;
-
-/* 実行開始番地 */
-extern WORD startptr;
-
-/* 実行終了番地 */
-extern WORD endptr;
 
 /* COMET II 命令 */
 /* 命令タイプは、オペランドにより6種類に分類 */
@@ -80,23 +82,31 @@ typedef enum {
 
 /* 命令コード配列 */
 typedef struct {
-    char *cmd;
+    char *name;
     CMDTYPE type;
     WORD code;
-} CMDCODEARRAY;
+} CMD;
 
 /* 命令コード配列のサイズ */
-extern int cmdcodesize;
+extern int comet2cmdsize;
 
 /* 命令コードのハッシュ表 */
-typedef struct _CMDCODETAB {
-    struct _CMDCODETAB *next;
-    CMDCODEARRAY *cca;
-} CMDCODETAB;
+typedef struct _CMDTAB {
+    struct _CMDTAB *next;
+    CMD *cmd;
+} CMDTAB;
 
-extern CMDCODETAB **cmdtype_code;
-extern CMDCODETAB **code_type;
+extern CMDTAB **cmdtype_code;
+extern CMDTAB **code_type;
 extern int cmdtabsize;
+
+/* CASL2プログラムのプロパティ */
+typedef struct {
+    WORD start;   /* プログラムの開始番地 */
+    WORD end;     /* プログラムの終了番地 */
+} PROGPROP;
+
+extern PROGPROP *progprop;
 
 /* COMET II仮想マシンのリセット */
 void reset();

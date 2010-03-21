@@ -3,37 +3,40 @@
 /* COMET IIのメモリ */
 WORD *memory;
 
-/* COMET IIのCPUレジスタ */
-WORD GR[REGSIZE], SP, PR, FR;
-
-/* メモリーサイズ */
+/* メモリサイズ */
 int memsize = DEFAULT_MEMSIZE;
+
+/* COMET IIのCPU */
+CPU *cpu;
 
 /* クロック周波数 */
 int clocks = DEFAULT_CLOCKS;
 
-/* 実行開始番地 */
-WORD startptr = 0x0;
-
-/* 実行終了番地 */
-WORD endptr = 0x0;
+/* CASL2プログラムのプロパティ */
+PROGPROP *progprop;
 
 /* COMET II仮想マシンのリセット */
 void reset()
 {
     int i;
-    for(i = 0; i < REGSIZE; i++) {
-        GR[i] = 0x0;
-    }
-    SP = PR = FR = 0x0;
-    memory = malloc(memsize * sizeof(WORD));
+    /* メモリの初期化 */
+    memory = malloc_chk(memsize * sizeof(WORD), "memory");
     for(i = 0; i < memsize; i++) {
         memory[i] = 0x0;
     }
+    /* CPUの初期化 */
+    cpu = malloc_chk(sizeof(CPU), "cpu");
+    for(i = 0; i < GRSIZE; i++) {
+        cpu->gr[i] = 0x0;
+    }
+    cpu->sp = cpu->pr = cpu->fr = 0x0;
+    /* CASL2プログラムのプロパティ */
+    progprop = malloc_chk(sizeof(PROGPROP), "progprop");
 }
 
 /* COMET II仮想マシンのシャットダウン */
 void shutdown()
 {
+    free(cpu);
     free(memory);
 }

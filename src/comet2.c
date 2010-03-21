@@ -16,8 +16,8 @@ static struct option longopts[] = {
 };
 
 /* comet2のエラー定義 */
-CERRARRAY cerr_comet2[] = {
-    { 201, "Load object file - full of COMET II memory" },
+CERR cerr_comet2[] = {
+    { 201, "load object file - full of COMET II memory" },
     { 208, "object file is not specified" },
 };
 bool addcerrlist_comet2()
@@ -34,9 +34,11 @@ bool loadassemble(char *file) {
         perror(file);
         return false;
     }
-    if((endptr = startptr + fread(memory, sizeof(WORD), memsize-startptr, fp)) == memsize) {
+    progprop->end = progprop->start +
+        fread(memory, sizeof(WORD), memsize-progprop->start, fp);
+    if(progprop->end == memsize) {
         setcerr(201, NULL);    /* Load object file - full of COMET II memory */
-        fprintf(stderr, "Execute error - %d: %s\n", cerrno, cerrmsg);
+        fprintf(stderr, "Execute error - %d: %s\n", cerr->num, cerr->msg);
         status = false;
     }
     fclose(fp);
@@ -46,10 +48,13 @@ bool loadassemble(char *file) {
 /* comet2コマンド */
 int main(int argc, char *argv[])
 {
-    int opt;
+    int opt, retval = 0;
     const char *usage = "Usage: %s [-tTdh] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE\n";
 
+    /* エラーの初期化 */
+    cerr = malloc_chk(sizeof(CERR), "cerr");
     addcerrlist_comet2();
+    /* オプションの処理 */
     while((opt = getopt_long(argc, argv, "tTdM:C:h", longopts, NULL)) != -1) {
         switch(opt) {
         case 't':
@@ -78,21 +83,22 @@ int main(int argc, char *argv[])
     }
     if(argv[optind] == NULL) {
         setcerr(208, NULL);    /* object file is not specified */
-        fprintf(stderr, "comet2 error - %d: %s\n", cerrno, cerrmsg);
-        goto comet2err;
+        fprintf(stderr, "comet2 error - %d: %s\n", cerr->num, cerr->msg);
+        exit(-1);
     }
     reset();
-    startptr = 0;
+    progprop->start = 0;
     if(loadassemble(argv[optind]) == true) {
-        exec();    /* プログラム実行 */
+        create_code_type();    /* 命令と命令タイプがキーのハッシュ表を作成 */
+        exec();                /* プログラム実行 */
+        free_code_type();      /* 命令と命令タイプがキーのハッシュ表を解放 */
     }
     /* COMET II仮想マシンのシャットダウン */
     shutdown();
-    if(cerrno > 0) {
-        goto comet2err;
+    if(cerr->num > 0) {
+        retval = -1;
     }
-    return 0;
-comet2err:
+    /* エラーの解放 */
     freecerr();
-    exit(-1);
+    return retval;
 }

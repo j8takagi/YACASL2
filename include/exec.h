@@ -1,9 +1,6 @@
 #ifndef YACASL2_EXEC_INCLUDED
 #define YACASL2_EXEC_INCLUDED
 
-/* コードから命令のパターンを取得 */
-CMDTYPE getcmdtype(WORD code);
-
 enum {
     INSIZE = 256    /* CASL IIの、IN命令入力領域 */
 };
@@ -14,7 +11,11 @@ typedef struct {
     bool logical;         /* レジストリの内容を論理値（0〜65535）で表示する場合はtrue */
     bool dump;            /* メモリの内容を表示する場合はtrue */
 } EXECMODE;
+
 extern EXECMODE execmode;
+
+/* コードから命令のパターンを取得 */
+CMDTYPE getcmdtype(WORD code);
 
 /* 実行のエラー定義 */
 bool addcerrlist_exec();
@@ -23,7 +24,7 @@ bool addcerrlist_exec();
 void reset();
 
 /* コードの実行 */
-void exec();
+bool exec();
 
 /* COMET IIのメモリを表示 */
 void dumpmemory();

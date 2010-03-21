@@ -1,7 +1,7 @@
 #include "cerr.h"
 
 /* エラー番号とエラーメッセージ */
-CERRARRAY cerr_utest[] = {
+CERR cerr_utest[] = {
     { 101, "label already defined" },
     { 102, "label table is full" },
     { 103, "label not found" },

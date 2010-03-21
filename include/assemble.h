@@ -21,16 +21,17 @@ typedef struct {
     bool asdetail;        /* アセンブラ詳細結果を表示する場合はtrue */
     bool onlyassemble;    /* アセンブルだけを行う場合はtrue */
 } ASMODE;
+
 extern ASMODE asmode;
 
-/* 値を格納するポインタ */
-extern WORD ptr;
+/* アセンブル時のプロパティ */
+typedef struct {
+    WORD ptr;     /* 現在のポインタ */
+    WORD lptr;    /* リテラル（=付きの値）を格納するポインタ */
+    char *prog;   /* 他のプログラムで参照する入口名 */
+} ASPROP;
 
-/* リテラル（=付きの値）を格納するポインタ */
-extern WORD lptr;
-
-/* 他のプログラムで参照する入口名 */
-extern char *prog;
+extern ASPROP *asprop;
 
 /* アセンブラ命令とマクロ命令を表す番号 */
 typedef enum {

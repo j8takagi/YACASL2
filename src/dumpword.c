@@ -16,6 +16,7 @@ int main(int argc, char *argv[])
     WORD word;
     const char *usage = "Usage: %s [-alh] WORD\n";
 
+    cerr = malloc_chk(sizeof(CERR), "cerr");
     while((opt = getopt_long(argc, argv, "alh", longopts, NULL)) != -1) {
         switch(opt) {
         case 'l':
@@ -36,8 +37,8 @@ int main(int argc, char *argv[])
     }
     /* WORD値に変換 */
     word = nh2word(argv[optind]);
-    if(cerrno > 0) {
-        fprintf(stderr, "Dumpword Error - %d: %s\n", cerrno, cerrmsg);
+    if(cerr->num > 0) {
+        fprintf(stderr, "Dumpword Error - %d: %s\n", cerr->num, cerr->msg);
         exit(-1);
     }
     fprintf(stdout, "%6s: ", argv[optind]);

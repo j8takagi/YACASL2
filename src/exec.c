@@ -2,7 +2,7 @@
 #include "exec.h"
 
 /* 実行のエラー定義 */
-CERRARRAY cerr_exec[] = {
+CERR cerr_exec[] = {
     { 202, "SVC input - out of Input memory" },
     { 203, "SVC output - out of COMET II memory" },
     { 204, "Program Register (PR) - out of COMET II memory" },
@@ -23,10 +23,10 @@ EXECMODE execmode = {false, false, false};
 void svcin()
 {
     int i;
-    char *buffer = malloc(INSIZE + 1);
+    char *buffer = malloc_chk(INSIZE + 1,"svcin.buffer");
 
     if(fgets(buffer, INSIZE, stdin) == NULL) {
-        memory[GR[1]] = memory[GR[2]] = 0x0;
+        memory[cpu->gr[1]] = memory[cpu->gr[2]] = 0x0;
         return;
     }
     for(i = 0; i < INSIZE; i++) {
@@ -34,13 +34,13 @@ void svcin()
             --i;
             break;
         }
-        if(GR[1] + i >= memsize - 1) {
+        if(cpu->gr[1] + i >= memsize - 1) {
             setcerr(202, NULL);    /* SVC input - out of Input memory */
             break;
         }
-        memory[GR[1]+i] = *(buffer + i);
+        memory[cpu->gr[1]+i] = *(buffer + i);
     }
-    memory[GR[2]] = i + 1;
+    memory[cpu->gr[2]] = i + 1;
 }
 
 /* 標準出力へ文字データを書出（SVC 2） */
@@ -49,14 +49,14 @@ void svcout()
     int i;
     WORD w;
 
-    for(i = 0; i < memory[GR[2]]; i++) {
-        if(GR[1] + i >= memsize - 1) {
+    for(i = 0; i < memory[cpu->gr[2]]; i++) {
+        if(cpu->gr[1] + i >= memsize - 1) {
             setcerr(203, NULL);    /* SVC output - out of Comet II memory */
             return;
         }
         /* 「文字の組」の符号表に記載された文字と、改行（CR）／タブを表示 */
         /* それ以外の文字は、「.」で表す */
-        if(((w = memory[GR[1]+i]) >= 0x20 && w <= 0x7E) || w == 0xA || w == '\t') {
+        if(((w = memory[cpu->gr[1]+i]) >= 0x20 && w <= 0x7E) || w == 0xA || w == '\t') {
             putchar((char)w);
         } else {
             putchar('.');
@@ -67,14 +67,14 @@ void svcout()
 /* ロード／論理積／論理和／排他的論理和のフラグ設定。OFは常に0 */
 void setfr(WORD val)
 {
-    FR = 0x0;
+    cpu->fr = 0x0;
     /* 第15ビットが1のとき、SFは1 */
     if((val & 0x8000) > 0x0) {
-        FR += SF;
+        cpu->fr += SF;
     }
     /* 演算結果が0のとき、ZFは1 */
     if(val == 0x0) {
-        FR += ZF;
+        cpu->fr += ZF;
     }
 }
 
@@ -83,16 +83,16 @@ WORD adda(WORD val0, WORD val1)
 {
     WORD res;
     long temp;
-    FR = 0x0;
+    cpu->fr = 0x0;
 
     temp = (signed short)val0 + (signed short)val1;
     if(temp > 32767 || temp < -32768) {
-        FR += OF;
+        cpu->fr += OF;
     }
     if(((res = (WORD)(temp & 0xFFFF)) & 0x8000) == 0x8000) {
-        FR += SF;
+        cpu->fr += SF;
     } else if(res == 0x0) {
-        FR += ZF;
+        cpu->fr += ZF;
     }
     return res;
 }
@@ -108,15 +108,15 @@ WORD addl(WORD val0, WORD val1)
 {
     long temp;
     WORD res;
-    FR = 0x0;
+    cpu->fr = 0x0;
 
     if((temp = val0 + val1) < 0 || temp > 65535) {
-        FR += OF;
+        cpu->fr += OF;
     }
     if(((res = (WORD)(temp & 0xFFFF)) & 0x8000) == 0x8000) {
-        FR += SF;
+        cpu->fr += SF;
     } else if(res == 0x0) {
-        FR += ZF;
+        cpu->fr += ZF;
     }
     return res;
 }
@@ -130,22 +130,22 @@ WORD subl(WORD val0, WORD val1)
 /* 算術比較のフラグ設定。OFは常に0 */
 void cpa(WORD val0, WORD val1)
 {
-    FR = 0x0;
+    cpu->fr = 0x0;
     if((short)val0 < (short)val1) {
-        FR = SF;
+        cpu->fr = SF;
     } else if(val0 == val1) {
-        FR = ZF;
+        cpu->fr = ZF;
     }
 }
 
 /* 論理比較のフラグ設定。OFは常に0 */
 void cpl(WORD val0, WORD val1)
 {
-    FR = 0x0;
+    cpu->fr = 0x0;
     if(val0 < val1) {
-        FR = SF;
+        cpu->fr = SF;
     } else if(val0 == val1) {
-        FR = ZF;
+        cpu->fr = ZF;
     }
 }
 
@@ -156,7 +156,7 @@ WORD sla(WORD val0, WORD val1)
     WORD sign, res, last = 0x0;
     int i;
 
-    FR = 0x0;
+    cpu->fr = 0x0;
     sign = val0 & 0x8000;
     res = val0 & 0x7FFF;
     for(i = 0; i < val1; i++) {
@@ -166,15 +166,15 @@ WORD sla(WORD val0, WORD val1)
     res = sign | (res & 0x7FFF);
     /* OFに、レジスタから最後に送り出されたビットの値を設定 */
     if(last > 0x0) {
-        FR += OF;
+        cpu->fr += OF;
     }
     /* 符号（第15ビット）が1のとき、SFは1 */
     if(sign > 0x0) {
-        FR += SF;
+        cpu->fr += SF;
     }
     /* 演算結果が0のとき、ZFは1 */
     if(res == 0x0) {
-        FR += ZF;
+        cpu->fr += ZF;
     }
     return res;
 }
@@ -187,7 +187,7 @@ WORD sra(WORD val0, WORD val1)
     WORD sign, res, last = 0x0;
     int i;
 
-    FR = 0x0;
+    cpu->fr = 0x0;
     sign = val0 & 0x8000;
     res = val0 & 0x7FFF;
     for(i = 0; i < val1; i++) {
@@ -200,15 +200,15 @@ WORD sra(WORD val0, WORD val1)
     res = sign | res;
     /* OFに、レジスタから最後に送り出されたビットの値を設定 */
     if(last > 0x0) {
-        FR += OF;
+        cpu->fr += OF;
     }
     /* 符号（第15ビット）が1のとき、SFは1 */
     if(sign > 0x0) {
-        FR += SF;
+        cpu->fr += SF;
     }
     /* 演算結果が0のとき、ZFは1 */
     if(res == 0x0) {
-        FR += ZF;
+        cpu->fr += ZF;
     }
     return res;
 }
@@ -219,22 +219,22 @@ WORD sll(WORD val0, WORD val1)
     WORD res = val0, last = 0x0;
     int i;
 
-    FR = 0x0;
+    cpu->fr = 0x0;
     for(i = 0; i < val1; i++) {
         last = res & 0x8000;
         res <<= 1;
     }
     /* OFに、レジスタから最後に送り出されたビットの値を設定 */
     if(last > 0x0) {
-        FR += OF;
+        cpu->fr += OF;
     }
     /* 第15ビットが1のとき、SFは1 */
     if((res & 0x8000) > 0x0) {
-        FR += SF;
+        cpu->fr += SF;
     }
     /* 演算結果が0のとき、ZFは1 */
     if(res == 0x0) {
-        FR += ZF;
+        cpu->fr += ZF;
     }
     return res;
 }
@@ -245,105 +245,101 @@ WORD srl(WORD val0, WORD val1)
     WORD res = val0, last = 0x0;
     int i;
 
-    FR = 0x0;
+    cpu->fr = 0x0;
     for(i = 0; i < val1; i++) {
         last = res & 0x0001;
         res >>= 1;
     }
     /* OFに、レジスタから最後に送り出されたビットの値を設定 */
     if(last > 0x0) {
-        FR += OF;
+        cpu->fr += OF;
     }
     /* 第15ビットが1のとき、SFは1 */
     if((res & 0x8000) > 0x0) {
-        FR += SF;
+        cpu->fr += SF;
     }
     /* 演算結果が0のとき、ZFは1 */
     if(res == 0x0) {
-        FR += ZF;
+        cpu->fr += ZF;
     }
     return res;
 }
 
 /* 仮想マシンCOMET IIでの実行 */
-void exec()
+bool exec()
 {
     WORD op, r_r1, x_r2, val;
     CMDTYPE cmdtype;
-    char *errpr = malloc(CERRSTRSIZE + 1);
+    char *errpr = malloc_chk(CERRSTRSIZE + 1, "exec.errpr");
     clock_t clock_begin, clock_end;
 
     addcerrlist_exec();
     if(execmode.trace) {
         fprintf(stdout, "\nExecuting machine codes\n");
     }
-    /* フラグレジスタの初期値設定 */
-    FR = 0x0;
-    SP = memsize;
-    PR = startptr;
-    if(create_code_type() == false) {
-        goto execerr;
-    }
+    /* レジスタの初期化 */
+    cpu->sp = memsize;
+    cpu->pr = progprop->start;
     /* 機械語の実行 */
     for (; ; ) {
         clock_begin = clock();
         /* プログラムレジスタのアドレスが主記憶の範囲外の場合はエラー */
-        if(PR >= memsize) {
-            sprintf(errpr, "PR:#%04X", PR);
+        if(cpu->pr >= memsize) {
+            sprintf(errpr, "PR:#%04X", cpu->pr);
             setcerr(204, errpr);    /* Program Register (PR) - out of COMET II memory */
         }
         /* スタック領域のアドレスが主記憶の範囲外の場合はエラー */
-        if(SP > memsize) {
-            sprintf(errpr, "PR:#%04X", PR);
+        if(cpu->sp > memsize) {
+            sprintf(errpr, "PR:#%04X", cpu->pr);
             setcerr(207, errpr);    /* Stack Pointer (SP) - out of COMET II memory */
         }
         /* スタック領域を確保できない場合はエラー */
-        if(SP <= endptr) {
-            sprintf(errpr, "PR:#%04X", PR);
+        if(cpu->sp <= progprop->end) {
+            sprintf(errpr, "PR:#%04X", cpu->pr);
             setcerr(205, errpr);    /* Stack Pointer (SP) - cannot allocate stack buffer */
         }
         /* 命令の取り出し */
-        op = memory[PR] & 0xFF00;
+        op = memory[cpu->pr] & 0xFF00;
         /* 命令の解読 */
         cmdtype = getcmdtype(op);
-        r_r1 = (memory[PR] >> 4) & 0xF;
-        x_r2 = memory[PR] & 0xF;
+        r_r1 = (memory[cpu->pr] >> 4) & 0xF;
+        x_r2 = memory[cpu->pr] & 0xF;
         /* エラー発生時は終了 */
-        if(cerrno > 0) {
+        if(cerr->num > 0) {
             goto execerr;
         }
         /* traceオプション指定時、レジスタを出力 */
         if(execmode.trace){
-            fprintf(stdout, "#%04X: Register::::\n", PR);
+            fprintf(stdout, "#%04X: Register::::\n", cpu->pr);
             dspregister();
         }
         /* dumpオプション指定時、メモリを出力 */
         if(execmode.dump){
-            fprintf(stdout, "#%04X: Memory::::\n", PR);
+            fprintf(stdout, "#%04X: Memory::::\n", cpu->pr);
             dumpmemory();
         }
         /* どちらかのオプション指定時、改行を出力 */
         if(execmode.dump || execmode.trace) {
             fprintf(stdout, "\n");
         }
-        PR++;
+        cpu->pr++;
         /* オペランドの取り出し */
         if(cmdtype == R1_R2) {
-            assert(x_r2 < REGSIZE);
-            val = GR[x_r2];
+            assert(x_r2 < GRSIZE);
+            val = cpu->gr[x_r2];
         }
         else if(cmdtype ==  R_ADR_X || cmdtype == R_ADR_X_ || cmdtype == ADR_X) {
-            assert(x_r2 < REGSIZE);
+            assert(x_r2 < GRSIZE);
             /* 実効アドレス（値または値が示す番地）を取得  */
-            val = memory[PR++];
+            val = memory[cpu->pr++];
             /* 指標アドレスを加算  */
             if(x_r2 > 0x0) {
-                val += GR[x_r2];
+                val += cpu->gr[x_r2];
             }
             /* ロード／算術論理演算命令／比較演算命令では、アドレスに格納されている内容を取得 */
             if(cmdtype == R_ADR_X_) {
                 if(val >= memsize) {
-                    sprintf(errpr, "PR:#%04X", PR-1);
+                    sprintf(errpr, "PR:#%04X", cpu->pr-1);
                     setcerr(206, errpr);    /* Address - out of COMET II memory */
                     goto execerr;
                 }
@@ -360,107 +356,107 @@ void exec()
         case 0x0:       /* NOP */
             break;
         case 0x1000:    /* LD */
-            setfr(GR[r_r1] = val);
+            setfr(cpu->gr[r_r1] = val);
             break;
         case 0x1100:    /* ST */
-            memory[val] = GR[r_r1];
+            memory[val] = cpu->gr[r_r1];
             break;
         case 0x1200:    /* LAD */
-            GR[r_r1] = val;
+            cpu->gr[r_r1] = val;
             break;
         case 0x2000:    /* ADDA */
-            GR[r_r1] = adda(GR[r_r1], val);
+            cpu->gr[r_r1] = adda(cpu->gr[r_r1], val);
             break;
         case 0x2100:    /* SUBA */
-            GR[r_r1] = suba(GR[r_r1], val);
+            cpu->gr[r_r1] = suba(cpu->gr[r_r1], val);
             break;
         case 0x2200:    /* ADDL */
-            GR[r_r1] = addl(GR[r_r1], val);
+            cpu->gr[r_r1] = addl(cpu->gr[r_r1], val);
             break;
         case 0x2300:    /* SUBL */
-            GR[r_r1] = subl(GR[r_r1], val);
+            cpu->gr[r_r1] = subl(cpu->gr[r_r1], val);
             break;
         case 0x3000:    /* AND */
-            setfr(GR[r_r1] &= val);
+            setfr(cpu->gr[r_r1] &= val);
             break;
         case 0x3100:    /* OR */
-            setfr(GR[r_r1] |= val);
+            setfr(cpu->gr[r_r1] |= val);
             break;
         case 0x3200:    /* XOR */
-            setfr(GR[r_r1] ^= val);
+            setfr(cpu->gr[r_r1] ^= val);
             break;
         case 0x4000:    /* CPA */
-            cpa(GR[r_r1], val);
+            cpa(cpu->gr[r_r1], val);
             break;
         case 0x4100:    /* CPL */
-            cpl(GR[r_r1], val);
+            cpl(cpu->gr[r_r1], val);
             break;
         case 0x5000:    /* SLA */
-            GR[r_r1] = sla(GR[r_r1], val);
+            cpu->gr[r_r1] = sla(cpu->gr[r_r1], val);
             break;
         case 0x5100:    /* SRA */
-            GR[r_r1] = sra(GR[r_r1], val);
+            cpu->gr[r_r1] = sra(cpu->gr[r_r1], val);
             break;
         case 0x5200:    /* SLL */
-            GR[r_r1] = sll(GR[r_r1], val);
+            cpu->gr[r_r1] = sll(cpu->gr[r_r1], val);
             break;
         case 0x5300:    /* SRL */
-            GR[r_r1] = srl(GR[r_r1], val);
+            cpu->gr[r_r1] = srl(cpu->gr[r_r1], val);
             break;
         case 0x6100:    /* JMI */
-            if((FR & SF) > 0) {
-                PR = val;
+            if((cpu->fr & SF) > 0) {
+                cpu->pr = val;
             }
             break;
         case 0x6200:    /* JNZ */
-            if((FR & ZF) == 0) {
-                PR = val;
+            if((cpu->fr & ZF) == 0) {
+                cpu->pr = val;
             }
             break;
         case 0x6300:    /* JZE */
-            if((FR & ZF) > 0) {
-                PR = val;
+            if((cpu->fr & ZF) > 0) {
+                cpu->pr = val;
             }
             break;
         case 0x6400:    /* JUMP */
-            PR = val;
+            cpu->pr = val;
             break;
         case 0x6500:    /* JPL */
-            if((FR & (SF | ZF)) == 0) {
-                PR = val;
+            if((cpu->fr & (SF | ZF)) == 0) {
+                cpu->pr = val;
             }
             break;
         case 0x6600:    /* JOV */
-            if((FR & OF) > 0) {
-                PR = val;
+            if((cpu->fr & OF) > 0) {
+                cpu->pr = val;
             }
             break;
         case 0x7000:    /* PUSH */
-            assert(SP > endptr && SP <= memsize);
-            memory[--SP] = val;
+            assert(cpu->sp > progprop->end && cpu->sp <= memsize);
+            memory[--cpu->sp] = val;
             break;
         case 0x7100:    /* POP */
-            assert(SP > endptr && SP <= memsize);
-            GR[r_r1] = memory[SP++];
+            assert(cpu->sp > progprop->end && cpu->sp <= memsize);
+            cpu->gr[r_r1] = memory[cpu->sp++];
             break;
         case 0x8000:    /* CALL */
-            assert(SP > endptr && SP <= memsize);
-            memory[--SP] = PR;
-            PR = val;
+            assert(cpu->sp > progprop->end && cpu->sp <= memsize);
+            memory[--(cpu->sp)] = cpu->pr;
+            cpu->pr = val;
             break;
         case 0x8100:    /* RET */
-            assert(SP > endptr && SP <= memsize);
-            if(SP == memsize) {
-                return;
+            assert(cpu->sp > progprop->end && cpu->sp <= memsize);
+            if(cpu->sp == memsize) {
+                return false;
             } else {
-                PR = memory[SP++];
+                cpu->pr = memory[(cpu->sp)++];
                 break;
             }
         case 0xF000:    /* SVC */
             switch(val)
             {
             case 0x0: /* EXIT */
-                return;
+                return true;
             case 0x1: /* IN */
                 svcin();
                 break;
@@ -474,10 +470,9 @@ void exec()
         do {
             clock_end = clock();
         } while(clock_end - clock_begin < CLOCKS_PER_SEC / clocks);
-        #if 0
-        printf("PR:%04X; time: %f\n", PR, (double)((clock_end - clock_begin) * CLOCKS_PER_SEC));
-        #endif
     }
+    return true;
 execerr:
-    fprintf(stderr, "Execute error - %d: %s\n", cerrno, cerrmsg);
+    fprintf(stderr, "Execute error - %d: %s\n", cerr->num, cerr->msg);
+    return false;
 }

@@ -23,14 +23,16 @@ int main(){
         { "SVC", ADR_X }, { "RET", NONE }
     };
     create_cmdtype_code();
+    /* エラーの初期化 */
+    cerr = malloc_chk(sizeof(CERR), "cerr");
     for(i = 0; i < sizeof(cmdcodelist)/sizeof(cmdcodelist[0]); i++) {
         code = getcmdcode(cmdcodelist[i].cmd, cmdcodelist[i].type);
         printf("%s:0%02o ---> #%04X\n", cmdcodelist[i].cmd, cmdcodelist[i].type, code);
-        if(cerrno != 0) {
-            printf("\terror - %d: %s", cerrno, cerrmsg);
-            freecerr();
+        if(cerr->num != 0) {
+            printf("\terror - %d: %s", cerr->num, cerr->msg);
         }
     }
+    freecerr();
     free_cmdtype_code();
     return 0;
 }

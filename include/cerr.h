@@ -11,34 +11,34 @@
 #define ARRAYSIZE(array) (sizeof(array)/sizeof(array[0]))
 #endif
 
-/* エラー番号 */
-extern int cerrno;
+/* mallocを実行し、メモリを確保できない場合は */
+/* エラーを出力して終了 */
+void *malloc_chk(size_t size, char *tag);
 
-/* エラーメッセージ */
-extern char *cerrmsg;
-
-/* エラーコード配列 */
+/* エラーの構造体 */
 typedef struct {
-    int num;
-    char *msg;
-} CERRARRAY;
+    int num;        /* エラー番号 */
+    char *msg;      /* エラーメッセージ */
+} CERR;
 
-/* エラーコードリスト */
+/* 現在のエラー */
+extern CERR *cerr;
+
+/* エラーリスト */
 typedef struct _CERRLIST {
     struct _CERRLIST *next;
-    CERRARRAY *err;
+    CERR *cerr;
 } CERRLIST;
 
-/* エラーメッセージ */
-extern CERRLIST *cerr;
+extern CERRLIST *cerrlist;
 
 enum {
     CERRSTRSIZE = 10,    /* エラーメッセージ中に挿入できる文字列のサイズ */
     CERRMSGSIZE = 70,    /* エラーメッセージのサイズ */
 };
 
-/* エラーを追加する */
-bool addcerrlist(int cerrc, CERRARRAY cerrv[]);
+/* エラーリストを作成・追加する */
+bool addcerrlist(int cerrc, CERR cerrv[]);
 
 /* エラー番号とエラーメッセージを設定 */
 void setcerr(int num, const char *str);

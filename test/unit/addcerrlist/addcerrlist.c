@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include "casl2.h"
 
-CERRARRAY cerr_0[] = {
+CERR cerr_0[] = {
     { 126, "source file is not specified" },
 };
 
-CERRARRAY cerr_1[] = {
+CERR cerr_1[] = {
     { 101, "label already defined" },
     { 102, "label table is full" },
     { 103, "label not found" },
@@ -30,23 +30,23 @@ CERRARRAY cerr_1[] = {
     { 125, "not GR in operand x" },
 };
 
-CERRARRAY cerr_2[] = {
+CERR cerr_2[] = {
     { 114, "not integer" },
     { 115, "not hex" },
     { 116, "out of hex range" },
 };
 
-CERRARRAY cerr_3[] = {
+CERR cerr_3[] = {
     { 114, "not integer" },
     { 115, "not hex" },
     { 116, "out of hex range" },
 };
 
-CERRARRAY cerr_4[] = {
+CERR cerr_4[] = {
     { 201, "Load object file - full of COMET II memory" },
 };
 
-CERRARRAY cerr_5[] = {
+CERR cerr_5[] = {
     { 202, "SVC input - out of Input memory" },
     { 203, "SVC output - out of COMET II memory" },
     { 204, "Program Register (PR) - out of COMET II memory" },
@@ -57,14 +57,15 @@ CERRARRAY cerr_5[] = {
 
 int main(){
     CERRLIST *p;
+    /* エラーの追加 */
     addcerrlist(ARRAYSIZE(cerr_0), cerr_0);
     addcerrlist(ARRAYSIZE(cerr_1), cerr_1);
     addcerrlist(ARRAYSIZE(cerr_2), cerr_2);
     addcerrlist(ARRAYSIZE(cerr_3), cerr_3);
     addcerrlist(ARRAYSIZE(cerr_4), cerr_4);
     addcerrlist(ARRAYSIZE(cerr_5), cerr_5);
-    for(p = cerr; p != NULL; p = p->next) {
-        printf("%d: %s\n", p->err->num, p->err->msg);
+    for(p = cerrlist; p != NULL; p = p->next) {
+        printf("%d: %s\n", p->cerr->num, p->cerr->msg);
     }
     return 0;
 }

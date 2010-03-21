@@ -1,11 +1,12 @@
 #include "word.h"
 
 /* wordのエラー定義 */
-CERRARRAY cerr_word[] = {
+CERR cerr_word[] = {
     { 114, "not integer" },
     { 115, "not hex" },
     { 116, "out of hex range" },
 };
+
 bool addcerrlist_word()
 {
     return addcerrlist(ARRAYSIZE(cerr_word), cerr_word);
@@ -72,7 +73,7 @@ WORD nh2word(const char *str)
 /* WORD値を10進数の文字列に変換 */
 char *word2n(WORD word)
 {
-    char *p = malloc(6), *q = malloc(6);
+    char *p = malloc_chk(6, "word2n.p"), *q = malloc_chk(6, "word2n.q");
     int i = 0, j;
     do{
         *(p + i++) = word % 10 + '0';
@@ -88,7 +89,7 @@ char *word2n(WORD word)
 char *word2bit(const WORD word)
 {
     WORD mask = 0x8000;
-    char *bit = malloc(16 + 1), *p;
+    char *bit = malloc_chk(16 + 1, "word2bit.bit"), *p;
     p = bit;
     do {
         *p++ = (word & mask) ? '1' : '0';

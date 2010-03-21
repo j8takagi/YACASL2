@@ -1,6 +1,6 @@
 #include "casl2.h"
 
-CMDCODEARRAY cmdcodearray[] = {
+CMD comet2cmd[] = {
     { "NOP", NONE, 0x0 },
     { "LD", R_ADR_X_, 0x1000 },
     { "ST", R_ADR_X, 0x1100 },
@@ -41,20 +41,20 @@ CMDCODEARRAY cmdcodearray[] = {
     { "RET", NONE, 0x8100 },
 };
 
-int cmdcodesize = ARRAYSIZE(cmdcodearray);
+int comet2cmdsize = ARRAYSIZE(comet2cmd);
 int cmdtabsize;
-CMDCODETAB **cmdtype_code, **code_type;
+CMDTAB **cmdtype_code, **code_type;
 
 /* 命令と命令タイプからハッシュ値を生成する */
 unsigned hash_cmdtype(const char *cmd, CMDTYPE type) {
     HKEY *keys[2];
 
     /* 命令をセット */
-    keys[0] = malloc(sizeof(HKEY));
+    keys[0] = malloc_chk(sizeof(HKEY), "hash_cmdtype.key");
     keys[0]->type = CHARS;
     keys[0]->val.s = strdup(cmd);
     /* 命令タイプをセット */
-    keys[1] = malloc(sizeof(HKEY));
+    keys[1] = malloc_chk(sizeof(HKEY), "hash_cmdtype.key");
     keys[1]->type = INT;
     keys[1]->val.i = (int)(type & 070);
     /* ハッシュ値を返す */
@@ -64,23 +64,25 @@ unsigned hash_cmdtype(const char *cmd, CMDTYPE type) {
 /* 命令と命令タイプがキーのハッシュ表を作成する */
 bool create_cmdtype_code()
 {
-    CMDCODETAB *np;
+    CMDTAB *np;
     unsigned hashval;
     int i;
 
-    cmdtabsize = cmdcodesize;
-    cmdtype_code = malloc(cmdtabsize * sizeof(CMDCODETAB *));
-    for(i = 0; i < cmdcodesize; i++) {
-        if((np = malloc(sizeof(CMDCODETAB))) == NULL) {
-            setcerr(122, NULL);    /* cannot create hash table */
-            return false;
-        }
+    cmdtabsize = comet2cmdsize;
+    cmdtype_code = malloc_chk(cmdtabsize * sizeof(CMDTAB *), "cmdtype_code");
+    for(i = 0; i < cmdtabsize; i++) {
+        *(cmdtype_code + i) = NULL;
+    }
+    for(i = 0; i < comet2cmdsize; i++) {
+        np = malloc_chk(sizeof(CMDTAB), "cmdtype_code.next");
+        np->cmd = NULL;
+        np->next = NULL;
         /* ハッシュ値の生成 */
-        hashval = hash_cmdtype(cmdcodearray[i].cmd, cmdcodearray[i].type);
+        hashval = hash_cmdtype(comet2cmd[i].name, comet2cmd[i].type);
         /* ハッシュ表に値を追加 */
         np->next = cmdtype_code[hashval];
         cmdtype_code[hashval] = np;
-        np->cca = &(cmdcodearray[i]);
+        np->cmd = &(comet2cmd[i]);
     }
     return true;
 }
@@ -89,11 +91,12 @@ bool create_cmdtype_code()
 /* 無効な場合は0xFFFFを返す */
 WORD getcmdcode(const char *cmd, CMDTYPE type)
 {
-    CMDCODETAB *np;
+    CMDTAB *np;
+
     assert(cmd != NULL);
     for(np = cmdtype_code[hash_cmdtype(cmd, type)]; np != NULL; np = np->next){
-        if(strcmp(cmd, np->cca->cmd) == 0 && type == np->cca->type) {
-            return np->cca->code;
+        if(strcmp(cmd, np->cmd->name) == 0 && type == np->cmd->type) {
+            return np->cmd->code;
         }
     }
     return 0xFFFF;
@@ -103,8 +106,9 @@ WORD getcmdcode(const char *cmd, CMDTYPE type)
 void free_cmdtype_code()
 {
     int i;
-    CMDCODETAB *np, *nq;
-    for(i = 0; i < cmdtabsize; i++){
+    CMDTAB *np, *nq;
+
+    for(i = 0; i < cmdtabsize; i++) {
         np = cmdtype_code[i];
         while(np != NULL) {
             nq = np->next;
@@ -112,6 +116,7 @@ void free_cmdtype_code()
             np = nq;
         }
     }
+    free(cmdtype_code);
 }
 
 /* 命令コードからハッシュ値を生成する */
@@ -120,7 +125,7 @@ unsigned hash_code(WORD code)
     HKEY *keys[1];
 
     /* 命令コードをセット */
-    keys[0] = malloc(sizeof(HKEY));
+    keys[0] = malloc_chk(sizeof(HKEY), "hash_code.key");
     keys[0]->type = INT;
     keys[0]->val.i = (int)(code >> 8);
     /* ハッシュ値を返す */
@@ -130,23 +135,25 @@ unsigned hash_code(WORD code)
 /* 命令コードがキーのハッシュ表を作成する */
 bool create_code_type()
 {
-    CMDCODETAB *np;
+    CMDTAB *np;
     unsigned hashval;
     int i;
 
-    cmdtabsize = hashtabsize(cmdcodesize);
-    code_type = malloc(cmdtabsize * sizeof(CMDCODETAB *));
-    for(i = 0; i < cmdcodesize; i++) {
-        if((np = malloc(sizeof(CMDCODETAB))) == NULL) {
-            setcerr(122, NULL);    /* cannot create hash table */
-            return false;
-        }
+    cmdtabsize = comet2cmdsize;
+    code_type = malloc_chk(cmdtabsize * sizeof(CMDTAB *), "code_type");
+    for(i = 0; i < cmdtabsize; i++) {
+        *(code_type + i) = NULL;
+    }
+    for(i = 0; i < comet2cmdsize; i++) {
+        np = malloc_chk(sizeof(CMDTAB), "code_type.next");
+        np->cmd = NULL;
+        np->next = NULL;
         /* ハッシュ値の生成 */
-        hashval = hash_code((&cmdcodearray[i])->code);
+        hashval = hash_code((&comet2cmd[i])->code);
         /* ハッシュ表に値を追加 */
         np->next = code_type[hashval];
         code_type[hashval] = np;
-        np->cca = &cmdcodearray[i];
+        np->cmd = &comet2cmd[i];
     }
     return true;
 }
@@ -155,10 +162,10 @@ bool create_code_type()
 /* 無効な場合はNONEを返す */
 CMDTYPE getcmdtype(WORD code)
 {
-    CMDCODETAB *np;
+    CMDTAB *np;
     for(np = code_type[hash_code(code)]; np != NULL; np = np->next) {
-        if(code == np->cca->code) {
-            return np->cca->type;
+        if(code == np->cmd->code) {
+            return np->cmd->type;
         }
     }
     return NONE;
@@ -168,8 +175,8 @@ CMDTYPE getcmdtype(WORD code)
 void free_code_type()
 {
     int i;
-    CMDCODETAB *np, *nq;
-    for(i = 0; i < cmdtabsize; i++){
+    CMDTAB *np, *nq;
+    for(i = 0; i < cmdtabsize; i++) {
         np = code_type[i];
         while(np != NULL) {
             nq = np->next;
@@ -177,4 +184,5 @@ void free_code_type()
             np = nq;
         }
     }
+    free(code_type);
 }
