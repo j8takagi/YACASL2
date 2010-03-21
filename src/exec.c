@@ -274,10 +274,11 @@ bool exec()
     clock_t clock_begin, clock_end;
 
     addcerrlist_exec();
-    if(execmode.trace) {
+    if(execmode.trace == true) {
         fprintf(stdout, "\nExecuting machine codes\n");
     }
-    /* レジスタの初期化 */
+    /* フラグレジスタの初期値設定 */
+    cpu->fr = 0x0;
     cpu->sp = memsize;
     cpu->pr = progprop->start;
     /* 機械語の実行 */
@@ -447,7 +448,7 @@ bool exec()
         case 0x8100:    /* RET */
             assert(cpu->sp > progprop->end && cpu->sp <= memsize);
             if(cpu->sp == memsize) {
-                return false;
+                return true;
             } else {
                 cpu->pr = memory[(cpu->sp)++];
                 break;

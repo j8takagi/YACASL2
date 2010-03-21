@@ -13,7 +13,7 @@ OPD *opdtok(const char *str)
     if(str == NULL) {
         return opd;
     }
-    p = q = strdup(str);
+    p = q = strdup_chk(str, "opdtopk.p");
     do {
         /* オペランド数が多すぎる場合はエラー */
         if(opd->opdc >= OPDSIZE) {
@@ -54,7 +54,7 @@ OPD *opdtok(const char *str)
                 setcerr(118, NULL);    /* operand length is too long */
                 break;
             }
-            opd->opdv[(++opd->opdc)-1] = strdup(p);
+            opd->opdv[(++opd->opdc)-1] = strdup_chk(p, "opd.opdv[]");
             p = q = sepp + 1;
             qcnt = 0;
         }
@@ -72,7 +72,7 @@ CMDLINE *linetok(const char *line)
     if(line == NULL || strlen(line) == 0) {
         return NULL;
     }
-    tokens = strdup(line);
+    tokens = strdup_chk(line, "tokens");
     /* コメントを削除 */
     for(p = tokens; *p != '\0'; p++) {
         /* 「'」で囲まれた文字列の処理。「''」は無視 */
@@ -96,7 +96,7 @@ CMDLINE *linetok(const char *line)
         if(strlen(p) > LABELSIZE) {
             setcerr(104, p);    /* label length is too long */
         }
-        cmdl->label = strdup(p);
+        cmdl->label = strdup_chk(p, "cmdl.label");
         p = sepp + 1;
     }
     while(*p == ' ' || *p == '\t') {
@@ -113,13 +113,13 @@ CMDLINE *linetok(const char *line)
     /* 命令を取得 */
     sepp = p + strcspn(p, " \t\n");
     *sepp = '\0';
-    cmdl->cmd = strdup(p);
+    cmdl->cmd = strdup_chk(p, "cmdl.cmd");
     p = sepp + 1;
     while(*p == ' ' || *p == '\t') {
         p++;
     }
     /* オペランドを取得 */
-    cmdl->opd = malloc_chk(sizeof(OPD), "cmdl->opd");
+    cmdl->opd = malloc_chk(sizeof(OPD), "cmdl.opd");
     /* 改行かタブまでの文字列を取得。
        「'」で囲まれた文字列に含まれる場合があるため、空白は無視 */
     if((sepp = p + strcspn(p, "\t\n")) > p) {

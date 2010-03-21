@@ -19,6 +19,7 @@ PROGPROP *progprop;
 void reset()
 {
     int i;
+
     /* メモリの初期化 */
     memory = malloc_chk(memsize * sizeof(WORD), "memory");
     for(i = 0; i < memsize; i++) {
@@ -37,6 +38,7 @@ void reset()
 /* COMET II仮想マシンのシャットダウン */
 void shutdown()
 {
+    free(progprop);
     free(cpu);
     free(memory);
 }

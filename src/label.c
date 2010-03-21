@@ -9,14 +9,15 @@ unsigned labelhash(const char *prog, const char *label)
 {
     HKEY *keys[2];
     int i = 0;
+
     if(prog != NULL) {
-        keys[i] = malloc_chk(sizeof(HKEY), "labelhash.key");
+        keys[i] = malloc_chk(sizeof(HKEY), "labelhash.key[]");
         keys[i]->type = CHARS;
-        keys[i++]->val.s = strdup(prog);
+        keys[i]->val.s = strdup_chk(prog, "labelhash.key[].val");
     }
-    keys[i] = malloc_chk(sizeof(HKEY), "labelhash.key");
+    keys[i] = malloc_chk(sizeof(HKEY), "labelhash.key[]");
     keys[i]->type = CHARS;
-    keys[i]->val.s = strdup(label);
+    keys[i]->val.s = strdup_chk(label, "labelhash.key[].val");
     /* ハッシュ値を返す */
     return hash(i+1, keys, LABELTABSIZE);
 }
@@ -26,6 +27,7 @@ WORD getlabel(const char *prog, const char *label)
 {
     assert(label != NULL);
     LABELTAB *np;
+
     for(np = labels[labelhash(prog, label)]; np != NULL; np = np->next) {
         if((prog == NULL || (np->prog != NULL && strcmp(prog, np->prog) == 0)) &&
            strcmp(label, np->label) == 0)
@@ -49,21 +51,15 @@ bool addlabel(const char *prog, const char *label, WORD adr)
         return false;
     }
     /* メモリを確保 */
-    if((np = malloc_chk(sizeof(LABELTAB), "addlabel.np")) == NULL) {
-        goto cerr102;
-    }
+    np = malloc_chk(sizeof(LABELTAB), "labels.next");
     /* プログラム名を設定 */
     if(prog == NULL) {
         np->prog = NULL;
     } else {
-        if((np->prog = strdup(prog)) == NULL) {
-            goto cerr102;
-        }
+        np->prog = strdup_chk(prog, "labels.prog");
     }
     /* ラベルを設定 */
-    if((np->label = strdup(label)) == NULL) {
-        goto cerr102;
-    }
+    np->label = strdup_chk(label, "labels.label");
     /* アドレスを設定 */
     np->adr = adr;
     /* ラベル数を設定 */
@@ -73,9 +69,6 @@ bool addlabel(const char *prog, const char *label, WORD adr)
     np->next = labels[hashval];
     labels[hashval] = np;
     return true;
-cerr102:
-    setcerr(102, NULL);    /* label table is full */
-    return false;
 }
 
 int compare_adr(const void *a, const void *b)
@@ -93,9 +86,13 @@ void printlabel()
     for(i = 0; i < LABELTABSIZE; i++) {
         for(np = labels[i]; np != NULL; np = np->next) {
             assert(np->label != NULL);
-            ar[asize] = malloc_chk(sizeof(LABELARRAY), "ar[asize]");
-            ar[asize]->prog = (np->prog == NULL ? NULL : strdup(np->prog));
-            ar[asize]->label = strdup(np->label);
+            ar[asize] = malloc_chk(sizeof(LABELARRAY), "ar[]");
+            if(np->prog == NULL) {
+                ar[asize]->prog = NULL;
+            } else {
+                ar[asize]->prog = strdup_chk(np->prog, "ar[].prog");
+            }
+            ar[asize]->label = strdup_chk(np->label, "ar[].label");
             ar[asize++]->adr = np->adr;
         }
     }
@@ -113,6 +110,7 @@ void freelabel()
 {
     int i;
     LABELTAB *np, *nq;
+
     for(i = 0; i < LABELTABSIZE; i++) {
         for(np = labels[i]; np != NULL; np = nq) {
             nq = np->next;

@@ -47,7 +47,7 @@ WORD getgr(const char *str, bool is_x)
     WORD r;
     /* 「GR[0-7]」以外の文字列では、0xFFFFを返して終了 */
     if(!(strlen(str) == 3 && strncmp(str, "GR", 2) == 0 &&
-         (*(str+2) >= '0' && *(str+2) <= '0' + GRSIZE)))
+         (*(str+2) >= '0' && *(str+2) <= '0' + (GRSIZE - 1))))
     {
         return 0xFFFF;
     }
@@ -167,9 +167,9 @@ void writeDC(const char *str, PASS pass)
 bool assemblecmd(const CMDLINE *cmdl, PASS pass)
 {
     int i = 0;
-    CASLCMD cmd = 0;
+    ASCMDID cmdid = 0;
     bool status = false;
-    CMDARRAY ascmd[] = {
+    ASCMD ascmd[] = {
         { START, 0, 1, "START" },
         { END, 0, 0, "END" },
         { DC, 1, OPDSIZE, "DC" },
@@ -183,12 +183,12 @@ bool assemblecmd(const CMDLINE *cmdl, PASS pass)
                 setcerr(106, NULL);    /* operand count mismatch */
                 return false;
             }
-            cmd = ascmd[i].cmdid;
+            cmdid = ascmd[i].cmdid;
             break;
         }
     } while(ascmd[++i].cmdid != 0);
     /* アセンブラ命令 */
-    switch(cmd)
+    switch(cmdid)
     {
     case START:
         if(cmdl->label == NULL) {
@@ -196,7 +196,7 @@ bool assemblecmd(const CMDLINE *cmdl, PASS pass)
             return false;
         }
         /* プログラム名の設定 */
-        asprop->prog = strdup(cmdl->label);
+        asprop->prog = strdup_chk(cmdl->label, "asprop.prog");
         /* オペランドがある場合、実行開始番地を設定 */
         if(pass == SECOND && cmdl->opd->opdc == 1) {
             if((progprop->start = getlabel(asprop->prog, cmdl->opd->opdv[0])) == 0xFFFF) {
@@ -249,9 +249,9 @@ bool assemblecmd(const CMDLINE *cmdl, PASS pass)
 bool macrocmd(const CMDLINE *cmdl, PASS pass)
 {
     int i = 0;
-    CASLCMD cmd;
+    MACROCMDID cmdid;
     bool status = false;
-    CMDARRAY macrocmd[] = {
+    MACROCMD macrocmd[] = {
         { IN, 2, 2, "IN" },
         { OUT, 2, 2, "OUT" },
         { RPUSH, 0, 0, "RPUSH" },
@@ -261,15 +261,17 @@ bool macrocmd(const CMDLINE *cmdl, PASS pass)
 
     do {
         if(strcmp(cmdl->cmd, macrocmd[i].cmd) == 0) {
-            if(cmdl->opd->opdc < macrocmd[i].opdc_min || cmdl->opd->opdc > macrocmd[i].opdc_max) {
+            if(cmdl->opd->opdc < macrocmd[i].opdc_min ||
+               cmdl->opd->opdc > macrocmd[i].opdc_max)
+            {
                 setcerr(106, NULL);    /* operand count mismatch */
                 return false;
             }
-            cmd = macrocmd[i].cmdid;
+            cmdid = macrocmd[i].cmdid;
             break;
         }
     } while(macrocmd[++i].cmdid != 0);
-    switch(cmd)
+    switch(cmdid)
     {
     case IN:
         status = writeIN(cmdl->opd->opdv[0], cmdl->opd->opdv[1], pass);

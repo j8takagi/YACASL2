@@ -52,7 +52,7 @@ unsigned hash_cmdtype(const char *cmd, CMDTYPE type) {
     /* 命令をセット */
     keys[0] = malloc_chk(sizeof(HKEY), "hash_cmdtype.key");
     keys[0]->type = CHARS;
-    keys[0]->val.s = strdup(cmd);
+    keys[0]->val.s = strdup_chk(cmd, "keys[0].val");
     /* 命令タイプをセット */
     keys[1] = malloc_chk(sizeof(HKEY), "hash_cmdtype.key");
     keys[1]->type = INT;

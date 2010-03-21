@@ -15,6 +15,10 @@
 /* エラーを出力して終了 */
 void *malloc_chk(size_t size, char *tag);
 
+/* malloc_chkを実行してメモリを確保してから、 */
+/* コピーした文字列を返す */
+char *strdup_chk(const char *s, char *tag);
+
 /* エラーの構造体 */
 typedef struct {
     int num;        /* エラー番号 */

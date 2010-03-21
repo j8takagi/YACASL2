@@ -33,25 +33,37 @@ typedef struct {
 
 extern ASPROP *asprop;
 
-/* アセンブラ命令とマクロ命令を表す番号 */
+/* アセンブラ命令を表す番号 */
 typedef enum {
     START = 01,
     END = 02,
     DS = 03,
     DC = 04,
+} ASCMDID;
+
+/* アセンブラ命令を表す配列 */
+typedef struct {
+    ASCMDID cmdid;
+    int opdc_min;
+    int opdc_max;
+    char *cmd;
+} ASCMD;
+
+/* マクロ命令を表す番号 */
+typedef enum {
     IN = 011,
     OUT = 012,
     RPUSH = 013,
     RPOP = 014,
-} CASLCMD;
+} MACROCMDID;
 
-/* アセンブラ命令とマクロ命令を表す配列 */
+/* マクロ命令を表す配列 */
 typedef struct {
-    CASLCMD cmdid;
+    MACROCMDID cmdid;
     int opdc_min;
     int opdc_max;
     char *cmd;
-} CMDARRAY;
+} MACROCMD;
 
 /* ラベル配列 */
 typedef struct {
@@ -148,16 +160,16 @@ void writestr(const char *str, bool literal, PASS pass);
 /* アセンブラ命令DCをメモリに書込 */
 void writeDC(const char *str, PASS pass);
 
-/* 命令がアセンブラ命令の場合は処理を実行する。
-   実行に成功した場合TRUE、それ以外の場合はFALSEを返す */
+/* 命令がアセンブラ命令の場合は処理を実行する。 */
+/* 実行に成功した場合TRUE、それ以外の場合はFALSEを返す */
 bool assemblecmd(const CMDLINE *cmdl, PASS pass);
 
 /* 命令のコードを返す
    命令が無効な場合は0xFFFF */
 WORD getcmd(CMDTYPE type, const char *cmd);
 
-/* 命令が機械語命令の場合は処理を実行
-   実行に成功した場合TRUE、それ以外の場合はFALSEを返す */
+/* 命令が機械語命令の場合は処理を実行 */
+/* 実行に成功した場合TRUE、それ以外の場合はFALSEを返す */
 bool cometcmd(const CMDLINE *cmdl, PASS pass);
 
 /* 1行のアセンブル */

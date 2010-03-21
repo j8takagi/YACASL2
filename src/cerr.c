@@ -13,6 +13,18 @@ void *malloc_chk(size_t size, char *tag)
     return p;
 }
 
+/* malloc_chkを実行してメモリを確保してから、 */
+/* コピーした文字列を返す */
+char *strdup_chk(const char *s, char *tag)
+{
+    assert(s != NULL);
+    char *t;
+
+    t = malloc_chk(strlen(s) + 1, tag);
+    strcpy(t, s);
+    return t;
+}
+
 /* 現在のエラー */
 CERR *cerr;
 

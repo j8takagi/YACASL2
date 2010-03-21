@@ -48,7 +48,7 @@ bool loadassemble(char *file) {
 /* comet2コマンド */
 int main(int argc, char *argv[])
 {
-    int opt, retval = 0;
+    int opt, status = 0;
     const char *usage = "Usage: %s [-tTdh] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE\n";
 
     /* エラーの初期化 */
@@ -96,9 +96,9 @@ int main(int argc, char *argv[])
     /* COMET II仮想マシンのシャットダウン */
     shutdown();
     if(cerr->num > 0) {
-        retval = -1;
+        status = -1;
     }
     /* エラーの解放 */
     freecerr();
-    return retval;
+    return status;
 }

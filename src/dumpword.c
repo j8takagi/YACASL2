@@ -3,10 +3,10 @@
 #include <getopt.h>
 
 static struct option longopts[] = {
-    {"arithmetic", no_argument, NULL, 'a'},
-    {"logical", no_argument, NULL, 'l'},
-    {"help", no_argument, NULL, 'h'},
-    {0, 0, 0, 0},
+    { "arithmetic", no_argument, NULL, 'a' },
+    { "logical", no_argument, NULL, 'l' },
+    { "help", no_argument, NULL, 'h' },
+    { 0, 0, 0, 0 },
 };
 
 int main(int argc, char *argv[])
