@@ -78,7 +78,7 @@ char *getcerrmsg(int num)
             return p->cerr->msg;
         }
     }
-    return "unkown error";
+    return "unknown error";
 }
 
 /* エラーリストと現在のエラーを解放する */
