@@ -37,19 +37,19 @@ unsigned hash_int2(int tsize)
 unsigned hash_char2_int2(int tsize)
 {
     char *str[2] = {"abc", "123"};
-    int num[2] = {19, 11}, i;
+    int num[2] = {19, 11}, i, cnt = 0;
     HKEY *keys[4];
 
     /* ハッシュ共用体の設定 */
     for(i = 0; i < 2; i++) {
-        keys[i] = malloc(sizeof(HKEY));
-        keys[i]->type = CHARS;
-        keys[i]->val.s = strdup(str[i]);
+        keys[cnt] = malloc(sizeof(HKEY));
+        keys[cnt]->type = CHARS;
+        keys[cnt++]->val.s = strdup(str[i]);
     }
-    for(i = 2; i < 4; i++) {
-        keys[i] = malloc(sizeof(HKEY));
-        keys[i]->type = INT;
-        keys[i]->val.i = num[i];
+    for(i = 0; i < 2; i++) {
+        keys[cnt] = malloc(sizeof(HKEY));
+        keys[cnt]->type = INT;
+        keys[cnt++]->val.i = num[i];
     }
     /* ハッシュ値を取得する */
     return hash(4, keys, tsize);

@@ -15,6 +15,9 @@ COMMONSRC = $(SRCDIR)/word.o $(SRCDIR)/struct.o $(SRCDIR)/hash.o $(SRCDIR)/cmd.o
 ASSRC = $(SRCDIR)/assemble.o $(SRCDIR)/token.o $(SRCDIR)/label.o $(SRCDIR)/macro.o
 EXECSRC = $(SRCDIR)/exec.o $(SRCDIR)/dump.o
 
+ifeq "$(UCLASS)" "ALL"
+  SRC = $(COMMONSRC) $(ASSRC) $(EXECSRC)
+endif
 ifeq "$(UCLASS)" "AS"
   SRC = $(COMMONSRC) $(ASSRC)
 endif

@@ -48,7 +48,9 @@ cl->opdv[0]: GR1
 
 8: 
 cl is NULL
+	error - 121: cannot get operand token
 
 9: 	;comment
 cl is NULL
+	error - 121: cannot get operand token
 

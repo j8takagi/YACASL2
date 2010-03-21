@@ -23,8 +23,7 @@ int main(){
         { "SVC", ADR_X }, { "RET", NONE }
     };
     create_cmdtype_code();
-    /* エラーの初期化 */
-    cerr = malloc_chk(sizeof(CERR), "cerr");
+    cerr = malloc_chk(sizeof(CERR), "cerr");    /* エラーの初期化 */
     for(i = 0; i < sizeof(cmdcodelist)/sizeof(cmdcodelist[0]); i++) {
         code = getcmdcode(cmdcodelist[i].cmd, cmdcodelist[i].type);
         printf("%s:0%02o ---> #%04X\n", cmdcodelist[i].cmd, cmdcodelist[i].type, code);

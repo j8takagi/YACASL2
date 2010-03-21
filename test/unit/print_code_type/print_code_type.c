@@ -3,26 +3,26 @@
 
 int compare_code(const void *a, const void *b)
 {
-    return (**(const CMDTYPECODE **)a).code - (**(const CMDTYPECODE **)b).code;
+    return (**(const CMD **)a).code - (**(const CMD **)b).code;
 }
 
 /* 命令コードがキーのハッシュ表を表示する */
 void print_code_type()
 {
     int i, j = 0;
-    CMDCODETAB *np;
-    CMDTYPECODE **ar;
-    ar = malloc(sizeof(*ar) * cmdtypecodesize);
+    CMDTAB *np;
+    CMD **ar;
+    ar = malloc(sizeof(*ar) * comet2cmdsize);
     for(i = 0; i < cmdtabsize; i++) {
         np = code_type[i];
         while(np != NULL) {
-            ar[j++] = np->cmdtypecode;
+            ar[j++] = np->cmd;
             np = np->next;
         }
     }
-    qsort(ar, cmdtypecodesize, sizeof(*ar), (int (*)(const void*, const void*))compare_code);
-    for(i = 0; i < cmdtypecodesize; i++) {
-        fprintf(stdout, "#%04X\t0%02o\t%s\n", ar[i]->code, ar[i]->type, ar[i]->cmd);
+    qsort(ar, comet2cmdsize, sizeof(*ar), (int (*)(const void*, const void*))compare_code);
+    for(i = 0; i < comet2cmdsize; i++) {
+        fprintf(stdout, "#%04X\t0%02o\t%s\n", ar[i]->code, ar[i]->type, ar[i]->name);
     }
 }
 

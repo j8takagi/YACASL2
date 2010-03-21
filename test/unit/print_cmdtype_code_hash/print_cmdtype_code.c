@@ -4,12 +4,12 @@
 void print_cmdtype_code()
 {
     int i;
-    CMDCODETAB *np;
-    for(i = 0; i < cmdtabsize; i++){
+    CMDTAB *np;
+    for(i = 0; i < comet2cmdsize; i++){
         np = cmdtype_code[i];
         while(np != NULL) {
             fprintf(stdout, "(%2d) - %s\t0%02o\t#%04X\n",
-                    i, np->cmdtypecode->cmd, np->cmdtypecode->type, np->cmdtypecode->code);
+                    i, np->cmd->name, np->cmd->type, np->cmd->code);
             np = np->next;
         }
     }

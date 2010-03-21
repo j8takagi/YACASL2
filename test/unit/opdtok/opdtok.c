@@ -12,18 +12,22 @@ int main(){
         "\'1234567890123456789012345678901234567890\'",
         "\'12345678901234567890123456789012345678901\'",
     };
+
+    cerr = malloc_chk(sizeof(CERR), "cerr");    /* エラーの初期化 */
+    addcerrlist_assemble();
     for(i = 0; i < ARRAYSIZE(str); i++) {
+        cerr->num = 0;
         printf("%s\n", str[i]);
         opd = opdtok(str[i]);
         printf("OPDC:%d\n", opd->opdc);
         for(j = 0; j < opd->opdc; j++) {
             printf("OPDC[%d]:%s\n", j, opd->opdv[j]);
         }
-        if(cerrno > 0){
-            printf("Error - %d: %s\n", cerrno, cerrmsg);
-            freecerr();
+        if(cerr->num > 0){
+            printf("Error - %d: %s\n", cerr->num, cerr->msg);
         }
         printf("\n");
     }
+    freecerr();
     return 0;
 }

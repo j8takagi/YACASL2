@@ -5,11 +5,11 @@
 void print_code_type()
 {
     int i;
-    CMDCODETAB *np;
+    CMDTAB *np;
     for(i = 0; i < cmdtabsize; i++){
         for(np = code_type[i]; np != NULL; np = np->next) {
             fprintf(stdout, "(%2d) - #%04X\t0%02o\t%s\n",
-                    i, np->cmdtypecode->code, np->cmdtypecode->type, np->cmdtypecode->cmd);
+                    i, np->cmd->code, np->cmd->type, np->cmd->name);
         }
     }
 }

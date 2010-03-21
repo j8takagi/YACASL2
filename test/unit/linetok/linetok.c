@@ -17,8 +17,10 @@ int main(){
         "\n",
         "	;comment\n"
     };
+
     CMDLINE *testcl = malloc(sizeof(CMDLINE));
-    
+    cerr = malloc_chk(sizeof(CERR), "cerr");    /* エラーの初期化 */
+    addcerrlist_assemble();
     for(i = 0; i < sizeof testline /sizeof testline[0]; i++) {
         printf("%d: %s", i, testline[i]);
         testcl = linetok(testline[i]);
@@ -36,11 +38,11 @@ int main(){
                 }
             }
         }
-        if(cerrno != 0) {
-            printf("\terror - %d: %s\n", cerrno, cerrmsg);
-            freecerr();
+        if(cerr->num != 0) {
+            printf("\terror - %d: %s\n", cerr->num, cerr->msg);
         }
         printf("\n");
     }
+    freecerr();
     return 0;
 }

@@ -4,10 +4,11 @@
 
 int compare_code(const void *a, const void *b)
 {
-    const CMDTYPECODE ca = **(const CMDTYPECODE **)a;
-    const CMDTYPECODE cb = **(const CMDTYPECODE **)b;
+    const CMD ca = **(const CMD **)a;
+    const CMD cb = **(const CMD **)b;
     int diff;
-    if((diff = strcmp(ca.cmd, cb.cmd)) == 0) {
+
+    if((diff = strcmp(ca.name, cb.name)) == 0) {
         return ca.type - cb.type;
     } else {
         return diff;
@@ -18,19 +19,19 @@ int compare_code(const void *a, const void *b)
 void print_cmdtype_code()
 {
     int i, j = 0;
-    CMDCODETAB *np;
-    CMDTYPECODE **ar;
-    ar = malloc(sizeof(*ar) * cmdtypecodesize);
-    for(i = 0; i < cmdtabsize; i++) {
+    CMDTAB *np;
+    CMD **ar;
+    ar = malloc(sizeof(*ar) * comet2cmdsize);
+    for(i = 0; i < comet2cmdsize; i++) {
         np = cmdtype_code[i];
         while(np != NULL) {
-            ar[j++] = np->cmdtypecode;
+            ar[j++] = np->cmd;
             np = np->next;
         }
     }
-    qsort(ar, cmdcodesize, sizeof(*ar), (int (*)(const void*, const void*))compare_code);
-    for(i = 0; i < cmdcodesize; i++) {
-        fprintf(stdout, "%s\t0%02o\t#%04X\n", ar[i]->cmd, ar[i]->type, ar[i]->code);
+    qsort(ar, comet2cmdsize, sizeof(*ar), (int (*)(const void*, const void*))compare_code);
+    for(i = 0; i < comet2cmdsize; i++) {
+        fprintf(stdout, "%s\t0%02o\t#%04X\n", ar[i]->name, ar[i]->type, ar[i]->code);
     }
 }
 

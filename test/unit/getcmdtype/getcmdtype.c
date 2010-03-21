@@ -14,12 +14,14 @@ int main(){
         0x6400, 0x6500, 0x6600, 0x7000, 0x7100,
         0x8000, 0xF000, 0x8100
     };
+
+    cerr = malloc_chk(sizeof(CERR), "cerr");    /* エラーの初期化 */
     create_code_type();
     for(i = 0; i < ARRAYSIZE(codelist); i++) {
         type = getcmdtype(codelist[i]);
         printf("#%04X ---> 0%02o\n", codelist[i], type);
-        if(cerrno != 0) {
-            printf("\t%s", cerrmsg);
+        if(cerr->num != 0) {
+            printf("\t%s", cerr->msg);
             freecerr();
         }
     }

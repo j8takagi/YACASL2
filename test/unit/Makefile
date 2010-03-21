@@ -14,7 +14,7 @@ all: check report
 check:
 	@rm -f $(LOGFILE)
 	@for target in $(TESTS); do \
-         $(MAKE) check -C $$target; \
+         $(MAKE) check -sC $$target; \
      done
 $(LOGFILE):
 	@for target in $(TESTS); do \

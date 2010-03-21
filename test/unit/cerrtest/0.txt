@@ -29,7 +29,7 @@
 205: (null) - 205	Stack Pointer (SP) - cannot allocate stack buffer
 206: (null) - 206	Address - out of COMET II memory
 207: (null) - 207	Stack Pointer (SP) - out of COMET II memory
-999: (null) - 999	unkown error
+999: (null) - 999	unknown error
 101: foobar - 101	foobar: label already defined
 102: foobar - 102	foobar: label table is full
 103: foobar - 103	foobar: label not found
@@ -61,4 +61,4 @@
 205: foobar - 205	foobar: Stack Pointer (SP) - cannot allocate stack buffer
 206: foobar - 206	foobar: Address - out of COMET II memory
 207: foobar - 207	foobar: Stack Pointer (SP) - out of COMET II memory
-999: foobar - 999	foobar: unkown error
+999: foobar - 999	foobar: unknown error

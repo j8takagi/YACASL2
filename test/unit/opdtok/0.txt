@@ -126,7 +126,7 @@ OPDC[36]:7
 OPDC[37]:8
 OPDC[38]:9
 OPDC[39]:0
-Error - 117: operand is too many
+Error - 117: operand too many in DC
 
 '1234567890123456789012345678901234567890'
 OPDC:1
@@ -134,5 +134,5 @@ OPDC[0]:'1234567890123456789012345678901234567890'
 
 '12345678901234567890123456789012345678901'
 OPDC:0
-Error - 118: operand length is too long
+Error - 118: operand length too long
 
