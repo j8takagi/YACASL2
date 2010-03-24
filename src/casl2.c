@@ -25,7 +25,7 @@ static struct option longopts[] = {
 
 /* casl2のエラー定義 */
 CERR cerr_casl2[] = {
-    { 126, "source file is not specified" },
+    { 126, "no source file" },
 };
 bool addcerrlist_casl2()
 {
@@ -118,7 +118,7 @@ int main(int argc, char *argv[])
     }
     /* ソースファイルが指定されていない場合は終了 */
     if(argv[optind] == NULL) {
-        setcerr(126, NULL);    /* source file is not specified */
+        setcerr(126, NULL);    /* no source file */
         fprintf(stderr, "CASL2 error - %d: %s\n", cerr->num, cerr->msg);
         exit(-1);
     }
