@@ -1,3 +1,1 @@
-../../../../casl2 -z ../../../../as/sum_10.casl
-../../../../casl2: invalid option -- z
-Usage: ../../../../casl2 [-slLaAtTdh] [-oO<OBJECTFILE>] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE ...
+Usage: ../../../../casl2 [-slLaAtTdh] [-oO[<OBJECTFILE>]] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE1[ FILE2  ...]

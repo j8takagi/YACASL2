@@ -14,7 +14,7 @@ clean:
 	@rm -f 1.txt diff.txt report.txt err.txt
 cleanall: clean
 	@rm -f 0.txt
-0.txt 1.txt: $(CASL2) $(ASFILE)
+0.txt 1.txt:: $(CASL2) $(ASFILE)
 	@echo $(CMD) >$@; \
      $(CMD) >>$@ 2>$(ERRFILE); \
      if test -s $(ERRFILE); then cat err.txt >>$@; else rm -f $(ERRFILE); fi
