@@ -1,2 +1,2 @@
 ../../../../casl2 -saltdh ../../../../as/sum_10.casl
-Usage: ../../../../casl2 [-slLaAtTdh] [-oO<OBJECTFILE>] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE ...
+Usage: ../../../../casl2 [-slLaAtTdh] [-oO[<OBJECTFILE>]] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE1[ FILE2  ...]

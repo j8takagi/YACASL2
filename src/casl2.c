@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
     WORD beginptr[argc];
     char *objfile = NULL;
     const char *usage =
-        "Usage: %s [-slLaAtTdh] [-oO<OBJECTFILE>] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE ...\n";
+        "Usage: %s [-slLaAtTdh] [-oO[<OBJECTFILE>]] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE1[ FILE2  ...]\n";
 
     /* エラーの初期化 */
     cerr = malloc_chk(sizeof(CERR), "cerr");
