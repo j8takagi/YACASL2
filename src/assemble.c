@@ -86,11 +86,11 @@ bool writememory(WORD word, WORD adr, PASS pass)
     bool status = false;
 
     /* COMET IIメモリオーバーの場合 */
-    if(adr >= memsize) {
+    if(adr >= sys->memsize) {
         setcerr(119, word2n(adr));    /* out of COMET II memory */
     }
     if(cerr->num == 0) {
-        memory[adr] = word;
+        (sys->memory)[adr] = word;
         if(pass == SECOND && asmode.asdetail == true) {
             fprintf(stdout, "\t#%04X\t#%04X\n", adr, word);
         }
@@ -199,7 +199,7 @@ bool assemblecmd(const CMDLINE *cmdl, PASS pass)
         asprop->prog = strdup_chk(cmdl->label, "asprop.prog");
         /* オペランドがある場合、実行開始番地を設定 */
         if(pass == SECOND && cmdl->opd->opdc == 1) {
-            if((progprop->start = getlabel(asprop->prog, cmdl->opd->opdv[0])) == 0xFFFF) {
+            if((prog->start = getlabel(asprop->prog, cmdl->opd->opdv[0])) == 0xFFFF) {
                 setcerr(103, cmdl->opd->opdv[0]);    /* label not found */
             }
         }
@@ -212,7 +212,7 @@ bool assemblecmd(const CMDLINE *cmdl, PASS pass)
         }
         /* 実行終了番地と次のプログラムの実行開始番地を設定 */
         else if(pass == SECOND) {
-            progprop->end = asprop->lptr;
+            prog->end = asprop->lptr;
         }
         asprop->prog = NULL;
         status = true;

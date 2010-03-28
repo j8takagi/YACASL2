@@ -73,8 +73,12 @@ WORD nh2word(const char *str)
 /* WORD値を10進数の文字列に変換 */
 char *word2n(WORD word)
 {
-    char *p = malloc_chk(6, "word2n.p"), *q = malloc_chk(6, "word2n.q");
+    enum {
+        MAXLEN = 6,        /* WORD値を10進数で表したときの最大桁数 */
+    };
+    char *p = malloc_chk(MAXLEN, "word2n.p"), *q = malloc_chk(MAXLEN, "word2n.q");
     int i = 0, j;
+
     do{
         *(p + i++) = word % 10 + '0';
     } while((word /= 10) > 0);
@@ -88,9 +92,13 @@ char *word2n(WORD word)
 /* WORD値を2進数の文字列に変換 */
 char *word2bit(const WORD word)
 {
+    enum {
+        MAXLEN = 16,        /* WORD値を2進数で表したときの最大桁数 */
+    };
     WORD mask = 0x8000;
-    char *bit = malloc_chk(16 + 1, "word2bit.bit"), *p;
-    p = bit;
+    char *bit, *p;
+
+    p = bit = malloc_chk(MAXLEN + 1, "word2bit.bit");
     do {
         *p++ = (word & mask) ? '1' : '0';
     } while((mask >>= 1) > 0);

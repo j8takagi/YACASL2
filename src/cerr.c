@@ -13,6 +13,26 @@ void *malloc_chk(size_t size, char *tag)
     return p;
 }
 
+/* callocを実行し、メモリを確保できない場合は */
+/* エラーを出力して終了 */
+void *calloc_chk(size_t nmemb, size_t size, char *tag)
+{
+    void *p;
+
+    if((p = calloc(nmemb, size)) == NULL) {
+        fprintf(stderr, "%s: cannot allocate memory\n", tag);
+        exit(-1);
+    }
+    return p;
+}
+
+/* エラーの初期化 */
+void cerr_init()
+{
+    cerr = malloc_chk(sizeof(CERR), "cerr");
+    cerr->num = 0;
+}
+
 /* malloc_chkを実行してメモリを確保してから、 */
 /* コピーした文字列を返す */
 char *strdup_chk(const char *s, char *tag)

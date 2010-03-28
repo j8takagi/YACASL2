@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
     WORD word;
     const char *usage = "Usage: %s [-alh] WORD\n";
 
-    cerr = malloc_chk(sizeof(CERR), "cerr");
+    cerr_init();
     while((opt = getopt_long(argc, argv, "alh", longopts, NULL)) != -1) {
         switch(opt) {
         case 'l':

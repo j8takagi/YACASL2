@@ -25,12 +25,6 @@ enum {
     DEFAULT_CLOCKS = 5000000, /* デフォルトのクロック周波数。COMET II規格では、未定義 */
 };
 
-/* COMET IIのメモリ */
-extern WORD *memory;
-
-/* メモリサイズ */
-extern int memsize;
-
 /* COMET II フラグのマスク値 */
 enum {
     OF = 0x4,    /* Overflow Flag */
@@ -46,11 +40,15 @@ typedef struct {
     WORD fr;         /* フラグレジスタ */
 } CPU;
 
-/* COMET IIのCPU */
-extern CPU *cpu;
+/* COMET IIの仮装実行マシンシステム */
+typedef struct {
+    CPU *cpu;        /* CPU */
+    WORD *memory;    /* メモリ */
+    int memsize;     /* メモリサイズ */
+    int clocks;      /* クロック周波数 */
+} SYSTEM;
 
-/* クロック周波数 */
-extern int clocks;
+extern SYSTEM *sys;
 
 /* COMET II 命令 */
 /* 命令タイプは、オペランドにより6種類に分類 */
@@ -106,10 +104,10 @@ typedef struct {
     WORD end;     /* プログラムの終了番地 */
 } PROGPROP;
 
-extern PROGPROP *progprop;
+extern PROGPROP *prog;
 
 /* COMET II仮想マシンのリセット */
-void reset();
+void reset(int memsize, int clocks);
 
 /* COMET II仮想マシンのシャットダウン */
 void shutdown();

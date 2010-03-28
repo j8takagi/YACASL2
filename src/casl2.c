@@ -40,7 +40,7 @@ void outassemble(const char *file) {
         perror(file);
         exit(-1);
     }
-    fwrite(memory, sizeof(WORD), progprop->end, fp);
+    fwrite(sys->memory, sizeof(WORD), prog->end, fp);
     fclose(fp);
 }
 
@@ -54,7 +54,8 @@ const char *objfile_name(const char *str)
 /* casl2コマンドのメイン */
 int main(int argc, char *argv[])
 {
-    int opt, i, status = 0;
+    int memsize = DEFAULT_MEMSIZE, clocks = DEFAULT_CLOCKS;
+    int status = 0, opt, i;
     PASS pass;
     bool res = false;
     WORD beginptr[argc];
@@ -62,8 +63,7 @@ int main(int argc, char *argv[])
     const char *usage =
         "Usage: %s [-slLaAtTdh] [-oO[<OBJECTFILE>]] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE1[ FILE2  ...]\n";
 
-    /* エラーの初期化 */
-    cerr = malloc_chk(sizeof(CERR), "cerr");
+    cerr_init();
     addcerrlist_casl2();
     /* オプションの処理 */
     while((opt = getopt_long(argc, argv, "tTdslLao::O::AM:C:h", longopts, NULL)) != -1) {
@@ -123,7 +123,7 @@ int main(int argc, char *argv[])
         exit(-1);
     }
     /* COMET II仮想マシンのリセット */
-    reset();
+    reset(memsize, clocks);
     /* アセンブル。ラベル表作成のため、2回行う */
     for(pass = FIRST; pass <= SECOND; pass++) {
         if(pass == FIRST) {
@@ -137,6 +137,7 @@ int main(int argc, char *argv[])
             } else if(pass == SECOND) {
                 asprop->ptr = beginptr[i];
             }
+            asprop->prog = NULL;
             if(execmode.trace == true || execmode.dump == true || asmode.src == true ||
                asmode.label == true || asmode.asdetail == true)
             {

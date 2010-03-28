@@ -34,9 +34,9 @@ bool loadassemble(char *file) {
         perror(file);
         return false;
     }
-    progprop->end = progprop->start +
-        fread(memory, sizeof(WORD), memsize-progprop->start, fp);
-    if(progprop->end == memsize) {
+    prog->end = prog->start +
+        fread(sys->memory, sizeof(WORD), sys->memsize - prog->start, fp);
+    if(prog->end == sys->memsize) {
         setcerr(201, NULL);    /* Load object file - full of COMET II memory */
         fprintf(stderr, "Execute error - %d: %s\n", cerr->num, cerr->msg);
         status = false;
@@ -48,11 +48,11 @@ bool loadassemble(char *file) {
 /* comet2コマンド */
 int main(int argc, char *argv[])
 {
+    int memsize = DEFAULT_MEMSIZE, clocks = DEFAULT_CLOCKS;
     int opt, status = 0;
     const char *usage = "Usage: %s [-tTdh] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE\n";
 
-    /* エラーの初期化 */
-    cerr = malloc_chk(sizeof(CERR), "cerr");
+    cerr_init();
     addcerrlist_comet2();
     /* オプションの処理 */
     while((opt = getopt_long(argc, argv, "tTdM:C:h", longopts, NULL)) != -1) {
@@ -86,8 +86,9 @@ int main(int argc, char *argv[])
         fprintf(stderr, "comet2 error - %d: %s\n", cerr->num, cerr->msg);
         exit(-1);
     }
-    reset();
-    progprop->start = 0;
+    /* COMET II仮想マシンのリセット */
+    reset(memsize, clocks);
+    prog->start = 0;
     if(loadassemble(argv[optind]) == true) {
         create_code_type();    /* 命令と命令タイプがキーのハッシュ表を作成 */
         exec();                /* プログラム実行 */

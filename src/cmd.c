@@ -69,7 +69,7 @@ bool create_cmdtype_code()
     int i;
 
     cmdtabsize = comet2cmdsize;
-    cmdtype_code = malloc_chk(cmdtabsize * sizeof(CMDTAB *), "cmdtype_code");
+    cmdtype_code = calloc_chk(cmdtabsize, sizeof(CMDTAB *), "cmdtype_code");
     for(i = 0; i < cmdtabsize; i++) {
         *(cmdtype_code + i) = NULL;
     }
@@ -140,7 +140,7 @@ bool create_code_type()
     int i;
 
     cmdtabsize = comet2cmdsize;
-    code_type = malloc_chk(cmdtabsize * sizeof(CMDTAB *), "code_type");
+    code_type = calloc_chk(cmdtabsize, sizeof(CMDTAB *), "code_type");
     for(i = 0; i < cmdtabsize; i++) {
         *(code_type + i) = NULL;
     }

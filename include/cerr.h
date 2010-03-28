@@ -15,6 +15,10 @@
 /* エラーを出力して終了 */
 void *malloc_chk(size_t size, char *tag);
 
+/* callocを実行し、メモリを確保できない場合は */
+/* エラーを出力して終了 */
+void *calloc_chk(size_t nmemb, size_t size, char *tag);
+
 /* malloc_chkを実行してメモリを確保してから、 */
 /* コピーした文字列を返す */
 char *strdup_chk(const char *s, char *tag);
@@ -40,6 +44,9 @@ enum {
     CERRSTRSIZE = 10,    /* エラーメッセージ中に挿入できる文字列のサイズ */
     CERRMSGSIZE = 70,    /* エラーメッセージのサイズ */
 };
+
+/* エラーの初期化 */
+void cerr_init();
 
 /* エラーリストを作成・追加する */
 bool addcerrlist(int cerrc, CERR cerrv[]);

@@ -1,44 +1,38 @@
 #include "casl2.h"
 
-/* COMET IIのメモリ */
-WORD *memory;
+/* COMET IIの仮装実行マシンシステム */
+SYSTEM *sys;
 
-/* メモリサイズ */
-int memsize = DEFAULT_MEMSIZE;
-
-/* COMET IIのCPU */
-CPU *cpu;
-
-/* クロック周波数 */
-int clocks = DEFAULT_CLOCKS;
-
-/* CASL2プログラムのプロパティ */
-PROGPROP *progprop;
+/* CASL IIプログラムのプロパティ */
+PROGPROP *prog;
 
 /* COMET II仮想マシンのリセット */
-void reset()
+void reset(int memsize, int clocks)
 {
     int i;
 
+    sys = malloc_chk(sizeof(SYSTEM), "sys");
+    /* メモリサイズの設定 */
+    sys->memsize = memsize;
+    /* クロック周波数の設定 */
+    sys->clocks = clocks;
     /* メモリの初期化 */
-    memory = malloc_chk(memsize * sizeof(WORD), "memory");
-    for(i = 0; i < memsize; i++) {
-        memory[i] = 0x0;
-    }
+    sys->memory = calloc_chk(sys->memsize, sizeof(WORD), "memory");
     /* CPUの初期化 */
-    cpu = malloc_chk(sizeof(CPU), "cpu");
+    sys->cpu = malloc_chk(sizeof(CPU), "cpu");
     for(i = 0; i < GRSIZE; i++) {
-        cpu->gr[i] = 0x0;
+        sys->cpu->gr[i] = 0x0;
     }
-    cpu->sp = cpu->pr = cpu->fr = 0x0;
+    sys->cpu->sp = sys->cpu->pr = sys->cpu->fr = 0x0;
     /* CASL2プログラムのプロパティ */
-    progprop = malloc_chk(sizeof(PROGPROP), "progprop");
+    prog = malloc_chk(sizeof(PROGPROP), "prog");
 }
 
 /* COMET II仮想マシンのシャットダウン */
 void shutdown()
 {
-    free(progprop);
-    free(cpu);
-    free(memory);
+    free(prog);
+    free(sys->memory);
+    free(sys->cpu);
+    free(sys);
 }
