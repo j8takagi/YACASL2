@@ -1,3 +1,4 @@
+;;; casl2 -M768 calc_addl.casl ../casl2lib/inl.casl ../casl2lib/outl.casl
 MAIN    START
         XOR     GR1,GR1
         XOR     GR2,GR2
