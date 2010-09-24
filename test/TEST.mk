@@ -3,7 +3,7 @@
 # make check   : ↓
 # make prepare : CMDで設定されたコマンドを実行した出力結果を0.txt（テストの想定結果）に出力
 # make clean   : 「make」で生成されたファイルをクリア
-# make cleanall: 「make」と「make clean」で生成されたファイルをクリア
+# make cleanall: 「make」と「make prepare」で生成されたファイルをクリア
 ERRFILE = err.txt
 UNITNAME = `pwd | xargs basename`
 # 要定義: CMD, CMDFILE, OBJFILE
