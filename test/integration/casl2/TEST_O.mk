@@ -27,6 +27,4 @@ cleanall: clean
 diff.txt: 1.txt
 	@-diff -b 0.txt 1.txt >$@ 2>&1
 report.txt: diff.txt
-	@echo -n "$(UNITNAME): Test " >$@; \
-     if test ! -s $^; then echo -n "Success " >>$@; rm -f $^; else echo -n "Failure " >>$@; fi; \
-     echo `date +"%F %T"` >>$@
+	@if test ! -s $^; then echo "$(UNITNAME): Test Success " `date +"%F %T"` >>$@; rm -f $^; else echo "$(UNITNAME): Test Failure " `date +"%F %T"` >>$@; fi; \

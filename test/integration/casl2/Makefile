@@ -14,9 +14,7 @@ LOGFILE = Test.log
 check: checkeach report
 checkeach:
 	@rm -f $(LOGFILE)
-	@for target in $(TESTS); do \
-         $(MAKE) check -C $$target; \
-     done
+	@for target in $(TESTS); do $(MAKE) check -C $$target; done
 $(LOGFILE):
 	@for target in $(TESTS); do \
          cat <$$target/report.txt >>$(LOGFILE) || echo $$target ": no report" >>$(LOGFILE); \
