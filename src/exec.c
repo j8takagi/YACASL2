@@ -23,7 +23,7 @@ EXECMODE execmode = {false, false, false};
 void svcin()
 {
     int i;
-    char *buffer = malloc_chk(INSIZE + 1,"svcin.buffer");
+    char *buffer = malloc_chk(INSIZE + 1, "svcin.buffer");
 
     if(fgets(buffer, INSIZE, stdin) == NULL) {
         sys->memory[sys->cpu->gr[1]] = sys->memory[sys->cpu->gr[2]] = 0x0;
