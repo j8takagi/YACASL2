@@ -7,23 +7,27 @@
 # make prepare : CMDで設定されたコマンドを実行した出力結果を0.txt（テストの想定結果）に出力
 # make clean   : 「make」で生成されたファイルをクリア
 # make cleanall: 「make」と「make prepare」で生成されたファイルをクリア
-ERRFILE = err.txt
 UNITNAME = `pwd | xargs basename`
-
+DATE = `date +"%F %T"`
+ERR_FILE = err.txt
+DIFF_FILE = diff.txt
+REPORT_FILE = report.txt
+TEST0_FILE = 0.txt
+TEST1_FILE = 1.txt
 .PHPNY: check prepare clean cleanall
-check: clean report.txt
-prepare: cleanall 0.txt
+check: clean $(REPORT_FILE)
+prepare: cleanall $(TEST0_FILE)
 clean:
-	@rm -f 1.txt diff.txt report.txt err.txt
+	@rm -f $(TEST1_FILE) $(DIFF_FILE) $(REPORT_FILE) $(ERR_FILE)
 cleanall: clean
-	@rm -f 0.txt
+	@rm -f $(TEST0_FILE)
 ifndef MAINTARGET_OVERRIDE
-0.txt 1.txt:
+$(TEST0_FILE) $(TEST1_FILE):
 	@echo $(CMD) >$@; \
-     $(CMD) >>$@ 2>$(ERRFILE); \
-     if test -s $(ERRFILE); then cat err.txt >>$@; else rm -f $(ERRFILE); fi
+     $(CMD) >>$@ 2>$(ERR_FILE); \
+     if test -s $(ERR_FILE); then cat $(ERR_FILE) >>$@; else rm -f $(ERR_FILE); fi
 endif
-diff.txt: 1.txt
-	@-diff -c 0.txt 1.txt >$@ 2>&1
-report.txt: diff.txt
-	@if test ! -s $^; then echo "$(UNITNAME): Test Success " `date +"%F %T"` >>$@; rm -f $^; else echo "$(UNITNAME): Test Failure " `date +"%F %T"` >>$@; fi; \
+$(DIFF_FILE): $(TEST1_FILE)
+	@-diff -c $(TEST0_FILE) $(TEST1_FILE) >$@ 2>&1
+$(REPORT_FILE): $(DIFF_FILE)
+	@if test ! -s $^; then echo "$(UNITNAME): Test Success $(DATE)" >>$@; rm -f $^; else echo "$(UNITNAME): Test Failure $(DATE)" >>$@; fi;
