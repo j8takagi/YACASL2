@@ -11,16 +11,20 @@ TESTS = `ls | grep "^[^A-Z].*"`
 LOGFILE = Test.log
 
 .PHONY: all check checkeach report clean cleanall prepare create
+
 check: checkeach report
+
 checkeach:
 	@rm -f $(LOGFILE)
 	@for target in $(TESTS); do \
          $(MAKE) check -C $$target; \
      done
+
 $(LOGFILE):
 	@for target in $(TESTS); do \
          cat <$$target/report.txt >>$(LOGFILE) || echo $$target ": no report" >>$(LOGFILE); \
      done
+
 report: $(LOGFILE)
 	@success=`grep "Success" $(LOGFILE) | wc -l`; \
      all=`cat $(LOGFILE) | wc -l`; \
@@ -28,14 +32,18 @@ report: $(LOGFILE)
      if test $$success -eq $$all; then \
        echo "$(GROUPNAME): All tests are succeded."; \
      fi
+
 clean:
 	@for target in $(TESTS); do $(MAKE) clean -C $$target; done
 	@rm -f $(LOGFILE)
+
 cleanall:
 	@for target in $(TESTS); do $(MAKE) cleanall -C $$target; done
 	@rm -f $(LOGFILE)
+
 prepare:
 	@for target in $(TESTS) ; do $(MAKE) prepare -C $$target ; done
+
 create:
 ifndef UNITNAME
 	@echo "no test created. set UNITNAME"
