@@ -78,7 +78,7 @@ YACASL2は、「ふつうの処理系」として動作します。ほかの多�
 実行時のメモリの内容
 @end itemize
 
-出力された動作内容は、GNU/Linuxのさまざまなツール、たとえば@command{cat}、@command{less}、@command{grep}、@command{wc}などを使って解析できます。
+出力された動作内容は、GNU/Linuxのさまざまなツール、たとえば@kbd{cat}、@kbd{less}、@kbd{grep}、@kbd{wc}などを使って解析できます。
 
 YACASL2の操作は、端末を開いてコマンドを入力・実行することで行います。
 
@@ -94,7 +94,7 @@ Ubuntu Linux 9.04 / 8.04
 Vine Linux 4.2
 @end itemize
 
-インストール時に、@command{tar}、@command{gcc}、@command{make}が必要です。
+インストール時に、@kbd{tar}、@kbd{gcc}、@kbd{make}が必要です。
 
 @node YACASL2のインストール, YACASL2の使い方, YACASL2の概要, Top
 @chapter YACASL2のインストール
@@ -112,61 +112,46 @@ YACASL2ファイルの検証
 YACASL2ファイルの展開
 
 @item
-@command{casl2}、@command{comet2}、@command{dumpword}のビルド
+@kbd{casl2}、@kbd{comet2}、@kbd{dumpword}のビルド
 
 @item
-@command{casl2}の実行テスト
+@kbd{casl2}の実行テスト
 
 @item
 詳細なテスト
 
 @item
-環境変数@var{PATH}の設定
+環境変数@code{PATH}の設定
 @end enumerate
 
 @section YACASL2ファイルのダウンロード
-@uref{http://github.com/j8takagi/YACASL2, GitHub/j8takagi/YACASL2}の@uref{http://github.com/j8takagi/YACASL2/downloads, ダウンロードページ}から最新版のtgzファイルをダウンロードします（2010年3月6日現在、@var{v0.1}の@file{j8takagi-YACASL2-6323ce4.tar.gz}）。
+@uref{http://github.com/j8takagi/YACASL2, GitHub/j8takagi/YACASL2}の@uref{http://github.com/j8takagi/YACASL2/downloads, ダウンロードページ}から最新版のtgzファイルをダウンロードします（2010年3月6日現在、@code{v0.1}の@file{j8takagi-YACASL2-6323ce4.tar.gz}）。
 
-続けて、対応する@file{md5sum}フィルをダウンロードします（2010年3月6日現在、@file{j8takagi-YACASL2-6323ce4.tar.gz.md5sum}）。
+続けて、対応する@file{md5sum}ファイルをダウンロードします（2010年3月6日現在、@file{j8takagi-YACASL2-6323ce4.tar.gz.md5sum}）。
 
 @section YACASL2ファイルの検証
-ダウンロードが完了したら、@command{md5sum}と@command{diff}で正しくファイルがダウンロードができているかを検証します。
+ダウンロードが完了したら、@kbd{md5sum}と@kbd{diff}で正しくファイルがダウンロードができているかを検証します。
 
-@iftex
-@cartouche
-@end iftex
 @example
-$ @command{md5sum yacasl2.tar.gz | diff -s yacasl2.tar.gz.md5sum -}
+$ @kbd{md5sum yacasl2.tar.gz | diff -s yacasl2.tar.gz.md5sum -}
 Files yacasl2.tar.gz.md5sum and - are identical
 @end example
-@iftex
-@end cartouche
-@end iftex
 
 @section YACASL2ファイルの展開
 
 YACASL2ファイルをダウンロードしたら、次のコマンドで展開します。
 
-@iftex
-@cartouche
-@end iftex
 @example
-$ @command{tar xvzf yacasl2.tar.gz}
+$ @kbd{tar xvzf yacasl2.tar.gz}
 @end example
-@iftex
-@end cartouche
-@end iftex
 
-@section @command{casl2}、@command{comet2}、@command{dumpword}のビルド
+@section @kbd{casl2}、@kbd{comet2}、@kbd{dumpword}のビルド
 
-展開したら、次のコマンドで@command{casl2}、@command{comet2}、@command{dumpword}をビルドします。
+展開したら、次のコマンドで@kbd{casl2}、@kbd{comet2}、@kbd{dumpword}をビルドします。
 
-@iftex
-@cartouche
-@end iftex
 @example
-$ @command{cd yacasl2}
-$ @command{make}
+$ @kbd{cd yacasl2}
+$ @kbd{make}
 make -C src
 make[1]: Entering directory ‘/home/kazubito/yacasl2/src’
 gcc -c -g -Wall -I ../include casl2.c
@@ -190,35 +175,23 @@ gcc -c -g -Wall -I ../include dumpword.c
 gcc -g -Wall -I ../include -o ../dumpword dumpword.o word.o cerr.o
 make[1]: Leaving directory ‘/home/kazubito/yacasl2/src’
 @end example
-@iftex
-@end cartouche
-@end iftex
 
-@section @command{casl2}の実行テスト
+@section @kbd{casl2}の実行テスト
 
 ビルドしたら、次のコマンドが正常に実行できるかを確認します。
 正常に実行された場合は、「Hello, World!」と表示されます。
 
-@iftex
-@cartouche
-@end iftex
 @example
-$ @command{./casl2 as/hello.casl}
+$ @kbd{./casl2 as/hello.casl}
 Hello, World!
 @end example
-@iftex
-@end cartouche
-@end iftex
 
 @section 詳細なテスト
 
 次のコマンドを実行すると、正常にビルドできているかどうかを詳細にテストできます。
 
-@iftex
-@cartouche
-@end iftex
 @example
-$ @command{make check}
+$ @kbd{make check}
 194 / 194 tests passed. Details in /home/kazubito/yacasl2/test/integra
 tion/casl2/Test.log
 All tests are succeded.
@@ -229,50 +202,29 @@ All tests are succeded.
 /dumpword/Test.log
 All tests are succeded.
 @end example
-@iftex
-@end cartouche
-@end iftex
 
-@section 環境変数@var{PATH}の設定
+@section 環境変数@code{PATH}の設定
 
-環境変数@var{PATH}にYACASL2のディレクトリを追加すると、どのディレクトリでも@command{casl2}、@command{comet2}、@command{dumpword}を実行できます。
+環境変数@code{PATH}にYACASL2のディレクトリを追加すると、どのディレクトリでも@kbd{casl2}、@kbd{comet2}、@kbd{dumpword}を実行できます。
 
 環境変数の設定方法は使っているシェルによって異なります。シェルは、次のコマンドで確認できます。
 
-@iftex
-@cartouche
-@end iftex
 @example
-$ @command{echo $SHELL}
+$ @kbd{echo $SHELL}
 /bin/bash
 @end example
-@iftex
-@end cartouche
-@end iftex
 
-現在もっとも多く使われているシェルは、BASHでしょう。BASHでは、次のコマンドを実行すると環境変数@var{PATH}にYACASL2のディレクトリが追加されます。
+現在もっとも多く使われているシェルは、BASHでしょう。BASHでは、次のコマンドを実行すると環境変数@code{PATH}にYACASL2のディレクトリが追加されます。
 
-@iftex
-@cartouche
-@end iftex
 @example
-$ @command{PATH=$PATH:~/yacasl2 && export PATH}
+$ @kbd{PATH=$PATH:~/yacasl2 && export PATH}
 @end example
-@iftex
-@end cartouche
-@end iftex
 
-シェルの初期設定ファイルに上記のコマンドを追加すれば、今後ログインした後は自動的にどのディレクトリでも @command{casl2}、@command{comet2}、@command{dumpword}を実行できます。BASHではホームディレクトリにある@file{.bashrc}が初期設定ファイルのため、次のコマンドで追加されます。
+シェルの初期設定ファイルに上記のコマンドを追加すれば、今後ログインした後は自動的にどのディレクトリでも @kbd{casl2}、@kbd{comet2}、@kbd{dumpword}を実行できます。BASHではホームディレクトリにある@file{.bashrc}が初期設定ファイルのため、次のコマンドで追加されます。
 
-@iftex
-@cartouche
-@end iftex
 @example
-$ @command{echo ’PATH=$PATH:~/yacasl2 && export PATH’ >>~/.bashrc}
+$ @kbd{echo ’PATH=$PATH:~/yacasl2 && export PATH’ >>~/.bashrc}
 @end example
-@iftex
-@end cartouche
-@end iftex
 
 @node YACASL2の使い方, YACASL2コマンドマニュアル, YACASL2のインストール, Top
 @chapter YACASL2 の使い方
@@ -282,11 +234,8 @@ YACASL2 は、テキストファイルに記述されたCASLプログラムを�
 
 インストール時にコマンド実行の確認に使った@file{hello.casl}は、次のような内容です。CASL IIのマクロ命令OUTは、文字列を出力します。
 
-@iftex
-@cartouche
-@end iftex
 @example
-$ @command{cat hello.casl}
+$ @kbd{cat hello.casl}
 MAIN     START
          OUT     OBUF,LEN
          RET
@@ -294,30 +243,18 @@ OBUF     DC      ’Hello, World!’
 LEN      DC      13
          END
 @end example
-@iftex
-@end cartouche
-@end iftex
 
 次のコマンドを実行すると、CASL II のアセンブルと仮想マシン COMET II 上での実行が連続で行われ、文字列が出力されます。
 
-@iftex
-@cartouche
-@end iftex
 @example
-$ @command{casl2 hello.casl}
+$ @kbd{casl2 hello.casl}
 Hello, World!
 @end example
-@iftex
-@end cartouche
-@end iftex
 
 @file{addl.casl}は、3と1の和を求めます。
 
-@iftex
-@cartouche
-@end iftex
 @example
-$ @command{cat addl.casl}
+$ @kbd{cat addl.casl}
 ;;; ADDL r,adr
 MAIN     START
          LD      GR1,A
@@ -327,32 +264,20 @@ A        DC      3
 B        DC      1
          END
 @end example
-@iftex
-@end cartouche
-@end iftex
 
 このプログラムには出力命令がないため、オプションなしで実行した場合には結果が出力されません。
 
-@iftex
-@cartouche
-@end iftex
 @example
-$ @command{casl2 addl.casl}
+$ @kbd{casl2 addl.casl}
 $
 @end example
-@iftex
-@end cartouche
-@end iftex
 
 実行内容を確認するには、後述のようにCPU 内にあるレジスタやメモリの内容を表示するか、結果を出力するための処理を追加する必要があります。
 
 @file{sum_10.casl}は、1から10までの整数の和を求めます。
 
-@iftex
-@cartouche
-@end iftex
 @example
-$ @command{cat sum_10.casl}
+$ @kbd{cat sum_10.casl}
 ;;; sum_10.casl
 ;;; 出力 GR0: 1から10までの整数をすべて加算した値
 MAIN    START
@@ -371,32 +296,20 @@ LST     DC      10              ; 末項
 STEP    DC      1               ; 公差
         END
 @end example
-@iftex
-@end cartouche
-@end iftex
 
 このプログラムも、オプションなしで実行した場合には結果が出力されません。
-@iftex
-@cartouche
-@end iftex
 @example
-$ @command{casl2 sum_10.casl}
+$ @kbd{casl2 sum_10.casl}
 $
 @end example
-@iftex
-@end cartouche
-@end iftex
 
 @section アセンブル結果の確認
 casl2の処理途中で行われるアセンブルの結果を表示するには、オプション@option{-a}を指定します。また、ラベルとアドレスの対応表を表示するには、オプション@option{-l}を指定します。
 
 次のコマンドでは@file{hello.casl}の、ラベルとアドレスの対応表と、アセンブル結果と、実行結果が表示されます。OUTはアセンブラ命令で複数の機械語命令で構成されているため、命令行1行に対して、複数行のコードが生成されます。
 
-@iftex
-@cartouche
-@end iftex
 @example
-$ @command{casl2 -a -l hello.casl}
+$ @kbd{casl2 -a -l hello.casl}
 
 Assemble hello.casl (0)
 
@@ -449,17 +362,11 @@ hello.casl:    5:LEN     DC      13
 hello.casl:    6:        END
 Hello, World!
 @end example
-@iftex
-@end cartouche
-@end iftex
 
 @file{addl.casl}の、ラベルとアドレスの対応表と、アセンブル結果は、次のようになります。
 
-@iftex
-@cartouche
-@end iftex
 @example
-$ @command{casl2 -a -l addl.casl}
+$ @kbd{casl2 -a -l addl.casl}
 
 Assemble addl.casl (0)
 
@@ -485,9 +392,6 @@ addl.casl:    7:B       DC      1
     #0006   #0001
 addl.casl:    8:        END
 @end example
-@iftex
-@end cartouche
-@end iftex
 
 なお、オプション@option{-A}を指定すると、アセンブル結果が表示される時点で処理が終了します。仮想マシンCOMET II での実行は行われません。
 
@@ -498,11 +402,8 @@ YACASL2では実行中のCPUのレジスタとメモリの内容をそれぞれ�
 
 @file{addl.casl}に必要なメモリ容量は8語のため、次のようにCPUのレジスタとメモリの内容を表示できます。
 
-@iftex
-@cartouche
-@end iftex
 @example
-$ @command{casl2 -t -d -M8 addl.casl | less}
+$ @kbd{casl2 -t -d -M8 addl.casl | less}
 
 Assemble addl.casl (0)
 
@@ -555,26 +456,17 @@ Executing machine codes
 #0004: adr : 0000 0001 0002 0003 0004 0005 0006 0007
 #0004: 0000: 1010 0005 2210 0006 8100 0003 0001 0000 
 @end example
-@iftex
-@end cartouche
-@end iftex
 
 @subsection 特定のレジスタを表示
 
-@file{addl.casl}のレジスタやメモリの中で、実行中に値が変化しているのはGR1だけです。こうした場合は、@command{grep}を使って表示される内容を絞り込むことで動作を検証しやすくなります。
+@file{addl.casl}のレジスタやメモリの中で、実行中に値が変化しているのはGR1だけです。こうした場合は、@kbd{grep}を使って表示される内容を絞り込むことで動作を検証しやすくなります。
 
-@iftex
-@cartouche
-@end iftex
 @example
-$ @command{casl2 -t addl.casl | grep 'GR1:'}
+$ @kbd{casl2 -t addl.casl | grep 'GR1:'}
 #0000: GR1:      0 = #0000 = 0000000000000000
 #0002: GR1:      3 = #0003 = 0000000000000011
 #0004: GR1:      4 = #0004 = 0000000000000100
 @end example
-@iftex
-@end cartouche
-@end iftex
 
 この内容を、先に出力したアセンブル結果と引き比べてください。
 次の表のように、PRとGR1、命令行が対応していることがわかります。
@@ -593,90 +485,51 @@ $ @command{casl2 -t addl.casl | grep 'GR1:'}
 
 @subsection プログラム終了時の値を表示
 
-@command{grep}と@command{tail}を組み合わせれば、プログラム終了時の値を表示できます。
+@kbd{grep}と@kbd{tail}を組み合わせれば、プログラム終了時の値を表示できます。
 
-@iftex
-@cartouche
-@end iftex
 @example
-$ @command{casl2 -t addl.casl | grep 'GR1:' | tail -1}
+$ @kbd{casl2 -t addl.casl | grep 'GR1:' | tail -1}
 #0004: GR1:      4 = #0004 = 0000000000000100
 @end example
-@iftex
-@end cartouche
-@end iftex
 
-@iftex
-@cartouche
-@end iftex
 @example
-$ @command{casl2 -t sum_10.casl | grep 'GR0:' | tail -1}
+$ @kbd{casl2 -t sum_10.casl | grep 'GR0:' | tail -1}
 #0010: GR0:     55 = #0037 = 0000000000110111 = '7'
 @end example
-@iftex
-@end cartouche
-@end iftex
 
 @subsection プログラムのステップ数を表示
 
-@command{grep}と@command{wc}を組み合わせれば、プログラムのステップ数を表示できます。
+@kbd{grep}と@kbd{wc}を組み合わせれば、プログラムのステップ数を表示できます。
 
-@iftex
-@cartouche
-@end iftex
 @example
-$ @command{casl2 -t hello.casl | grep 'GR1:' | wc -l}
+$ @kbd{casl2 -t hello.casl | grep 'GR1:' | wc -l}
 11
 @end example
-@iftex
-@end cartouche
-@end iftex
 
-@iftex
-@cartouche
-@end iftex
 @example
-$ @command{casl2 -t addl.casl | grep 'GR1:' | wc -l}
+$ @kbd{casl2 -t addl.casl | grep 'GR1:' | wc -l}
 3
 @end example
-@iftex
-@end cartouche
-@end iftex
 
 @file{sum_10.casl}はプログラム内にループがあるため、ステップ数が大きくなります。
 
-@iftex
-@cartouche
-@end iftex
 @example
-$ @command{casl2 -t sum_10.casl | grep 'GR0:' | wc -l}
+$ @kbd{casl2 -t sum_10.casl | grep 'GR0:' | wc -l}
 54
 @end example
-@iftex
-@end cartouche
-@end iftex
 
 @section アセンブルと実行を別に行う
 
-@command{casl2}に@option{-O}@file{ファイル名}を指定すると、オブジェクトファイルを作成できます。
+@kbd{casl2}に@option{-O}@file{ファイル名}を指定すると、オブジェクトファイルを作成できます。
 
-@iftex
-@cartouche
-@end iftex
 @example
-$ @command{casl2 -Ohello.o hello.casl}
+$ @kbd{casl2 -Ohello.o hello.casl}
 @end example
-@iftex
-@end cartouche
-@end iftex
 
-作成されたオブジェクトファイルの内容は、@command{od}を使って確認できます。テキストファイルではないため、@command{cat}などでは確認できません。
+作成されたオブジェクトファイルの内容は、@kbd{od}を使って確認できます。テキストファイルではないため、@kbd{cat}などでは確認できません。
 
-@iftex
-@cartouche
-@end iftex
 @example
-$ @command{od -t x2 hello.o}
+$ @kbd{od -t x2 hello.o}
 0000000 7001 0000 7002 0000 1210 0013 1220 0020
 0000020 f000 0002 1210 0021 1220 0022 f000 0002
 0000040 7120 7110 8100 0048 0065 006c 006c 006f
@@ -684,64 +537,37 @@ $ @command{od -t x2 hello.o}
 0000100 000d 000a 0001
 0000106
 @end example
-@iftex
-@end cartouche
-@end iftex
 
-オブジェクトファイルの実行には、@command{comet2}を使います。
+オブジェクトファイルの実行には、@kbd{comet2}を使います。
 
-@iftex
-@cartouche
-@end iftex
 @example
-$ @command{comet2 hello.o}
+$ @kbd{comet2 hello.o}
 Hello, World!
 @end example
-@iftex
-@end cartouche
-@end iftex
 
 @section 1語の解析
 
 CASL IIでは、1語（16ビット）を単位としてデータが処理されます。
-@command{dumpword}は、指定した1語を10進数、16進数、2進数で表示します。
+@kbd{dumpword}は、指定した1語を10進数、16進数、2進数で表示します。
 
-@iftex
-@cartouche
-@end iftex
 @example
-$ @command{dumpword 72}
+$ @kbd{dumpword 72}
     72:     72 = #0048 = 0000000001001000 = 'H'
 @end example
-@iftex
-@end cartouche
-@end iftex
 
 マイナスの数は、次のように指定します。
 
-@iftex
-@cartouche
-@end iftex
 @example
-$ @command{dumpword -- -72}
+$ @kbd{dumpword -- -72}
    -72:    -72 = #FFB8 = 1111111110111000
 @end example
-@iftex
-@end cartouche
-@end iftex
 
 16進数は、次のように指定します。
 
-@iftex
-@cartouche
-@end iftex
 @example
-$ @command{dumpword '#0048'}
+$ @kbd{dumpword '#0048'}
  #0048:     72 = #0048 = 0000000001001000 = 'H'
 @end example
-@iftex
-@end cartouche
-@end iftex
 
 @section CASL2ライブラリの使用
 
@@ -765,38 +591,26 @@ YACASL2の@file{as/casl2lib}ディレクトリには、CASL IIで記述された
 
 @subsection 数値を出力する
 
-3と1の和を求める@file{addl.casl}で演算結果を出力するには、まず@file{addl.casl}を編集します。CASL IIの@command{CALL}命令で@command{OUTL}を副プログラムとして呼び出すようにします。
+3と1の和を求める@file{addl.casl}で演算結果を出力するには、まず@file{addl.casl}を編集します。CASL IIの@kbd{CALL}命令で@kbd{OUTL}を副プログラムとして呼び出します。
 
-@iftex
-@cartouche
-@end iftex
 @example
-$ @command{cat addl_outl.casl}
+$ @kbd{cat addl_outl.casl}
 MAIN    START
         LD      GR1,A
         ADDL    GR1,B
-        @strong{CALL    OUTL}
+        @emph{CALL    OUTL}
         RET
 A       DC      3
 B       DC      1
         END
 @end example
-@iftex
-@end cartouche
-@end iftex
 
-変更したら@command{casl2}を、複数のファイルを指定して実行します。
+変更したら@kbd{casl2}を、複数のファイルを指定して実行します。
 
-@iftex
-@cartouche
-@end iftex
 @example
-$ @command{casl2 addl_outl.casl ~/yacasl2/as/casl2lib/outl.casl}
+$ @kbd{casl2 addl_outl.casl ~/yacasl2/as/casl2lib/outl.casl}
 4
 @end example
-@iftex
-@end cartouche
-@end iftex
 
 @node YACASL2コマンドマニュアル,CASL2LIBマニュアル,YACASL2の使い方,TOP
 @chapter YACASL2コマンドマニュアル
@@ -812,26 +626,26 @@ YACASL2のコマンドとオプションについて解説します。
 @end menu
 
 @node casl2
-@section @command{casl2}
+@section @kbd{casl2}
 
 @pindex casl2
 @cindex casl2
 
-@command{casl2}は、引数として指定されたCASLファイルをアセンブルし、仮想マシンCOMET II上で実行します。CASLファイルは、アセンブラ言語CASL IIで記述されたテキストファイルです。引数が指定されない場合は、エラーメッセージを表示して終了します。
+@kbd{casl2}は、引数として指定されたCASLファイルをアセンブルし、仮想マシンCOMET II上で実行します。CASLファイルは、アセンブラ言語CASL IIで記述されたテキストファイルです。引数が指定されない場合は、エラーメッセージを表示して終了します。
 
 @example
-$ @command{casl2 hello.casl}
+$ @kbd{casl2 hello.casl}
 @end example
 
-副プログラムを呼び出す場合は、複数のCASLファイルを指定することもできます。
+複数のCASLファイルを指定することで、副プログラムを呼び出せます。
 
 @example
-$ @command{casl2 addl_outl.casl ~/yacasl2/as/casl2lib/outl.casl}
+$ @kbd{casl2 addl_outl.casl ~/yacasl2/as/casl2lib/outl.casl}
 @end example
 
 @unnumberedsubsec オプション
 
-@command{casl2}は、次のオプションを指定できます。
+@kbd{casl2}は、次のオプションを指定できます。
 
 @table @option
 @item -s
@@ -856,11 +670,11 @@ CASLファイルの内容を表示します。
 
 @item -o<OBJECTFILE>
 @itemx --assembleout
-アセンブル結果をオブジェクトファイル@file{<OBJECTFILE>}に出力し、ほかの作業を続行します。出力されたオブジェクトファイルは、@command{comet2}で実行できます。オブジェクトファイルを指定しない場合、出力先は@file{a.o}です。オブジェクトファイルは1つだけ指定できます。
+アセンブル結果をオブジェクトファイル@file{<OBJECTFILE>}に出力し、ほかの作業を続行します。出力されたオブジェクトファイルは、@kbd{comet2}で実行できます。オブジェクトファイルを指定しない場合、出力先は@file{a.o}です。オブジェクトファイルは1つだけ指定できます。
 
 @item -O<OBJECTFILE>
 @itemx --assembleoutonly
-アセンブル結果をオブジェクトファイル@file{<OBJECTFILE>}に出力し、終了します。出力されたオブジェクトファイルは、@command{comet2}で実行できます。オブジェクトファイルを指定しない場合、出力先は@file{a.o}です。オブジェクトファイルは1つだけ指定できます。
+アセンブル結果をオブジェクトファイル@file{<OBJECTFILE>}に出力し、終了します。出力されたオブジェクトファイルは、@kbd{comet2}で実行できます。オブジェクトファイルを指定しない場合、出力先は@file{a.o}です。オブジェクトファイルは1つだけ指定できます。
 
 @item -t
 @itemx --trace
@@ -885,26 +699,26 @@ CASLファイルの内容を表示します。
 
 @item -h
 @itemx --help
-@command{casl2}の使用方法を表示して終了します。
+@kbd{casl2}の使用方法を表示して終了します。
 @end table
 
 @node comet2
-@section @command{comet2}
+@section @kbd{comet2}
 
 @pindex comet2
 @cindex comet2
 
-@command{comet2}は、引数として指定されたオブジェクトファイルを仮想マシンCOMET II上で実行します。オブジェクトファイルは、@command{casl}に@option{-o}または@option{-O}を指定して出力します。
+@kbd{comet2}は、引数として指定されたオブジェクトファイルを仮想マシンCOMET II上で実行します。オブジェクトファイルは、@kbd{casl}に@option{-o}または@option{-O}を指定して出力します。
 
 @example
-$ @command{comet2 hello.o}
+$ @kbd{comet2 hello.o}
 @end example
 
 引数で指定できるオブジェクトファイルは1つだけです。引数が指定されない場合は、エラーメッセージを表示して終了します。複数の引数を指定した場合、2番目以降の引数は無視されます。
 
 @unnumberedsubsec オプション
 
-@command{comet2}は、次のオプションを指定できます。
+@kbd{comet2}は、次のオプションを指定できます。
 
 @table @option
 
@@ -931,26 +745,26 @@ $ @command{comet2 hello.o}
 
 @item -h
 @itemx --help
-@command{comet2}の使用方法を表示して終了します。
+@kbd{comet2}の使用方法を表示して終了します。
 @end table
 
 @node dumpword
-@section @command{dumpword}
+@section @kbd{dumpword}
 
 @pindex dumpword
 @cindex dumpword
 
-@command{dumpword}は、引数として指定された数値を、整数、#0000〜#FFFFの範囲の16進数、2進数で表示します。文字の組に該当する場合は、「 = 」のうしろに文字が表示されます。引数は、10進数または先頭に「#」の付いた16進数で指定します。表示される整数は、オプションにより-32,768〜32,767または0〜65,535の範囲です。オプションなしの場合は、-32,768〜32,767です。
+@kbd{dumpword}は、引数として指定された数値を、整数、#0000〜#FFFFの範囲の16進数、2進数で表示します。文字の組に該当する場合は、「 = 」のうしろに文字が表示されます。引数は、10進数または先頭に「#」の付いた16進数で指定します。表示される整数は、オプションにより-32,768〜32,767または0〜65,535の範囲です。オプションなしの場合は、-32,768〜32,767です。
 
 @example
-$ @command{dumpword 10}
+$ @kbd{dumpword 10}
 @end example
 
 引数で指定できる1つだけです。引数が指定されない場合は、使い方を表示して終了します。複数の引数を指定した場合、2番目以降の引数は無視されます。
 
 @unnumberedsubsec オプション
 
-@command{dumpword}は、次のオプションを指定できます。
+@kbd{dumpword}は、次のオプションを指定できます。
 
 @table @option
 
@@ -964,7 +778,7 @@ $ @command{dumpword 10}
 
 @item -h
 @itemx --help
-@command{dumpword}の使用方法を表示して終了します。
+@kbd{dumpword}の使用方法を表示して終了します。
 @end table
 
 @node CASL2LIBマニュアル,,YACASL2コマンドマニュアル,TOP
@@ -990,7 +804,7 @@ $ @command{dumpword 10}
 @end menu
 
 @node ABS
-@section @command{ABS} - @file{abs.casl}
+@section @kbd{ABS} - @file{abs.casl}
 入力された整数を絶対値に変換して出力
 
 @unnumberedsubsec 入力
@@ -1017,28 +831,16 @@ $ @command{dumpword 10}
 なし
 
 @unnumberedsubsec 使用例
-@iftex
-@cartouche
-@end iftex
 @example
 @verbatiminclude ../as/casl2lib/test/abs/abs.casl
 @end example
-@iftex
-@end cartouche
-@end iftex
 
-@iftex
-@cartouche
-@end iftex
 @example
 @verbatiminclude ../as/casl2lib/test/abs/0.txt
 @end example
-@iftex
-@end cartouche
-@end iftex
 
 @node ADDL32
-@section @command{ADDL32} - @file{addl32.casl}
+@section @kbd{ADDL32} - @file{addl32.casl}
 32ビットの値を、連続する2語の領域に格納
 
 @unnumberedsubsec 入力
@@ -1066,32 +868,20 @@ $ @command{dumpword 10}
 @end table
 
 @unnumberedsubsec 使用例
-@iftex
-@cartouche
-@end iftex
 @example
 @verbatiminclude ../as/casl2lib/test/addl32/addl32_1.casl
 @end example
-@iftex
-@end cartouche
-@end iftex
 
-@iftex
-@cartouche
-@end iftex
 @example
 4
 9
 @end example
-@iftex
-@end cartouche
-@end iftex
 
 @unnumberedsubsec 依存する副プログラム
 なし
 
 @node DIVA
-@section @command{DIVA} -@file{diva.casl}
+@section @kbd{DIVA} -@file{diva.casl}
 -32,767〜32,767の範囲にある整数の割算（筆算方式）を行う
 
 @unnumberedsubsec 入力
@@ -1123,7 +913,7 @@ $ @command{dumpword 10}
 
 @unnumberedsubsec 依存する副プログラム
 @itemize
-@item @command{DIVL}
+@item @kbd{DIVL}
 @end itemize
 
 @c @unnumberedsubsec 使用例
@@ -1148,7 +938,7 @@ $ @command{dumpword 10}
 @c @end iftex
 
 @node DIVL
-@section @command{DIVL} - @file{divl.casl}
+@section @kbd{DIVL} - @file{divl.casl}
 0〜65,535の範囲にある整数の割算（筆算方式）を行う
 
 @unnumberedsubsec 入力
@@ -1182,50 +972,44 @@ $ @command{dumpword 10}
 なし
 
 @unnumberedsubsec 使用例
-@iftex
-@cartouche
-@end iftex
 @example
 @verbatiminclude ../as/casl2lib/test/divl/divl0/divl0.casl
 @end example
-@iftex
-@end cartouche
-@end iftex
 
 @node INL
-@section @command{INL} - @file{inl.casl}
+@section @kbd{INL} - @file{inl.casl}
 
 @node L2STR
-@section @command{L2STR} - @file{l2str.casl}
+@section @kbd{L2STR} - @file{l2str.casl}
 
 @node MAX
-@section @command{MAX} - @file{max.casl}
+@section @kbd{MAX} - @file{max.casl}
 
 @node MINIM
-@section @command{MINIM} - @file{minim.casl}
+@section @kbd{MINIM} - @file{minim.casl}
 
 @node MULA
-@section @command{MULA} - @file{mula.casl}
+@section @kbd{MULA} - @file{mula.casl}
 
 @node MULL
-@section @command{MULL} - @file{mull.casl}
+@section @kbd{MULL} - @file{mull.casl}
 
 @node OUTA
-@section @command{OUTA} - @file{outa.casl}
+@section @kbd{OUTA} - @file{outa.casl}
 
 @node OUTB
-@section @command{OUTB} - @file{outb.casl}
+@section @kbd{OUTB} - @file{outb.casl}
 
 @node OUTD_Q15
-@section @command{OUTD_Q15} - @file{outd_q15.casl}
+@section @kbd{OUTD_Q15} - @file{outd_q15.casl}
 
 @node OUTL
-@section @command{OUTL} - @file{outl.casl}
+@section @kbd{OUTL} - @file{outl.casl}
 
 @node REV
-@section @command{REV} - @file{rev.casl}
+@section @kbd{REV} - @file{rev.casl}
 
 @node STR2L
-@section @command{STR2L} - @file{str2l.casl}
+@section @kbd{STR2L} - @file{str2l.casl}
 
 @bye

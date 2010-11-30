@@ -35,7 +35,7 @@ a:hover {
     text-decoration: underline;
 }
 
-.command {
+kbd {
     font-family: monospace;
 }
 
@@ -69,13 +69,13 @@ table.cartouche, table.cartouche th, table.cartouche td  {
     border: none;
 }
 
-pre.example .command, pre.example .option {
+pre.example kbd, pre.example .option {
     font-weight: bold;
     background-color: inherit;
     color: white;
 }
 
-pre.example strong {
+pre.example em {
     font: inherit;
     border: 2px solid green;
 }

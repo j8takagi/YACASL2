@@ -1,7 +1,7 @@
 DOCNAME = yacasl2
 SRC = $(DOCNAME).texi
 CSS = style.css
-TEXBIN = /usr/local/texlive/2010/bin/x86_64-linux
+TEXBIN = /usr/local/texlive/p2009/bin/i386-apple-darwin10.3.0
 PTEX = $(TEXBIN)/ptex
 TEXINDEX = $(TEXBIN)/texindex
 DVI2PDF = $(TEXBIN)/dvipdfmx
