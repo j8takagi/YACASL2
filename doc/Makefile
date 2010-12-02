@@ -1,7 +1,7 @@
 DOCNAME = yacasl2
 SRC = $(DOCNAME).texi
 CSS = style.css
-TEXBIN = /usr/local/texlive/p2009/bin/i386-apple-darwin10.3.0
+TEXBIN = $(dir $(shell which ptex))
 PTEX = $(TEXBIN)/ptex
 TEXINDEX = $(TEXBIN)/texindex
 DVI2PDF = $(TEXBIN)/dvipdfmx
@@ -11,9 +11,9 @@ MAKEINFO = makeinfo
 
 .INTERMEDIATE: yacasl2.dvi
 
-htmlnosplit: $(DOCNAME).html
-
 all: info htmlnosplit html pdf
+
+htmlnosplit: $(DOCNAME).html
 
 html: $(SRC) $(CSS)
 	@if test ! -s $@; then mkdir $@; fi;
