@@ -33,16 +33,16 @@ Copyright @copyright{} 2010 j8takagi
 @end ifnottex
 
 @menu
-* YACASL2の概要::
-* YACASL2のインストール::
-* YACASL2の使い方::
-* YACASL2コマンドマニュアル::
-* CASL2LIBマニュアル::
+* About::
+* Install::
+* Usage::
+* Command Manual::
+* CASL2LIB Manual::
 @end menu
 
 @contents
 
-@node YACASL2の概要, YACASL2のインストール, Top, Top
+@node About, Install, Top, Top
 @chapter YACASL2の概要
 
 YACASL2は、Linux上で動作するオープンソースのCASL II処理系です。CASL IIは情報処理試験で用いられるアセンブラ言語で、次の資料により仕様が公開されています。
@@ -83,53 +83,55 @@ YACASL2は、「ふつうの処理系」として動作します。ほかの多�
 YACASL2の操作は、端末を開いてコマンドを入力・実行することで行います。
 
 @unnumberedsec 要件
-YACASL2は、Linux上で動作します。現在動作を確認しているのは、次のディストリビューションです。
+YACASL2は、LinuxやMac OS Xなど、UNIX系のOS上で動作します。現在動作を確認しているのは、次の環境です。
 
 @itemize @bullet
 
 @item
-Ubuntu Linux 9.04 / 8.04
+Ubuntu Linux 10.10
 
 @item
 Vine Linux 4.2
+
+@item
+Mac OS X 10.6
 @end itemize
 
-インストール時に、@kbd{tar}、@kbd{gcc}、@kbd{make}が必要です。
+インストール時に、@kbd{tar}、@kbd{gcc}、@kbd{make}が必要です。Linuxの場合は、標準でインストールされていることが多いと思います。Mac OS Xの場合、@code{Xcode}をインストールしてください。
 
-@node YACASL2のインストール, YACASL2の使い方, YACASL2の概要, Top
+@node Install, Usage, About, Top
 @chapter YACASL2のインストール
 YACASL2をインストールするには、Linux上で次の作業をします。
 
-@enumerate
+@menu
+* Download::    YACASL2ファイルのダウンロード
+* Verify::    YACASL2ファイルの検証
+* Expand::    YACASL2ファイルの展開
+* Build::    @kbd{casl2}、@kbd{comet2}、@kbd{dumpword}のビルド
+* Simple Test::    @kbd{casl2}の実行テスト
+* Detail Test::    詳細なテスト
+* Path Setting::    環境変数@code{PATH}の設定
+@end menu
 
-@item
-YACASL2ファイルのダウンロード
-
-@item
-YACASL2ファイルの検証
-
-@item
-YACASL2ファイルの展開
-
-@item
-@kbd{casl2}、@kbd{comet2}、@kbd{dumpword}のビルド
-
-@item
-@kbd{casl2}の実行テスト
-
-@item
-詳細なテスト
-
-@item
-環境変数@code{PATH}の設定
-@end enumerate
-
+@node Download, Verify, Install, Install
 @section YACASL2ファイルのダウンロード
-@uref{http://github.com/j8takagi/YACASL2, GitHub/j8takagi/YACASL2}の@uref{http://github.com/j8takagi/YACASL2/downloads, ダウンロードページ}から最新版のtgzファイルをダウンロードします（2010年3月6日現在、@code{v0.1}の@file{j8takagi-YACASL2-6323ce4.tar.gz}）。
+
+次の場所から最新版の@file{tar.gz}ファイルをダウンロードします。
+@iftex
+@cartouche
+@end iftex
+@quotation
+@uref{http://github.com/j8takagi/YACASL2, GitHub/j8takagi/YACASL2}の@uref{http://github.com/j8takagi/YACASL2/downloads, ダウンロードページ}
+@end quotation
+@iftex
+@end cartouche
+@end iftex
 
 続けて、対応する@file{md5sum}ファイルをダウンロードします（2010年3月6日現在、@file{j8takagi-YACASL2-6323ce4.tar.gz.md5sum}）。
 
+@node Verify, Expand, Download, Install
 @section YACASL2ファイルの検証
+
 ダウンロードが完了したら、@kbd{md5sum}と@kbd{diff}で正しくファイルがダウンロードができているかを検証します。
 
 @example
@@ -137,6 +139,7 @@ $ @kbd{md5sum yacasl2.tar.gz | diff -s yacasl2.tar.gz.md5sum -}
 Files yacasl2.tar.gz.md5sum and - are identical
 @end example
 
+@node Expand, Build, Verify, Install
 @section YACASL2ファイルの展開
 
 YACASL2ファイルをダウンロードしたら、次のコマンドで展開します。
@@ -145,6 +148,7 @@ YACASL2ファイルをダウンロードしたら、次のコマンドで展開�
 $ @kbd{tar xvzf yacasl2.tar.gz}
 @end example
 
+@node Build, Simple Test, Expand, Install
 @section @kbd{casl2}、@kbd{comet2}、@kbd{dumpword}のビルド
 
 展開したら、次のコマンドで@kbd{casl2}、@kbd{comet2}、@kbd{dumpword}をビルドします。
@@ -176,6 +180,7 @@ gcc -g -Wall -I ../include -o ../dumpword dumpword.o word.o cerr.o
 make[1]: Leaving directory ‘/home/kazubito/yacasl2/src’
 @end example
 
+@node Simple Test, Detail Test, Build, Install
 @section @kbd{casl2}の実行テスト
 
 ビルドしたら、次のコマンドが正常に実行できるかを確認します。
@@ -186,6 +191,7 @@ $ @kbd{./casl2 as/hello.casl}
 Hello, World!
 @end example
 
+@node Detail Test, Path Setting, Simple Test, Install
 @section 詳細なテスト
 
 次のコマンドを実行すると、正常にビルドできているかどうかを詳細にテストできます。
@@ -203,6 +209,7 @@ All tests are succeded.
 All tests are succeded.
 @end example
 
+@node Path Setting,, Detail Test, Install
 @section 環境変数@code{PATH}の設定
 
 環境変数@code{PATH}にYACASL2のディレクトリを追加すると、どのディレクトリでも@kbd{casl2}、@kbd{comet2}、@kbd{dumpword}を実行できます。
@@ -226,10 +233,21 @@ $ @kbd{PATH=$PATH:~/yacasl2 && export PATH}
 $ @kbd{echo ’PATH=$PATH:~/yacasl2 && export PATH’ >>~/.bashrc}
 @end example
 
-@node YACASL2の使い方, YACASL2コマンドマニュアル, YACASL2のインストール, Top
-@chapter YACASL2 の使い方
+@node Usage, Command Manual, Install, Top
+@chapter YACASL2の使い方
 YACASL2 は、テキストファイルに記述されたCASLプログラムを処理します。以下の例で用いられるCASLプログラムのファイルは、テキストエディタなどで作成してください。また、インストールしたディレクトリの中にある@file{as}ディレクトリからコピーして作成することもできます。
 
+
+@menu
+* Simple Output::               実行結果の出力だけを表示
+* Assemble Result::             アセンブル結果の確認
+* Register and Memory::         実行時のレジスタとメモリを表示
+* Only Assemble::               アセンブルと実行を別に行う
+* Analyze Word::                1語の解析
+* CASL2lib::                    CASL2LIBマニュアル
+@end menu
+
+@node Simple Output, Assemble Result, Usage, Usage
 @section 実行結果の出力だけを表示
 
 インストール時にコマンド実行の確認に使った@file{hello.casl}は、次のような内容です。CASL IIのマクロ命令OUTは、文字列を出力します。
@@ -274,36 +292,9 @@ $
 
 実行内容を確認するには、後述のようにCPU 内にあるレジスタやメモリの内容を表示するか、結果を出力するための処理を追加する必要があります。
 
-@file{sum_10.casl}は、1から10までの整数の和を求めます。
-
-@example
-$ @kbd{cat sum_10.casl}
-;;; sum_10.casl
-;;; 出力 GR0: 1から10までの整数をすべて加算した値
-MAIN    START
-        PUSH    0,GR1
-        LAD     GR0,0           ; GR0を初期化
-        LD      GR1,FST         ; GR1に初項を転送
-LOOP    ADDL    GR0,GR1         ; ループ先頭
-        ADDL    GR1,STEP        ; GR1 <- GR1 + 公差
-        CPL     GR1,LST         ; GR1が末項より大きい場合は終了
-        JPL     FIN             ; ↓
-        JUMP    LOOP            ; ループ終端
-FIN     POP     GR1
-        RET
-FST     DC      1               ; 初項
-LST     DC      10              ; 末項
-STEP    DC      1               ; 公差
-        END
-@end example
-
-このプログラムも、オプションなしで実行した場合には結果が出力されません。
-@example
-$ @kbd{casl2 sum_10.casl}
-$
-@end example
-
+@node Assemble Result, Register and Memory, Simple Output, Usage
 @section アセンブル結果の確認
+
 casl2の処理途中で行われるアセンブルの結果を表示するには、オプション@option{-a}を指定します。また、ラベルとアドレスの対応表を表示するには、オプション@option{-l}を指定します。
 
 次のコマンドでは@file{hello.casl}の、ラベルとアドレスの対応表と、アセンブル結果と、実行結果が表示されます。OUTはアセンブラ命令で複数の機械語命令で構成されているため、命令行1行に対して、複数行のコードが生成されます。
@@ -395,10 +386,18 @@ addl.casl:    8:        END
 
 なお、オプション@option{-A}を指定すると、アセンブル結果が表示される時点で処理が終了します。仮想マシンCOMET II での実行は行われません。
 
+@node Register and Memory, Only Assemble, Assemble Result, Usage
 @section 実行時のレジスタとメモリを表示
+
 YACASL2では実行中のCPUのレジスタとメモリの内容をそれぞれ、@option{-t}と@option{-d}を指定することで表示できます。
 
 また、@option{-M}で、仮想マシンCOMET II のメモリ容量を語(16 ビット)単位で指定できます。小さいプログラムを実行するときは、メモリ容量を小さくすれば結果が見やすくなります。
+
+@menu
+* Register Specify::            特定のレジスタを表示
+* Ending Value::                プログラム終了時の値を表示
+* Step Count::                  プログラムのステップ数を表示
+@end menu
 
 @file{addl.casl}に必要なメモリ容量は8語のため、次のようにCPUのレジスタとメモリの内容を表示できます。
 
@@ -457,6 +456,7 @@ Executing machine codes
 #0004: 0000: 1010 0005 2210 0006 8100 0003 0001 0000 
 @end example
 
+@node Register Specify, Ending Value, Register and Memory, Register and Memory
 @subsection 特定のレジスタを表示
 
 @file{addl.casl}のレジスタやメモリの中で、実行中に値が変化しているのはGR1だけです。こうした場合は、@kbd{grep}を使って表示される内容を絞り込むことで動作を検証しやすくなります。
@@ -483,20 +483,49 @@ $ @kbd{casl2 -t addl.casl | grep 'GR1:'}
 @tab @code{ADDL GR1,B}
 @end multitable
 
+@node Ending Value, Step Count, Register Specify, Register and Memory
 @subsection プログラム終了時の値を表示
 
 @kbd{grep}と@kbd{tail}を組み合わせれば、プログラム終了時の値を表示できます。
+
+@file{addl.casl}でプログラム終了時の値を確認するには、次のようにします。
 
 @example
 $ @kbd{casl2 -t addl.casl | grep 'GR1:' | tail -1}
 #0004: GR1:      4 = #0004 = 0000000000000100
 @end example
 
+@file{sum_10.casl}は、1から10までの整数の和を求めます。
+
+@example
+$ @kbd{cat sum_10.casl}
+;;; sum_10.casl
+;;; 出力 GR0: 1から10までの整数をすべて加算した値
+MAIN    START
+        PUSH    0,GR1
+        LAD     GR0,0           ; GR0を初期化
+        LD      GR1,FST         ; GR1に初項を転送
+LOOP    ADDL    GR0,GR1         ; ループ先頭
+        ADDL    GR1,STEP        ; GR1 <- GR1 + 公差
+        CPL     GR1,LST         ; GR1が末項より大きい場合は終了
+        JPL     FIN             ; ↓
+        JUMP    LOOP            ; ループ終端
+FIN     POP     GR1
+        RET
+FST     DC      1               ; 初項
+LST     DC      10              ; 末項
+STEP    DC      1               ; 公差
+        END
+@end example
+
+@file{sum_10.casl}でファイル終了時の値を確認するには、次のようにします。
+
 @example
 $ @kbd{casl2 -t sum_10.casl | grep 'GR0:' | tail -1}
 #0010: GR0:     55 = #0037 = 0000000000110111 = '7'
 @end example
 
+@node Step Count,, Ending Value, Register and Memory
 @subsection プログラムのステップ数を表示
 
 @kbd{grep}と@kbd{wc}を組み合わせれば、プログラムのステップ数を表示できます。
@@ -518,6 +547,7 @@ $ @kbd{casl2 -t sum_10.casl | grep 'GR0:' | wc -l}
 54
 @end example
 
+@node Only Assemble, Analyze Word, Register and Memory, Usage
 @section アセンブルと実行を別に行う
 
 @kbd{casl2}に@option{-O}@file{ファイル名}を指定すると、オブジェクトファイルを作成できます。
@@ -545,6 +575,7 @@ $ @kbd{comet2 hello.o}
 Hello, World!
 @end example
 
+@node Analyze Word, CASL2lib, Only Assemble, Usage
 @section 1語の解析
 
 CASL IIでは、1語（16ビット）を単位としてデータが処理されます。
@@ -569,6 +600,7 @@ $ @kbd{dumpword '#0048'}
  #0048:     72 = #0048 = 0000000001001000 = 'H'
 @end example
 
+@node CASL2lib,, Analyze Word, Usage
 @section CASL2ライブラリの使用
 
 YACASL2の@file{as/casl2lib}ディレクトリには、CASL IIで記述されたライブラリファイルが格納されています。
@@ -612,7 +644,7 @@ $ @kbd{casl2 addl_outl.casl ~/yacasl2/as/casl2lib/outl.casl}
 4
 @end example
 
-@node YACASL2コマンドマニュアル,CASL2LIBマニュアル,YACASL2の使い方,TOP
+@node Command Manual,CASL2LIB Manual,Usage,TOP
 @chapter YACASL2コマンドマニュアル
 
 @cindex YACASL2コマンドマニュアル
@@ -781,7 +813,7 @@ $ @kbd{dumpword 10}
 @kbd{dumpword}の使用方法を表示して終了します。
 @end table
 
-@node CASL2LIBマニュアル,,YACASL2コマンドマニュアル,TOP
+@node CASL2LIB Manual,,Command Manual,TOP
 @chapter CASL2LIBマニュアル
 
 @menu
