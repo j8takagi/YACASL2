@@ -1,0 +1,18 @@
+;; CASL2LIB > DIVLを呼び出し、65535 / 256 の商と剰余を表示
+MAIN    START
+BEGIN   LD      GR1,A
+        LD      GR2,B
+        CALL    DIVL
+        JOV     ERR
+        LD      GR1,GR0
+        CALL    OUTA
+        LD      GR1,GR3
+        CALL    OUTA
+        JUMP    FIN        
+ERR     OUT     EMSG,ELEN
+FIN     RET
+A       DC      65535
+B       DC      256
+EMSG    DC      'error'
+ELEN	DC	5
+        END

@@ -1,7 +1,10 @@
 ECHOHEADER = 'echo ";;; *** This file is auto generated. ***"'
-TARGETS = inl.casl l2str.casl mula.casl outa.casl outb.casl outl.casl
+TARGETS = diva.casl inl.casl l2str.casl mula.casl outa.casl outb.casl outl.casl
 .PHONY: all clean
 all: $(TARGETS)
+diva.casl: src_diva/diva_main.casl divl.casl
+	@echo ";;; *** This file is auto generated. ***" >$@; \
+     cat $^ >>$@
 inl.casl: src_inl/inl_main.casl str2l.casl
 	@echo ";;; *** This file is auto generated. ***" >$@; \
      cat $^ >>$@

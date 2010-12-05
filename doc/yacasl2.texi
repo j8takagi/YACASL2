@@ -110,7 +110,7 @@ YACASL2をインストールするには、Linux上で次の作業をします�
 * Build::    @kbd{casl2}、@kbd{comet2}、@kbd{dumpword}のビルド
 * Simple Test::    @kbd{casl2}の実行テスト
 * Detail Test::    詳細なテスト
-* Path Setting::    環境変数@code{PATH}の設定
+* Environment::    環境変数の設定
 @end menu
 
 @node Download, Verify, Install, Install
@@ -127,7 +127,7 @@ YACASL2をインストールするには、Linux上で次の作業をします�
 @end cartouche
 @end iftex
 
-続けて、対応する@file{md5sum}ファイルをダウンロードします（2010年3月6日現在、@file{j8takagi-YACASL2-6323ce4.tar.gz.md5sum}）。
+続けて、対応する@file{md5sum}ファイルをダウンロードします。
 
 @node Verify, Expand, Download, Install
 @section YACASL2ファイルの検証
@@ -191,7 +191,7 @@ $ @kbd{./casl2 as/hello.casl}
 Hello, World!
 @end example
 
-@node Detail Test, Path Setting, Simple Test, Install
+@node Detail Test, Environment, Simple Test, Install
 @section 詳細なテスト
 
 次のコマンドを実行すると、正常にビルドできているかどうかを詳細にテストできます。
@@ -209,10 +209,16 @@ All tests are succeded.
 All tests are succeded.
 @end example
 
-@node Path Setting,, Detail Test, Install
-@section 環境変数@code{PATH}の設定
+@node Environment,, Detail Test, Install
+@section 環境変数の設定
 
-環境変数@code{PATH}にYACASL2のディレクトリを追加すると、どのディレクトリでも@kbd{casl2}、@kbd{comet2}、@kbd{dumpword}を実行できます。
+環境変数を設定することで、YACASL2が使いやすくなります。環境変数の設定は、シェルの初期設定ファイルに追加することでログインしたあと自動的に反映されます。
+するときは、
+環境変数@code{PATH}にYACASL2のディレクトリを追加すると、どのディレクトリでも@kbd{casl2}、@kbd{comet2}、@kbd{dumpword}を実行できます。また、
+
+
+
+@unnumberedsubsec シェルの確認
 
 環境変数の設定方法は使っているシェルによって異なります。シェルは、次のコマンドで確認できます。
 
@@ -221,17 +227,37 @@ $ @kbd{echo $SHELL}
 /bin/bash
 @end example
 
-現在もっとも多く使われているシェルは、BASHでしょう。BASHでは、次のコマンドを実行すると環境変数@code{PATH}にYACASL2のディレクトリが追加されます。
+現在もっとも多く使われているシェルは、BASHでしょう。以下、BASHでの設定方法を記載します。
+
+@unnumberedsubsec @code{PATH}にYACASL2のディレクトリを追加
+
+@code{PATH}にYACASL2のディレクトリを追加すると、どのディレクトリでもディレクトリを指定せずに@kbd{casl2}、@kbd{comet2}、@kbd{dumpword}を実行できます。YACASL2をホームディレクトリ@code{~}にインストールしたときは、次のコマンドで設定できます。
 
 @example
 $ @kbd{PATH=$PATH:~/yacasl2 && export PATH}
 @end example
 
-シェルの初期設定ファイルに上記のコマンドを追加すれば、今後ログインした後は自動的にどのディレクトリでも @kbd{casl2}、@kbd{comet2}、@kbd{dumpword}を実行できます。BASHではホームディレクトリにある@file{.bashrc}が初期設定ファイルのため、次のコマンドで追加されます。
+BASHではホームディレクトリにある@file{.bashrc}が初期設定ファイルです。次のコマンドで追加できます。
 
 @example
 $ @kbd{echo ’PATH=$PATH:~/yacasl2 && export PATH’ >>~/.bashrc}
 @end example
+
+
+@unnumberedsubsec @code{CASL2LIB}の設定
+
+環境変数@code{CASL2LIB}を設定しておけば、後述するCASL2LIBを利用するときの手間が小さくなります。YACASL2をホームディレクトリ@code{~}にインストールしたときは、次のコマンドで設定できます。
+
+@example
+$ @kbd{CASL2LIB=~/yacasl2/as/casl2lib && export CASL2LIB}
+@end example
+
+BASHの初期設定ファイル@file{.bashrc}には、次のコマンドで追加できます。
+
+@example
+$ @kbd{ echo 'CASL2LIB=~/yacasl2/as/casl2lib && export CASL2LIB' >>~/.bashrc}
+@end example
+
 
 @node Usage, Command Manual, Install, Top
 @chapter YACASL2の使い方
@@ -586,14 +612,14 @@ $ @kbd{dumpword 72}
     72:     72 = #0048 = 0000000001001000 = 'H'
 @end example
 
-マイナスの数は、次のように指定します。
+マイナスの数は、次のように@kbd{--}を付けて指定します。
 
 @example
 $ @kbd{dumpword -- -72}
    -72:    -72 = #FFB8 = 1111111110111000
 @end example
 
-16進数は、次のように指定します。
+16進数は、次のように次のように@kbd{'}で囲み@kbd{#}を付けて指定します。
 
 @example
 $ @kbd{dumpword '#0048'}
@@ -686,36 +712,77 @@ CASLファイルの内容を表示します。
 
 @item -l
 @itemx --label
-ラベルの一覧を表示し、ほかの作業を続行します。
+ラベルの一覧を次の形式で表示します。表示後、ほかの作業を続行します。
+
+@example
+<プログラム名>.<ラベル名> ---> <アドレスの16進数表現>
+@end example
 
 @item -L
 @itemx --labelonly
-ラベルの一覧を表示して終了します。
+@option{-l}と同じ形式でラベルの一覧を表示します。表示後、ほかの作業は続行せず、終了します。
 
 @item -a
 @itemx --assembledetail
 アセンブル詳細結果を表示し、ほかの作業を続行します。
 
 @item -A
-@itemx --show-all
+@itemx --assembledetailonly
 アセンブル詳細結果を表示して終了します。
 
 @item -o<OBJECTFILE>
-@itemx --assembleout
+@itemx --assembleout<OBJECTFILE>
 アセンブル結果をオブジェクトファイル@file{<OBJECTFILE>}に出力し、ほかの作業を続行します。出力されたオブジェクトファイルは、@kbd{comet2}で実行できます。オブジェクトファイルを指定しない場合、出力先は@file{a.o}です。オブジェクトファイルは1つだけ指定できます。
 
-@item -O<OBJECTFILE>
-@itemx --assembleoutonly
+@item -O[<OBJECTFILE>]
+@itemx --assembleoutonly[<OBJECTFILE>]
 アセンブル結果をオブジェクトファイル@file{<OBJECTFILE>}に出力し、終了します。出力されたオブジェクトファイルは、@kbd{comet2}で実行できます。オブジェクトファイルを指定しない場合、出力先は@file{a.o}です。オブジェクトファイルは1つだけ指定できます。
 
 @item -t
 @itemx --trace
 @itemx --tracearithmetic
-実行時のレジスタをトレースします。レジスタには、GR0〜GR7という8個の汎用レジスタと、SP（スタックポインタ）、PR（プログラムレジスタ）、FR（フラグレジスタ）があります。レジストリの内容は、-32,768〜32,767の範囲の整数、#0000〜#FFFFの範囲の16進数、2進数で表示されます。文字の組に該当する場合は、「 = 」のうしろに文字が表示されます。-32768〜32767の範囲の整数を表示するので、算術演算の結果を確認する場合に使えます。
+プログラム実行中のレジスタの値を次の形式で表示します。@code{<値の10進数表現>}は符号の付いた10進数です。範囲は-32768から32767です。
+
+@example
+<PR値の16進数表現>: <レジスタ>: <値の10進数表現> = <値の16進数表現> = <値の2進数表現>[ ='文字']
+@end example
+
+@itemize
+@item
+@code{<PR値の16進数表現>}と@code{<値の16進数表現>}は、先頭に@code{#}が付いた4けたの16進数で表されます。範囲は、@code{#0000}から@code{#FFFF}です
+
+@item
+@code{<値の2進数表現>}は、16けたの2進数で表されます。範囲は、@code{0000000000000000}から@code{1111111111111111}です
+
+@item
+@code{[ ='文字']}は、レジストリの値が「文字の組」の範囲に含まれる場合に表示されます。
+@end itemize
+
+表示されるレジスタには、次の種類があります。
+
+@table @code
+@item GR0 GR1 GR2 GR3 GR4 GR5 GR6 GR7
+汎用レジスタ
+
+@item SP
+スタックポインタ
+
+@item PR
+プログラムレジスタ
+
+@item FR
+フラグレジスタ
+@end table
+
+例えば、次のように表示されます。
+
+@example
+#0002: GR1:      3 = #0003 = 0000000000000011
+@end example
 
 @item -T
 @itemx --tracelogical
-@option{-t}と同じく、実行時のレジスタをトレースします。@option{-t}と異なり0〜65,535の範囲の整数を表示するので、論理演算の結果を確認する場合に使えます。
+@option{-t}と同じように、プログラム実行中のレジスタの値を表示します。ただし、@option{-t}と異なり、@code{<値の10進数表現>}は符号の付かない10進数です。値の範囲は0から65535です。
 
 @item -d
 @itemx --dump
@@ -723,7 +790,7 @@ CASLファイルの内容を表示します。
 
 @item -M <MEMORYSIZE>
 @itemx --memorysize <MEMORYSIZE>
-アセンブルおよび実行時のメモリサイズ@option{<MEMORYSIZE>}を0〜65,535の範囲で指定します。指定しない場合、メモリサイズは512です。
+アセンブルおよび実行時のメモリサイズ@option{<MEMORYSIZE>}を0から65535の範囲で指定します。指定しない場合、512です。
 
 @item -C <CLOCKS>
 @itemx --clocks <CLOCKS>
@@ -757,11 +824,48 @@ $ @kbd{comet2 hello.o}
 @item -t
 @itemx --trace
 @itemx --tracearithmetic
-実行時のレジスタをトレースします。レジスタには、GR0〜GR7という8個の汎用レジスタと、SP（スタックポインタ）、PR（プログラムレジスタ）、FR（フラグレジスタ）があります。レジストリの内容は、-32,768〜32,767の範囲の整数、#0000〜#FFFFの範囲の16進数、2進数で表示されます。文字の組に該当する場合は、「 = 」のうしろに文字が表示されます。-32768〜32767の範囲の整数が表示されるので、算術演算の結果を確認する場合に使えます。
+プログラム実行中のレジスタの値を次の形式で表示します。@code{<値の10進数表現>}は符号の付いた10進数です。範囲は-32768から32767です。
+
+@example
+<PR値の16進数表現>: <レジスタ>: <値の10進数表現> = <値の16進数表現> = <値の2進数表現>[ ='文字']
+@end example
+
+@itemize
+@item
+@code{<PR値の16進数表現>}と@code{<値の16進数表現>}は、先頭に@code{#}が付いた4けたの16進数で表されます。範囲は、@code{#0000}から@code{#FFFF}です
+
+@item
+@code{<値の2進数表現>}は、16けたの2進数で表されます。範囲は、@code{0000000000000000}から@code{1111111111111111}です
+
+@item
+@code{[ ='文字']}は、レジストリの値が「文字の組」の範囲に含まれる場合に表示されます。
+@end itemize
+
+例えば、次のように表示されます。
+
+@example
+#0002: GR1:      3 = #0003 = 0000000000000011
+@end example
+
+表示されるレジスタには、次の種類があります。
+
+@table @code
+@item GR0 GR1 GR2 GR3 GR4 GR5 GR6 GR7
+汎用レジスタ
+
+@item SP
+スタックポインタ
+
+@item PR
+プログラムレジスタ
+
+@item FR
+フラグレジスタ
+@end table
 
 @item -T
 @itemx --tracelogical
-@option{-t}と同じく、実行時のレジスタをトレースします。@option{-t}と異なり0〜65,535の範囲の整数を表示するので、論理演算の結果を確認する場合に使えます。
+@option{-t}と同じように、プログラム実行中のレジスタの値を表示します。ただし、@option{-t}と異なり、@code{<値の10進数表現>}は符号の付かない10進数です。値の範囲は0から65535です。
 
 @item -d
 @itemx --dump
@@ -769,11 +873,11 @@ $ @kbd{comet2 hello.o}
 
 @item -M <MEMORYSIZE>
 @itemx --memorysize <MEMORYSIZE>
-実行時のメモリサイズ@option{<MEMORYSIZE>}を0〜65,535の範囲で指定します。指定しない場合、メモリサイズは512です。
+実行時のメモリサイズ@option{<MEMORYSIZE>}を0から65535の範囲で指定します。指定しない場合、512です。
 
 @item -C <CLOCKS>
 @itemx --clocks <CLOCKS>
-実行時のクロック周波数@option{<CLOCKS>}を0より大きい整数で指定します。指定しない場合、クロック周波数は5,000,000です。
+実行時のクロック周波数@option{<CLOCKS>}を0より大きい整数で指定します。指定しない場合、5000000です。
 
 @item -h
 @itemx --help
@@ -786,7 +890,7 @@ $ @kbd{comet2 hello.o}
 @pindex dumpword
 @cindex dumpword
 
-@kbd{dumpword}は、引数として指定された数値を、整数、#0000〜#FFFFの範囲の16進数、2進数で表示します。文字の組に該当する場合は、「 = 」のうしろに文字が表示されます。引数は、10進数または先頭に「#」の付いた16進数で指定します。表示される整数は、オプションにより-32,768〜32,767または0〜65,535の範囲です。オプションなしの場合は、-32,768〜32,767です。
+@kbd{dumpword}は、引数として指定された数値を、整数、#0000〜#FFFFの範囲の16進数、2進数で表示します。文字の組に該当する場合は、「 = 」のうしろに文字が表示されます。引数は、10進数または先頭に「#」の付いた16進数で指定します。表示される整数は、オプションにより符号付きか符号なしかを指定します。オプションなしの場合は符号付きです。整数の範囲は、符号付きの場合は-32768から32767、符号なしの場合は0から65535です。
 
 @example
 $ @kbd{dumpword 10}
@@ -818,7 +922,6 @@ $ @kbd{dumpword 10}
 
 @menu
 * ABS::
-* ADDL32::
 * DIVA::
 * DIVL::
 * INL::
@@ -835,28 +938,26 @@ $ @kbd{dumpword 10}
 * STR2L::
 @end menu
 
-@node ABS
+@node ABS, DIVA, CASL2LIB Manual, CASL2LIB Manual
 @section @kbd{ABS} - @file{abs.casl}
-入力された整数を絶対値に変換して出力
+GR1を符号付き整数とみなし、絶対値に変換
 
 @unnumberedsubsec 入力
-@table @var
-
+@table @code
 @item GR1
--32768〜32767の整数
+符号付き整数
 @end table
 
 @unnumberedsubsec 出力
-@table @var
-
+@table @code
 @item GR1
-入力された整数の絶対値
+入力された値の絶対値
 
 @item OF
-入力されたGR1が-32768の場合、1
+入力された値が-32768の場合、1
 
 @item SF
-入力されたGR1が負数(-32767〜-1)の場合、1
+入力された値が負数（-32767から-1）の場合、1
 @end table
 
 @unnumberedsubsec 依存する副プログラム
@@ -864,60 +965,21 @@ $ @kbd{dumpword 10}
 
 @unnumberedsubsec 使用例
 @example
-@verbatiminclude ../as/casl2lib/test/abs/abs.casl
+@verbatiminclude casl2lib/abs/call_abs.casl
 @end example
 
 @example
-@verbatiminclude ../as/casl2lib/test/abs/0.txt
+$ @kbd{casl2 call_abs.casl $CASL2LIBDIR/abs.casl $CASL2LIBDIR/outa.casl
+  $CASL2LIBDIR/divl.casl $CASL2LIBDIR/rev.casl}
+1
 @end example
 
-@node ADDL32
-@section @kbd{ADDL32} - @file{addl32.casl}
-32ビットの値を、連続する2語の領域に格納
+@node DIVA, DIVL, ABS, CASL2LIB Manual
+@section @kbd{DIVA} - @file{diva.casl}
+符号付き整数の割算を筆算方式で行う
 
 @unnumberedsubsec 入力
-@table @var
-@item GR1
-32ビット値1の先頭アドレス
-
-@item GR2
-32ビット値2の先頭アドレス
-@end table
-
-@unnumberedsubsec 出力
-@table @var
-@item GR0
-和の先頭アドレス
-
-@item OF
-上位アドレスでオーバーフローした場合、1
-
-@item SF
-和が負数(-32767〜-1)の場合、1
-
-@item ZF
-和が0の場合、1
-@end table
-
-@unnumberedsubsec 使用例
-@example
-@verbatiminclude ../as/casl2lib/test/addl32/addl32_1.casl
-@end example
-
-@example
-4
-9
-@end example
-
-@unnumberedsubsec 依存する副プログラム
-なし
-
-@node DIVA
-@section @kbd{DIVA} -@file{diva.casl}
--32,767〜32,767の範囲にある整数の割算（筆算方式）を行う
-
-@unnumberedsubsec 入力
-@table @var
+@table @code
 @item GR1
 被除数
 
@@ -926,7 +988,7 @@ $ @kbd{dumpword 10}
 @end table
 
 @unnumberedsubsec 出力
-@table @var
+@table @code
 @item GR0
 商
 
@@ -934,10 +996,20 @@ $ @kbd{dumpword 10}
 剰余
 
 @item OF
-除数が0の場合、1
+次の場合、1
+@itemize
+@item
+GR2が0
+
+@item
+GR1が-32768
+
+@item
+GR2が-32768
+@end itemize
 
 @item SF
-商が負数(-32767〜-1)の場合、1
+商が負数(-32767から-1)の場合、1
 
 @item ZF
 商が0の場合、1
@@ -945,36 +1017,27 @@ $ @kbd{dumpword 10}
 
 @unnumberedsubsec 依存する副プログラム
 @itemize
-@item @kbd{DIVL}
+@item @code{DIVL}
 @end itemize
 
-@c @unnumberedsubsec 使用例
-@c @iftex
-@c @cartouche
-@c @end iftex
-@c @example
-@c @verbatiminclude ../as/casl2lib/test/diva/diva.casl
-@c @end example
-@c @iftex
-@c @end cartouche
-@c @end iftex
+@unnumberedsubsec 使用例
+@example
+@verbatiminclude casl2lib/diva/call_diva.casl
+@end example
 
-@c @iftex
-@c @cartouche
-@c @end iftex
-@c @example
-@c @verbatiminclude ../as/casl2lib/test/diva/0.txt
-@c @end example
-@c @iftex
-@c @end cartouche
-@c @end iftex
+@example
+$ @kbd{casl2 call_diva.casl $CASL2LIBDIR/diva.casl $CASL2LIBDIR/divl.casl
+  $CASL2LIBDIR/outa.casl $CASL2LIBDIR/abs.casl $CASL2LIBDIR/rev.casl}
+-128
+-127
+@end example
 
-@node DIVL
+@node DIVL, INL, DIVA, CASL2LIB Manual
 @section @kbd{DIVL} - @file{divl.casl}
-0〜65,535の範囲にある整数の割算（筆算方式）を行う
+符号なし整数の割算を筆算方式で行う
 
 @unnumberedsubsec 入力
-@table @var
+@table @code
 @item GR1
 被除数
 
@@ -983,7 +1046,7 @@ $ @kbd{dumpword 10}
 @end table
 
 @unnumberedsubsec 出力
-@table @var
+@table @code
 @item GR0
 商
 
@@ -991,10 +1054,10 @@ $ @kbd{dumpword 10}
 剰余
 
 @item OF
-除数が0の場合、1
+GR2が0の場合、1
 
 @item SF
-商が32,768〜65535の場合、1
+商が32768から65535の場合、1
 
 @item ZF
 商が0の場合、1
@@ -1005,11 +1068,53 @@ $ @kbd{dumpword 10}
 
 @unnumberedsubsec 使用例
 @example
-@verbatiminclude ../as/casl2lib/test/divl/divl0/divl0.casl
+@verbatiminclude casl2lib/divl/call_divl.casl
 @end example
 
-@node INL
+@example
+$ @kbd{casl2 call_divl.casl $CASL2LIBDIR/divl.casl $CASL2LIBDIR/outl.casl
+  $CASL2LIBDIR/rev.casl}
+256
+254
+@end example
+
+@node INL, L2STR, DIVL, CASL2LIB Manual
 @section @kbd{INL} - @file{inl.casl}
+
+符号なし整数の入力を受け付ける
+
+@unnumberedsubsec 入力
+@table @code
+@item 標準入力
+符号なし整数
+@end table
+
+@unnumberedsubsec 出力
+@table @code
+@item GR1
+入力された符号なし整数
+
+@item GR0
+文字列の長さ。数字以外が入力された場合は@code{#FFFF}
+@end table
+
+@unnumberedsubsec 依存する副プログラム
+@itemize
+@item
+@code{STR2L}
+@end itemize
+
+@unnumberedsubsec 使用例
+@example
+@verbatiminclude casl2lib/divl/call_divl.casl
+@end example
+
+@example
+$ @kbd{casl2 call_divl.casl $CASL2LIBDIR/divl.casl $CASL2LIBDIR/outl.casl
+  $CASL2LIBDIR/rev.casl}
+256
+254
+@end example
 
 @node L2STR
 @section @kbd{L2STR} - @file{l2str.casl}

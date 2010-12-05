@@ -1,0 +1,8 @@
+;;; CASL2LIB > ABSを呼び出し、-1の絶対値を表示
+MAIN    START
+        LD      GR1,A
+        CALL    ABS
+        CALL    OUTA
+        RET
+A       DC      -1
+        END
