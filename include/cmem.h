@@ -11,12 +11,12 @@
 #define ARRAYSIZE(array) (sizeof(array)/sizeof(array[0]))
 #endif
 
-/* mallocを実行し、メモリを確保できない場合は */
-/* エラーを出力して終了 */
+/* mallocを実行し、0で初期化 */
+/* メモリを確保できない場合はエラーを出力して終了 */
 void *malloc_chk(size_t size, char *tag);
 
-/* callocを実行し、メモリを確保できない場合は */
-/* エラーを出力して終了 */
+/* callocを実行 */
+/* メモリを確保できない場合はエラーを出力して終了 */
 void *calloc_chk(size_t nmemb, size_t size, char *tag);
 
 /* malloc_chkを実行してメモリを確保してから、 */

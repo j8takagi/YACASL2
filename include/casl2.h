@@ -14,10 +14,6 @@
 #include "cmem.h"
 #include "cerr.h"
 
-#ifndef ARRAYSIZE
-#define ARRAYSIZE(array) (sizeof(array)/sizeof(array[0]))
-#endif
-
 /* COMET IIの規格 */
 enum {
     CMDSIZE = 4,              /* 命令の最大文字数 */

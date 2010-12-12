@@ -1,9 +1,7 @@
 #ifndef YACASL2_HASH_INCLUDED
 #define YACASL2_HASH_INCLUDED
 
-#ifndef ARRAYSIZE
-#define ARRAYSIZE(array) (sizeof(array)/sizeof(array[0]))
-#endif
+#include "cmem.h"
 
 /* ハッシュ共用体の型 */
 typedef enum {

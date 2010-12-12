@@ -6,11 +6,8 @@
 #include <string.h>
 #include <assert.h>
 #include <stdbool.h>
-#include "cmem.h"
 
-#ifndef ARRAYSIZE
-#define ARRAYSIZE(array) (sizeof(array)/sizeof(array[0]))
-#endif
+#include "cmem.h"
 
 /* エラーの構造体 */
 typedef struct {
