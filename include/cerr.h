@@ -6,22 +6,11 @@
 #include <string.h>
 #include <assert.h>
 #include <stdbool.h>
+#include "cmem.h"
 
 #ifndef ARRAYSIZE
 #define ARRAYSIZE(array) (sizeof(array)/sizeof(array[0]))
 #endif
-
-/* mallocを実行し、メモリを確保できない場合は */
-/* エラーを出力して終了 */
-void *malloc_chk(size_t size, char *tag);
-
-/* callocを実行し、メモリを確保できない場合は */
-/* エラーを出力して終了 */
-void *calloc_chk(size_t nmemb, size_t size, char *tag);
-
-/* malloc_chkを実行してメモリを確保してから、 */
-/* コピーした文字列を返す */
-char *strdup_chk(const char *s, char *tag);
 
 /* エラーの構造体 */
 typedef struct {

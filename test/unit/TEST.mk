@@ -11,7 +11,7 @@ SRCDIR = ../../../src
 INCLUDE = ../../../include
 CC = gcc
 CFLAGS = -g -Wall -I $(INCLUDE)
-COMMONSRC = $(SRCDIR)/word.o $(SRCDIR)/struct.o $(SRCDIR)/hash.o $(SRCDIR)/cmd.o $(SRCDIR)/cerr.o
+COMMONSRC = $(SRCDIR)/word.o $(SRCDIR)/struct.o $(SRCDIR)/hash.o $(SRCDIR)/cmd.o $(SRCDIR)/cmem.o  $(SRCDIR)/cerr.o
 ASSRC = $(SRCDIR)/assemble.o $(SRCDIR)/token.o $(SRCDIR)/label.o $(SRCDIR)/macro.o
 EXECSRC = $(SRCDIR)/exec.o $(SRCDIR)/dump.o
 

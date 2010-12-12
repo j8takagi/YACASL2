@@ -11,6 +11,7 @@
 
 #include "word.h"
 #include "hash.h"
+#include "cmem.h"
 #include "cerr.h"
 
 #ifndef ARRAYSIZE

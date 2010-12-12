@@ -470,6 +470,8 @@ bool assemble(const char *file, PASS pass)
         if(cerr->num > 0) {
             break;
         }
+        free_chk(line, "line");
+        free_chk(cmdl, "cmdl");
     }
     if(cerr->num > 0) {
         fprintf(stderr, "Assemble error - %d: %s\n", cerr->num, cerr->msg);
