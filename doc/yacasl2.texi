@@ -8,6 +8,9 @@
 @settitle YACASL2 - Linux上のCASL II処理系
 @firstparagraphindent none
 @paragraphindent 1
+@c @iftex
+@c @usedvipdfmx
+@c @end iftex
 @c %**end of header
 
 @copying
@@ -198,13 +201,13 @@ Hello, World!
 
 @example
 $ @kbd{make check}
-194 / 194 tests passed. Details in /home/kazubito/yacasl2/test/integra
+195 / 195 tests passed. Details in /home/username/yacasl2/test/integra
 tion/casl2/Test.log
 All tests are succeded.
-149 / 149 tests passed. Details in /home/kazubito/yacasl2/test/integra
+149 / 149 tests passed. Details in /home/username/yacasl2/test/integra
 tion/comet2/Test.log
 All tests are succeded.
-4 / 4 tests passed. Details in /home/kazubito/yacasl2/test/integration
+4 / 4 tests passed. Details in /home/username/yacasl2/test/integration
 /dumpword/Test.log
 All tests are succeded.
 @end example
@@ -283,7 +286,7 @@ $ @kbd{cat hello.casl}
 MAIN     START
          OUT     OBUF,LEN
          RET
-OBUF     DC      ’Hello, World!’
+OBUF     DC      'Hello, World!'
 LEN      DC      13
          END
 @end example

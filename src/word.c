@@ -76,17 +76,18 @@ char *word2n(WORD word)
     enum {
         MAXLEN = 6,        /* WORD値を10進数で表したときの最大桁数 */
     };
-    char *p = malloc_chk(MAXLEN, "word2n.p"), *q = malloc_chk(MAXLEN, "word2n.q");
+    char *p = malloc_chk(MAXLEN, "word2n.p"), *digit = malloc_chk(MAXLEN, "word2n.digit");
     int i = 0, j;
 
     do{
         *(p + i++) = word % 10 + '0';
     } while((word /= 10) > 0);
     for(j = 0; j < i; j++) {
-        *(q + j) = *(p + (i - 1) - j);
+        *(digit + j) = *(p + (i - 1) - j);
     }
-    *(q + j + 1) = '\0';
-    return q;
+    *(digit + j + 1) = '\0';
+    free_chk(p, "word2n.p");
+    return digit;
 }
 
 /* WORD値を2進数の文字列に変換 */
@@ -98,7 +99,7 @@ char *word2bit(const WORD word)
     WORD mask = 0x8000;
     char *bit, *p;
 
-    p = bit = malloc_chk(MAXLEN + 1, "word2bit.bit");
+    bit = p = malloc_chk(MAXLEN + 1, "word2bit.bit");
     do {
         *p++ = (word & mask) ? '1' : '0';
     } while((mask >>= 1) > 0);

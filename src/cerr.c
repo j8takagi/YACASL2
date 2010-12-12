@@ -1,48 +1,10 @@
 #include "cerr.h"
 
-/* mallocを実行し、メモリを確保できない場合は */
-/* エラーを出力して終了 */
-void *malloc_chk(size_t size, char *tag)
-{
-    void *p;
-
-    if((p = malloc(size)) == NULL) {
-        fprintf(stderr, "%s: cannot allocate memory\n", tag);
-        exit(-1);
-    }
-    return p;
-}
-
-/* callocを実行し、メモリを確保できない場合は */
-/* エラーを出力して終了 */
-void *calloc_chk(size_t nmemb, size_t size, char *tag)
-{
-    void *p;
-
-    if((p = calloc(nmemb, size)) == NULL) {
-        fprintf(stderr, "%s: cannot allocate memory\n", tag);
-        exit(-1);
-    }
-    return p;
-}
-
 /* エラーの初期化 */
 void cerr_init()
 {
     cerr = malloc_chk(sizeof(CERR), "cerr");
     cerr->num = 0;
-}
-
-/* malloc_chkを実行してメモリを確保してから、 */
-/* コピーした文字列を返す */
-char *strdup_chk(const char *s, char *tag)
-{
-    assert(s != NULL);
-    char *t;
-
-    t = malloc_chk(strlen(s) + 1, tag);
-    strcpy(t, s);
-    return t;
 }
 
 /* 現在のエラー */
@@ -79,7 +41,9 @@ bool addcerrlist(int newerrc, CERR newerrv[])
 /* 現在のエラーを設定する */
 void setcerr(int num, const char *str)
 {
+    /* 現在のエラー番号を設定  */
     cerr->num = num;
+    /* 現在のエラーメッセージを設定 */
     cerr->msg = malloc_chk(CERRMSGSIZE + 1, "cerr.msg");
     if(str != NULL && strlen(str) <= CERRSTRSIZE) {
         sprintf(cerr->msg, "%s: %s", str, getcerrmsg(cerr->num));
@@ -109,9 +73,11 @@ void freecerr()
     /* エラーリストを解放 */
     while(p != NULL) {
         q = p->next;
-        free(p);
+        free_chk(p, "freecerr.p");
         p = q;
     }
+    /* 現在のエラーメッセージを解放 */
+    free_chk(cerr->msg, "cerr.msg");
     /* 現在のエラーを解放 */
-    free(cerr);
+    free_chk(cerr, "cerr");
 }

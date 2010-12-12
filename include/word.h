@@ -8,6 +8,7 @@
 #include <ctype.h>
 #include <stdbool.h>
 
+#include "cmem.h"
 #include "cerr.h"
 
 /* wordのエラー定義 */

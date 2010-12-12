@@ -31,8 +31,8 @@ void reset(int memsize, int clocks)
 /* COMET II仮想マシンのシャットダウン */
 void shutdown()
 {
-    free(prog);
-    free(sys->memory);
-    free(sys->cpu);
-    free(sys);
+    free_chk(prog, "prog");
+    free_chk(sys->memory, "sys.memory");
+    free_chk(sys->cpu, "sys.cpu");
+    free_chk(sys, "sys");
 }

@@ -117,8 +117,8 @@ void freelabel()
             if(np->prog != NULL) {
                 free(np->prog);
             }
-            free(np->label);
-            free(np);
+            free_chk(np->label, "np.label");
+            free_chk(np, "np");
         }
     }
 }

@@ -5,60 +5,61 @@
 OPD *opdtok(const char *str)
 {
     OPD *opd = malloc_chk(sizeof(OPD), "opd");
-    char *p, *q, *sepp;
-    int sepc = ',', qcnt = 0;
+    char *p, *q, *r, *sepp;     /* pは文字列全体の先頭位置、qはトークンの先頭位置、rは文字の位置 */
+    int sepc = ',', rcnt = 0;
     bool quoting = false;
 
     opd->opdc = 0;
     if(str == NULL) {
         return opd;
     }
-    p = q = strdup_chk(str, "opdtopk.p");
+    p = q = r = strdup_chk(str, "opdtopk.p");
     do {
         /* オペランド数が多すぎる場合はエラー */
         if(opd->opdc >= OPDSIZE) {
             setcerr(117, NULL);    /* operand is too many */
             break;
         }
-        /* 先頭が「=」の場合の処理 */
-        if(*q == '=') {
-            q++;
+        /* 先頭が「=」の場合 */
+        if(*r == '=') {
+            r++;
         }
         /* 「'」の場合 */
-        if(*q == '\'') {
+        if(*r == '\'') {
             /* 「''」以外の場合はquote値を反転 */
-            if(*(q+1) != '\'' && !(p < q && *(q-1) == '\'')) {
+            if(*(r+1) != '\'' && !(q < r && *(r-1) == '\'')) {
                 quoting = !quoting;
             }
-            /* 「'」の分、文字列の長さを小さくする */
-            if(*(q+1) != '\'') {
-                qcnt++;
+            /* 文字列の長さを数える。「'」の場合は数えない */
+            if(*(r+1) != '\'') {
+                rcnt++;
             }
         }
         if(quoting == true) {
             /* 閉じ「'」がないまま文字列が終了した場合 */
-            if(*q == '\0') {
+            if(*r == '\0') {
                 setcerr(123, str);    /* unclosed quote */
                 break;
             }
-            q++;
+            r++;
         } else {
-            sepp = q + strcspn(q, ", ");
+            sepp = r + strcspn(r, ", ");
             sepc = *sepp;
             *sepp = '\0';
-            if(*p == '\0') {
+            if(*q == '\0') {
                 setcerr(121, NULL);    /* cannot get operand token */
                 break;
             }
-            if(strlen(p) - qcnt > OPDSIZE) {
+            if(strlen(q) - rcnt > OPDSIZE) {
                 setcerr(118, NULL);    /* operand length is too long */
                 break;
             }
-            opd->opdv[(++opd->opdc)-1] = strdup_chk(p, "opd.opdv[]");
-            p = q = sepp + 1;
-            qcnt = 0;
+            opd->opdv[(++opd->opdc)-1] = strdup_chk(q, "opd.opdv[]");
+            q = r = sepp + 1;
+            rcnt = 0;
         }
     } while(sepc == ',');
+    free_chk(p, "opdtok.p");
     return opd;
 }
 

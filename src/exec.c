@@ -41,6 +41,7 @@ void svcin()
         sys->memory[sys->cpu->gr[1]+i] = *(buffer + i);
     }
     sys->memory[sys->cpu->gr[2]] = i + 1;
+    free_chk(buffer, "buffer");
 }
 
 /* 標準出力へ文字データを書出（SVC 2） */
@@ -347,6 +348,7 @@ bool exec()
                 val = sys->memory[val];
             }
         }
+        free_chk(errpr, "errpr");
         /* 主オペランドが1〜4の場合、第2ビットを無視 */
         if(op >= 0x1000 && op <= 0x4FFF) {
             op &= 0xFB00;

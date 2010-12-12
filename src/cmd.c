@@ -48,17 +48,23 @@ CMDTAB **cmdtype_code, **code_type;
 /* 命令と命令タイプからハッシュ値を生成する */
 unsigned hash_cmdtype(const char *cmd, CMDTYPE type) {
     HKEY *keys[2];
+    unsigned hashval;
 
     /* 命令をセット */
-    keys[0] = malloc_chk(sizeof(HKEY), "hash_cmdtype.key");
+    keys[0] = malloc_chk(sizeof(HKEY), "hash_cmdtype.keys[0]");
     keys[0]->type = CHARS;
-    keys[0]->val.s = strdup_chk(cmd, "keys[0].val");
+    keys[0]->val.s = strdup_chk(cmd, "keys[0].val.s");
     /* 命令タイプをセット */
-    keys[1] = malloc_chk(sizeof(HKEY), "hash_cmdtype.key");
+    keys[1] = malloc_chk(sizeof(HKEY), "hash_cmdtype.keys[1]");
     keys[1]->type = INT;
     keys[1]->val.i = (int)(type & 070);
+    /* ハッシュ値の計算 */
+    hashval = hash(2, keys, cmdtabsize);
+    free_chk(keys[0]->val.s, "keys[0].val.s");
+    free_chk(keys[0], "keys[0]");
+    free_chk(keys[1], "keys[1]");
     /* ハッシュ値を返す */
-    return hash(2, keys, cmdtabsize);
+    return hashval;
 }
 
 /* 命令と命令タイプがキーのハッシュ表を作成する */
@@ -112,11 +118,11 @@ void free_cmdtype_code()
         np = cmdtype_code[i];
         while(np != NULL) {
             nq = np->next;
-            free(np);
+            free_chk(np, "free_cmdtype_code.np");
             np = nq;
         }
     }
-    free(cmdtype_code);
+    free_chk(cmdtype_code, "cmdtype_code");
 }
 
 /* 命令コードからハッシュ値を生成する */

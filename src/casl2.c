@@ -128,7 +128,7 @@ int main(int argc, char *argv[])
     for(pass = FIRST; pass <= SECOND; pass++) {
         if(pass == FIRST) {
             create_cmdtype_code();        /* 命令と命令タイプがキーのハッシュ表を作成 */
-            asprop = malloc_chk(sizeof(ASPROP), "asprop");
+            asprop = malloc_chk(sizeof(ASPROP), "asprop"); /* アセンブル時のプロパティ用の領域確保 */
         }
         for(i = optind; i < argc; i++) {
             /* データの格納開始位置 */
@@ -155,8 +155,10 @@ int main(int argc, char *argv[])
             }
         }
         if(pass == SECOND) {
-            free_cmdtype_code();    /* 命令と命令タイプがキーのハッシュ表を解放 */
             freelabel();            /* ラベルハッシュ表を解放 */
+            free_chk(asprop->prog, "asprop.prog"); /* プログラム名を解放 */
+            free_chk(asprop, "asprop");       /* アセンブル時のプロパティを解放 */
+            free_cmdtype_code();    /* 命令と命令タイプがキーのハッシュ表を解放 */
         }
     }
     if(res == true) {
@@ -174,6 +176,7 @@ int main(int argc, char *argv[])
     if(cerr->num > 0) {
         status = -1;
     }
+    free_chk(objfile, "objfile");
     /* エラーの解放 */
     freecerr();
     return status;
