@@ -23,13 +23,13 @@ Copyright @copyright{} 2010 j8takagi
 
 @titlepage
 @title YACASL2
-@subtitle Linux上のCASL II処理系
+@subtitle UNIX／Linuxのコマンドラインインターフェイスで動作するCASL II処理システム
 @author j8takagi
 @insertcopying
 @end titlepage
 
 @ifnottex
-@node Top
+@node Top, About, (dir), (dir)
 @end ifnottex
 
 @menu
@@ -45,7 +45,7 @@ Copyright @copyright{} 2010 j8takagi
 @node About, Install, Top, Top
 @chapter YACASL2の概要
 
-YACASL2は、Linux上で動作するオープンソースのCASL II処理系です。CASL IIは情報処理試験で用いられるアセンブラ言語で、次の資料により仕様が公開されています。
+YACASL2は、UNIX／Linuxのコマンドラインインターフェイスで動作するオープンソースのCASL II処理システムです。CASL IIは情報処理試験で用いられるアセンブラ言語で、次の資料により仕様が公開されています。
 
 @iftex
 @cartouche
@@ -91,10 +91,10 @@ YACASL2は、LinuxやMac OS Xなど、UNIX系のOS上で動作します。現在
 Ubuntu Linux 10.10
 
 @item
-Vine Linux 4.2
+Vine Linux 5.2
 
 @item
-Mac OS X 10.6
+Mac OS X 10.6.5
 @end itemize
 
 インストール時に、@kbd{tar}、@kbd{gcc}、@kbd{make}が必要です。Linuxの場合は、標準でインストールされていることが多いと思います。Mac OS Xの場合、@code{Xcode}をインストールしてください。
@@ -209,7 +209,7 @@ All tests are succeded.
 All tests are succeded.
 @end example
 
-@node Environment,, Detail Test, Install
+@node Environment,  , Detail Test, Install
 @section 環境変数の設定
 
 環境変数を設定することで、YACASL2が使いやすくなります。環境変数の設定は、シェルの初期設定ファイルに追加することでログインしたあと自動的に反映されます。
@@ -551,7 +551,7 @@ $ @kbd{casl2 -t sum_10.casl | grep 'GR0:' | tail -1}
 #0010: GR0:     55 = #0037 = 0000000000110111 = '7'
 @end example
 
-@node Step Count,, Ending Value, Register and Memory
+@node Step Count,  , Ending Value, Register and Memory
 @subsection プログラムのステップ数を表示
 
 @kbd{grep}と@kbd{wc}を組み合わせれば、プログラムのステップ数を表示できます。
@@ -626,7 +626,7 @@ $ @kbd{dumpword '#0048'}
  #0048:     72 = #0048 = 0000000001001000 = 'H'
 @end example
 
-@node CASL2lib,, Analyze Word, Usage
+@node CASL2lib,  , Analyze Word, Usage
 @section CASL2ライブラリの使用
 
 YACASL2の@file{as/casl2lib}ディレクトリには、CASL IIで記述されたライブラリファイルが格納されています。
@@ -670,7 +670,7 @@ $ @kbd{casl2 addl_outl.casl ~/yacasl2/as/casl2lib/outl.casl}
 4
 @end example
 
-@node Command Manual,CASL2LIB Manual,Usage,TOP
+@node Command Manual, CASL2LIB Manual, Usage, Top
 @chapter YACASL2コマンドマニュアル
 
 @cindex YACASL2コマンドマニュアル
@@ -683,7 +683,7 @@ YACASL2のコマンドとオプションについて解説します。
 * dumpword::
 @end menu
 
-@node casl2
+@node casl2, comet2, Command Manual, Command Manual
 @section @kbd{casl2}
 
 @pindex casl2
@@ -801,7 +801,7 @@ CASLファイルの内容を表示します。
 @kbd{casl2}の使用方法を表示して終了します。
 @end table
 
-@node comet2
+@node comet2, dumpword, casl2, Command Manual
 @section @kbd{comet2}
 
 @pindex comet2
@@ -884,7 +884,7 @@ $ @kbd{comet2 hello.o}
 @kbd{comet2}の使用方法を表示して終了します。
 @end table
 
-@node dumpword
+@node dumpword,  , comet2, Command Manual
 @section @kbd{dumpword}
 
 @pindex dumpword
@@ -917,7 +917,7 @@ $ @kbd{dumpword 10}
 @kbd{dumpword}の使用方法を表示して終了します。
 @end table
 
-@node CASL2LIB Manual,,Command Manual,TOP
+@node CASL2LIB Manual,  , Command Manual, Top
 @chapter CASL2LIBマニュアル
 
 @menu
@@ -969,7 +969,7 @@ GR1を符号付き整数とみなし、絶対値に変換
 @end example
 
 @example
-$ @kbd{casl2 call_abs.casl $CASL2LIBDIR/abs.casl $CASL2LIBDIR/outa.casl
+$ @kbd{casl2 call_abs.casl $CASL2LIBDIR/abs.casl $CASL2LIBDIR/outa.casl \
   $CASL2LIBDIR/divl.casl $CASL2LIBDIR/rev.casl}
 1
 @end example
@@ -1026,7 +1026,7 @@ GR2が-32768
 @end example
 
 @example
-$ @kbd{casl2 call_diva.casl $CASL2LIBDIR/diva.casl $CASL2LIBDIR/divl.casl
+$ @kbd{casl2 call_diva.casl $CASL2LIBDIR/diva.casl $CASL2LIBDIR/divl.casl \
   $CASL2LIBDIR/outa.casl $CASL2LIBDIR/abs.casl $CASL2LIBDIR/rev.casl}
 -128
 -127
@@ -1072,7 +1072,7 @@ GR2が0の場合、1
 @end example
 
 @example
-$ @kbd{casl2 call_divl.casl $CASL2LIBDIR/divl.casl $CASL2LIBDIR/outl.casl
+$ @kbd{casl2 call_divl.casl $CASL2LIBDIR/divl.casl $CASL2LIBDIR/outl.casl \
   $CASL2LIBDIR/rev.casl}
 256
 254
@@ -1110,43 +1110,43 @@ $ @kbd{casl2 call_divl.casl $CASL2LIBDIR/divl.casl $CASL2LIBDIR/outl.casl
 @end example
 
 @example
-$ @kbd{casl2 call_divl.casl $CASL2LIBDIR/divl.casl $CASL2LIBDIR/outl.casl
+$ @kbd{casl2 call_divl.casl $CASL2LIBDIR/divl.casl $CASL2LIBDIR/outl.casl \
   $CASL2LIBDIR/rev.casl}
 256
 254
 @end example
 
-@node L2STR
+@node L2STR, MAX, INL, CASL2LIB Manual
 @section @kbd{L2STR} - @file{l2str.casl}
 
-@node MAX
+@node MAX, MINIM, L2STR, CASL2LIB Manual
 @section @kbd{MAX} - @file{max.casl}
 
-@node MINIM
+@node MINIM, MULA, MAX, CASL2LIB Manual
 @section @kbd{MINIM} - @file{minim.casl}
 
-@node MULA
+@node MULA, MULL, MINIM, CASL2LIB Manual
 @section @kbd{MULA} - @file{mula.casl}
 
-@node MULL
+@node MULL, OUTA, MULA, CASL2LIB Manual
 @section @kbd{MULL} - @file{mull.casl}
 
-@node OUTA
+@node OUTA, OUTB, MULL, CASL2LIB Manual
 @section @kbd{OUTA} - @file{outa.casl}
 
-@node OUTB
+@node OUTB, OUTD_Q15, OUTA, CASL2LIB Manual
 @section @kbd{OUTB} - @file{outb.casl}
 
-@node OUTD_Q15
+@node OUTD_Q15, OUTL, OUTB, CASL2LIB Manual
 @section @kbd{OUTD_Q15} - @file{outd_q15.casl}
 
-@node OUTL
+@node OUTL, REV, OUTD_Q15, CASL2LIB Manual
 @section @kbd{OUTL} - @file{outl.casl}
 
-@node REV
+@node REV, STR2L, OUTL, CASL2LIB Manual
 @section @kbd{REV} - @file{rev.casl}
 
-@node STR2L
+@node STR2L,  , REV, CASL2LIB Manual
 @section @kbd{STR2L} - @file{str2l.casl}
 
 @bye

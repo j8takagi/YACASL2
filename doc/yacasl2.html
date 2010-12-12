@@ -209,7 +209,7 @@ pre.example em {
 
 <h2 class="chapter">1 YACASL2の概要</h2>
 
-<p>YACASL2は、Linux上で動作するオープンソースのCASL II処理系です。CASL IIは情報処理試験で用いられるアセンブラ言語で、次の資料により仕様が公開されています。
+<p>YACASL2は、UNIX／Linuxのコマンドラインインターフェイスで動作するオープンソースのCASL II処理システムです。CASL IIは情報処理試験で用いられるアセンブラ言語で、次の資料により仕様が公開されています。
 
  <blockquote>
 <a href="http://www.jitec.ipa.go.jp/1_00topic/topic_20081027_hani_yougo.pdf">試験で使用する情報処理用語・プログラム言語など（2008年10月版）</a>［PDFファイル］
@@ -934,7 +934,7 @@ YACASL2のコマンドとオプションについて解説します。
   A       DC      -1
           END
 </pre></pre>
-<pre class="example">  $ <kbd>casl2 call_abs.casl $CASL2LIBDIR/abs.casl $CASL2LIBDIR/outa.casl
+<pre class="example">  $ <kbd>casl2 call_abs.casl $CASL2LIBDIR/abs.casl $CASL2LIBDIR/outa.casl \
     $CASL2LIBDIR/divl.casl $CASL2LIBDIR/rev.casl</kbd>
   1
 </pre>
@@ -1000,7 +1000,7 @@ YACASL2のコマンドとオプションについて解説します。
   ELEN    DC      5
           END
 </pre></pre>
-<pre class="example">  $ <kbd>casl2 call_diva.casl $CASL2LIBDIR/diva.casl $CASL2LIBDIR/divl.casl
+<pre class="example">  $ <kbd>casl2 call_diva.casl $CASL2LIBDIR/diva.casl $CASL2LIBDIR/divl.casl \
     $CASL2LIBDIR/outa.casl $CASL2LIBDIR/abs.casl $CASL2LIBDIR/rev.casl</kbd>
   -128
   -127
@@ -1058,7 +1058,7 @@ YACASL2のコマンドとオプションについて解説します。
   ELEN	DC	5
           END
 </pre></pre>
-<pre class="example">  $ <kbd>casl2 call_divl.casl $CASL2LIBDIR/divl.casl $CASL2LIBDIR/outl.casl
+<pre class="example">  $ <kbd>casl2 call_divl.casl $CASL2LIBDIR/divl.casl $CASL2LIBDIR/outl.casl \
     $CASL2LIBDIR/rev.casl</kbd>
   256
   254
@@ -1110,7 +1110,7 @@ YACASL2のコマンドとオプションについて解説します。
   ELEN	DC	5
           END
 </pre></pre>
-<pre class="example">  $ <kbd>casl2 call_divl.casl $CASL2LIBDIR/divl.casl $CASL2LIBDIR/outl.casl
+<pre class="example">  $ <kbd>casl2 call_divl.casl $CASL2LIBDIR/divl.casl $CASL2LIBDIR/outl.casl \
     $CASL2LIBDIR/rev.casl</kbd>
   256
   254
