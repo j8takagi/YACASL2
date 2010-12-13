@@ -1,0 +1,2 @@
+cat ../../../../as/cmd/JPL/jpl_p.casl
+../../../../casl2 -aTd -M16 ../../../../as/cmd/JPL/jpl_p.casl

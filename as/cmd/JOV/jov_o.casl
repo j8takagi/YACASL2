@@ -1,4 +1,4 @@
-;;; JOV OSZ:001
+;;; JOV OF:0/SF:1/ZF:1
 MAIN    START
         LD      GR1,A
         SRL     GR1,1

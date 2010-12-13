@@ -1,7 +1,0 @@
-include ../CMD.mk    # YACASL2DIR, CASL2
-ASDIR = $(YACASL2DIR)/as
-CASL2LIBDIR = $(YACASL2DIR)/as/casl2lib
-ASFILE = $(YACASL2DIR)/as/cmd/SUBA/suba0_ao.casl
-COMET2FLAG = -td -M8
-EXECCMD = $(COMET2) $(COMET2FLAG) $(OBJFILE)
-include ../TEST.mk

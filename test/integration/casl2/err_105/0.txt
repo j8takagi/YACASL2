@@ -1,3 +1,0 @@
-../../../../casl2 ../../../../as/err/err_105.casl
-Assemble error - 105: no command in the line
-../../../../as/err/err_105.casl:    4:A

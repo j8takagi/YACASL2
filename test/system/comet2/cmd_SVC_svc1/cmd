@@ -1,0 +1,4 @@
+../../../../casl2 -O ../../../../as/cmd/SVC/svc1.casl
+../../../../comet2 -td -M64 a.o <teststr.txt
+
+

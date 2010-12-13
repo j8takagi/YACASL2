@@ -1,0 +1,2 @@
+../../../../casl2 -O ../../../../as/cmd/SRA/sra_s.casl
+../../../../comet2 -td -M8 a.o

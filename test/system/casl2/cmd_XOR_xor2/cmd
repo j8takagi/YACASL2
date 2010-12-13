@@ -1,0 +1,2 @@
+cat ../../../../as/cmd/XOR/xor2.casl
+../../../../casl2 -atd -M16 ../../../../as/cmd/XOR/xor2.casl

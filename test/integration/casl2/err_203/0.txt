@@ -1,3 +1,0 @@
-../../../../casl2 -M32 ../../../../as/err/err_203.casl
- !<
-........Execute error - 203: SVC output - out of COMET II memory

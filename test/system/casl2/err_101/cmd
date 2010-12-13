@@ -1,0 +1,2 @@
+cat ../../../../as/err/err_101.casl
+../../../../casl2 ../../../../as/err/err_101.casl

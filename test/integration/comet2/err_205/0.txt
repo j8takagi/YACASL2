@@ -1,2 +1,0 @@
-../../../../comet2 -M32 a.o
-Execute error - 205: PR:#000E: Stack Pointer (SP) - cannot allocate stack buffer

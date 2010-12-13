@@ -1,0 +1,7 @@
+MAIN    START
+        LD      GR1,A23456789
+        RET
+A23456789 DC    7
+        END
+Assemble error - 104: A23456789: label length is too long
+../../../../as/err/err_104.casl:    4:A23456789 DC    7

@@ -1,0 +1,2 @@
+cat ../../../../as/err/err_204.casl
+../../../../casl2 -M8 ../../../../as/err/err_204.casl

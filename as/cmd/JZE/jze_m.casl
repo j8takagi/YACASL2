@@ -1,4 +1,4 @@
-;;; JZE OSZ:010
+;;; JZE adr OF:0/SF:1/ZF:0
 MAIN    START
         LD      GR1,A
         AND     GR1,GR1

@@ -1,0 +1,2 @@
+../../../../casl2 -O ../../../../as/cmd/LD/ld2.casl
+../../../../comet2 -td -M32 a.o

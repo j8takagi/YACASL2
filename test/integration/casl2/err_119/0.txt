@@ -1,3 +1,0 @@
-../../../../casl2 -M8 ../../../../as/err/err_119.casl
-Assemble error - 119: 8: out of COMET II memory
-../../../../as/err/err_119.casl:    8:B       DC      -7

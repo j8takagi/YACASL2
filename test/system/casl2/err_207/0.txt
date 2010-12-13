@@ -1,0 +1,6 @@
+;;; casl2 -M8 err_207.casl
+MAIN    START
+        POP     GR1
+        RET
+        END
+Execute error - 207: PR:#0001: Stack Pointer (SP) - out of COMET II memory

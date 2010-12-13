@@ -1,0 +1,2 @@
+../../../../casl2 -O ../../../../as/cmd/JOV/jov_m.casl
+../../../../comet2 -td -M16 a.o

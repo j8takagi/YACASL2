@@ -1,3 +1,0 @@
-../../../../casl2 ../../../../as/err/err_121.casl
-Assemble error - 121: cannot get operand token
-../../../../as/err/err_121.casl:    2:BEGIN   LD      GR1, A
