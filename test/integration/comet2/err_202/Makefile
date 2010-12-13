@@ -1,9 +1,0 @@
-include ../CMD.mk    # YACASL2DIR, CASL2, COMET2
-ASDIR = $(YACASL2DIR)/as
-CASL2LIBDIR = $(YACASL2DIR)/as/casl2lib
-ASFILE = $(YACASL2DIR)/as/err/err_202.casl
-ASCMD = $(CASL2) -O $(YACASL2DIR)/as/err/err_202.casl
-COMET2FLAG = -M32
-INFILE = $(YACASL2DIR)/as/err/teststr.txt
-EXECCMD = $(COMET2) $(COMET2FLAG) $(OBJFILE) <$(INFILE)
-include ../TEST.mk

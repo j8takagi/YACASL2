@@ -1,0 +1,6 @@
+MAIN    START
+        LD      GR1,#G
+        RET
+        END
+Assemble error - 115: #G: not hex
+../../../../as/err/err_115.casl:    2:        LD      GR1,#G

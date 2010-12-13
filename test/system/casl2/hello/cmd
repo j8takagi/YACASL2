@@ -1,0 +1,2 @@
+cat ../../../../as/hello.casl
+../../../../casl2 -sla ../../../../as/hello.casl

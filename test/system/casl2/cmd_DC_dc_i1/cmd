@@ -1,0 +1,2 @@
+cat ../../../../as/cmd/DC/dc_i1.casl
+../../../../casl2 -atd -M32 ../../../../as/cmd/DC/dc_i1.casl

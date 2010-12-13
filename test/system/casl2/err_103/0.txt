@@ -1,0 +1,7 @@
+MAIN    START
+        LD      GR1,B
+        RET
+A       DC      7
+        END
+Assemble error - 103: B: label not found
+../../../../as/err/err_103.casl:    2:        LD      GR1,B

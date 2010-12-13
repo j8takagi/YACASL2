@@ -1,0 +1,2 @@
+../../../../casl2 -O ../../../../as/cmd/CPA/cpa1_s.casl
+../../../../comet2 -td -M16 a.o

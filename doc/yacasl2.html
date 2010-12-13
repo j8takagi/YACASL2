@@ -240,11 +240,11 @@ YACASL2の動作はCASL IIの仕様に準拠しているため、情報処理試
 <p>YACASL2は、LinuxやMac OS Xなど、UNIX系のOS上で動作します。現在動作を確認しているのは、次の環境です。
 
      <ul>
-<li>Ubuntu Linux 10.10
+<li>Ubuntu Linux 10.04
 
-     <li>Vine Linux 4.2
+     <li>Vine Linux 5.2
 
-     <li>Mac OS X 10.6
+     <li>Mac OS X 10.6.5
 </ul>
 
  <p>インストール時に、<kbd>tar</kbd>、<kbd>gcc</kbd>、<kbd>make</kbd>が必要です。Linuxの場合は、標準でインストールされていることが多いと思います。Mac OS Xの場合、<code>Xcode</code>をインストールしてください。
@@ -776,12 +776,15 @@ YACASL2のコマンドとオプションについて解説します。
 
      <br><dt><samp><span class="option">-O[&lt;OBJECTFILE&gt;]</span></samp><dt><samp><span class="option">--assembleoutonly[&lt;OBJECTFILE&gt;]</span></samp><dd>アセンブル結果をオブジェクトファイル<samp><span class="file">&lt;OBJECTFILE&gt;</span></samp>に出力し、終了します。出力されたオブジェクトファイルは、<kbd>comet2</kbd>で実行できます。オブジェクトファイルを指定しない場合、出力先は<samp><span class="file">a.o</span></samp>です。オブジェクトファイルは1つだけ指定できます。
 
-     <br><dt><samp><span class="option">-t</span></samp><dt><samp><span class="option">--trace</span></samp><dt><samp><span class="option">--tracearithmetic</span></samp><dd>プログラム実行中のレジスタの値を次の形式で表示します。<code>&lt;値の10進数表現&gt;</code>は符号の付いた10進数です。範囲は-32768から32767です。
+     <br><dt><samp><span class="option">-t</span></samp><dt><samp><span class="option">--trace</span></samp><dt><samp><span class="option">--tracearithmetic</span></samp><dd>プログラム実行中のレジスタの値を次の形式で表示します。
 
-     <pre class="example">       &lt;PR値の16進数表現&gt;: &lt;レジスタ&gt;: &lt;値の10進数表現&gt; = &lt;値の16進数表現&gt; = &lt;値の2進数表現&gt;[ ='文字']
+     <pre class="example">       &lt;PR値の16進数表現&gt;: &lt;レジスタ&gt;: &lt;値の10進数表現&gt; =
+       &lt;値の16進数表現&gt; = &lt;値の2進数表現&gt;[ ='文字']
 </pre>
           <ul>
-<li><code>&lt;PR値の16進数表現&gt;</code>と<code>&lt;値の16進数表現&gt;</code>は、先頭に<code>#</code>が付いた4けたの16進数で表されます。範囲は、<code>#0000</code>から<code>#FFFF</code>です
+<li><code>&lt;PR値の16進数表現&gt;</code>と<code>&lt;レジスタ&gt;</code>、<code>&lt;値の16進数表現&gt;</code>は、4けたの16進数で表されます。<code>&lt;PR値の16進数表現&gt;</code>と<code>&lt;値の16進数表現&gt;</code>には、先頭に<code>#</code>が付きます。範囲は<code>#0000</code>から<code>#FFFF</code>です
+
+          <li><code>&lt;値の10進数表現&gt;</code>は符号の付いた10進数です。範囲は-32768から32767です。
 
           <li><code>&lt;値の2進数表現&gt;</code>は、16けたの2進数で表されます。範囲は、<code>0000000000000000</code>から<code>1111111111111111</code>です
 

@@ -1,3 +1,0 @@
-include ../CMD.mk
-ARGFILE = ../ARGS.txt
-include ../TEST.mk

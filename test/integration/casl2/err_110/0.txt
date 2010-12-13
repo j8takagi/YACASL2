@@ -1,3 +1,0 @@
-../../../../casl2 ../../../../as/err/err_110.casl
-Assemble error - 110: CALL: not command of operand "r,adr[,x]"
-../../../../as/err/err_110.casl:    2:        CALL    GR1,A

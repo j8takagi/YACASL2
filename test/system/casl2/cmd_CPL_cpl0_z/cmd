@@ -1,0 +1,2 @@
+cat ../../../../as/cmd/CPL/cpl0_z.casl
+../../../../casl2 -aTd -M8 ../../../../as/cmd/CPL/cpl0_z.casl

@@ -1,0 +1,2 @@
+../../../../casl2 -O ../../../../as/cmd/OUT/out.casl
+../../../../comet2 -td -M256 a.o

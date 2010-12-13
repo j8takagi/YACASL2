@@ -1,0 +1,23 @@
+;; casl2 outi_call.casl outi.casl
+MAIN    START
+        LAD     GR1,VAL
+        LAD     GR2,0
+LOOP    CPA     GR2,CNT
+        JZE     FIN
+        LD      GR1,VAL,GR2
+        CALL    OUTA
+        LAD     GR2,1,GR2
+        JUMP    LOOP
+FIN     RET
+VAL     DC      0
+        DC      #0001,#0002,#0004,#0008
+        DC      #0010,#0020,#0040,#0080
+        DC      #0100,#0200,#0400,#0800
+        DC      #1000,#2000,#4000,#7FFF
+        DC      #8000
+        DC      #8001,#C000,#E000,#F000
+        DC      #F800,#FC00,#FE00,#FF00
+        DC      #FF80,#FFC0,#FFE0,#FFF0
+        DC      #FFF8,#FFFC,#FFFE,#FFFF
+CNT     DC      34
+        END

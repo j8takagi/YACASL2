@@ -1,0 +1,6 @@
+;;; casl2 -M8 err_206.casl
+MAIN    START
+        LD      GR1,#FFFF
+        RET
+        END
+Execute error - 206: PR:#0001: Address - out of COMET II memory

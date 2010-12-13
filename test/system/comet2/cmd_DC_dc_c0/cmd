@@ -1,0 +1,2 @@
+../../../../casl2 -O ../../../../as/cmd/DC/dc_c0.casl
+../../../../comet2 -td -M128 a.o

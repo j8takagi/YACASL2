@@ -1,4 +1,4 @@
-;;; JMI OSZ:001
+;;; JMI OF:0/SF:0/ZF:1
 MAIN    START
         LD      GR1,A
         AND     GR1,GR1

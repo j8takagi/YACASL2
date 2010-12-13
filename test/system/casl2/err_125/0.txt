@@ -1,0 +1,7 @@
+MAIN    START
+        LD      GR1,A,1
+        RET
+A       DC      0,1
+        END
+Assemble error - 125: LD: not GR in operand x
+../../../../as/err/err_125.casl:    2:        LD      GR1,A,1

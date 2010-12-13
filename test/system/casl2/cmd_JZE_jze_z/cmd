@@ -1,0 +1,2 @@
+cat ../../../../as/cmd/JZE/jze_z.casl
+../../../../casl2 -atd -M16 ../../../../as/cmd/JZE/jze_z.casl

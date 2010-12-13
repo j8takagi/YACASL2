@@ -1,0 +1,9 @@
+MAIN    START   BEGIN
+BEGIN   LD      GR1,A
+        ADDA    GR1,B
+        RET
+A       DC      3
+A       DC      1
+        END
+Assemble error - 101: A: label already defined
+../../../../as/err/err_101.casl:    6:A       DC      1

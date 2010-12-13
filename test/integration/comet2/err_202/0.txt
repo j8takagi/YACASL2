@@ -1,2 +1,0 @@
-../../../../comet2 -M32 a.o
-Execute error - 202: SVC input - out of Input memory

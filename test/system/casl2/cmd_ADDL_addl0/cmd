@@ -1,0 +1,2 @@
+cat ../../../../as/cmd/ADDL/addl0.casl
+../../../../casl2 -atd -M8 ../../../../as/cmd/ADDL/addl0.casl

@@ -1,0 +1,9 @@
+;;; casl2 -M32 err_205.casl
+MAIN    START
+        RPUSH
+        LD      GR0,A
+        RPOP
+        RET
+A       DC      7
+        END
+Execute error - 205: PR:#000E: Stack Pointer (SP) - cannot allocate stack buffer

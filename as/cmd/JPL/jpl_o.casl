@@ -1,4 +1,4 @@
-;;; JPL OSZ:001
+;;;JPL adr OF:1/SF:0/ZF:0
 MAIN    START
         LD      GR1,A
         SRL     GR1,1

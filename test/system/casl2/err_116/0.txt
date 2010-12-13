@@ -1,0 +1,6 @@
+MAIN    START
+        LD      GR1,#10000
+        RET
+        END
+Assemble error - 116: #10000: out of hex range
+../../../../as/err/err_116.casl:    2:        LD      GR1,#10000

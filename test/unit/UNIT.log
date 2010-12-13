@@ -1,0 +1,31 @@
+getcmdtype: Test Success 2010-12-14 00:22:16
+Detail in /home/kazubito/2010_12/yacasl2/test/unit/getcmdtype/detail.log
+
+hash: Test Success 2010-12-14 00:22:16
+Detail in /home/kazubito/2010_12/yacasl2/test/unit/hash/detail.log
+
+addcerrlist: Test Success 2010-12-14 00:22:16
+Detail in /home/kazubito/2010_12/yacasl2/test/unit/addcerrlist/detail.log
+
+関数setcerrのテスト
+setcerr: Test Success 2010-12-14 00:22:17
+Detail in /home/kazubito/2010_12/yacasl2/test/unit/setcerr/detail.log
+
+getcmdcode: Test Success 2010-12-14 00:22:17
+Detail in /home/kazubito/2010_12/yacasl2/test/unit/getcmdcode/detail.log
+
+linetok: Test Success 2010-12-14 00:22:18
+Detail in /home/kazubito/2010_12/yacasl2/test/unit/linetok/detail.log
+
+opdtok: Test Success 2010-12-14 00:22:19
+Detail in /home/kazubito/2010_12/yacasl2/test/unit/opdtok/detail.log
+
+h2word: Test Success 2010-12-14 00:22:21
+Detail in /home/kazubito/2010_12/yacasl2/test/unit/h2word/detail.log
+
+getgr: Test Success 2010-12-14 00:22:22
+Detail in /home/kazubito/2010_12/yacasl2/test/unit/getgr/detail.log
+
+n2word: Test Success 2010-12-14 00:22:23
+Detail in /home/kazubito/2010_12/yacasl2/test/unit/n2word/detail.log
+

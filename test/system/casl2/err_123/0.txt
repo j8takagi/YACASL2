@@ -1,0 +1,8 @@
+MAIN     START
+         OUT    BUF,LEN
+         RET
+BUF      DC     'Hello, World!
+LEN      DC     13
+         END
+Assemble error - 123: unclosed quote
+../../../../as/err/err_123.casl:    4:BUF      DC     'Hello, World!

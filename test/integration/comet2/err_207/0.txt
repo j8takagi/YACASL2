@@ -1,2 +1,0 @@
-../../../../comet2 -M8 a.o
-Execute error - 207: PR:#0001: Stack Pointer (SP) - out of COMET II memory

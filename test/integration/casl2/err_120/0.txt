@@ -1,3 +1,0 @@
-../../../../casl2 ../../../../as/err/err_120.casl
-Assemble error - 120: GR0 in operand x
-../../../../as/err/err_120.casl:    3:        LD      GR1,A,GR0

@@ -1,0 +1,2 @@
+cat ../../../../as/cmd/CPA/cpa0_z.casl
+../../../../casl2 -atd -M8 ../../../../as/cmd/CPA/cpa0_z.casl

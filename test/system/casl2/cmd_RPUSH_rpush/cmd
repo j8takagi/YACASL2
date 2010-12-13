@@ -1,0 +1,2 @@
+cat ../../../../as/cmd/RPUSH/rpush.casl
+../../../../casl2 -atd -M64 ../../../../as/cmd/RPUSH/rpush.casl

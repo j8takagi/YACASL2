@@ -1,0 +1,2 @@
+cat ../../../../as/cmd/POP/push_pop_1.casl
+../../../../casl2 -atd -M64 ../../../../as/cmd/POP/push_pop_1.casl

@@ -1,2 +1,0 @@
-ASDIR = $(YACASL2DIR)/as
-ASFILE = $(ASDIR)/sum_10.casl
