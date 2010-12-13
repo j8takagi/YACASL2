@@ -1,47 +1,52 @@
-# テストグループ
-# make         : すべてのテストを実施し、ログを作成
-# make all     : ↓
-# make clean   : すべてのテストで、「make」で生成されたファイルをクリア
-# make check   : すべてのテストを実施
-# make cleanall: すべてのテストで、「make」と「make prepare」で生成されたファイルをクリア
-# make prepare : すべてのテストの、想定結果を出力
-# make create  : UNITNAMEで指定されたテストを新規に作成
-TESTS = `ls | grep "^[^A-Z].*"`
-LOGFILE = Test.log
+# autotest.mk > template > Group.mk
+# テストグループのMakefile
+#
+# オペレーター
+# make         : すべてのテストを実施し、ログファイルを作成
+# make check   : ↓
+# make create  : TESTNAMEで指定されたテストを新規に作成
+# make set     : すべてのテストの、想定結果を出力
+# make checkeach: すべてのテストを実施
+# make report  : ログファイルから、テストの結果をレポート
+# make clean   : すべてのテストで、"make" で生成されたファイルをクリア
+# make cleanall: すべてのテストで、"make" と "make set" で生成されたファイルをクリア
 
-.PHONY: all check report clean cleanall prepare create
-all: check report
-check:
-	@rm -f $(LOGFILE)
-	@for target in $(TESTS); do \
-         $(MAKE) check -sC $$target; \
-     done
-$(LOGFILE):
-	@for target in $(TESTS); do \
-         cat <$$target/report.txt >>$(LOGFILE) || echo $$target ": no report"; \
-     done
-report: $(LOGFILE)
-	@success=`grep "Success" $(LOGFILE) | wc -l`; \
-     all=`cat $(LOGFILE) | wc -l`; \
-     echo "$$success / $$all tests passed. Details in `pwd`/$(LOGFILE)"; \
-     if test $$success -eq $$all; then \
-       echo "All tests are succeded."; \
-     fi
-clean:
-	@for target in $(TESTS); do $(MAKE) clean -C $$target; done
-	@rm -f $(LOGFILE)
-cleanall:
-	@for target in $(TESTS); do $(MAKE) cleanall -C $$target; done
-	@rm -f $(LOGFILE)
-prepare:
-	@for target in $(TESTS) ; do $(MAKE) prepare -C $$target ; done
+SHELL = /bin/sh
+
+include Define.mk
+include Define_group.mk
+
+.PHONY: check checkall time create clean cleantime
+
+check checkall: clean $(GROUP_REPORT_FILE)
+	@$(CAT) $(GROUP_REPORT_FILE)
+
+time: cleantime $(GROUP_TIME_FILE)
+	@$(CAT) $(GROUP_TIME_FILE)
+
 create:
-ifdef UNITNAME
-	@mkdir $(UNITNAME); \
-     echo 'UCLASS = ' >>$(UNITNAME)/Makefile; \
-     echo 'TESTSRCFILE = $(UNITNAME).c' >>$(UNITNAME)/Makefile; \
-     echo 'include ../TEST.mk' >>$(UNITNAME)/Makefile; \
-     cp TEMPLATE.c $(UNITNAME)/$(UNITNAME).c
-else
-	@echo "no test created. set UNITNAME"
-endif
+	@$(call create_dir,$(TEST))
+	@$(call create_makefile,$(TEST)/$(MAKEFILE),$(TEST_MAKEFILES))
+
+clean:
+	@$(call make_tests,$(TESTS),$@)
+	@$(RM) $(GROUP_RES_FILES)
+
+cleantime:
+	@$(call make_tests,$(TESTS),$@)
+	@$(RM) $(GROUP_TIME_FILE)
+
+$(GROUP_REPORT_FILE): $(GROUP_LOG_FILE)
+	@$(call group_report,$(GROUP),$^,$@)
+
+$(GROUP_LOG_FILE): $(TEST_LOG_FILES)
+	@$(call group_log,$^,$@)
+
+$(TEST_LOG_FILES):
+	@$(MAKE) $(MAKECMDGOALS) -sC $(dir $@) NODISP=1
+
+$(GROUP_TIME_FILE): $(TEST_TIME_FILES)
+	@$(call group_log,$^,$@)
+
+$(TEST_TIME_FILES):
+	@$(MAKE) time -sC $(dir $@)

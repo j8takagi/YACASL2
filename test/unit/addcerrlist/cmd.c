@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "casl2.h"
+#include "cerr.h"
 
 CERR cerr_0[] = {
     { 126, "source file is not specified" },
