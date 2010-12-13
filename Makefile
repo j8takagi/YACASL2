@@ -1,5 +1,3 @@
-CLEANDIR = 
-
 .PHONY: build check doc clean
 
 build:

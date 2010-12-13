@@ -1,450 +1,450 @@
-cmd_SRA_sra_z: Test Success 2010-12-13 18:45:02
+cmd_SRA_sra_z: Test Success 2010-12-14 01:13:15
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_SRA_sra_z/detail.log
 
-cmd_XOR_xor0: Test Success 2010-12-13 18:45:02
+cmd_XOR_xor0: Test Success 2010-12-14 01:13:15
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_XOR_xor0/detail.log
 
-cmd_SUBL_subl0_lo: Test Success 2010-12-13 18:45:02
+cmd_SUBL_subl0_lo: Test Success 2010-12-14 01:13:15
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_SUBL_subl0_lo/detail.log
 
-cmd_JPL_jpl_o: Test Success 2010-12-13 18:45:02
+cmd_JPL_jpl_o: Test Success 2010-12-14 01:13:15
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_JPL_jpl_o/detail.log
 
-cmd_AND_and0_s: Test Success 2010-12-13 18:45:02
+cmd_AND_and0_s: Test Success 2010-12-14 01:13:16
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_AND_and0_s/detail.log
 
-cmd_SLA_sla_oz: Test Success 2010-12-13 18:45:02
+cmd_SLA_sla_oz: Test Success 2010-12-14 01:13:16
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_SLA_sla_oz/detail.log
 
-cmd_RPUSH_rpush: Test Success 2010-12-13 18:45:02
+cmd_RPUSH_rpush: Test Success 2010-12-14 01:13:16
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_RPUSH_rpush/detail.log
 
-cmd_ADDL_addl2: Test Success 2010-12-13 18:45:02
+cmd_ADDL_addl2: Test Success 2010-12-14 01:13:16
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_ADDL_addl2/detail.log
 
-cmd_JNZ_jnz_m: Test Success 2010-12-13 18:45:02
+cmd_JNZ_jnz_m: Test Success 2010-12-14 01:13:16
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_JNZ_jnz_m/detail.log
 
-cmd_OR_or0_s: Test Success 2010-12-13 18:45:02
+cmd_OR_or0_s: Test Success 2010-12-14 01:13:16
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_OR_or0_s/detail.log
 
-cmd_SVC_svc2: Test Success 2010-12-13 18:45:02
+cmd_SVC_svc2: Test Success 2010-12-14 01:13:16
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_SVC_svc2/detail.log
 
-err_205: Test Success 2010-12-13 18:45:02
+err_205: Test Success 2010-12-14 01:13:16
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/err_205/detail.log
 
-cmd_CPA_cpa2_s: Test Success 2010-12-13 18:45:03
+cmd_CPA_cpa2_s: Test Success 2010-12-14 01:13:16
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_CPA_cpa2_s/detail.log
 
-cmd_LD_ld1: Test Success 2010-12-13 18:45:03
+cmd_LD_ld1: Test Success 2010-12-14 01:13:16
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_LD_ld1/detail.log
 
-cmd_ADDA_adda0_ao: Test Success 2010-12-13 18:45:03
+cmd_ADDA_adda0_ao: Test Success 2010-12-14 01:13:16
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_ADDA_adda0_ao/detail.log
 
-cmd_ST_st0: Test Success 2010-12-13 18:45:03
+cmd_ST_st0: Test Success 2010-12-14 01:13:16
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_ST_st0/detail.log
 
-cmd_AND_and1: Test Success 2010-12-13 18:45:03
+cmd_AND_and1: Test Success 2010-12-14 01:13:16
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_AND_and1/detail.log
 
-cmd_AND_and0_z: Test Success 2010-12-13 18:45:03
+cmd_AND_and0_z: Test Success 2010-12-14 01:13:16
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_AND_and0_z/detail.log
 
-cmd_ADDL_addl0__o: Test Success 2010-12-13 18:45:03
+cmd_ADDL_addl0__o: Test Success 2010-12-14 01:13:16
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_ADDL_addl0__o/detail.log
 
-cmd_SUBL_subl2: Test Success 2010-12-13 18:45:03
+cmd_SUBL_subl2: Test Success 2010-12-14 01:13:16
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_SUBL_subl2/detail.log
 
-cmd_JMI_jmi_m: Test Success 2010-12-13 18:45:03
+cmd_JMI_jmi_m: Test Success 2010-12-14 01:13:16
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_JMI_jmi_m/detail.log
 
-cmd_JNZ_jnz_p: Test Success 2010-12-13 18:45:03
+cmd_JNZ_jnz_p: Test Success 2010-12-14 01:13:16
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_JNZ_jnz_p/detail.log
 
-cmd_CPA_cpa0: Test Success 2010-12-13 18:45:03
+cmd_CPA_cpa0: Test Success 2010-12-14 01:13:16
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_CPA_cpa0/detail.log
 
-cmd_IN_in: Test Success 2010-12-13 18:45:03
+cmd_IN_in: Test Success 2010-12-14 01:13:17
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_IN_in/detail.log
 
-cmd_SUBL_subl0__z: Test Success 2010-12-13 18:45:03
+cmd_SUBL_subl0__z: Test Success 2010-12-14 01:13:17
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_SUBL_subl0__z/detail.log
 
-cmd_JOV_jov_m: Test Success 2010-12-13 18:45:03
+cmd_JOV_jov_m: Test Success 2010-12-14 01:13:17
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_JOV_jov_m/detail.log
 
-cmd_POP_push_pop_0: Test Success 2010-12-13 18:45:03
+cmd_POP_push_pop_0: Test Success 2010-12-14 01:13:17
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_POP_push_pop_0/detail.log
 
-cmd_JPL_jpl_m: Test Success 2010-12-13 18:45:03
+cmd_JPL_jpl_m: Test Success 2010-12-14 01:13:17
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_JPL_jpl_m/detail.log
 
-err_203: Test Success 2010-12-13 18:45:03
+err_203: Test Success 2010-12-14 01:13:17
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/err_203/detail.log
 
-cmd_SLA_sla_s: Test Success 2010-12-13 18:45:04
+cmd_SLA_sla_s: Test Success 2010-12-14 01:13:17
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_SLA_sla_s/detail.log
 
-cmd_JOV_jov_z: Test Success 2010-12-13 18:45:04
+cmd_JOV_jov_z: Test Success 2010-12-14 01:13:17
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_JOV_jov_z/detail.log
 
-cmd_SRA_sra_oz: Test Success 2010-12-13 18:45:04
+cmd_SRA_sra_oz: Test Success 2010-12-14 01:13:17
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_SRA_sra_oz/detail.log
 
-cmd_SLL_sll_o: Test Success 2010-12-13 18:45:04
+cmd_SLL_sll_o: Test Success 2010-12-14 01:13:17
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_SLL_sll_o/detail.log
 
-cmd_SLL_sll: Test Success 2010-12-13 18:45:04
+cmd_SLL_sll: Test Success 2010-12-14 01:13:17
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_SLL_sll/detail.log
 
-cmd_JNZ_jnz_z: Test Success 2010-12-13 18:45:04
+cmd_JNZ_jnz_z: Test Success 2010-12-14 01:13:17
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_JNZ_jnz_z/detail.log
 
-cmd_CPA_cpa1_s: Test Success 2010-12-13 18:45:04
+cmd_CPA_cpa1_s: Test Success 2010-12-14 01:13:17
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_CPA_cpa1_s/detail.log
 
-cmd_XOR_xor1: Test Success 2010-12-13 18:45:04
+cmd_XOR_xor1: Test Success 2010-12-14 01:13:17
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_XOR_xor1/detail.log
 
-cmd_SLL_sll_os: Test Success 2010-12-13 18:45:04
+cmd_SLL_sll_os: Test Success 2010-12-14 01:13:17
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_SLL_sll_os/detail.log
 
-cmd_JMI_jmi_o: Test Success 2010-12-13 18:45:04
+cmd_JMI_jmi_o: Test Success 2010-12-14 01:13:17
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_JMI_jmi_o/detail.log
 
-err_204: Test Success 2010-12-13 18:45:04
+err_204: Test Success 2010-12-14 01:13:17
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/err_204/detail.log
 
-cmd_JUMP_jump_p: Test Success 2010-12-13 18:45:04
+cmd_JUMP_jump_p: Test Success 2010-12-14 01:13:17
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_JUMP_jump_p/detail.log
 
-cmd_ADDA_adda0_as1: Test Success 2010-12-13 18:45:04
+cmd_ADDA_adda0_as1: Test Success 2010-12-14 01:13:17
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_ADDA_adda0_as1/detail.log
 
-cmd_SUBA_suba1: Test Success 2010-12-13 18:45:04
+cmd_SUBA_suba1: Test Success 2010-12-14 01:13:18
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_SUBA_suba1/detail.log
 
-cmd_SLL_sll_z: Test Success 2010-12-13 18:45:04
+cmd_SLL_sll_z: Test Success 2010-12-14 01:13:18
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_SLL_sll_z/detail.log
 
-cmd_SUBA_suba0_lo: Test Success 2010-12-13 18:45:04
+cmd_SUBA_suba0_lo: Test Success 2010-12-14 01:13:18
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_SUBA_suba0_lo/detail.log
 
-cmd_JNZ_jnz_o: Test Success 2010-12-13 18:45:04
+cmd_JNZ_jnz_o: Test Success 2010-12-14 01:13:18
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_JNZ_jnz_o/detail.log
 
-cmd_SUBA_suba0: Test Success 2010-12-13 18:45:05
+cmd_SUBA_suba0: Test Success 2010-12-14 01:13:18
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_SUBA_suba0/detail.log
 
-cmd_ADDA_adda1: Test Success 2010-12-13 18:45:05
+cmd_ADDA_adda1: Test Success 2010-12-14 01:13:18
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_ADDA_adda1/detail.log
 
-cmd_XOR_xor0_z: Test Success 2010-12-13 18:45:05
+cmd_XOR_xor0_z: Test Success 2010-12-14 01:13:18
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_XOR_xor0_z/detail.log
 
-cmd_CPL_cpl0: Test Success 2010-12-13 18:45:05
+cmd_CPL_cpl0: Test Success 2010-12-14 01:13:18
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_CPL_cpl0/detail.log
 
-cmd_OR_or2: Test Success 2010-12-13 18:45:05
+cmd_OR_or2: Test Success 2010-12-14 01:13:18
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_OR_or2/detail.log
 
-cmd_SLL_sll_oz: Test Success 2010-12-13 18:45:05
+cmd_SLL_sll_oz: Test Success 2010-12-14 01:13:18
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_SLL_sll_oz/detail.log
 
-cmd_DC_dc_c0: Test Success 2010-12-13 18:45:05
+cmd_DC_dc_c0: Test Success 2010-12-14 01:13:18
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_DC_dc_c0/detail.log
 
-cmd_CPL_cpl1_s: Test Success 2010-12-13 18:45:05
+cmd_CPL_cpl1_s: Test Success 2010-12-14 01:13:18
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_CPL_cpl1_s/detail.log
 
-cmd_DS_ds: Test Success 2010-12-13 18:45:05
+cmd_DS_ds: Test Success 2010-12-14 01:13:18
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_DS_ds/detail.log
 
-cmd_JMI_jmi_z: Test Success 2010-12-13 18:45:05
+cmd_JMI_jmi_z: Test Success 2010-12-14 01:13:18
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_JMI_jmi_z/detail.log
 
-cmd_LAD_lad1_o: Test Success 2010-12-13 18:45:05
+cmd_LAD_lad1_o: Test Success 2010-12-14 01:13:18
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_LAD_lad1_o/detail.log
 
-cmd_SRA_sra: Test Success 2010-12-13 18:45:05
+cmd_SRA_sra: Test Success 2010-12-14 01:13:18
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_SRA_sra/detail.log
 
-cmd_DC_dc_i1: Test Success 2010-12-13 18:45:05
+cmd_DC_dc_i1: Test Success 2010-12-14 01:13:18
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_DC_dc_i1/detail.log
 
-err_207: Test Success 2010-12-13 18:45:05
+err_207: Test Success 2010-12-14 01:13:18
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/err_207/detail.log
 
-cmd_OR_or0_z: Test Success 2010-12-13 18:45:05
+cmd_OR_or0_z: Test Success 2010-12-14 01:13:19
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_OR_or0_z/detail.log
 
-cmd_ADDL_addl0_as1: Test Success 2010-12-13 18:45:05
+cmd_ADDL_addl0_as1: Test Success 2010-12-14 01:13:19
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_ADDL_addl0_as1/detail.log
 
-cmd_SLL_sll_s: Test Success 2010-12-13 18:45:06
+cmd_SLL_sll_s: Test Success 2010-12-14 01:13:19
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_SLL_sll_s/detail.log
 
-cmd_RPOP_rpop: Test Success 2010-12-13 18:45:06
+cmd_RPOP_rpop: Test Success 2010-12-14 01:13:19
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_RPOP_rpop/detail.log
 
-cmd_SUBA_suba0__o: Test Success 2010-12-13 18:45:06
+cmd_SUBA_suba0__o: Test Success 2010-12-14 01:13:19
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_SUBA_suba0__o/detail.log
 
-cmd_LAD_lad0: Test Success 2010-12-13 18:45:06
+cmd_LAD_lad0: Test Success 2010-12-14 01:13:19
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_LAD_lad0/detail.log
 
-cmd_JOV_jov_o: Test Success 2010-12-13 18:45:06
+cmd_JOV_jov_o: Test Success 2010-12-14 01:13:19
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_JOV_jov_o/detail.log
 
-err_201: Test Success 2010-12-13 18:45:06
+err_201: Test Success 2010-12-14 01:13:19
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/err_201/detail.log
 
-cmd_ADDL_addl1: Test Success 2010-12-13 18:45:06
+cmd_ADDL_addl1: Test Success 2010-12-14 01:13:19
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_ADDL_addl1/detail.log
 
-cmd_ADDA_adda0_az: Test Success 2010-12-13 18:45:06
+cmd_ADDA_adda0_az: Test Success 2010-12-14 01:13:19
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_ADDA_adda0_az/detail.log
 
-cmd_DC_dc_i0: Test Success 2010-12-13 18:45:06
+cmd_DC_dc_i0: Test Success 2010-12-14 01:13:19
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_DC_dc_i0/detail.log
 
-cmd_LD_ld0_l: Test Success 2010-12-13 18:45:06
+cmd_LD_ld0_l: Test Success 2010-12-14 01:13:19
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_LD_ld0_l/detail.log
 
-cmd_AND_and0: Test Success 2010-12-13 18:45:06
+cmd_AND_and0: Test Success 2010-12-14 01:13:19
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_AND_and0/detail.log
 
-cmd_ADDA_adda0: Test Success 2010-12-13 18:45:06
+cmd_ADDA_adda0: Test Success 2010-12-14 01:13:19
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_ADDA_adda0/detail.log
 
-cmd_JZE_jze_z: Test Success 2010-12-13 18:45:06
+cmd_JZE_jze_z: Test Success 2010-12-14 01:13:19
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_JZE_jze_z/detail.log
 
-cmd_OUT_out: Test Success 2010-12-13 18:45:06
+cmd_OUT_out: Test Success 2010-12-14 01:13:19
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_OUT_out/detail.log
 
-cmd_SLA_sla: Test Success 2010-12-13 18:45:06
+cmd_SLA_sla: Test Success 2010-12-14 01:13:19
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_SLA_sla/detail.log
 
-cmd_LD_ld0: Test Success 2010-12-13 18:45:07
+cmd_LD_ld0: Test Success 2010-12-14 01:13:19
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_LD_ld0/detail.log
 
-cmd_SUBL_subl0: Test Success 2010-12-13 18:45:07
+cmd_SUBL_subl0: Test Success 2010-12-14 01:13:20
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_SUBL_subl0/detail.log
 
-cmd_SRA_sra_os: Test Success 2010-12-13 18:45:07
+cmd_SRA_sra_os: Test Success 2010-12-14 01:13:20
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_SRA_sra_os/detail.log
 
-cmd_SUBA_suba0_ao: Test Success 2010-12-13 18:45:07
+cmd_SUBA_suba0_ao: Test Success 2010-12-14 01:13:20
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_SUBA_suba0_ao/detail.log
 
-cmd_SVC_svc1: Test Success 2010-12-13 18:45:07
+cmd_SVC_svc1: Test Success 2010-12-14 01:13:20
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_SVC_svc1/detail.log
 
-cmd_JMI_jmi_p: Test Success 2010-12-13 18:45:07
+cmd_JMI_jmi_p: Test Success 2010-12-14 01:13:20
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_JMI_jmi_p/detail.log
 
-cmd_JZE_jze_m: Test Success 2010-12-13 18:45:07
+cmd_JZE_jze_m: Test Success 2010-12-14 01:13:20
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_JZE_jze_m/detail.log
 
-cmd_DC_dc_i_of: Test Success 2010-12-13 18:45:07
+cmd_DC_dc_i_of: Test Success 2010-12-14 01:13:20
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_DC_dc_i_of/detail.log
 
-cmd_SRA_sra_s: Test Success 2010-12-13 18:45:07
+cmd_SRA_sra_s: Test Success 2010-12-14 01:13:20
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_SRA_sra_s/detail.log
 
-cmd_ADDA_adda2: Test Success 2010-12-13 18:45:07
+cmd_ADDA_adda2: Test Success 2010-12-14 01:13:20
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_ADDA_adda2/detail.log
 
-cmd_SUBA_suba0__z: Test Success 2010-12-13 18:45:07
+cmd_SUBA_suba0__z: Test Success 2010-12-14 01:13:20
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_SUBA_suba0__z/detail.log
 
-cmd_XOR_xor2: Test Success 2010-12-13 18:45:07
+cmd_XOR_xor2: Test Success 2010-12-14 01:13:20
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_XOR_xor2/detail.log
 
-cmd_CPA_cpa0_z: Test Success 2010-12-13 18:45:07
+cmd_CPA_cpa0_z: Test Success 2010-12-14 01:13:20
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_CPA_cpa0_z/detail.log
 
-err_206: Test Success 2010-12-13 18:45:07
+err_206: Test Success 2010-12-14 01:13:20
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/err_206/detail.log
 
-cmd_SRL_srl_z: Test Success 2010-12-13 18:45:07
+cmd_SRL_srl_z: Test Success 2010-12-14 01:13:20
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_SRL_srl_z/detail.log
 
-cmd_SLA_sla_z: Test Success 2010-12-13 18:45:07
+cmd_SLA_sla_z: Test Success 2010-12-14 01:13:20
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_SLA_sla_z/detail.log
 
-cmd_JUMP_jump_o: Test Success 2010-12-13 18:45:07
+cmd_JUMP_jump_o: Test Success 2010-12-14 01:13:20
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_JUMP_jump_o/detail.log
 
-cmd_ADDL_addl0: Test Success 2010-12-13 18:45:08
+cmd_ADDL_addl0: Test Success 2010-12-14 01:13:20
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_ADDL_addl0/detail.log
 
-cmd_OR_or1: Test Success 2010-12-13 18:45:08
+cmd_OR_or1: Test Success 2010-12-14 01:13:20
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_OR_or1/detail.log
 
-cmd_SLA_sla_o: Test Success 2010-12-13 18:45:08
+cmd_SLA_sla_o: Test Success 2010-12-14 01:13:20
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_SLA_sla_o/detail.log
 
-cmd_ADDL_addl0_ao: Test Success 2010-12-13 18:45:08
+cmd_ADDL_addl0_ao: Test Success 2010-12-14 01:13:21
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_ADDL_addl0_ao/detail.log
 
-cmd_OR_or0: Test Success 2010-12-13 18:45:08
+cmd_OR_or0: Test Success 2010-12-14 01:13:21
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_OR_or0/detail.log
 
-cmd_ADDL_addl0_lo: Test Success 2010-12-13 18:45:08
+cmd_ADDL_addl0_lo: Test Success 2010-12-14 01:13:21
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_ADDL_addl0_lo/detail.log
 
-cmd_CPA_cpa0_s: Test Success 2010-12-13 18:45:08
+cmd_CPA_cpa0_s: Test Success 2010-12-14 01:13:21
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_CPA_cpa0_s/detail.log
 
-cmd_ADDA_adda0__o: Test Success 2010-12-13 18:45:08
+cmd_ADDA_adda0__o: Test Success 2010-12-14 01:13:21
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_ADDA_adda0__o/detail.log
 
-cmd_ADDA_adda0_as0: Test Success 2010-12-13 18:45:08
+cmd_ADDA_adda0_as0: Test Success 2010-12-14 01:13:21
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_ADDA_adda0_as0/detail.log
 
-cmd_XOR_xor0_s: Test Success 2010-12-13 18:45:08
+cmd_XOR_xor0_s: Test Success 2010-12-14 01:13:21
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_XOR_xor0_s/detail.log
 
-err_202: Test Success 2010-12-13 18:45:08
+err_202: Test Success 2010-12-14 01:13:21
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/err_202/detail.log
 
-cmd_JOV_jov_p: Test Success 2010-12-13 18:45:08
+cmd_JOV_jov_p: Test Success 2010-12-14 01:13:21
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_JOV_jov_p/detail.log
 
-cmd_SUBL_subl0__o: Test Success 2010-12-13 18:45:08
+cmd_SUBL_subl0__o: Test Success 2010-12-14 01:13:21
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_SUBL_subl0__o/detail.log
 
-cmd_SRL_srl_s: Test Success 2010-12-13 18:45:08
+cmd_SRL_srl_s: Test Success 2010-12-14 01:13:21
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_SRL_srl_s/detail.log
 
-cmd_SUBA_suba0_as0: Test Success 2010-12-13 18:45:08
+cmd_SUBA_suba0_as0: Test Success 2010-12-14 01:13:21
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_SUBA_suba0_as0/detail.log
 
-cmd_DS_ds_0: Test Success 2010-12-13 18:45:08
+cmd_DS_ds_0: Test Success 2010-12-14 01:13:21
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_DS_ds_0/detail.log
 
-cmd_SUBL_subl0_ao: Test Success 2010-12-13 18:45:09
+cmd_SUBL_subl0_ao: Test Success 2010-12-14 01:13:21
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_SUBL_subl0_ao/detail.log
 
-cmd_ADDL_addl0_az: Test Success 2010-12-13 18:45:09
+cmd_ADDL_addl0_az: Test Success 2010-12-14 01:13:21
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_ADDL_addl0_az/detail.log
 
-cmd_SRL_srl_o: Test Success 2010-12-13 18:45:09
+cmd_SRL_srl_o: Test Success 2010-12-14 01:13:21
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_SRL_srl_o/detail.log
 
-cmd_JPL_jpl_z: Test Success 2010-12-13 18:45:09
+cmd_JPL_jpl_z: Test Success 2010-12-14 01:13:21
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_JPL_jpl_z/detail.log
 
-cmd_CALL_call0: Test Success 2010-12-13 18:45:09
+cmd_CALL_call0: Test Success 2010-12-14 01:13:21
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_CALL_call0/detail.log
 
-cmd_JPL_jpl_p: Test Success 2010-12-13 18:45:09
+cmd_JPL_jpl_p: Test Success 2010-12-14 01:13:21
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_JPL_jpl_p/detail.log
 
-cmd_NOP_nop: Test Success 2010-12-13 18:45:09
+cmd_NOP_nop: Test Success 2010-12-14 01:13:22
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_NOP_nop/detail.log
 
-cmd_JZE_jze_o: Test Success 2010-12-13 18:45:09
+cmd_JZE_jze_o: Test Success 2010-12-14 01:13:22
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_JZE_jze_o/detail.log
 
-cmd_SUBA_suba2: Test Success 2010-12-13 18:45:09
+cmd_SUBA_suba2: Test Success 2010-12-14 01:13:22
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_SUBA_suba2/detail.log
 
-cmd_SUBL_subl0_as1: Test Success 2010-12-13 18:45:09
+cmd_SUBL_subl0_as1: Test Success 2010-12-14 01:13:22
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_SUBL_subl0_as1/detail.log
 
-cmd_JUMP_jump_m: Test Success 2010-12-13 18:45:09
+cmd_JUMP_jump_m: Test Success 2010-12-14 01:13:22
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_JUMP_jump_m/detail.log
 
-cmd_CALL_call1: Test Success 2010-12-13 18:45:09
+cmd_CALL_call1: Test Success 2010-12-14 01:13:22
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_CALL_call1/detail.log
 
-cmd_SUBL_subl1: Test Success 2010-12-13 18:45:09
+cmd_SUBL_subl1: Test Success 2010-12-14 01:13:22
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_SUBL_subl1/detail.log
 
-cmd_SUBL_subl0_as0: Test Success 2010-12-13 18:45:09
+cmd_SUBL_subl0_as0: Test Success 2010-12-14 01:13:22
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_SUBL_subl0_as0/detail.log
 
-cmd_ADDA_adda0_lo: Test Success 2010-12-13 18:45:09
+cmd_ADDA_adda0_lo: Test Success 2010-12-14 01:13:22
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_ADDA_adda0_lo/detail.log
 
-cmd_CPL_cpl0_ls: Test Success 2010-12-13 18:45:09
+cmd_CPL_cpl0_ls: Test Success 2010-12-14 01:13:22
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_CPL_cpl0_ls/detail.log
 
-cmd_ADDL_addl0__z: Test Success 2010-12-13 18:45:10
+cmd_ADDL_addl0__z: Test Success 2010-12-14 01:13:22
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_ADDL_addl0__z/detail.log
 
-cmd_CPL_cpl0_s: Test Success 2010-12-13 18:45:10
+cmd_CPL_cpl0_s: Test Success 2010-12-14 01:13:22
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_CPL_cpl0_s/detail.log
 
-cmd_SRL_srl: Test Success 2010-12-13 18:45:10
+cmd_SRL_srl: Test Success 2010-12-14 01:13:22
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_SRL_srl/detail.log
 
-cmd_XOR_xor2_clear: Test Success 2010-12-13 18:45:10
+cmd_XOR_xor2_clear: Test Success 2010-12-14 01:13:22
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_XOR_xor2_clear/detail.log
 
-cmd_ST_st1: Test Success 2010-12-13 18:45:10
+cmd_ST_st1: Test Success 2010-12-14 01:13:22
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_ST_st1/detail.log
 
-cmd_ADDL_addl0_as0: Test Success 2010-12-13 18:45:10
+cmd_ADDL_addl0_as0: Test Success 2010-12-14 01:13:22
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_ADDL_addl0_as0/detail.log
 
-cmd_SRL_srl_oz: Test Success 2010-12-13 18:45:10
+cmd_SRL_srl_oz: Test Success 2010-12-14 01:13:22
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_SRL_srl_oz/detail.log
 
-cmd_CPL_cpl2_s: Test Success 2010-12-13 18:45:10
+cmd_CPL_cpl2_s: Test Success 2010-12-14 01:13:22
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_CPL_cpl2_s/detail.log
 
-hello: Test Success 2010-12-13 18:45:10
+hello: Test Success 2010-12-14 01:13:22
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/hello/detail.log
 
-cmd_DC_dc_c1: Test Success 2010-12-13 18:45:10
+cmd_DC_dc_c1: Test Success 2010-12-14 01:13:23
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_DC_dc_c1/detail.log
 
-cmd_CPL_cpl0_z: Test Success 2010-12-13 18:45:10
+cmd_CPL_cpl0_z: Test Success 2010-12-14 01:13:23
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_CPL_cpl0_z/detail.log
 
-cmd_JUMP_jump_z: Test Success 2010-12-13 18:45:10
+cmd_JUMP_jump_z: Test Success 2010-12-14 01:13:23
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_JUMP_jump_z/detail.log
 
-cmd_JZE_jze_p: Test Success 2010-12-13 18:45:10
+cmd_JZE_jze_p: Test Success 2010-12-14 01:13:23
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_JZE_jze_p/detail.log
 
-cmd_LD_ld2: Test Success 2010-12-13 18:45:10
+cmd_LD_ld2: Test Success 2010-12-14 01:13:23
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_LD_ld2/detail.log
 
-cmd_POP_push_pop_1: Test Success 2010-12-13 18:45:11
+cmd_POP_push_pop_1: Test Success 2010-12-14 01:13:23
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_POP_push_pop_1/detail.log
 
-err_208: Test Success 2010-12-13 18:45:11
+err_208: Test Success 2010-12-14 01:13:23
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/err_208/detail.log
 
-cmd_LAD_lad1: Test Success 2010-12-13 18:45:11
+cmd_LAD_lad1: Test Success 2010-12-14 01:13:23
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_LAD_lad1/detail.log
 
-cmd_AND_and2: Test Success 2010-12-13 18:45:11
+cmd_AND_and2: Test Success 2010-12-14 01:13:23
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_AND_and2/detail.log
 
-cmd_ADDA_adda0__z: Test Success 2010-12-13 18:45:11
+cmd_ADDA_adda0__z: Test Success 2010-12-14 01:13:23
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_ADDA_adda0__z/detail.log
 
-cmd_SRA_sra_o: Test Success 2010-12-13 18:45:11
+cmd_SRA_sra_o: Test Success 2010-12-14 01:13:23
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_SRA_sra_o/detail.log
 
-cmd_CPA_cpa0_ls: Test Success 2010-12-13 18:45:11
+cmd_CPA_cpa0_ls: Test Success 2010-12-14 01:13:23
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_CPA_cpa0_ls/detail.log
 
-cmd_SUBA_suba0_as1: Test Success 2010-12-13 18:45:11
+cmd_SUBA_suba0_as1: Test Success 2010-12-14 01:13:23
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_SUBA_suba0_as1/detail.log
 
-cmd_SLA_sla_os: Test Success 2010-12-13 18:45:11
+cmd_SLA_sla_os: Test Success 2010-12-14 01:13:23
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_SLA_sla_os/detail.log
 
-cmd_LAD_lad1_s: Test Success 2010-12-13 18:45:11
+cmd_LAD_lad1_s: Test Success 2010-12-14 01:13:23
 Detail in /home/kazubito/2010_12/yacasl2/test/system/comet2/cmd_LAD_lad1_s/detail.log
 

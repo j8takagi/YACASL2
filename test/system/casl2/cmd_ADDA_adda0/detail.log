@@ -1,7 +1,7 @@
 == test.log ==
 ----------------------------------------------------------------------
 ADDAコマンドのテスト。正常系
-cmd_ADDA_adda0: Test Success 2010-12-13 18:44:41
+cmd_ADDA_adda0: Test Success 2010-12-14 01:13:06
 Detail in /home/kazubito/2010_12/yacasl2/test/system/casl2/cmd_ADDA_adda0/detail.log
 ----------------------------------------------------------------------
 
