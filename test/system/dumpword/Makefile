@@ -2,14 +2,13 @@
 # テストグループのMakefile
 #
 # オペレーター
-# make         : すべてのテストを実施し、ログファイルを作成
-# make check   : ↓
-# make create  : TESTNAMEで指定されたテストを新規に作成
-# make set     : すべてのテストの、想定結果を出力
-# make checkeach: すべてのテストを実施
-# make report  : ログファイルから、テストの結果をレポート
-# make clean   : すべてのテストで、"make" で生成されたファイルをクリア
-# make cleanall: すべてのテストで、"make" と "make set" で生成されたファイルをクリア
+# make          : すべてのテストを実行し、結果をログファイルに出力
+# make check    : ↓
+# make checkall : すべてのテストを実行し、結果と実行時間をログファイルに出力
+# make time     : すべてのテストを実行し、実行時間をログファイルに出力
+# make create   : TESTNAMEで指定されたテストを新規に作成
+# make clean    : すべてのテストで、"make" で生成されたファイルをクリア
+# make cleantime: すべてのテストで、実行時間のログファイルをクリア
 
 SHELL = /bin/sh
 

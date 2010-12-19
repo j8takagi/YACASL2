@@ -1,1 +1,1 @@
-../../../../casl2 outb.casl ../../../../as/casl2lib/outb.casl
+../../../../casl2 outb.casl ../../../../as/casl2lib/outb.casl ../../../../as/casl2lib/divl.casl ../../../../as/casl2lib/rev.casl
