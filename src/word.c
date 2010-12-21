@@ -1,4 +1,5 @@
 #include "word.h"
+#include "cerr.h"
 
 /* wordのエラー定義 */
 CERR cerr_word[] = {

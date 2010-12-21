@@ -1,0 +1,22 @@
+digraph yacasl2depend {
+        graph [label = "YACASL2のモジュール依存関係"];
+        "assemble.c" -> "casl2.h";
+        "assemble.c" -> "assemble.h";
+        "casl2.c" -> "casl2.h";
+        "casl2.c" -> "assemble.h";
+        "casl2.c" -> "exec.h";
+        "cerr.c" -> "cerr.h";
+        
+        "comet2.c" -> "casl2.h";
+        "comet2.c" -> "exec.h";
+        "dumpword.c" -> "word.h";
+        "dumpword.c" -> "cerr.h";
+        "casl2.h" -> "word.h";
+        "casl2.h" -> "hash.h";
+        "casl2.h" -> "cmem.h";
+        "casl2.h" -> "cerr.h";
+        "cerr.h" -> "cmem.h";
+        "hash.h" -> "cmem.h";
+        "word.h" -> "cmem.h";
+        "word.h" -> "cerr.h";
+}

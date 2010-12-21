@@ -1,14 +1,18 @@
 .PHONY: build check doc clean
 
 build:
-	make -C src
+	$(MAKE) -C src
 
 check:
-	@make -sC test/system
+	@$(MAKE) -sC test/system
 
 doc:
-	@make -sC doc
+	@$(MAKE) -sC doc
 
 clean:
-	@for target in src test/integration test/unit as/casl2lib; do $(MAKE) -sC $$target clean; done;
+	@$(MAKE) -sC src clean
+	@$(MAKE) -sC test/system/casl2 clean
+	@$(MAKE) -sC test/system/comet2 clean
+	@$(MAKE) -sC test/system/dumpword clean
+	@$(MAKE) -sC test/unit clean
 	@rm -f casl2 comet2 dumpword

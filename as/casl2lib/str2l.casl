@@ -1,0 +1,62 @@
+;;; 0〜65535の範囲にある整数の入力を受け付ける
+;;; 10進数の整数を表す文字列を数値に変換
+;;; 入力 GR1: 文字列を格納するアドレス
+;;;      GR2: 文字列の長さ。1-5を想定
+;;; 出力 GR0: 数値（0〜65535）
+;;;           文字列が長過ぎる場合や数値以外の場合は、GR2に#FFFFを格納
+STR2L   START
+        PUSH    0,GR3
+        PUSH    0,GR4
+        XOR     GR0,GR0         ; GR0:初期化
+        AND     GR2,GR2         ; (GR2 = 0)の場合、FINへジャンプ
+        JZE     FIN             ; ↓
+        CPL     GR2,MAXLEN      ; (GR2 > MAXLEN)の場合、LENOVへジャンプ
+        JPL     LENOV           ; ↓
+        ST      GR1,STR         ; STR <- GR1 文字列の開始アドレス
+        ST      GR2,LEN         ; LEN <- GR2
+        LAD     GR2,10          ; GR2:10進数の「10」
+        XOR     GR3,GR3         ; GR3:値の一時格納
+        XOR     GR4,GR4         ; GR4:インデックス
+STOL    CPL     GR4,LEN         ; ループ先頭。(GR4 = LEN)の場合、ループ脱出
+        JZE     CP              ; ↓
+        LD      GR1,STR         ; GR1に、入力文字列中の次の桁を格納
+        ADDL    GR1,GR4         ; ↓
+        LD      GR1,0,GR1       ; ↓
+        CPL     GR1,ZERO        ; (GR1 < '0')の場合、NANへジャンプ
+        JMI     NAN             ; ↓
+        CPL     GR1,NINE        ; (GR1 > '9')の場合、NANへジャンプ
+        JPL     NAN             ; ↓
+        SUBL    GR1,ZERO        ; GR1の文字を、対応する数値に変換
+        ST      GR4,NLEN        ; GR4 <- LEN - NLEN - 1
+        LD      GR4,LEN         ; ↓
+        SUBA    GR4,NLEN        ; ↓
+MUL10   CPA     GR4,=1          ; ループ先頭。GR1 <- 10 ** GR4
+        JZE     NEXT            ; (GR4 = 1)の場合、ループ脱出
+        JMI     NEXT            ; ↓
+        CALL    MULL            ; MULLを呼び出し、GR0 <- GR1 * GR2
+        JOV     FIN             ; ↓
+        LD      GR1,GR0         ; GR1 <- GR0
+        LAD     GR4,-1,GR4      ; GR4 <- GR4 -1
+        JUMP    MUL10           ; ループ終端
+NEXT    LD      GR4,NLEN        ; GR4 <- NLEN。復元
+        ADDL    GR3,GR1         ; GR3 <- GR3 + GR1
+        JOV     FIN             ; ↓
+        LAD     GR4,1,GR4       ; GR4 <- GR4 + 1
+        JUMP    STOL            ; ループ終端
+NAN     LAD     GR2,#FFFF       ; GR2 <- #FFFF
+        JUMP    FIN             ; FINへジャンプ
+CP      LD      GR1,GR3         ; GR0 <- GR3
+        LD      GR0,LEN         ; GR0 <- LEN
+        JUMP    FIN
+LENOV   LAD     GR0,#FFFF
+        SRA     GR0,1
+FIN     POP     GR4
+        POP     GR3
+        RET
+ZERO    DC      '0'
+NINE    DC      '9'
+MAXLEN  DC      10              ; 10桁の数値まで入力可能
+STR     DS      1
+LEN     DS      1
+NLEN    DS      1
+        END

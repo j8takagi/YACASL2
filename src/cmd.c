@@ -1,3 +1,7 @@
+#include "cmem.h"
+#include "cerr.h"
+#include "hash.h"
+#include "word.h"
 #include "casl2.h"
 
 CMD comet2cmd[] = {
@@ -186,9 +190,9 @@ void free_code_type()
         np = code_type[i];
         while(np != NULL) {
             nq = np->next;
-            free(np);
+            free_chk(np, "np");
             np = nq;
         }
     }
-    free(code_type);
+    free_chk(code_type, "code_type");
 }

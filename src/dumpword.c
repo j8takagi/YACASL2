@@ -1,6 +1,8 @@
-#include "casl2.h"
 #define _GNU_SOURCE
 #include <getopt.h>
+#include "word.h"
+#include "cerr.h"
+#include "cmem.h"
 
 static struct option longopts[] = {
     { "arithmetic", no_argument, NULL, 'a' },

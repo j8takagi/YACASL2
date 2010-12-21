@@ -23,7 +23,7 @@ CHK2    AND     GR2,GR2         ; (GR1 > 0)の場合は、DIVへジャンプ
         JOV     FIN             ; (GR2 = -32768)の場合は終了
         XOR     GR4,ONE         ; マイナスフラグを反転
 DIV     CALL    DIVL            ; GR0 <- GR1 / GR2; GR3 <- GR1 mod GR2
-        JOV     FIN             ; (GR2 = 0)の場合は終了        
+        JOV     FIN             ; (GR2 = 0)の場合は終了
 MIN     AND     GR4,GR4         ; マイナスフラグがオフの場合、終了
         JZE     FIN             ; ↓
         XOR     GR0,ALLON       ; GR1の正負を反転

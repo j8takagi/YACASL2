@@ -1,0 +1,16 @@
+digraph CASL2LIBdepend {
+        graph [label = "YACASL2のモジュール依存関係"];
+        "DIVA" -> "DIVL";
+        "INL" -> "STR2L";
+        "L2STR" -> "DIVL";
+        "L2STR" -> "REV";
+        "MULA" -> "MULL";
+        "OUTA" -> "ABS";
+        "OUTB" -> "DIVL";
+        "OUTB" -> "REV";
+        "OUTD_Q15" -> "ABS";
+        "OUTD_Q15" -> "MULL";
+        "OUTL" -> "DIVL";
+        "OUTL" -> "REV";
+        "STR2L" -> "MULL"
+}

@@ -1,0 +1,45 @@
+;;; 数値を10進数の整数を表す文字列として格納
+;;; 入力 GR1: 数値（0〜65535） GR2: 文字列を格納するアドレス
+;;; 出力 GR0: 文字列の長さ
+L2STR   START
+        PUSH    0,GR1
+        PUSH    0,GR3
+        PUSH    0,GR4
+        LAD     GR2,10          ; GR2に10進数の「10」を格納。
+        LAD     GR0,0           ; GR0 <- 0
+        LD      GR4,GR2         ; GR4 <- GR2
+        AND     GR1,GR1         ; GR1をテスト
+        JZE     ZERO            ; GR1が0の場合、ZEROにジャンプ
+        PUSH    0,GR2           ; GR2を退避
+        LAD     GR2,BASE        ; GR2 <- BASE:基数10
+STI     CPL     GR1,GR2         ; ループ先頭。(GR1 < GR2)の場合は、ループ脱出
+        JMI     STLST           ; ↓
+        CALL    DIVL            ; GR1とGR2の、商をGR0、剰余をGR3に格納
+        LD      GR1,GR3         ; GR1にGR3をコピー
+        LD      GR1,NCHAR,GR1   ; GR1を文字に変換
+        ST      GR1,0,GR4       ; GR4のアドレス <- GR1
+        LAD     GR4,1,GR4       ; GR4 <- GR4 + 1
+        LD      GR1,GR0         ; GR1 <- GR0:商
+        JUMP    STI             ; ループ終端
+STLST   LD      GR1,NCHAR,GR1   ; GR1を文字に変換
+        ST      GR1,0,GR4       ; GR4のアドレス <- GR1
+        LAD     GR4,1,GR4       ; GR4 <- GR4 + 1
+        POP     GR2             ; GR2を復元
+        SUBL    GR4,GR2         ; GR4 <- (GR4 - GR2):文字列の長さ
+        JUMP    RV              ; RVへジャンプ
+ZERO    LD      GR1,NCHAR       ; 「0」をSTR領域に格納
+        ST      GR1,0,GR4       ; ↓ GR4のアドレス <- GR1
+        LAD     GR4,1,GR4       ; ↓ GR4 <- GR4 + 1
+RV      LD      GR1,GR2         ; 文字列を逆順に並べ替え
+        LD      GR2,GR4         ; ↓
+        CALL    REV             ; ↓
+FIN     LD      GR0,GR2         ; GR0 <- GR2
+        LD      GR2,GR1         ; GR2 <- GR1
+        POP     GR4
+        POP     GR3
+        POP     GR1
+        RET
+BASE    DC      10
+LEN     DS      1
+NCHAR   DC      '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+        END
