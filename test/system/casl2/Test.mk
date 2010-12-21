@@ -31,9 +31,9 @@ checkall: clean $(DETAIL_FILE) $(TIME_FILE)
 	@$(CAT) $(TIME_FILE) >>$(LOG_FILE)
 	@$(call disp_test_log,$(LOG_FILE))
 
-set: $(TEST0_FILE)
-	@-$(call exec_cmd,$^,$@,$(ERR_FILE))
-	@$(CAT) $^
+set:
+	@-$(call exec_cmd,$(CMD_FILE),$(TEST0_FILE),$(ERR_FILE))
+	@$(CAT) $(TEST0_FILE)
 
 reset: cleanall set
 
