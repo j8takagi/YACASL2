@@ -1,9 +1,11 @@
-check: casl2 comet2 dumpword
-	$(MAKE) -sC casl2
-	$(MAKE) -sC comet2
-	$(MAKE) -sC dumpword
+# 複数の子ディレクトリーでmakeを実行
+CMDS = casl2 comet2 dumpword
+define make_dirs
+    $(foreach d,$1,$(MAKE) -sC $d $2)
+endef
+
+check:
+	@$(call make_dirs,$(CMDS),$@; )
 
 clean:
-	$(MAKE) -sC casl2 clean
-	$(MAKE) -sC comet2 clean
-	$(MAKE) -sC dumpword clean
+	@$(call make_dirs,$(CMDS),$@; )
