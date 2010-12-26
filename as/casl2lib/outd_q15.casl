@@ -26,7 +26,7 @@ STDN    LD      GR5,='0'        ; 「0」をSTR領域に格納
 ;; GR1の内容を小数値と見なし、10進数の文字列に変換してSTRに格納
 TODIG   AND     GR1,GR1         ; GR1が0の場合は、ループを脱出
         JZE     PRT             ; ↓
-        CALL    MULL            ; GR1とGR2の、積をGR1、オーバーフロー値をGR3に格納
+        CALL    MUL             ; GR1とGR2の、積をGR1、オーバーフロー値をGR3に格納
         LD      GR5,GR3         ; GR3をGR1にコピー
         ADDA    GR5,='0'        ; GR1を文字に変換
         ST      GR5,STR,GR4     ; (STR + GR4) <- GR1
@@ -41,4 +41,31 @@ PRT     ST      GR4,LEN         ; LEN <- GR4
         RET
 STR     DS      20
 LEN     DS      1
+        END
+;; GR1の値を10倍にし、GR3にオーバーフロー値を格納
+MUL     START
+        PUSH    0,GR5
+        PUSH    0,GR6
+        LAD     GR3,0           ; GR3は、オーバーフロー値を格納
+        LAD     GR5,1           ; GR5は、インデックス
+        LD      GR6,GR1         ; GR6は、GR4の元の値を保持
+MLOOP   CPA     GR5,=10         ; GR5が10になったらループ脱出
+        JZE     MFIN            ; ↓
+        ADDA    GR1,GR6         ; GR4 <- GR4 + GR6
+        LAD     GR5,1,GR5       ; GR5 <- GR5 + 1
+        JOV     MADD            ; オーバーフローした場合、MADDへジャンプ
+        JUMP    MLOOP           ; ループ
+MADD    LAD     GR3,1,GR3       ; GR3 <- GR3 + 1
+        AND     GR1,=#7FFF      ; GR4の最上位ビットをクリア
+        JUMP    MLOOP           ; ループ
+MFIN    POP     GR6
+        POP     GR5
+        RET
+        END
+;; GR1の値を絶対値に変換する。GR1には0未満の数値が格納されていると想定。
+;; 例: -10 => 10, -20 => 20
+ABS     START
+        XOR     GR1,=#FFFF      ; GR1の値を反転
+        LAD     GR1,1,GR1       ; GR1 <- GR1 + 1
+        RET
         END

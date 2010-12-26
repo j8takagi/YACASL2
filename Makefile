@@ -1,4 +1,5 @@
-.PHONY: build check doc clean
+.PHONY: build check doc doxygen clean
+DOXYGEN = doxygen
 
 build:
 	$(MAKE) -C src
@@ -8,6 +9,9 @@ check:
 
 doc:
 	@$(MAKE) -sC doc
+
+doxygen:
+	@(DOXYGEN)
 
 clean:
 	@$(MAKE) -sC src clean
