@@ -1,8 +1,9 @@
 #define _GNU_SOURCE
+#include <stdio.h>
+#include <stdlib.h>
 #include <getopt.h>
 #include "word.h"
 #include "cerr.h"
-#include "cmem.h"
 
 static struct option longopts[] = {
     { "arithmetic", no_argument, NULL, 'a' },
@@ -11,9 +12,12 @@ static struct option longopts[] = {
     { 0, 0, 0, 0 },
 };
 
+/**
+ * dumpwordコマンドのメイン
+ */
 int main(int argc, char *argv[])
 {
-    bool logicalmode = false;    /* レジストリの内容を論理値（0〜65535）で表示する場合はtrue */
+    bool logicalmode = false;    /* レジストリの内容を論理値（0から65535）で表示する場合はtrue */
     int opt;
     WORD word;
     const char *usage = "Usage: %s [-alh] WORD\n";

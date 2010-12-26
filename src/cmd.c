@@ -1,9 +1,13 @@
-#include "cmem.h"
-#include "cerr.h"
+#include <stdio.h>
+#include <assert.h>
+#include <string.h>
 #include "hash.h"
-#include "word.h"
-#include "casl2.h"
+#include "struct.h"
+#include "cmem.h"
 
+/**
+ * 機械語命令のリスト
+ */
 CMD comet2cmd[] = {
     { "NOP", NONE, 0x0 },
     { "LD", R_ADR_X_, 0x1000 },
@@ -45,20 +49,40 @@ CMD comet2cmd[] = {
     { "RET", NONE, 0x8100 },
 };
 
-int comet2cmdsize = ARRAYSIZE(comet2cmd);
-int cmdtabsize;
-CMDTAB **cmdtype_code, **code_type;
+/**
+ * 命令コード配列のサイズ
+ */
+static int comet2cmdsize = ARRAYSIZE(comet2cmd);
 
-/* 命令と命令タイプからハッシュ値を生成する */
-unsigned hash_cmdtype(const char *cmd, CMDTYPE type) {
+/**
+ * 命令表のサイズ
+ */
+static int cmdtabsize;
+
+/**
+ * ハッシュ表
+ */
+static CMDTAB **cmdtype_code, **code_type;
+
+#ifndef UNITTEST
+static unsigned hash_cmdtype(const char *cmd, CMDTYPE type);
+
+static unsigned hash_code(WORD code);
+#endif
+
+/**
+ * 命令の名前とタイプからハッシュ値を生成する
+ */
+unsigned hash_cmdtype(const char *cmd, CMDTYPE type)
+{
     HKEY *keys[2];
     unsigned hashval;
 
-    /* 命令をセット */
+    /* 命令名を設定 */
     keys[0] = malloc_chk(sizeof(HKEY), "hash_cmdtype.keys[0]");
     keys[0]->type = CHARS;
     keys[0]->val.s = strdup_chk(cmd, "keys[0].val.s");
-    /* 命令タイプをセット */
+    /* 命令タイプを設定 */
     keys[1] = malloc_chk(sizeof(HKEY), "hash_cmdtype.keys[1]");
     keys[1]->type = INT;
     keys[1]->val.i = (int)(type & 070);
@@ -71,7 +95,9 @@ unsigned hash_cmdtype(const char *cmd, CMDTYPE type) {
     return hashval;
 }
 
-/* 命令と命令タイプがキーのハッシュ表を作成する */
+/**
+ * 名前とタイプがキーの命令ハッシュ表を作成する
+ */
 bool create_cmdtype_code()
 {
     CMDTAB *np;
@@ -97,8 +123,10 @@ bool create_cmdtype_code()
     return true;
 }
 
-/* 命令と命令タイプから、命令コードを取得する */
-/* 無効な場合は0xFFFFを返す */
+/**
+ * 命令の名前とタイプから、命令コードを返す
+ * 無効な場合は0xFFFFを返す
+ */
 WORD getcmdcode(const char *cmd, CMDTYPE type)
 {
     CMDTAB *np;
@@ -112,7 +140,9 @@ WORD getcmdcode(const char *cmd, CMDTYPE type)
     return 0xFFFF;
 }
 
-/* 命令と命令タイプがキーのハッシュ表を解放する */
+/**
+ * 名前とタイプがキーの命令ハッシュ表を解放する
+ */
 void free_cmdtype_code()
 {
     int i;
@@ -129,12 +159,14 @@ void free_cmdtype_code()
     free_chk(cmdtype_code, "cmdtype_code");
 }
 
-/* 命令コードからハッシュ値を生成する */
+/**
+ * 命令コードからハッシュ値を生成する
+ */
 unsigned hash_code(WORD code)
 {
     HKEY *keys[1];
 
-    /* 命令コードをセット */
+    /* 命令コードを設定 */
     keys[0] = malloc_chk(sizeof(HKEY), "hash_code.key");
     keys[0]->type = INT;
     keys[0]->val.i = (int)(code >> 8);
@@ -142,7 +174,9 @@ unsigned hash_code(WORD code)
     return hash(1, keys, cmdtabsize);
 }
 
-/* 命令コードがキーのハッシュ表を作成する */
+/**
+ * コードがキーの命令ハッシュ表を作成する
+ */
 bool create_code_type()
 {
     CMDTAB *np;
@@ -168,8 +202,10 @@ bool create_code_type()
     return true;
 }
 
-/* 命令コードから命令タイプを取得する */
-/* 無効な場合はNONEを返す */
+/**
+ * 命令コードから命令タイプを返す
+ * 無効な場合はNONEを返す
+ */
 CMDTYPE getcmdtype(WORD code)
 {
     CMDTAB *np;
@@ -181,7 +217,9 @@ CMDTYPE getcmdtype(WORD code)
     return NONE;
 }
 
-/* 命令コードがキーのハッシュ表を解放する */
+/**
+ * コードがキーの命令ハッシュ表を解放する
+ */
 void free_code_type()
 {
     int i;

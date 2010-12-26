@@ -1,10 +1,17 @@
-#include "casl2.h"
-#include "assemble.h"
-#include "exec.h"
+#include <stdio.h>
+#include <stdlib.h>
+
 #define _GNU_SOURCE
 #include <getopt.h>
 
-/* casl2コマンドのオプション */
+#include "assemble.h"
+#include "exec.h"
+#include "cerr.h"
+#include "cmem.h"
+
+/**
+ * casl2コマンドのオプション
+ */
 static struct option longopts[] = {
     { "source", no_argument, NULL, 's' },
     { "label", no_argument, NULL, 'l' },
@@ -23,35 +30,25 @@ static struct option longopts[] = {
     { 0, 0, 0, 0 },
 };
 
-/* casl2のエラー定義 */
-CERR cerr_casl2[] = {
+/**
+ * casl2のエラー定義
+ */
+static CERR cerr_casl2[] = {
     { 126, "no source file" },
 };
-bool addcerrlist_casl2()
-{
-    return addcerrlist(sizeof(cerr_casl2), cerr_casl2);
-}
 
-/* 指定されたファイルにアセンブル結果を書込 */
-void outassemble(const char *file) {
-    FILE *fp;
-
-    if((fp = fopen(file, "w")) == NULL) {
-        perror(file);
-        exit(-1);
-    }
-    fwrite(sys->memory, sizeof(WORD), prog->end, fp);
-    fclose(fp);
-}
-
-/* アセンブル結果を書き込むファイルの名前 */
-const char *objfile_name(const char *str)
+/**
+ * アセンブル結果を書き込むファイルの名前
+ */
+static const char *objfile_name(const char *str)
 {
     const char *default_name = "a.o";
     return (str == NULL) ? default_name : str;
 }
 
-/* casl2コマンドのメイン */
+/**
+ *  casl2コマンドのメイン
+ */
 int main(int argc, char *argv[])
 {
     int memsize = DEFAULT_MEMSIZE, clocks = DEFAULT_CLOCKS;
@@ -64,7 +61,7 @@ int main(int argc, char *argv[])
         "Usage: %s [-slLaAtTdh] [-oO[<OBJECTFILE>]] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE1[ FILE2  ...]\n";
 
     cerr_init();
-    addcerrlist_casl2();
+    addcerrlist(sizeof(cerr_casl2), cerr_casl2);
     /* オプションの処理 */
     while((opt = getopt_long(argc, argv, "tTdslLao::O::AM:C:h", longopts, NULL)) != -1) {
         switch(opt) {
@@ -127,7 +124,7 @@ int main(int argc, char *argv[])
     /* アセンブル。ラベル表作成のため、2回行う */
     for(pass = FIRST; pass <= SECOND; pass++) {
         if(pass == FIRST) {
-            create_cmdtype_code();        /* 命令と命令タイプがキーのハッシュ表を作成 */
+            create_cmdtype_code();        /* 命令の名前とタイプがキーのハッシュ表を作成 */
             asprop = malloc_chk(sizeof(ASPROP), "asprop"); /* アセンブル時のプロパティ用の領域確保 */
         }
         for(i = optind; i < argc; i++) {
@@ -158,7 +155,7 @@ int main(int argc, char *argv[])
             freelabel();            /* ラベルハッシュ表を解放 */
             free_chk(asprop->prog, "asprop.prog"); /* プログラム名を解放 */
             free_chk(asprop, "asprop");       /* アセンブル時のプロパティを解放 */
-            free_cmdtype_code();    /* 命令と命令タイプがキーのハッシュ表を解放 */
+            free_cmdtype_code();    /* 命令の名前とタイプがキーのハッシュ表を解放 */
         }
     }
     if(res == true) {
@@ -166,9 +163,9 @@ int main(int argc, char *argv[])
             outassemble(objfile);
         }
         if(asmode.onlyassemble == false) {
-            create_code_type();    /* 命令と命令タイプがキーのハッシュ表を作成 */
+            create_code_type();    /* 命令のコードとタイプがキーのハッシュ表を作成 */
             res = exec();          /* プログラム実行 */
-            free_code_type();      /* 命令と命令タイプがキーのハッシュ表を解放 */
+            free_code_type();      /* 命令のコードとタイプがキーのハッシュ表を解放 */
         }
     }
     /* COMET II仮想マシンのシャットダウン */

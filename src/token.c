@@ -1,5 +1,12 @@
-#include "casl2.h"
+#include <stdio.h>
+#include <string.h>
+#include "cerr.h"
+#include "cmem.h"
 #include "assemble.h"
+
+#ifndef UNITTEST
+static OPD *opdtok(const char *str);
+#endif
 
 /* 「,」区切りの文字列から、オペランドのトークンを取得 */
 OPD *opdtok(const char *str)

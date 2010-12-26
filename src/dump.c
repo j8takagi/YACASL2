@@ -1,7 +1,9 @@
-#include "casl2.h"
+#include <stdio.h>
 #include "exec.h"
 
-/* COMET IIのメモリを表示 */
+/**
+ * COMET IIのメモリを表示
+ */
 void dumpmemory()
 {
     const int col = 16;
@@ -26,7 +28,9 @@ void dumpmemory()
     }
 }
 
-/* COMET IIのレジスタを表示 */
+/**
+ * COMET IIのレジスタを表示
+ */
 void dspregister()
 {
     int i;

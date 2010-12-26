@@ -1,8 +1,16 @@
-#include "casl2.h"
-#include "exec.h"
+#include <stdio.h>
+#include <assert.h>
+#include <time.h>
 
-/* 実行のエラー定義 */
-CERR cerr_exec[] = {
+#include "exec.h"
+#include "cerr.h"
+
+/* 実行エラーの定義 */
+static CERR cerr_loadassemble[] = {
+    { 201, "Loading - full of COMET II memory" },
+};
+
+static CERR cerr_exec[] = {
     { 202, "SVC input - out of Input memory" },
     { 203, "SVC output - out of COMET II memory" },
     { 204, "Program Register (PR) - out of COMET II memory" },
@@ -11,16 +19,39 @@ CERR cerr_exec[] = {
     { 207, "Stack Pointer (SP) - out of COMET II memory" },
 };
 
-bool addcerrlist_exec()
-{
-    return addcerrlist(ARRAYSIZE(cerr_exec), cerr_exec);
-}
-
-/* 実行モード: trace, logical, dump */
+/**
+ * 実行モード: trace, logical, dump
+ */
 EXECMODE execmode = {false, false, false};
 
-/* 標準入力から文字データを読込（SVC 1） */
-void svcin()
+/**
+ * 指定されたファイルからアセンブル結果を読み込む
+ */
+bool loadassemble(char *file) {
+    FILE *fp;
+    bool status = true;
+
+    addcerrlist(ARRAYSIZE(cerr_exec), cerr_loadassemble);	/* エラーリスト作成 */
+    assert(file != NULL);
+    if((fp = fopen(file, "r")) == NULL) {
+        perror(file);
+        return false;
+    }
+    prog->end = prog->start +
+        fread(sys->memory, sizeof(WORD), sys->memsize - prog->start, fp);
+    if(prog->end == sys->memsize) {
+        setcerr(201, file);    /* Loading - full of COMET II memory */
+        fprintf(stderr, "Load error - %d: %s\n", cerr->num, cerr->msg);
+        status = false;
+    }
+    fclose(fp);
+    return status;
+}
+
+/**
+ * 標準入力から文字データを読込（SVC 1）
+ */
+static void svcin()
 {
     int i;
     char *buffer = malloc_chk(INSIZE + 1, "svcin.buffer");
@@ -44,8 +75,10 @@ void svcin()
     free_chk(buffer, "buffer");
 }
 
-/* 標準出力へ文字データを書出（SVC 2） */
-void svcout()
+/**
+ * 標準出力へ文字データを書出（SVC 2）
+ */
+static void svcout()
 {
     int i;
     WORD w;
@@ -65,12 +98,14 @@ void svcout()
     }
 }
 
-/* ロード／論理積／論理和／排他的論理和のフラグ設定。OFは常に0 */
-void setfr(WORD val)
+/**
+ * ロード／論理積／論理和／排他的論理和のフラグ設定。OFは常に0
+ */
+static void setfr(WORD val)
 {
     sys->cpu->fr = 0x0;
     /* 第15ビットが1のとき、SFは1 */
-    if((val & 0x8000) > 0x0) {
+    if((val & 0x8000) == 0x8000) {
         sys->cpu->fr += SF;
     }
     /* 演算結果が0のとき、ZFは1 */
@@ -79,18 +114,23 @@ void setfr(WORD val)
     }
 }
 
-/* 算術加算。フラグを設定して値を返す */
-WORD adda(WORD val0, WORD val1)
+/**
+ * 算術加算。フラグを設定して値を返す
+ */
+static WORD adda(WORD val0, WORD val1)
 {
     WORD res;
-    long temp;
-    sys->cpu->fr = 0x0;
+    long tmp;
 
-    temp = (signed short)val0 + (signed short)val1;
-    if(temp > 32767 || temp < -32768) {
+    sys->cpu->fr = 0x0;
+    /* 引数の値を16ビット符号付整数として加算し、オーバーフローをチェック */
+    assert(sizeof(short)*8 == 16 && (short)0xFFFF == -1);
+    if((tmp = (short)val0 + (short)val1) > 32767 || tmp < -32768) {
         sys->cpu->fr += OF;
     }
-    if(((res = (WORD)(temp & 0xFFFF)) & 0x8000) == 0x8000) {
+    /* 加算した結果を、WORD値に戻す */
+    res = (WORD)(tmp & 0xFFFF);
+    if((res & 0x8000) == 0x8000) {
         sys->cpu->fr += SF;
     } else if(res == 0x0) {
         sys->cpu->fr += ZF;
@@ -98,23 +138,27 @@ WORD adda(WORD val0, WORD val1)
     return res;
 }
 
-/* 算術減算。フラグを設定して値を返す */
-WORD suba(WORD val0, WORD val1)
+/**
+ * 算術減算。フラグを設定して値を返す
+ */
+static WORD suba(WORD val0, WORD val1)
 {
     return adda(val0, (~val1 + 1));
 }
 
-/* 論理加算。フラグを設定して値を返す */
-WORD addl(WORD val0, WORD val1)
+/**
+ * 論理加算。フラグを設定して値を返す
+ */
+static WORD addl(WORD val0, WORD val1)
 {
-    long temp;
+    long tmp;
     WORD res;
     sys->cpu->fr = 0x0;
 
-    if((temp = val0 + val1) < 0 || temp > 65535) {
+    if((tmp = val0 + val1) < 0 || tmp > 65535) {
         sys->cpu->fr += OF;
     }
-    if(((res = (WORD)(temp & 0xFFFF)) & 0x8000) == 0x8000) {
+    if(((res = (WORD)(tmp & 0xFFFF)) & 0x8000) == 0x8000) {
         sys->cpu->fr += SF;
     } else if(res == 0x0) {
         sys->cpu->fr += ZF;
@@ -122,14 +166,18 @@ WORD addl(WORD val0, WORD val1)
     return res;
 }
 
-/* 論理減算。フラグを設定して値を返す */
-WORD subl(WORD val0, WORD val1)
+/**
+ * 論理減算。フラグを設定して値を返す
+ */
+static WORD subl(WORD val0, WORD val1)
 {
     return addl(val0, (~val1 + 1));
 }
 
-/* 算術比較のフラグ設定。OFは常に0 */
-void cpa(WORD val0, WORD val1)
+/**
+ * 算術比較のフラグ設定。OFは常に0
+ */
+static void cpa(WORD val0, WORD val1)
 {
     sys->cpu->fr = 0x0;
     if((short)val0 < (short)val1) {
@@ -139,8 +187,10 @@ void cpa(WORD val0, WORD val1)
     }
 }
 
-/* 論理比較のフラグ設定。OFは常に0 */
-void cpl(WORD val0, WORD val1)
+/**
+ * 論理比較のフラグ設定。OFは常に0
+ */
+static void cpl(WORD val0, WORD val1)
 {
     sys->cpu->fr = 0x0;
     if(val0 < val1) {
@@ -150,9 +200,11 @@ void cpl(WORD val0, WORD val1)
     }
 }
 
-/* 算術左シフト。フラグを設定して値を返す。 */
-/* 算術演算なので、第15ビットは送り出されない */
-WORD sla(WORD val0, WORD val1)
+/**
+ * 算術左シフト。フラグを設定して値を返す
+ * 算術演算なので、第15ビットは送り出されない
+ */
+static WORD sla(WORD val0, WORD val1)
 {
     WORD sign, res, last = 0x0;
     int i;
@@ -180,10 +232,12 @@ WORD sla(WORD val0, WORD val1)
     return res;
 }
 
-/* 算術右シフト。フラグを設定して値を返す */
-/* 算術演算なので、第15ビットは送り出されない */
-/* 空いたビット位置には符号と同じものが入る */
-WORD sra(WORD val0, WORD val1)
+/**
+ * 算術右シフト。フラグを設定して値を返す
+ * 算術演算なので、第15ビットは送り出されない
+ * 空いたビット位置には符号と同じものが入る
+ */
+static WORD sra(WORD val0, WORD val1)
 {
     WORD sign, res, last = 0x0;
     int i;
@@ -214,8 +268,10 @@ WORD sra(WORD val0, WORD val1)
     return res;
 }
 
-/* 論理左シフト。フラグを設定して値を返す */
-WORD sll(WORD val0, WORD val1)
+/**
+ * 論理左シフト。フラグを設定して値を返す
+ */
+static WORD sll(WORD val0, WORD val1)
 {
     WORD res = val0, last = 0x0;
     int i;
@@ -240,8 +296,10 @@ WORD sll(WORD val0, WORD val1)
     return res;
 }
 
-/* 論理右シフト。フラグを設定して値を返す */
-WORD srl(WORD val0, WORD val1)
+/**
+ * 論理右シフト。フラグを設定して値を返す
+ */
+static WORD srl(WORD val0, WORD val1)
 {
     WORD res = val0, last = 0x0;
     int i;
@@ -266,7 +324,9 @@ WORD srl(WORD val0, WORD val1)
     return res;
 }
 
-/* 仮想マシンCOMET IIでの実行 */
+/**
+ * 仮想マシンCOMET IIの実行
+ */
 bool exec()
 {
     WORD op, r_r1, x_r2, val;
@@ -274,7 +334,7 @@ bool exec()
     char *errpr = malloc_chk(CERRSTRSIZE + 1, "exec.errpr");
     clock_t clock_begin, clock_end;
 
-    addcerrlist_exec();
+    addcerrlist(ARRAYSIZE(cerr_exec), cerr_exec);         /* エラーリスト作成 */
     if(execmode.trace == true) {
         fprintf(stdout, "\nExecuting machine codes\n");
     }

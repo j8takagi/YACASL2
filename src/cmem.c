@@ -1,7 +1,14 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <assert.h>
+#include <stdbool.h>
 #include "cmem.h"
 
-/* mallocを実行し、0で初期化 */
-/* メモリを確保できない場合はエラーを出力して終了 */
+/**
+ * mallocを実行し、0で初期化
+ * メモリを確保できない場合はエラーを出力して終了
+ */
 void *malloc_chk(size_t size, char *tag)
 {
     void *p;
@@ -13,8 +20,10 @@ void *malloc_chk(size_t size, char *tag)
     return memset(p, 0, size);
 }
 
-/* callocを実行 */
-/* メモリを確保できない場合はエラーを出力して終了 */
+/**
+ * callocを実行
+ * メモリを確保できない場合はエラーを出力して終了
+ */
 void *calloc_chk(size_t nmemb, size_t size, char *tag)
 {
     void *p;
@@ -26,8 +35,9 @@ void *calloc_chk(size_t nmemb, size_t size, char *tag)
     return p;
 }
 
-/* malloc_chkを実行してメモリを確保してから、 */
-/* コピーした文字列を返す */
+/**
+ * malloc_chkを実行してメモリを確保してから、コピーした文字列を返す
+ */
 char *strdup_chk(const char *s, char *tag)
 {
     assert(s != NULL);
@@ -38,10 +48,10 @@ char *strdup_chk(const char *s, char *tag)
     return t;
 }
 
-/* メモリがNULLの場合は解放 */
+/**
+ * メモリを解放
+ */
 void free_chk(void *ptr, char *tag)
 {
-    if(ptr != NULL) {
-        free(ptr);
-    }
+    free(ptr);
 }

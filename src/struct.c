@@ -1,4 +1,5 @@
-#include "casl2.h"
+#include "struct.h"
+#include "cmem.h"
 
 /* COMET IIの仮装実行マシンシステム */
 SYSTEM *sys;

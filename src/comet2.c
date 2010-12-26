@@ -1,9 +1,15 @@
-#include "casl2.h"
-#include "exec.h"
+#include <stdio.h>
+#include <stdlib.h>
 #define _GNU_SOURCE
 #include <getopt.h>
 
-/* comet2コマンドのオプション */
+#include "exec.h"
+#include "cmem.h"
+#include "cerr.h"
+
+/**
+ * comet2コマンドのオプション
+ */
 static struct option longopts[] = {
     {"trace", no_argument, NULL, 't'},
     {"tracearithmetic", no_argument, NULL, 't'},
@@ -15,37 +21,16 @@ static struct option longopts[] = {
     {0, 0, 0, 0}
 };
 
-/* comet2のエラー定義 */
-CERR cerr_comet2[] = {
-    { 201, "load object file - full of COMET II memory" },
+/**
+ * comet2コマンドのエラー
+ */
+static CERR cerr_comet2[] = {
     { 208, "object file is not specified" },
 };
-bool addcerrlist_comet2()
-{
-    return addcerrlist(ARRAYSIZE(cerr_comet2), cerr_comet2);
-}
 
-/* 指定されたファイルからアセンブル結果を読込 */
-bool loadassemble(char *file) {
-    FILE *fp;
-    bool status = true;
-
-    if((fp = fopen(file, "r")) == NULL) {
-        perror(file);
-        return false;
-    }
-    prog->end = prog->start +
-        fread(sys->memory, sizeof(WORD), sys->memsize - prog->start, fp);
-    if(prog->end == sys->memsize) {
-        setcerr(201, NULL);    /* Load object file - full of COMET II memory */
-        fprintf(stderr, "Execute error - %d: %s\n", cerr->num, cerr->msg);
-        status = false;
-    }
-    fclose(fp);
-    return status;
-}
-
-/* comet2コマンド */
+/**
+ * comet2コマンドのメイン
+ */
 int main(int argc, char *argv[])
 {
     int memsize = DEFAULT_MEMSIZE, clocks = DEFAULT_CLOCKS;
@@ -53,7 +38,8 @@ int main(int argc, char *argv[])
     const char *usage = "Usage: %s [-tTdh] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE\n";
 
     cerr_init();
-    addcerrlist_comet2();
+    addcerrlist(ARRAYSIZE(cerr_comet2), cerr_comet2);	/* エラーリスト作成 */
+
     /* オプションの処理 */
     while((opt = getopt_long(argc, argv, "tTdM:C:h", longopts, NULL)) != -1) {
         switch(opt) {
@@ -90,9 +76,9 @@ int main(int argc, char *argv[])
     reset(memsize, clocks);
     prog->start = 0;
     if(loadassemble(argv[optind]) == true) {
-        create_code_type();    /* 命令と命令タイプがキーのハッシュ表を作成 */
+        create_code_type();    /* タイプがキーの命令ハッシュ表を作成 */
         exec();                /* プログラム実行 */
-        free_code_type();      /* 命令と命令タイプがキーのハッシュ表を解放 */
+        free_code_type();      /* タイプがキーの命令ハッシュ表を解放 */
     }
     /* COMET II仮想マシンのシャットダウン */
     shutdown();

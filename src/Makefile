@@ -1,41 +1,35 @@
 INCLUDE = ../include
 CC = gcc
 CFLAGS = -g -Wall -I $(INCLUDE)
-WORDOBJ = word.o
-HASHOBJ = hash.o
-CMEMOBJ = cmem.o
-CERROBJ = cerr.o
-COMMONOBJ = $(WORDOBJ) $(HASHOBJ) $(CMEMOBJ) $(CERROBJ) struct.o cmd.o
-ASOBJ = assemble.o token.o label.o macro.o
-EXECOBJ = exec.o dump.o
-COMMONHEAD = $(INCLUDE)/casl2.h $(INCLUDE)/word.h $(INCLUDE)/hash.h $(INCLUDE)/cmem.h $(INCLUDE)/cerr.h
-ASHEAD = $(INCLUDE)/assemble.h
-EXECHEAD = $(INCLUDE)/exec.h
+
+COMMONSRC = word.c cmem.c cerr.c
+CASL2SRC = struct.c cmd.c hash.c
+ASSRC = assemble.c token.c label.c
+EXECSRC = exec.c dump.c
 
 .PHONY: all clean
 
 all: ../casl2 ../comet2 ../dumpword
 
-../casl2: casl2.o $(COMMONOBJ) $(ASOBJ) $(EXECOBJ)
+../casl2: casl2.o $(subst .c,.o,$(COMMONSRC) $(CASL2SRC) $(ASSRC) $(EXECSRC))
 	$(CC) $(CFLAGS) -o $@ $^
 
-../comet2: comet2.o $(COMMONOBJ) $(EXECOBJ)
+../comet2: comet2.o $(subst .c,.o,$(COMMONSRC) $(CASL2SRC) $(EXECSRC))
 	$(CC) $(CFLAGS) -o $@ $^
 
-../dumpword: dumpword.o $(WORDOBJ) $(CMEMOBJ) $(CERROBJ)
+../dumpword: dumpword.o $(subst .c,.o,$(COMMONSRC))
 	$(CC) $(CFLAGS) -o $@ $^
 
 %.o: %.c
 	$(CC) -c $(CFLAGS) $<
 
-casl2.o comet2.o $(COMMONOBJ) $(ASOBJ) $(EXECOBJ): $(COMMONHEAD)
+%.d: %.c
+	@$(CC) -MM -I $(INCLUDE) $< | sed 's/\($*\.o\):/\1 $@:/g' >$@
 
-casl2.o $(ASOBJ): $(ASHEAD)
-
-comet2.o $(EXECOBJ): $(EXECHEAD)
+-include $(subst .c,.d,casl2.c comet2.c dumpword.c $(COMMONSRC) $(CASL2SRC) $(ASSRC) $(EXECSRC))
 
 TAGS: $(INCLUDE)/*.h *.c
 	@if test `which etags`; then etags $^; fi
 
 clean:
-	@rm -f *.o
+	@rm -f ../casl2 ../comet2 ../dumpword *.o *.d

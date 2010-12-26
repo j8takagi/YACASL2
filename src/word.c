@@ -1,20 +1,21 @@
+#include <stdio.h>
+#include <string.h>
+#include <assert.h>
+#include <stdlib.h>
+#include <ctype.h>
+
 #include "word.h"
 #include "cerr.h"
 
 /* wordのエラー定義 */
-CERR cerr_word[] = {
+static CERR cerr_word[] = {
     { 114, "not integer" },
     { 115, "not hex" },
     { 116, "out of hex range" },
 };
 
-bool addcerrlist_word()
-{
-    return addcerrlist(ARRAYSIZE(cerr_word), cerr_word);
-}
-
 /* 10進数の文字列をWORD値に変換 */
-WORD n2word(const char *str)
+static WORD n2word(const char *str)
 {
     assert(isdigit(*str) || *str == '-');
 
@@ -26,7 +27,7 @@ WORD n2word(const char *str)
         setcerr(114, str);    /* not integer */
         return 0x0;
     }
-    /* nが-32768〜32767の範囲にないときは、その下位16ビットを格納 */
+    /* nが-32768から32767の範囲にないときは、その下位16ビットを格納 */
     if(n < -32768 || n > 32767) {
         n = n & 0xFFFF;
     }
@@ -34,7 +35,7 @@ WORD n2word(const char *str)
 }
 
 /* 16進数の文字列をWORD値に変換 */
-WORD h2word(const char *str)
+static WORD h2word(const char *str)
 {
     assert(*str == '#');
 
@@ -57,8 +58,11 @@ WORD h2word(const char *str)
 /* 10進数または16進数の文字列をWORD値に変換 */
 WORD nh2word(const char *str)
 {
-    addcerrlist_word();
+    assert(sizeof(WORD)*8 == 16); /* WORD型のサイズが16ビットであることを確認 */
+    addcerrlist(ARRAYSIZE(cerr_word), cerr_word); /* エラーの設定 */
+
     WORD word;
+
     if(!isdigit(*str) && *str != '-' && *str != '#') {
         setcerr(114, str);    /* not integer */
         return 0x0;

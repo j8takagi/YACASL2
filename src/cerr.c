@@ -1,19 +1,32 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <assert.h>
+#include <stdbool.h>
 #include "cerr.h"
 
-/* エラーの初期化 */
+/**
+ * エラーの初期化
+ */
 void cerr_init()
 {
     cerr = malloc_chk(sizeof(CERR), "cerr");
     cerr->num = 0;
 }
 
-/* 現在のエラー */
+/**
+ * 現在のエラー
+ */
 CERR *cerr;
 
-/* エラーリスト */
+/**
+ * エラーリスト
+ */
 CERRLIST *cerrlist;
 
-/* エラーリストを作成・追加する */
+/**
+ * エラーリストを作成・追加する
+ */
 bool addcerrlist(int newerrc, CERR newerrv[])
 {
     int i;
@@ -38,7 +51,9 @@ bool addcerrlist(int newerrc, CERR newerrv[])
     return true;
 }
 
-/* 現在のエラーを設定する */
+/**
+ * 現在のエラーを設定する
+ */
 void setcerr(int num, const char *str)
 {
     /* 現在のエラー番号を設定  */
@@ -52,7 +67,9 @@ void setcerr(int num, const char *str)
     }
 }
 
-/* エラーリストから、エラー番号に対応するメッセージを返す */
+/**
+ * エラーリストから、エラー番号に対応するメッセージを返す
+ */
 char *getcerrmsg(int num)
 {
     CERRLIST *p;
@@ -65,7 +82,9 @@ char *getcerrmsg(int num)
     return "unknown error";
 }
 
-/* エラーリストと現在のエラーを解放する */
+/**
+ * エラーリストと現在のエラーを解放する
+ */
 void freecerr()
 {
     CERRLIST *p = cerrlist, *q;

@@ -1,11 +1,6 @@
 #ifndef YACASL2_CMEM_H_INCLUDED
 #define YACASL2_CMEM_H_INCLUDED
-
-#include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <assert.h>
-#include <stdbool.h>
 
 #ifndef ARRAYSIZE
 #define ARRAYSIZE(array) (sizeof(array)/sizeof(array[0]))
