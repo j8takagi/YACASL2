@@ -7,15 +7,19 @@
 #include "word.h"
 #include "cerr.h"
 
-/* wordのエラー定義 */
+/**
+ * wordのエラー定義
+ */
 static CERR cerr_word[] = {
     { 114, "not integer" },
     { 115, "not hex" },
     { 116, "out of hex range" },
 };
 
-/* 10進数の文字列をWORD値に変換 */
-static WORD n2word(const char *str)
+/**
+ * 10進数の文字列をWORD値に変換
+ */
+WORD n2word(const char *str)
 {
     assert(isdigit(*str) || *str == '-');
 
@@ -34,8 +38,10 @@ static WORD n2word(const char *str)
     return (WORD)n;
 }
 
-/* 16進数の文字列をWORD値に変換 */
-static WORD h2word(const char *str)
+/**
+ * 16進数の文字列をWORD値に変換
+ */
+WORD h2word(const char *str)
 {
     assert(*str == '#');
 
@@ -55,7 +61,9 @@ static WORD h2word(const char *str)
     return word;
 }
 
-/* 10進数または16進数の文字列をWORD値に変換 */
+/**
+ * 10進数または16進数の文字列をWORD値に変換
+ */
 WORD nh2word(const char *str)
 {
     assert(sizeof(WORD)*8 == 16); /* WORD型のサイズが16ビットであることを確認 */
@@ -75,7 +83,9 @@ WORD nh2word(const char *str)
     return word;
 }
 
-/* WORD値を10進数の文字列に変換 */
+/**
+ * WORD値を10進数の文字列に変換
+ */
 char *word2n(WORD word)
 {
     enum {
@@ -95,7 +105,9 @@ char *word2n(WORD word)
     return digit;
 }
 
-/* WORD値を2進数の文字列に変換 */
+/**
+ * WORD値を2進数の文字列に変換
+ */
 char *word2bit(const WORD word)
 {
     enum {
@@ -112,7 +124,9 @@ char *word2bit(const WORD word)
     return bit;
 }
 
-/* WORD値を解析して表示 */
+/**
+ * WORD値を解析して表示
+ */
 void print_dumpword(WORD word, bool logicalmode)
 {
     if(logicalmode == true) {

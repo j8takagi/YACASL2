@@ -5,6 +5,9 @@
 #include "word.h"
 #include "cerr.h"
 
+/**
+ * dumpwordコマンドのオプション
+ */
 static struct option longopts[] = {
     { "arithmetic", no_argument, NULL, 'a' },
     { "logical", no_argument, NULL, 'l' },

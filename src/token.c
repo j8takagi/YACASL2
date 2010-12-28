@@ -4,11 +4,9 @@
 #include "cmem.h"
 #include "assemble.h"
 
-#ifndef UNITTEST
-static OPD *opdtok(const char *str);
-#endif
-
-/* 「,」区切りの文字列から、オペランドのトークンを取得 */
+/**
+ * 「,」区切りの文字列から、オペランドのトークンを取得
+ */
 OPD *opdtok(const char *str)
 {
     OPD *opd = malloc_chk(sizeof(OPD), "opd");
@@ -16,6 +14,13 @@ OPD *opdtok(const char *str)
     int sepc = ',', rcnt = 0;
     bool quoting = false;
 
+    CERR cerr_opdtok[] = {
+        { 117, "operand too many in DC" },
+        { 118, "operand length too long" },
+        { 121, "cannot get operand token" },
+        { 123, "unclosed quote" },
+    };
+    addcerrlist(ARRAYSIZE(cerr_opdtok), cerr_opdtok);
     opd->opdc = 0;
     if(str == NULL) {
         return opd;
@@ -70,13 +75,20 @@ OPD *opdtok(const char *str)
     return opd;
 }
 
-/* 空白またはタブで区切られた1行から、トークンを取得 */
+/**
+ * 空白またはタブで区切られた1行から、トークンを取得する
+ */
 CMDLINE *linetok(const char *line)
 {
     char *tokens, *p, *sepp;
     bool quoting = false;
     CMDLINE *cmdl = malloc_chk(sizeof(CMDLINE), "cmdl");
 
+    CERR cerr_linetok[] = {
+        { 104, "label length is too long" },
+        { 105, "no command in the line" },
+    };
+    addcerrlist(ARRAYSIZE(cerr_linetok), cerr_linetok);
     if(line == NULL || strlen(line) == 0) {
         return NULL;
     }

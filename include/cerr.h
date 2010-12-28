@@ -8,8 +8,8 @@
  * エラーの構造体
  */
 typedef struct {
-    int num;        /* エラー番号 */
-    char *msg;      /* エラーメッセージ */
+    int num;        /**<エラー番号 */
+    char *msg;      /**<エラーメッセージ */
 } CERR;
 
 /**
@@ -21,8 +21,8 @@ extern CERR *cerr;
  * エラーリスト型
  */
 typedef struct _CERRLIST {
-    struct _CERRLIST *next;
-    CERR *cerr;
+    struct _CERRLIST *next;     /**<リスト次項目へのポインタ */
+    CERR *cerr;                 /**<エラーの構造体 */
 } CERRLIST;
 
 /**

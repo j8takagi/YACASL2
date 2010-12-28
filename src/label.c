@@ -11,12 +11,6 @@
 static int labelcnt = 0;                /* ラベル数 */
 static LABELTAB *labels[LABELTABSIZE];  /* ラベル表 */
 
-#ifndef UNITTEST
-static unsigned labelhash(const char *prog, const char *label);
-
-static int compare_adr(const void *a, const void *b);
-#endif
-
 /**
  * プログラム名とラベルに対応するハッシュ値を返す
  */
@@ -38,7 +32,7 @@ unsigned labelhash(const char *prog, const char *label)
 }
 
 /**
- * ラベル表からアドレスを検索する
+ * プログラム名とラベルに対応するアドレスをラベル表から検索する
  */
 WORD getlabel(const char *prog, const char *label)
 {

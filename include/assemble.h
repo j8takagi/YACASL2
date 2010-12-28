@@ -9,27 +9,27 @@
  * CASL IIの仕様
  */
 enum {
-    LABELSIZE = 8,         /** ラベルの最大文字数 */
-    OPDSIZE = 40,          /** オペラントの最大数。CASL IIシミュレータの制限 */
+    LABELSIZE = 8,         /**<ラベルの最大文字数 */
+    OPDSIZE = 40,          /**<オペラントの最大数。CASL IIシミュレータの制限 */
 };
 
 /**
  * YACASL2の制限
  */
 enum {
-    LINESIZE = 1024,       /* 行の最大文字数 */
-    TOKENSIZE = 256,       /* トークンの最大文字数 */
+    LINESIZE = 1024,       /**<行の最大文字数 */
+    TOKENSIZE = 256,       /**<トークンの最大文字数 */
 };
 
 /**
  * アセンブルモード
  */
 typedef struct {
-    bool src;             /* ソースを表示する場合はtrue */
-    bool label;           /* ラベル表を表示する場合はtrue */
-    bool onlylabel;       /* ラベル表を表示して終了する場合はtrue */
-    bool asdetail;        /* アセンブラ詳細結果を表示する場合はtrue */
-    bool onlyassemble;    /* アセンブルだけを行う場合はtrue */
+    bool src;             /**<ソースを表示する場合はtrue */
+    bool label;           /**<ラベル表を表示する場合はtrue */
+    bool onlylabel;       /**<ラベル表を表示して終了する場合はtrue */
+    bool asdetail;        /**<アセンブラ詳細結果を表示する場合はtrue */
+    bool onlyassemble;    /**<アセンブルだけを行う場合はtrue */
 } ASMODE;
 
 extern ASMODE asmode;
@@ -38,11 +38,14 @@ extern ASMODE asmode;
  * アセンブルのプロパティ
  */
 typedef struct {
-    WORD ptr;     /* 現在のポインタ */
-    WORD lptr;    /* リテラル（=付きの値）を格納するポインタ */
-    char *prog;   /* 他のプログラムで参照する入口名 */
+    WORD ptr;     /**<現在のポインタ */
+    WORD lptr;    /**<リテラル（=付きの値）を格納するポインタ */
+    char *prog;   /**<他のプログラムで参照する入口名 */
 } ASPROP;
 
+/**
+ * アセンブルのプロパティ: ptr, lptr, *prog
+ */
 extern ASPROP *asprop;
 
 /**
@@ -59,10 +62,10 @@ typedef enum {
   * アセンブラ命令を表す配列
   */
 typedef struct {
-    ASCMDID cmdid;
-    int opdc_min;
-    int opdc_max;
-    char *cmd;
+    ASCMDID cmdid;              /**<アセンブル命令のID */
+    int opdc_min;               /**<最小オペランド数 */
+    int opdc_max;               /**<最大オペランド数 */
+    char *cmd;                  /**<コマンド名 */
 } ASCMD;
 
 /**
@@ -79,29 +82,29 @@ typedef enum {
  * マクロ命令を表す配列
  */
 typedef struct {
-    MACROCMDID cmdid;
-    int opdc_min;
-    int opdc_max;
-    char *cmd;
+    MACROCMDID cmdid;              /**<アセンブル命令のID */
+    int opdc_min;                  /**<最小オペランド数 */
+    int opdc_max;                  /**<最大オペランド数 */
+    char *cmd;                     /**<コマンド名 */
 } MACROCMD;
 
 /**
  * ラベル配列
  */
 typedef struct {
-    char *prog;
-    char *label;
-    WORD adr;
+    char *prog;                 /**<プログラム  */
+    char *label;                /**<ラベル */
+    WORD adr;                   /**<アドレス */
 } LABELARRAY;
 
 /**
  * ラベル表
  */
 typedef struct _LABELTAB {
-    struct _LABELTAB *next;
-    char *prog;
-    char *label;
-    WORD adr;
+    struct _LABELTAB *next;     /**<リスト次項目へのポインタ */
+    char *prog;                 /**<プログラム名  */
+    char *label;                /**<ラベル名 */
+    WORD adr;                   /**<アドレス */
 } LABELTAB;
 
 enum {
@@ -112,7 +115,7 @@ enum {
 };
 
 /**
- * アセンブラが、1回目か、2回目か、を表す
+ * アセンブラが、1回目か2回目か
  */
 typedef enum {
     FIRST = 0,
@@ -125,7 +128,7 @@ typedef enum {
 WORD getlabel(const char *prog, const char *label);
 
 /**
- * ラベルを表に追加する
+ * プログラム名、ラベル、アドレスをラベル表に追加する
  */
 bool addlabel(const char *prog, const char *label, WORD word);
 
@@ -143,21 +146,21 @@ void freelabel();
  * オペランド
  */
 typedef struct {
-    int opdc;
-    char *opdv[OPDSIZE];
+    int opdc;                   /**<オペランド数 */
+    char *opdv[OPDSIZE];        /**<オペランド配列 */
 } OPD;
 
 /**
  * 命令行
  */
 typedef struct {
-    char *label;
-    char *cmd;
-    OPD *opd;
+    char *label;                /**<ラベル */
+    char *cmd;                  /**<コマンド */
+    OPD *opd;                   /**<オペランド */
 } CMDLINE;
 
 /**
- * 1行を解析する
+ * 空白またはタブで区切られた1行から、トークンを取得する
  */
 CMDLINE *linetok(const char *line);
 
@@ -168,7 +171,7 @@ CMDLINE *linetok(const char *line);
 bool assemble(const char *file, PASS pass);
 
 /**
- * 指定されたファイルにアセンブル結果を書込
+ * 引数で指定したファイルにアセンブル結果を書込
  */
 void outassemble(const char *file);
 

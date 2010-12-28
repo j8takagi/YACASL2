@@ -8,7 +8,7 @@
 /**
  * 機械語命令のリスト
  */
-CMD comet2cmd[] = {
+static CMD comet2cmd[] = {
     { "NOP", NONE, 0x0 },
     { "LD", R_ADR_X_, 0x1000 },
     { "ST", R_ADR_X, 0x1100 },
@@ -63,12 +63,6 @@ static int cmdtabsize;
  * ハッシュ表
  */
 static CMDTAB **cmdtype_code, **code_type;
-
-#ifndef UNITTEST
-static unsigned hash_cmdtype(const char *cmd, CMDTYPE type);
-
-static unsigned hash_code(WORD code);
-#endif
 
 /**
  * 命令の名前とタイプからハッシュ値を生成する

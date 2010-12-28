@@ -1,13 +1,19 @@
 #include "struct.h"
 #include "cmem.h"
 
-/* COMET IIの仮装実行マシンシステム */
+/**
+ * COMET IIの仮装実行マシンシステム
+ */
 SYSTEM *sys;
 
-/* CASL IIプログラムのプロパティ */
+/**
+ * CASL IIプログラムのプロパティ
+ */
 PROGPROP *prog;
 
-/* COMET II仮想マシンのリセット */
+/**
+ * COMET II仮想マシンのリセット
+ */
 void reset(int memsize, int clocks)
 {
     int i;
@@ -29,7 +35,9 @@ void reset(int memsize, int clocks)
     prog = malloc_chk(sizeof(PROGPROP), "prog");
 }
 
-/* COMET II仮想マシンのシャットダウン */
+/**
+ * COMET II仮想マシンのシャットダウン
+ */
 void shutdown()
 {
     free_chk(prog, "prog");

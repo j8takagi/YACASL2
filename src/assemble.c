@@ -13,7 +13,7 @@
 ASMODE asmode = {false, false, false, false, false};
 
 /**
- * アセンブルのプロパティ
+ * アセンブルのプロパティ: ptr, lptr, *prog
  */
 ASPROP *asprop;
 
@@ -24,8 +24,6 @@ static CERR cerr_assemble[] = {
     { 101, "label already defined" },
     { 102, "label table is full" },
     { 103, "label not found" },
-    { 104, "label length is too long" },
-    { 105, "no command in the line" },
     { 106, "operand mismatch in assemble command" },
     { 107, "no label in START" },
     { 108, "not command of operand \"r\"" },
@@ -34,48 +32,42 @@ static CERR cerr_assemble[] = {
     { 111, "not command of operand \"adr[,x]\"" },
     { 112, "not command of no operand" },
     { 113, "operand too many in COMET II command" },
-    { 117, "operand too many in DC" },
-    { 118, "operand length too long" },
     { 119, "out of COMET II memory" },
     { 120, "GR0 in operand x" },
-    { 121, "cannot get operand token" },
     { 122, "cannot create hash table" },
-    { 123, "unclosed quote" },
     { 124, "more than one character in literal" },
     { 125, "not GR in operand x" },
 };
 
-#ifndef UNITTEST
-static WORD getadr(const char *prog, const char *str, PASS pass);
+WORD getadr(const char *prog, const char *str, PASS pass);
 
-static WORD getgr(const char *str, bool is_x);
+WORD getgr(const char *str, bool is_x);
 
-static WORD getliteral(const char *str, PASS pass);
+WORD getliteral(const char *str, PASS pass);
 
-static bool assemblecmd(const CMDLINE *cmdl, PASS pass);
+bool assemblecmd(const CMDLINE *cmdl, PASS pass);
 
-static bool macrocmd(const CMDLINE *cmdl, PASS pass);
+bool macrocmd(const CMDLINE *cmdl, PASS pass);
 
-static bool writeIN(const char *ibuf, const char *len, PASS pass);
+bool writeIN(const char *ibuf, const char *len, PASS pass);
 
-static bool writeOUT(const char *obuf, const char *len, PASS pass);
+bool writeOUT(const char *obuf, const char *len, PASS pass);
 
-static bool writeRPUSH(PASS pass);
+bool writeRPUSH(PASS pass);
 
-static bool writeRPOP(PASS pass);
+bool writeRPOP(PASS pass);
 
-static bool cometcmd(const CMDLINE *cmdl, PASS pass);
+bool cometcmd(const CMDLINE *cmdl, PASS pass);
 
-static bool writememory(WORD word, WORD adr, PASS pass);
+bool writememory(WORD word, WORD adr, PASS pass);
 
-static void writestr(const char *str, bool literal, PASS pass);
+void writestr(const char *str, bool literal, PASS pass);
 
-static void writeDC(const char *str, PASS pass);
+void writeDC(const char *str, PASS pass);
 
-static bool assembleline(const CMDLINE *cmdl, PASS pass);
+bool assembleline(const CMDLINE *cmdl, PASS pass);
 
-static void printline(FILE *stream, const char *filename, int lineno, char *line);
-#endif
+void printline(FILE *stream, const char *filename, int lineno, char *line);
 
 /**
  * 汎用レジスタを表す文字列「GR[0-7]」から、レジスタ番号[0-7]をWORD値で返す

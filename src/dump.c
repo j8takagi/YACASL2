@@ -2,7 +2,7 @@
 #include "exec.h"
 
 /**
- * COMET IIのメモリを表示
+ * COMET IIのメモリを表示する
  */
 void dumpmemory()
 {
@@ -29,7 +29,7 @@ void dumpmemory()
 }
 
 /**
- * COMET IIのレジスタを表示
+ * COMET IIのレジスタを表示する
  */
 void dspregister()
 {

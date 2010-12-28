@@ -13,11 +13,11 @@ typedef enum {
  * ハッシュ共用体
  */
 typedef struct {
-    UTYPE type;
+    UTYPE type;                 /**<ハッシュ値の元データのデータ型 */
     union {
-        char *s;
-        int i;
-    } val;
+        char *s;                /**<char型のデータ */
+        int i;                  /**<int型のデータ */
+    } val;                      /**<ハッシュ値の元データ */
 } HKEY;
 
 /**

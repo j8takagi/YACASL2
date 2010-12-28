@@ -36,7 +36,7 @@ void *calloc_chk(size_t nmemb, size_t size, char *tag)
 }
 
 /**
- * malloc_chkを実行してメモリを確保してから、コピーした文字列を返す
+ * malloc_chkを実行してメモリを確保し、コピーした文字列を返す
  */
 char *strdup_chk(const char *s, char *tag)
 {
@@ -54,4 +54,5 @@ char *strdup_chk(const char *s, char *tag)
 void free_chk(void *ptr, char *tag)
 {
     free(ptr);
+    ptr = NULL;
 }

@@ -19,8 +19,7 @@ SHELL = /bin/bash
 TEST = $(notdir $(CURRDIR))
 
 # コマンドファイルのソース
-CMDSRC_FILE := $(CMD_FILE)
-#CMDSRC_FILE := $(CMD_FILE).c
+CMDSRC_FILE ?= $(CMD_FILE)
 
 .PHONY: check set reset time cleantime clean cleanall
 
