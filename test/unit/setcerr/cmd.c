@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "casl2.h"
+#include "cerr.h"
 
 static CERR cerr_utest[] = {
     { 101, "label already defined" },

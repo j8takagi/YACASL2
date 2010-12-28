@@ -5,8 +5,7 @@ include ../Test.mk
 .INTERMEDIATE: cmd
 
 SRCDIR = ../../../src
-SRCFILES = $(SRCDIR)/hash.c $(SRCDIR)/cmem.c $(SRCDIR)/cerr.c
+SRCFILES = cmd.c $(SRCDIR)/cmem.c $(SRCDIR)/cerr.c $(SRCDIR)/word.c
 
 cmd: cmd.c $(SRCFILES)
 	gcc -g -Wall -I ../../../include -o $@ $^
-	@rm -rf cmd.dSYM

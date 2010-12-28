@@ -1,4 +1,6 @@
-#include "casl2.h"
+#include <stdio.h>
+#include "struct.h"
+#include "cerr.h"
 
 int main(){
     int i;

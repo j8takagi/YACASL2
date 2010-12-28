@@ -1,5 +1,8 @@
-#include "casl2.h"
+#include <stdio.h>
 #include "assemble.h"
+#include "cerr.h"
+
+OPD *opdtok(const char *str);
 
 int main(){
     int i, j;
@@ -14,7 +17,6 @@ int main(){
     };
 
     cerr = malloc_chk(sizeof(CERR), "cerr");    /* エラーの初期化 */
-    addcerrlist_assemble();
     for(i = 0; i < ARRAYSIZE(str); i++) {
         cerr->num = 0;
         printf("%s\n", str[i]);

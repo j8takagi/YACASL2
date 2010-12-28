@@ -1,0 +1,21 @@
+#32768	#0000	Error - 116	#32768: out of hex range
+#-1	#0000	Error - 116	#-1: out of hex range
+#G	#0000	Error - 115	#G: not hex
+#FFFF	#FFFF
+#0	#0000
+#1	#0001
+#ab	#00AB
+#AB	#00AB
+#200	#0200
+01	#0001
+1a	#0000	Error - 114	1a: not integer
+-5G	#0000	Error - 114	-5G: not integer
+123	#007B
+32767	#7FFF
+32768	#8000
+32769	#8001
+-1	#FFFF
+-2345	#F6D7
+-32768	#8000
+-32769	#7FFF
+-32770	#7FFE

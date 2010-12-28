@@ -27,7 +27,7 @@ RM ?= rm -f
 
 ECHO ?= echo
 
-TIME ?= /usr/bin/time --quiet
+TIME ?= time
 
 DIFF ?= diff -c
 

@@ -1,7 +1,8 @@
 #include <stdio.h>
-#include <malloc.h>
-#include "casl2.h"
 #include "assemble.h"
+#include "cmem.h"
+#include "cerr.h"
+#include "word.h"
 
 int main(){
     int i, j;
@@ -19,8 +20,7 @@ int main(){
     };
 
     CMDLINE *testcl = malloc(sizeof(CMDLINE));
-    cerr = malloc_chk(sizeof(CERR), "cerr");    /* エラーの初期化 */
-    addcerrlist_assemble();
+    cerr_init();    /* エラーの初期化 */
     for(i = 0; i < sizeof testline /sizeof testline[0]; i++) {
         printf("%d: %s", i, testline[i]);
         testcl = linetok(testline[i]);

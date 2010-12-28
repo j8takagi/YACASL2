@@ -16,10 +16,10 @@ endef
 
 # テスト実行の経過時間を、ファイルに出力して表示
 # 引数は、テスト名、コマンドファイル、出力ファイル
-# 用例: $(call time_cmd,name,file_cmd,file_out)
+# 用例: $(call time_cmd,file_cmd,file_out)
 define time_cmd
-    if test ! -x $2; then $(CHMOD) u+x $2; fi
-    $(TIME) -f"$1: %E" -o $3 ./$2 >$(DEV_NULL) 2>&1
+    if test ! -x $1; then $(CHMOD) u+x $1; fi
+    ($(TIME) ./$1 1>$(DEV_NULL) 2>$(DEV_NULL)) 2>&1 | $(GREP) '^real' >$2
 endef
 
 # テスト実行コマンド。引数は、コマンドファイル、出力ファイル、エラーファイル
@@ -27,7 +27,7 @@ endef
 # エラー発生時は、エラー出力を出力ファイルとエラーファイルに保存。
 # 用例: $(call exec_cmd,file_cmd,file_out,file_err)
 define exec_cmd
-    @if test ! -x $1; then $(CHMOD) u+x $1; fi
+    if test ! -x $1; then $(CHMOD) u+x $1; fi
     ./$1 >>$2 2>$3
     if test -s $3; then $(CAT) $3 >>$2; fi
     $(call rm_null,$3)
@@ -61,7 +61,6 @@ endef
 # 引数は、対象ファイル群、出力ファイル
 # 用例: $(call report_files,list_file_target,file_out)
 define report_files
-    $(call chk_file_ext,$2)
     $(foreach tfile,$1,$(call report_file,$(tfile),$2))
 endef
 
