@@ -11,7 +11,7 @@ doc:
 	@$(MAKE) -sC doc
 
 doxygen:
-	@(DOXYGEN)
+	@$(DOXYGEN)
 
 clean:
 	@$(MAKE) -sC src clean
