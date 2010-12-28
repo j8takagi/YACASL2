@@ -19,4 +19,5 @@ clean:
 	@$(MAKE) -sC test/system/comet2 clean
 	@$(MAKE) -sC test/system/dumpword clean
 	@$(MAKE) -sC test/unit clean
+	@rm -rf doc/doxygen/*
 	@rm -f casl2 comet2 dumpword
