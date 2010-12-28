@@ -1,0 +1,65 @@
+FADD    START              ; Z ← X ＋ Y
+        RPUSH
+        PUSH  0,GR3        ; 結果 Z の格納領域の先頭番地を退避
+        LD    GR4,0,GR1
+        AND   GR4,=#00FF   ; Ex: X の指数
+        LD    GR5,0,GR2
+        AND   GR5,=#00FF   ; Ey: Y の指数
+        LD    GR6,1,GR1    ; Mx: X の仮数
+        LD    GR7,1,GR2    ; My: Y の仮数
+; 加算前の準備 (指数をそろえる)
+; GR4 ← max(Ex,Ey) , GR6 ← 調整済 Mx , GR7 ← 調整済 My
+        LD    GR3,GR4
+        CPL   GR4,GR5
+        JZE   MADD         ; Ex ＝ Ey の場合
+        JMI   BIGEY        ; Ex ＜ Ey の場合
+        SUBL  GR3,GR5
+        SRL   GR7,0,GR3    ; My を調整
+        JUMP  MADD
+BIGEY   LD    GR4,GR5
+        SUBL  GR5,GR3
+        SRL   GR6,0,GR5    ; Mx を調整
+; 符号を考慮した仮数の加算
+; Sz: Z の符号 , Ez: Z の指数 , Mz: Z の仮数
+; GR4 ← (Sz,Ez) , GR5 ← Mz
+MADD    LD    GR1,0,GR1    ; X の符号の検査
+        JMI   XMINUS       ;   負の場合
+        LD    GR2,0,GR2    ; Y の符号の検査
+        
+        LD    GR5,GR6      ; X ≧ 0 , Y ≦ 0 の場合
+        SUBL  GR5,GR7      ; Mz ← 調整済 Mx − 調整済 My
+        JUMP  SCHECK
+XMINUS  LD    GR2,0,GR2
+        JMI   YMINUS
+        LD    GR5,GR7
+        SUBL  GR5,GR6
+        
+YMINUS  OR    GR4,=#8000   ; Z に負符号を設定
+ADDMXY  LD    GR5,GR6
+        ADDL  GR5,GR7      ; Mz ← 調整済 Mx ＋ 調整済 My
+        JOV   ADJST        ; けた上がりがある場合の正規化
+        JUMP  NORM
+SCHECK  JOV   NEGMZ        ; Mz の符号を検査
+        JUMP  NORM
+NEGMZ   OR    GR4,=#8000   ; Sz に負符号を設定
+        XOR   GR5,=#FFFF   ; Mz ← −Mz
+        ADDL  GR5,=1
+;加算結果の正規化 
+NORM    LD    GR5,GR5      ; ゼロチェック
+        JNZ   LOOP
+        LD    GR4,=0
+        JUMP  FIN
+LOOP    LD    GR5,GR5      ; 正規化完了？
+        JMI   FIN
+        
+        SUBL  GR4,=1
+        JUMP  LOOP
+ADJST   SRL   GR5,1
+        OR    GR5,=#8000   ; Mz の最上位ビットを 1 に設定
+        
+FIN     POP   GR3
+        ST    GR4,0,GR3    ; 結果 Z の格納
+        ST    GR5,1,GR3
+        RPOP
+        RET
+        END

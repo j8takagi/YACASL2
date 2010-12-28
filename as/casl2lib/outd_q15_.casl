@@ -1,0 +1,55 @@
+;; GR1に格納された値を、10進数の小数値として表示
+OUTD    START
+        RPUSH
+        XOR     GR0,GR0         ; 負数フラグ。GR1が負数の場合、GR0は1
+        LAD     GR2,10          ; GR2に10進数の「10」を格納
+        XOR     GR4,GR4         ; インデックス
+        AND     GR1,GR1         ; GR1が0の場合
+        JZE     ZPRT            ; ↓
+STDN    LD      GR0,='0'        ; 「0」をSTR領域に格納
+        ST      GR0,STR,GR4     ; ↓
+        LAD     GR4,1,GR4       ; ↓ GR4 <- GR4 + 1
+        LD      GR0,='.'        ; 「.」をSTR領域に格納
+        ST      GR0,STR,GR4     ; ↓
+        LAD     GR4,1,GR4       ; ↓ GR4 <- GR4 + 1
+;; GR1の内容を小数値と見なし、10進数の文字列に変換してSTRに格納
+TODIG   AND     GR1,GR1         ; GR1が0の場合は、ループを脱出
+        JZE     PRT             ; ↓
+        CALL    MULL            ; GR1とGR2の、積をGR0、オーバーフロー値をGR3に格納
+        ADDA    GR3,='0'        ; GR0を文字に変換
+        ST      GR3,STR,GR4     ; (STR + GR4) <- GR0
+        LAD     GR4,1,GR4       ; GR4 <- GR4 + 1
+        LD      GR1,GR0         ; GR0をGR1にコピー
+        JUMP    TODIG           ; ループ
+ZPRT    LD      GR0,='0'        ; 「0」をSTR領域に格納
+        ST      GR0,STR,GR4     ; (STR + GR4) <- GR1
+        LAD     GR4,1,GR4       ; GR4 <- GR4 + 1
+PRT     ST      GR4,LEN         ; LEN <- GR4
+        OUT     STR,LEN         ; ↓
+        RPOP
+        RET
+STR     DS      20
+LEN     DS      1
+        END
+;; GR1とGR2の、積をGR0、オーバーフロー値をGR3に格納
+MULL    START
+        PUSH	0,GR1
+        PUSH	0,GR2
+        PUSH	0,GR4
+        XOR	GR0,GR0
+        XOR	GR3,GR3         ; オーバーフロー値
+        LAD	GR4,1           ; インデックス
+LOOP    CPA     GR4,GR2         ; GR4がGR2の値になったら、ループ脱出
+        JZE     FIN             ; ↓
+        ADDA    GR0,GR1         ; GR0 <- GR0 + GR1
+        LAD     GR4,1,GR4       ; GR4 <- GR4 + 1
+        JOV     OVADD           ; オーバーフローした場合、OVADDへジャンプ
+        JUMP    LOOP            ; ループにジャンプ
+OVADD   LAD     GR3,1,GR3       ; GR3 <- GR3 + 1
+        AND     GR1,=#7FFF      ; GR1の最上位ビットをクリア
+        JUMP    LOOP            ; ループにジャンプ
+FIN     POP     GR4
+        POP     GR2
+        POP     GR1
+        RET
+        END

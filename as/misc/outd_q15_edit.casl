@@ -1,0 +1,33 @@
+;;; GR1に格納された値を、0以上1未満の、10進数小数値として表示
+;;; 例: 1000000000000000:0.5, 1100000000000000:0.75
+OUTD    START
+        RPUSH
+        XOR     GR3,GR3         ; 文字位置を表すインデックス
+        XOR     GR4,GR4         ; 一時領域
+        LD      GR4,='0'        ; 「0」をSTR領域に格納
+        ST      GR4,STR,GR3     ; ↓
+        LAD     GR3,1,GR3       ; ↓ GR3 <- GR3 + 1
+        AND     GR1,GR1         ; GR1が0の場合、PRTにジャンプ
+        JZE     PRT             ; ↓
+        LD      GR4,='.'        ; 「.」をSTR領域に格納
+        ST      GR4,STR,GR3     ; ↓
+        LAD     GR3,1,GR3       ; ↓ GR4 <- GR4 + 1
+;; GR1の内容を小数値と見なし、10進数の文字列に変換してSTRに格納
+TODIG   AND     GR1,GR1         ; GR1が0の場合は、ループを脱出
+        JZE     PRT             ; ↓
+        PUSH    0,GR2           ; GR1とGR2の積をGR1に格納
+        LAD     GR2,10          ; ↓GR2に10進数の「10」を格納
+        CALL    MULL            ; ↓
+        POP     GR2             ; ↓
+        LD      GR4,GR0         ; GR0をGR4にコピー
+        ADDA    GR4,='0'        ; GR4を文字に変換
+        ST      GR4,STR,GR3     ; (STR + GR3) <- GR4
+        LAD     GR3,1,GR3       ; GR3 <- GR3 + 1
+        JUMP    TODIG           ; ループ
+PRT     ST      GR3,LEN         ; LEN <- GR3
+        OUT     STR,LEN         ; STR領域の内容を印字
+        RPOP
+        RET
+STR     DS      20
+LEN     DS      1
+        END

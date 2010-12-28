@@ -9,12 +9,12 @@ MAIN    START
 LOOP    CPA     GR2,CNT
         JZE     FIN
         LD      GR1,A,GR2
-        CALL    OUTL
+        CALL    OUTB
         LAD     GR2,1,GR2
         JUMP    LOOP
 FIN     RET
 A       DC      #FFFF,#FFFF,#FFFF,#FFFF,#FFFF,#FFFF
-CNT     DC      6        
+CNT     DC      6
 B       DC      #B1D0
 P       DC      55
 Q       DC      12

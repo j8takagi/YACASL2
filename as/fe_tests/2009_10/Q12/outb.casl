@@ -22,6 +22,7 @@ EMB     LD      GR1,NCHAR       ; GR0 <- '0'
 EMLOOP  LD      GR2,LEN         ; GR2 <- LEN
         CPA     GR2,DIG         ; ループ先頭。(GR2 = DIG)の場合は、ループ脱出
         JZE     PRT             ; ↓
+        
         CALL    STSTR           ; GR1をSTR領域に格納
         JUMP    EMLOOP          ; ループ終端
 PRT     LD      GR2,LEN         ; GR2にLENの値を格納
@@ -33,11 +34,10 @@ PRT     LD      GR2,LEN         ; GR2にLENの値を格納
 STR     DS      17
 LEN     DS      1
 NCHAR   DC      '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-DIG     DC      16        
+DIG     DC      16
         END
 ;; GR1をSTR領域に格納し、LENをインクリメント
-STSTR   START
-        PUSH    0,GR1
+STSTR   PUSH    0,GR1
         PUSH    0,GR2
         LD      GR2,LEN         ; GR2にLENの値をロード
         ST      GR1,STR,GR2     ; STR+GR2 <- GR1
@@ -79,7 +79,7 @@ ODFIN   POP     GR3
         POP     GR2
         RET
 ODY     DS      1
-ODMB    DC      #8000        
+ODMB    DC      #8000
         END
 ;; アドレスがGR1、長さがGR2の文字列を逆順に並べ替える
 ;; 例: 12345 -> 54321、54321- -> -12345

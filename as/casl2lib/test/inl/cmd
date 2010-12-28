@@ -1,1 +1,0 @@
-casl2 cal_inl.casl $CASL2LIB/inl.casl $CASL2LIB/outl.casl < in.txt

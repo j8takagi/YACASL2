@@ -1,9 +1,0 @@
-MAIN    START
-        LAD     GR1,A
-        LAD     GR2,B
-        CALL    ADDL32
-        LD      GR2,GR0
-        RET
-A       DC      6,10
-B       DC      2,65530
-        END

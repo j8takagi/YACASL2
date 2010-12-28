@@ -1,0 +1,21 @@
+;; outd.caslを呼び出し、数値を表示する
+MAIN    START
+        LAD     GR2,0
+LOOP    LD      GR1,VAL,GR2
+        CALL    OUTD
+        LAD     GR2,1,GR2
+        CPA     GR2,CNT
+        JZE     FIN
+        JUMP    LOOP
+FIN     RET
+VAL     DC      #7FFF,#4000,#2000,#1000
+        DC      #0800,#0400,#0200,#0100
+        DC      #0080,#0040,#0020,#0010
+        DC      #0008,#0004,#0002,#0001
+        DC      #8000
+        DC      #8001,#C000,#E000,#F000
+        DC      #F800,#FC00,#FE00,#FF00
+        DC      #FF80,#FFC0,#FFE0,#FFF0
+        DC      #FFF8,#FFFC,#FFFE,#FFFF
+CNT     DC      33
+        END
