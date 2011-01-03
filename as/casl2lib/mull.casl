@@ -1,31 +1,42 @@
 ;;; 0〜65535の範囲にある正数のかけ算（筆算方式）を行う
 ;;; 入力 GR1:被乗数 GR2:乗数
-;;; 出力 GR0:積
-;;; 積が65535より大きい場合は、GR0は積の下位16ビットになり、オーバーフロー
+;;; 出力 GR0:積の下位WORD GR3:積の上位WORD
+;;; 積が65535より大きい場合は、オーバーフロー
 MULL    START
-        PUSH    0,GR1
-        PUSH    0,GR3
+        PUSH    0,GR4
+        PUSH    0,GR5
         XOR     GR0,GR0         ; 積
+        XOR     GR3,GR3         ; 上位word
+        XOR     GR5,GR5         ; 上位wordの一時値
         AND     GR1,GR1         ; (GR1 = 0)の場合、終了
-        JZE     FIN             ; ↓
+        JZE     CHKOV           ; ↓
         AND     GR2,GR2         ; (GR2 = 0)の場合、終了
-        JZE     FIN             ; ↓
-        LAD     GR3,1           ; 対象ビット
-LOOP    PUSH    0,GR3           ; ループ先頭。GR2のビット中でGR3が示すビットが0の場合、NEXTへジャンプ
-        AND     GR3,GR2         ; ↓
-        POP     GR3             ; ↓
-        JZE     NEXT            ; ↓
+        JZE     CHKOV           ; ↓
+        LAD     GR4,1           ; 対象ビット
+LOOP    PUSH    0,GR4           ; ループ先頭。GR2のビット中でGR4が示すビットが0の場合、NEXTへジャンプ
+        AND     GR4,GR2         ; ↓
+        POP     GR4             ; ↓
+        JZE     NEXT1           ; ↓
+        ADDL    GR3,GR5         ; GR3 <- GR3 + GR5
         ADDL    GR0,GR1         ; GR0 <- GR0 + GR1
-        JOV     FIN             ; GR0がオーバーフローした場合、ループ脱出
-NEXT    SLL     GR3,1           ; GR3を1回左シフト
-        AND     GR3,GR3         ; (GR3 = 0)の場合、ループ脱出
-        JZE     FIN             ; ↓
-        CPL     GR3,GR2         ; (GR3 > GR2)の場合、ループ脱出
-        JPL     FIN             ; ↓
+        JOV     AHB1            ; GR0がオーバーフローした場合、AHB1へジャンプ
+        JUMP    NEXT1           ; ↓
+AHB1    LAD     GR3,1,GR3       ; GR3 <- GR3 + 1
+NEXT1   SLL     GR4,1           ; GR4を1回左シフト
+        JOV     CHKOV           ; ↓
+        SLL     GR5,1           ; GR5を1回左シフト
+        CPL     GR4,GR2         ; (GR4 > GR2)の場合、CHKOVへジャンプ
+        JPL     CHKOV           ; ↓
         SLL     GR1,1           ; GR1を1回左シフト
-        JOV     FIN             ; GR1がオーバーフローした場合、ループ脱出
-        JUMP    LOOP            ; ループ終端
-FIN     POP     GR3
-        POP     GR1
+        JOV     AHB2            ; GR1がオーバーフローした場合、AHBへジャンプ
+        JUMP    NEXT2           ; ↓
+AHB2    LAD     GR5,1,GR5       ; GR5 <- GR5 + 1
+NEXT2   JUMP    LOOP            ; ループ終端
+CHKOV   AND     GR3,GR3         ; GR3 = 0の場合、終了
+        JZE     FIN             ; ↓
+        LAD     GR4,#FFFF       ; GR3 <> 0の場合、オーバーフロー
+        SLL     GR4,1           ; ↓
+FIN     POP     GR5
+        POP     GR4
         RET
         END

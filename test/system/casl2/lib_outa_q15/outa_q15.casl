@@ -2,7 +2,7 @@
 MAIN    START
         LAD     GR2,0
 LOOP    LD      GR1,VAL,GR2
-        CALL    OUTD
+        CALL    OUTAQ15
         LAD     GR2,1,GR2
         CPA     GR2,CNT
         JZE     FIN
