@@ -42,7 +42,7 @@ $(GROUP_LOG_FILE): $(TEST_LOG_FILES)
 	@$(call group_log,$^,$@)
 
 $(TEST_LOG_FILES):
-	@$(MAKE) $(MAKECMDGOALS) -sC $(dir $@) NODISP=1
+	@$(MAKE) $(MAKECMDGOALS) -C $(dir $@) NODISP=1
 
 $(GROUP_TIME_FILE): $(TEST_TIME_FILES)
 	@$(call group_log,$^,$@)

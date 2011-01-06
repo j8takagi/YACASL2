@@ -49,13 +49,13 @@ bool assemblecmd(const CMDLINE *cmdl, PASS pass);
 
 bool macrocmd(const CMDLINE *cmdl, PASS pass);
 
-bool writeIN(const char *ibuf, const char *len, PASS pass);
+void writeIN(const char *ibuf, const char *len, PASS pass);
 
-bool writeOUT(const char *obuf, const char *len, PASS pass);
+void writeOUT(const char *obuf, const char *len, PASS pass);
 
-bool writeRPUSH(PASS pass);
+void writeRPUSH(PASS pass);
 
-bool writeRPOP(PASS pass);
+void writeRPOP(PASS pass);
 
 bool cometcmd(const CMDLINE *cmdl, PASS pass);
 
@@ -65,7 +65,9 @@ void writestr(const char *str, bool literal, PASS pass);
 
 void writeDC(const char *str, PASS pass);
 
-bool assembleline(const CMDLINE *cmdl, PASS pass);
+bool assembletok(const CMDLINE *cmdl, PASS pass);
+
+bool assembleline(const char *line, PASS pass);
 
 void printline(FILE *stream, const char *filename, int lineno, char *line);
 
@@ -155,14 +157,15 @@ bool assemblecmd(const CMDLINE *cmdl, PASS pass)
         status = true;
         break;
     case END:
-        /* リテラル領域の設定 */
+        /* 1回目のアセンブルの場合は、リテラル領域開始番地を設定 */
         if(pass == FIRST) {
             asprop->lptr = asprop->ptr;
         }
-        /* 実行終了番地と次のプログラムの実行開始番地を設定 */
+        /* 2回目のアセンブルの場合は、リテラル領域終了番地を実行終了番地として設定 */
         else if(pass == SECOND) {
             prog->end = asprop->lptr;
         }
+        /* プログラム名のクリア */
         asprop->prog = NULL;
         status = true;
         break;
@@ -202,8 +205,7 @@ bool macrocmd(const CMDLINE *cmdl, PASS pass)
 {
     int i = 0;
     MACROCMDID cmdid;
-    bool status = false;
-    MACROCMD macrocmd[] = {
+     MACROCMD macrocmd[] = {
         { IN, 2, 2, "IN" },
         { OUT, 2, 2, "OUT" },
         { RPUSH, 0, 0, "RPUSH" },
@@ -226,21 +228,20 @@ bool macrocmd(const CMDLINE *cmdl, PASS pass)
     switch(cmdid)
     {
     case IN:
-        status = writeIN(cmdl->opd->opdv[0], cmdl->opd->opdv[1], pass);
-        break;
+        writeIN(cmdl->opd->opdv[0], cmdl->opd->opdv[1], pass);
+        return true;
     case OUT:
-        status = writeOUT(cmdl->opd->opdv[0], cmdl->opd->opdv[1], pass);
-        break;
+        writeOUT(cmdl->opd->opdv[0], cmdl->opd->opdv[1], pass);
+        return true;
     case RPUSH:
-        status = writeRPUSH(pass);
-        break;
+        writeRPUSH(pass);
+        return true;
     case RPOP:
-        status = writeRPOP(pass);
-        break;
+        writeRPOP(pass);
+        return true;
     default:
         return false;
     }
-    return status;
 }
 
 /**
@@ -253,33 +254,21 @@ bool macrocmd(const CMDLINE *cmdl, PASS pass)
  *      POP GR2
  *      POP GR1
  */
-bool writeIN(const char *ibuf, const char *len, PASS pass)
+void writeIN(const char *ibuf, const char *len, PASS pass)
 {
-    bool status = false;
+    char *line = malloc_chk(LINESIZE+1, "writeIN.line");
 
-    /* PUSH 0,GR1 */
-    writememory(0x7001, (asprop->ptr)++, pass);
-    writememory(0x0, (asprop->ptr)++, pass);
-    /* PUSH 0,GR2 */
-    writememory(0x7002, (asprop->ptr)++, pass);
-    writememory(0x0, (asprop->ptr)++, pass);
-    /* LAD GR1,IBUF */
-    writememory(0x1210, (asprop->ptr)++, pass);
-    writememory(getadr(asprop->prog, ibuf, pass), (asprop->ptr)++, pass);
-    /* LAD GR2,LEN */
-    writememory(0x1220, (asprop->ptr)++, pass);
-    writememory(getadr(asprop->prog, len, pass), (asprop->ptr)++, pass);
-    /* SVC 1 */
-    writememory(0xF000, (asprop->ptr)++, pass);
-    writememory(0x0001, (asprop->ptr)++, pass);
-    /* POP GR2 */
-    writememory(0x7120, (asprop->ptr)++, pass);
-    /* POP GR1 */
-    writememory(0x7110, (asprop->ptr)++, pass);
-    if(cerr->num == 0) {
-        status = true;
-    }
-    return status;
+    assembleline("    PUSH 0,GR1", pass);
+    assembleline("    PUSH 0,GR2", pass);
+    sprintf(line, "    LAD GR1,%s", ibuf);
+    assembleline(line, pass);
+    sprintf(line, "    LAD GR2,%s", len);
+    assembleline(line, pass);
+    assembleline("    SVC 1", pass);
+    assembleline("    POP GR2", pass);
+    assembleline("    POP GR1", pass);
+
+    free_chk(line, "writeIN.line");
 }
 
 /**
@@ -290,57 +279,28 @@ bool writeIN(const char *ibuf, const char *len, PASS pass)
  *      LAD GR2,LEN
  *      SVC 2
  *      LAD GR1,=#A
- *      LAD GR2,1
+ *      LAD GR2,=1
  *      SVC 2
  *      POP GR2
  *      POP GR1
  */
-bool writeOUT(const char *obuf, const char *len, PASS pass)
+void writeOUT(const char *obuf, const char *len, PASS pass)
 {
-    bool status = false;
+    char *line = malloc_chk(LINESIZE+1, "writeOUT.line");
 
-    /* PUSH 0,GR1 */
-    writememory(0x7001, (asprop->ptr)++, pass);
-    writememory(0x0, (asprop->ptr)++, pass);
-    /* PUSH 0,GR2 */
-    writememory(0x7002, (asprop->ptr)++, pass);
-    writememory(0x0, (asprop->ptr)++, pass);
-    /* LAD GR1,OBUF */
-    writememory(0x1210, (asprop->ptr)++, pass);
-    writememory(getadr(asprop->prog, obuf, pass), (asprop->ptr)++, pass);
-    /* LAD GR2,OLEN */
-    writememory(0x1220, (asprop->ptr)++, pass);
-    writememory(getadr(asprop->prog, len, pass), (asprop->ptr)++, pass);
-    /* SVC 2 */
-    writememory(0xF000, (asprop->ptr)++, pass);
-    writememory(0x0002, (asprop->ptr)++, pass);
-    /* LAD GR1,=#A */
-    writememory(0x1210, (asprop->ptr)++, pass);
-    if(pass == FIRST) {
-        (asprop->ptr)++;
-    } else {
-        writememory(asprop->lptr, (asprop->ptr)++, pass);    /* リテラルのアドレスを書込 */
-    }
-    writememory(0xA, (asprop->lptr)++, pass);
-    /* LAD GR2,=1 */
-    writememory(0x1220, (asprop->ptr)++, pass);
-    if(pass == FIRST) {
-        (asprop->ptr)++;
-    } else {
-        writememory(asprop->lptr, (asprop->ptr)++, pass);    /* リテラルのアドレスを書込 */
-    }
-    writememory(0x1, (asprop->lptr)++, pass);
-    /* SVC 2 */
-    writememory(0xF000, (asprop->ptr)++, pass);
-    writememory(0x0002, (asprop->ptr)++, pass);
-    /* POP GR2 */
-    writememory(0x7120, (asprop->ptr)++, pass);
-    /* POP GR1 */
-    writememory(0x7110, (asprop->ptr)++, pass);
-    if(cerr->num == 0) {
-        status = true;
-    }
-    return status;
+    assembleline("    PUSH 0,GR1", pass);
+    assembleline("    PUSH 0,GR2", pass);
+    sprintf(line, "    LAD GR1,%s", obuf);
+    assembleline(line, pass);
+    sprintf(line, "    LAD GR2,%s", len);
+    assembleline(line, pass);
+    assembleline("    SVC 2", pass);
+    assembleline("    LAD GR1,=#A", pass);
+    assembleline("    LAD GR2,=1", pass);
+    assembleline("    SVC 2", pass);
+    assembleline("    POP GR2", pass);
+    assembleline("    POP GR1", pass);
+    free_chk(line, "writeOUT.line");
 }
 
 /** マクロ命令「RPUSH」をメモリに書き込む
@@ -352,19 +312,16 @@ bool writeOUT(const char *obuf, const char *len, PASS pass)
  *       PUSH 0,GR6
  *       PUSH 0,GR7
  */
-bool writeRPUSH(PASS pass)
+void writeRPUSH(PASS pass)
 {
     int i;
-    bool status = false;
+    char *line = malloc_chk(LINESIZE+1, "writeRPUSH.line");
 
-    for(i = 1; i <= 7; i++) {
-        writememory(0x7000 + i, (asprop->ptr)++, pass);   /* PUSH GRn */
-        writememory(0x0, (asprop->ptr)++, pass);
+    for(i = 1; i <= GRSIZE-1; i++) {
+        sprintf(line, "    PUSH 0,GR%d", i);
+        assembleline(line, pass);
     }
-    if(cerr->num == 0) {
-        status = true;
-    }
-    return status;
+    free_chk(line, "writeRPUSH.line");
 }
 
 /**
@@ -378,22 +335,21 @@ bool writeRPUSH(PASS pass)
  *      POP GR2
  *      POP GR1
  */
-bool writeRPOP(PASS pass)
+void writeRPOP(PASS pass)
 {
     int i;
-    bool status = false;
-    for(i = 7; i >= 1; i--) {
-        writememory((0x7100 + (i << 4)), (asprop->ptr)++, pass);  /* POP GRn */
+    char *line = malloc_chk(LINESIZE+1, "writeRPOP.line");
+
+    for(i = GRSIZE-1; i >= 1; i--) {
+        sprintf(line, "    POP GR%d", i);
+        assembleline(line, pass);
     }
-    if(cerr->num == 0) {
-        status = true;
-    }
-    return status;
+    free_chk(line, "writeRPOP.line");
 }
 
 /**
  * 機械語命令をメモリに書込
- * 書込に成功した場合はtrue、それ以外の場合はfalseを返す
+ * 書込に、成功した場合はtrue、失敗した場合はfalse、を返す
  */
 bool cometcmd(const CMDLINE *cmdl, PASS pass)
 {
@@ -434,7 +390,7 @@ bool cometcmd(const CMDLINE *cmdl, PASS pass)
                 status = true;
             }
         }
-        /* オペランド数2〜3。第2オペランドはアドレス、 */
+        /* オペランド数2または3。第2オペランドはアドレス、 */
         /* 第3オペランドは指標レジスタとして用いる汎用レジスタ */
         else if(cmdl->opd->opdc == 2 || cmdl->opd->opdc == 3) {
             if((cmd = getcmdcode(cmdl->cmd, R_ADR_X_)) == 0xFFFF &&
@@ -463,7 +419,7 @@ bool cometcmd(const CMDLINE *cmdl, PASS pass)
             return false;
         }
     }
-    /* オペランド数1〜2。第1オペランドはアドレス */
+    /* オペランド数1または2。第1オペランドはアドレス */
     else if(cmdl->opd->opdc == 1 || cmdl->opd->opdc == 2) {
         if((cmd = getcmdcode(cmdl->cmd, ADR_X)) == 0xFFFF) {
             setcerr(111, cmdl->cmd);    /* not command of operand "adr[,x]" */
@@ -571,7 +527,7 @@ void writeDC(const char *str, PASS pass)
 /**
  * 1行をアセンブル
  */
-bool assembleline(const CMDLINE *cmdl, PASS pass)
+bool assembletok(const CMDLINE *cmdl, PASS pass)
 {
     bool status = false;
     /* 命令がない場合 */
@@ -632,6 +588,27 @@ WORD getadr(const char *prog, const char *str, PASS pass)
     return adr;
 }
 
+
+/**
+ * 1行をアセンブル
+ */
+bool assembleline(const char *line, PASS pass)
+{
+    CMDLINE *cmdl;
+
+    if((cmdl = linetok(line)) != NULL) {
+        if(pass == FIRST && cmdl->label != NULL) {
+            if(addlabel(asprop->prog, cmdl->label, asprop->ptr) == false) {
+                return false;
+            }
+        }
+        if(assembletok(cmdl, pass) == false) {
+            return false;
+        }
+    }
+    return true;
+}
+
 /**
  * 指定された名前のファイルをアセンブル
  * 2回実行される
@@ -661,15 +638,8 @@ bool assemble(const char *file, PASS pass)
         {
             printline(stdout, file, lineno, line);
         }
-        if((cmdl = linetok(line)) != NULL) {
-            if(pass == FIRST && cmdl->label != NULL) {
-                if(addlabel(asprop->prog, cmdl->label, asprop->ptr) == false) {
-                    break;
-                }
-            }
-            if(assembleline(cmdl, pass) == false) {
-                break;
-            }
+        if(assembleline(line, pass) == false) {
+            break;
         }
         if(cerr->num > 0) {
             break;

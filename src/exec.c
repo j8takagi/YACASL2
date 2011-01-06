@@ -5,11 +5,16 @@
 #include "exec.h"
 #include "cerr.h"
 
-/* 実行エラーの定義 */
+/**
+ * アセンブルファイル読み込みエラーの定義
+ */
 static CERR cerr_loadassemble[] = {
     { 201, "Loading - full of COMET II memory" },
 };
 
+/**
+ * 実行エラーの定義
+ */
 static CERR cerr_exec[] = {
     { 202, "SVC input - out of Input memory" },
     { 203, "SVC output - out of COMET II memory" },
@@ -409,7 +414,7 @@ bool exec()
             }
         }
         free_chk(errpr, "errpr");
-        /* 主オペランドが1〜4の場合、第2ビットを無視 */
+        /* 主オペランドが1から4の場合、第2ビットを無視 */
         if(op >= 0x1000 && op <= 0x4FFF) {
             op &= 0xFB00;
         }
@@ -530,6 +535,7 @@ bool exec()
         default:
             break;
         }
+        /* クロック周波数の設定 */
         do {
             clock_end = clock();
         } while(clock_end - clock_begin < CLOCKS_PER_SEC / sys->clocks);
