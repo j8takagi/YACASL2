@@ -5,6 +5,19 @@
  * - comet2.c
  * - dumpword.c
  *
+ * \section そのほかのソースファイル
+ * - assemble.c
+ * - cerr.c
+ * - cmd.c
+ * - cmem.c
+ * - dump.c
+ * - exec.c
+ * - hash.c
+ * - label.c
+ * - struct.c
+ * - token.c
+ * - word.c
+ *
  * \section ヘッダファイル
  * - assemble.h
  * - exec.h
