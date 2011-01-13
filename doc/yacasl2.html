@@ -191,8 +191,23 @@ pre.example em {
 <li><a href="#INL">使用例</a>
 </li></ul>
 <li><a href="#L2STR">5.5 <kbd>L2STR</kbd> - <samp><span class="file">l2str.casl</span></samp></a>
+<ul>
+<li><a href="#L2STR">入力</a>
+<li><a href="#L2STR">出力</a>
+<li><a href="#L2STR">依存する副プログラム</a>
+</li></ul>
 <li><a href="#MAX">5.6 <kbd>MAX</kbd> - <samp><span class="file">max.casl</span></samp></a>
+<ul>
+<li><a href="#MAX">入力</a>
+<li><a href="#MAX">出力</a>
+<li><a href="#MAX">依存する副プログラム</a>
+</li></ul>
 <li><a href="#MINIM">5.7 <kbd>MINIM</kbd> - <samp><span class="file">minim.casl</span></samp></a>
+<ul>
+<li><a href="#MINIM">入力</a>
+<li><a href="#MINIM">出力</a>
+<li><a href="#MINIM">依存する副プログラム</a>
+</li></ul>
 <li><a href="#MULA">5.8 <kbd>MULA</kbd> - <samp><span class="file">mula.casl</span></samp></a>
 <li><a href="#MULL">5.9 <kbd>MULL</kbd> - <samp><span class="file">mull.casl</span></samp></a>
 <li><a href="#OUTA">5.10 <kbd>OUTA</kbd> - <samp><span class="file">outa.casl</span></samp></a>
@@ -1122,13 +1137,75 @@ YACASL2のコマンドとオプションについて解説します。
 
 <h3 class="section">5.5 <kbd>L2STR</kbd> - <samp><span class="file">l2str.casl</span></samp></h3>
 
+<p>符号なし整数を文字列に変換する
+
+<h4 class="unnumberedsubsec">入力</h4>
+
+     <dl>
+<dt><code>GR1</code><dd>符号なし整数
+
+     <br><dt><code>GR2</code><dd>変換した文字列を格納するアドレス
+</dl>
+
+<h4 class="unnumberedsubsec">出力</h4>
+
+     <dl>
+<dt><code>GR0</code><dd>文字列の長さ
+</dl>
+
+<h4 class="unnumberedsubsec">依存する副プログラム</h4>
+
+     <ul>
+<li><code>DIVL</code>
+</ul>
+
 <p><a name="MAX"></a>
 
 <h3 class="section">5.6 <kbd>MAX</kbd> - <samp><span class="file">max.casl</span></samp></h3>
 
+<p>連続した複数のWORDを符号付き整数とみなして最大値を返す
+
+<h4 class="unnumberedsubsec">入力</h4>
+
+     <dl>
+<dt><code>GR1</code><dd>WORD値を格納したアドレス
+
+     <br><dt><code>GR2</code><dd>値の個数
+</dl>
+
+<h4 class="unnumberedsubsec">出力</h4>
+
+     <dl>
+<dt><code>GR0</code><dd>最大値
+</dl>
+
+<h4 class="unnumberedsubsec">依存する副プログラム</h4>
+
+<p>なし
+
 <p><a name="MINIM"></a>
 
 <h3 class="section">5.7 <kbd>MINIM</kbd> - <samp><span class="file">minim.casl</span></samp></h3>
+
+<p>連続した複数のWORDを符号付き整数とみなして最小値を返す
+
+<h4 class="unnumberedsubsec">入力</h4>
+
+     <dl>
+<dt><code>GR1</code><dd>WORD値を格納したアドレス
+
+     <br><dt><code>GR2</code><dd>値の個数
+</dl>
+
+<h4 class="unnumberedsubsec">出力</h4>
+
+     <dl>
+<dt><code>GR0</code><dd>最小値
+</dl>
+
+<h4 class="unnumberedsubsec">依存する副プログラム</h4>
+
+<p>なし
 
 <p><a name="MULA"></a>
 

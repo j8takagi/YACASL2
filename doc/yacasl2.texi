@@ -1126,11 +1126,74 @@ $ @kbd{casl2 call_divl.casl $CASL2LIBDIR/divl.casl $CASL2LIBDIR/outl.casl \
 @node L2STR, MAX, INL, CASL2LIB Manual
 @section @kbd{L2STR} - @file{l2str.casl}
 
+符号なし整数を文字列に変換する
+
+@unnumberedsubsec 入力
+@table @code
+@item GR1
+符号なし整数
+
+@item GR2
+変換した文字列を格納するアドレス
+@end table
+
+@unnumberedsubsec 出力
+@table @code
+@item GR0
+文字列の長さ
+@end table
+
+@unnumberedsubsec 依存する副プログラム
+@itemize
+@item
+@code{DIVL}
+@end itemize
+
 @node MAX, MINIM, L2STR, CASL2LIB Manual
 @section @kbd{MAX} - @file{max.casl}
 
+連続した複数のWORDを符号付き整数とみなして最大値を返す
+
+@unnumberedsubsec 入力
+@table @code
+@item GR1
+WORD値を格納したアドレス
+
+@item GR2
+値の個数
+@end table
+
+@unnumberedsubsec 出力
+@table @code
+@item GR0
+最大値
+@end table
+
+@unnumberedsubsec 依存する副プログラム
+なし
+
 @node MINIM, MULA, MAX, CASL2LIB Manual
 @section @kbd{MINIM} - @file{minim.casl}
+
+連続した複数のWORDを符号付き整数とみなして最小値を返す
+
+@unnumberedsubsec 入力
+@table @code
+@item GR1
+WORD値を格納したアドレス
+
+@item GR2
+値の個数
+@end table
+
+@unnumberedsubsec 出力
+@table @code
+@item GR0
+最小値
+@end table
+
+@unnumberedsubsec 依存する副プログラム
+なし
 
 @node MULA, MULL, MINIM, CASL2LIB Manual
 @section @kbd{MULA} - @file{mula.casl}
