@@ -275,11 +275,14 @@ YACASL2の動作はCASL IIの仕様に準拠しているため、情報処理試
 <h3 class="section">2.1 YACASL2ファイルのダウンロード</h3>
 
 <p>次の場所から最新版の<samp><span class="file">tar.gz</span></samp>ファイルをダウンロードします。
-<blockquote>
-<a href="http://github.com/j8takagi/YACASL2">GitHub/j8takagi/YACASL2</a>の<a href="http://github.com/j8takagi/YACASL2/downloads">ダウンロードページ</a>
-</blockquote>
 
- <p>続けて、対応する<samp><span class="file">md5sum</span></samp>ファイルをダウンロードします。
+     <ul>
+<li><a href="yacasl2.tar.gz">yacasl2.tar.gz</a> - YACASL2のファイル一式を<samp><span class="file">tar.gz</span></samp>形式で圧縮したもの
+
+     <li><a href="yacasl2.tar.gz.md5sum">yacasl2.tar.gz.md5sum</a> - <samp><span class="file">yacasl2.tar.gz</span></samp>のMD5ハッシュ値
+</ul>
+
+ <p>または、<a href="http://github.com/j8takagi/YACASL2/downloads">githubのダウンロードページ</a>からダウンロード、
 
 <p><a name="Verify"></a>
 
@@ -287,7 +290,7 @@ YACASL2の動作はCASL IIの仕様に準拠しているため、情報処理試
 
 <p>ダウンロードが完了したら、<kbd>md5sum</kbd>と<kbd>diff</kbd>で正しくファイルがダウンロードができているかを検証します。
 
-<pre class="example">  $ <kbd>md5sum yacasl2.tar.gz | diff -s yacasl2.tar.gz.md5sum -</kbd>
+<pre class="example">  $ <kbd>openssl md5sum yacasl2.tar.gz | diff -s yacasl2.tar.gz.md5sum -</kbd>
   Files yacasl2.tar.gz.md5sum and - are identical
 </pre>
  <p><a name="Expand"></a>

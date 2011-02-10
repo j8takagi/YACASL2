@@ -1,11 +1,12 @@
-INCLUDE = ../include
-CC = gcc
-CFLAGS = -g -Wall -I $(INCLUDE)
+INCLUDE := ../include
+CC := gcc
+CFLAGS := -g -Wall -I $(INCLUDE)
+RM := rm -f
 
-COMMONSRC = word.c cmem.c cerr.c
-CASL2SRC = struct.c cmd.c hash.c
-ASSRC = assemble.c token.c label.c
-EXECSRC = exec.c dump.c
+COMMONSRC := word.c cmem.c cerr.c
+CASL2SRC := struct.c cmd.c hash.c
+ASSRC := assemble.c token.c label.c
+EXECSRC := exec.c dump.c
 
 .PHONY: all clean
 

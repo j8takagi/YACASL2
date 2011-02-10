@@ -10,4 +10,3 @@ SRCFILES = $(SRCDIR)/cmem.c $(SRCDIR)/cerr.c cmd.c
 cmd: cmd.c $(SRCFILES)
 	gcc -g -Wall -I ../../../include -o $@ $^
 	rm -rf cmd.dSYM
-

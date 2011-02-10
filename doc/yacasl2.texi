@@ -14,7 +14,7 @@
 @c %**end of header
 
 @copying
-Copyright @copyright{} 2010 j8takagi
+Copyright @copyright{} 2010-2011 j8takagi
 @end copying
 
 @exampleindent 2
@@ -36,11 +36,11 @@ Copyright @copyright{} 2010 j8takagi
 @end ifnottex
 
 @menu
-* About::
-* Install::
-* Usage::
-* Command Manual::
-* CASL2LIB Manual::
+* About::                       YACASL2の概要
+* Install::                     YACASL2のインストール
+* Usage::                       YACASL2の使い方
+* Command Manual::              YACASL2コマンドマニュアル
+* CASL2LIB Manual::             CASL2LIBマニュアル
 @end menu
 
 @contents
@@ -113,24 +113,23 @@ YACASL2をインストールするには、Linux上で次の作業をします�
 * Build::    @kbd{casl2}、@kbd{comet2}、@kbd{dumpword}のビルド
 * Simple Test::    @kbd{casl2}の実行テスト
 * Detail Test::    詳細なテスト
-* Environment::    環境変数の設定
+* Environment::                 環境変数の設定
 @end menu
 
 @node Download, Verify, Install, Install
 @section YACASL2ファイルのダウンロード
 
 次の場所から最新版の@file{tar.gz}ファイルをダウンロードします。
-@iftex
-@cartouche
-@end iftex
-@quotation
-@uref{http://github.com/j8takagi/YACASL2, GitHub/j8takagi/YACASL2}の@uref{http://github.com/j8takagi/YACASL2/downloads, ダウンロードページ}
-@end quotation
-@iftex
-@end cartouche
-@end iftex
 
-続けて、対応する@file{md5sum}ファイルをダウンロードします。
+@itemize
+@item
+@uref{yacasl2.tar.gz} - YACASL2のファイル一式を@file{tar.gz}形式で圧縮したもの
+
+@item
+@uref{yacasl2.tar.gz.md5sum} - @file{yacasl2.tar.gz}のMD5ハッシュ値
+@end itemize
+
+または、@uref{http://github.com/j8takagi/YACASL2/downloads, githubのダウンロードページ}からダウンロード、
 
 @node Verify, Expand, Download, Install
 @section YACASL2ファイルの検証
@@ -138,7 +137,7 @@ YACASL2をインストールするには、Linux上で次の作業をします�
 ダウンロードが完了したら、@kbd{md5sum}と@kbd{diff}で正しくファイルがダウンロードができているかを検証します。
 
 @example
-$ @kbd{md5sum yacasl2.tar.gz | diff -s yacasl2.tar.gz.md5sum -}
+$ @kbd{openssl md5sum yacasl2.tar.gz | diff -s yacasl2.tar.gz.md5sum -}
 Files yacasl2.tar.gz.md5sum and - are identical
 @end example
 
@@ -928,21 +927,21 @@ $ @kbd{dumpword 10}
 @chapter CASL2LIBマニュアル
 
 @menu
-* ABS::
-* DIVA::
-* DIVL::
-* INL::
-* L2STR::
-* MAX::
-* MINIM::
-* MULA::
-* MULL::
-* OUTA::
-* OUTB::
-* OUTD_Q15::
-* OUTL::
-* REV::
-* STR2L::
+* ABS::                         @kbd{ABS} - @file{abs.casl}
+* DIVA::                        @kbd{DIVA} - @file{diva.casl}
+* DIVL::                        @kbd{DIVL} - @file{divl.casl}
+* INL::                         @kbd{INL} - @file{inl.casl}
+* L2STR::                       @kbd{L2STR} - @file{l2str.casl}
+* MAX::                         @kbd{MAX} - @file{max.casl}
+* MINIM::                       @kbd{MINIM} - @file{minim.casl}
+* MULA::                        @kbd{MULA} - @file{mula.casl}
+* MULL::                        @kbd{MULL} - @file{mull.casl}
+* OUTA::                        @kbd{OUTA} - @file{outa.casl}
+* OUTB::                        @kbd{OUTB} - @file{outb.casl}
+* OUTD_Q15::                    @kbd{OUTD_Q15} - @file{outd_q15.casl}
+* OUTL::                        @kbd{OUTL} - @file{outl.casl}
+* REV::                         @kbd{REV} - @file{rev.casl}
+* STR2L::                       @kbd{STR2L} - @file{str2l.casl}
 @end menu
 
 @node ABS, DIVA, CASL2LIB Manual, CASL2LIB Manual

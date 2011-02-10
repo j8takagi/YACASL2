@@ -11,6 +11,13 @@ h1, h2 {
 
 .node{
     margin-left: -3em;
+    color: inherit;
+    background-color: #DDF;
+}
+
+.menu, .node {
+    color: inherit;
+    background-color: #DDF;
 }
 
 h2 {
@@ -19,13 +26,41 @@ h2 {
     background-color: navy;
 }
 
-h3, h4 {
+.contents {
+    background-color: #DDF;
+    border: 4px double #000;
+}
+
+.contents h2 {
+    margin-left: 0;
+    color: black;
+    background-color: #DDF;
+}
+
+.shortcontents {
+    background-color: #DDF;
+    border: 4px double #000;
+ }
+
+.shortcontents h2{
+    display: none;
+}
+
+.shortcontents a {
+   margin-right: 1em;
+}
+
+h3, h4, h5 {
     color: navy;
     margin-left: -1em;
 }
 
+h5 {
+    font-size: 100%;
+}
+
 p {
-    line-height: 1.5em;
+    line-height: 1.25em;
     margin-top: 0;
     margin-bottom: 0.5em;
 }
@@ -33,14 +68,6 @@ p {
 a:hover {
     color: red;
     text-decoration: underline;
-}
-
-kbd {
-    font-family: monospace;
-}
-
-table.cartouche {
-    width: 60%;
 }
 
 pre.example {
@@ -54,10 +81,18 @@ a {
     text-decoration: none;
 }
 
-blockquote.p {
-    margin-top:0;
-    padding-top:0;
-    line-height: 100%;
+blockquote {
+    line-height: 1.25em;
+    border: 1px solid #00F;
+}
+
+kbd {
+    font-family: monospace;
+}
+
+kbd, code, .file {
+    margin-left:0.5em;
+    margin-right: 0.5em;
 }
 
 table, th, td {
@@ -69,13 +104,20 @@ table.cartouche, table.cartouche th, table.cartouche td  {
     border: none;
 }
 
-pre.example kbd, pre.example .option {
+pre.example .command, pre.example .option, pre.example kbd {
     font-weight: bold;
+    font-family: monospace;
     background-color: inherit;
     color: white;
+    margin-left:0;
+    margin-right: 0;
 }
 
-pre.example em {
+pre.example strong {
     font: inherit;
     border: 2px solid green;
+}
+
+dt {
+    font-weight: bold;
 }
