@@ -1,13 +1,13 @@
 <html lang="en">
 <head>
-<title>YACASL2 - Linux上のCASL II処理系</title>
+<title>YACASL2 - CASL II処理システム</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="description" content="YACASL2 - Linux上のCASL II処理系">
+<meta name="description" content="YACASL2 - CASL II処理システム">
 <meta name="generator" content="makeinfo 4.13">
 <link title="Top" rel="top" href="#Top">
 <link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
 <!--
-Copyright (C) 2010 j8takagi-->
+Copyright (C) 2010-2011 j8takagi-->
 <meta http-equiv="Content-Style-Type" content="text/css">
 <style type="text/css"><!--
   pre.display { font-family:inherit }
@@ -32,6 +32,13 @@ h1, h2 {
 
 .node{
     margin-left: -3em;
+    color: inherit;
+    background-color: #DDF;
+}
+
+.menu, .node {
+    color: inherit;
+    background-color: #DDF;
 }
 
 h2 {
@@ -40,13 +47,41 @@ h2 {
     background-color: navy;
 }
 
-h3, h4 {
+.contents {
+    background-color: #DDF;
+    border: 4px double #000;
+}
+
+.contents h2 {
+    margin-left: 0;
+    color: black;
+    background-color: #DDF;
+}
+
+.shortcontents {
+    background-color: #DDF;
+    border: 4px double #000;
+ }
+
+.shortcontents h2{
+    display: none;
+}
+
+.shortcontents a {
+   margin-right: 1em;
+}
+
+h3, h4, h5 {
     color: navy;
     margin-left: -1em;
 }
 
+h5 {
+    font-size: 100%;
+}
+
 p {
-    line-height: 1.5em;
+    line-height: 1.25em;
     margin-top: 0;
     margin-bottom: 0.5em;
 }
@@ -54,14 +89,6 @@ p {
 a:hover {
     color: red;
     text-decoration: underline;
-}
-
-kbd {
-    font-family: monospace;
-}
-
-table.cartouche {
-    width: 60%;
 }
 
 pre.example {
@@ -75,10 +102,18 @@ a {
     text-decoration: none;
 }
 
-blockquote.p {
-    margin-top:0;
-    padding-top:0;
-    line-height: 100%;
+blockquote {
+    line-height: 1.25em;
+    border: 1px solid #00F;
+}
+
+kbd {
+    font-family: monospace;
+}
+
+kbd, code, .file {
+    margin-left:0.5em;
+    margin-right: 0.5em;
 }
 
 table, th, td {
@@ -90,23 +125,42 @@ table.cartouche, table.cartouche th, table.cartouche td  {
     border: none;
 }
 
-pre.example kbd, pre.example .option {
+pre.example .command, pre.example .option, pre.example kbd {
     font-weight: bold;
+    font-family: monospace;
     background-color: inherit;
     color: white;
+    margin-left:0;
+    margin-right: 0;
 }
 
-pre.example em {
+pre.example strong {
     font: inherit;
     border: 2px solid green;
 }
---></style>
+
+dt {
+    font-weight: bold;
+}--></style>
 </head>
 <body>
-<h1 class="settitle">YACASL2 - Linux上のCASL II処理系</h1>
+<h1 class="settitle">YACASL2 - CASL II処理システム</h1>
+<div class="node">
 <a name="Top"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#About">About</a>
 
-<div class="contents">
+</div>
+
+<ul class="menu">
+<li><a accesskey="1" href="#About">About</a>:                        YACASL2の概要
+<li><a accesskey="2" href="#Install">Install</a>:                      YACASL2のインストール
+<li><a accesskey="3" href="#Usage">Usage</a>:                        YACASL2の使い方
+<li><a accesskey="4" href="#Command-Manual">Command Manual</a>:               YACASL2コマンドマニュアル
+<li><a accesskey="5" href="#CASL2LIB-Manual">CASL2LIB Manual</a>:              CASL2LIBマニュアル
+</ul>
+
+ <div class="contents">
 <h2>Table of Contents</h2>
 <ul>
 <li><a name="toc_About" href="#About">1 YACASL2の概要</a>
@@ -118,7 +172,7 @@ pre.example em {
 <li><a href="#Download">2.1 YACASL2ファイルのダウンロード</a>
 <li><a href="#Verify">2.2 YACASL2ファイルの検証</a>
 <li><a href="#Expand">2.3 YACASL2ファイルの展開</a>
-<li><a href="#Build">2.4 <kbd>casl2</kbd>、<kbd>comet2</kbd>、<kbd>dumpword</kbd>のビルド</a>
+<li><a href="#Build">2.4 <kbd>casl2</kbd> <kbd>comet2</kbd> <kbd>dumpword</kbd>のビルド</a>
 <li><a href="#Simple-Test">2.5 <kbd>casl2</kbd>の実行テスト</a>
 <li><a href="#Detail-Test">2.6 詳細なテスト</a>
 <li><a href="#Environment">2.7 環境変数の設定</a>
@@ -140,9 +194,9 @@ pre.example em {
 </li></ul>
 <li><a href="#Only-Assemble">3.4 アセンブルと実行を別に行う</a>
 <li><a href="#Analyze-Word">3.5 1語の解析</a>
-<li><a href="#CASL2lib">3.6 CASL2ライブラリの使用</a>
+<li><a href="#Use-CASL2LIB">3.6 CASL2ライブラリの使用</a>
 <ul>
-<li><a href="#CASL2lib">3.6.1 数値を出力する</a>
+<li><a href="#Use-CASL2LIB">3.6.1 数値を出力する</a>
 </li></ul>
 </li></ul>
 <li><a name="toc_Command-Manual" href="#Command-Manual">4 YACASL2コマンドマニュアル</a>
@@ -220,11 +274,18 @@ pre.example em {
 </li></ul>
 </div>
 
-<p><a name="About"></a>
+<div class="node">
+<a name="About"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Install">Install</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Top">Top</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
 
 <h2 class="chapter">1 YACASL2の概要</h2>
 
-<p>YACASL2は、UNIX／Linuxのコマンドラインインターフェイスで動作するオープンソースのCASL II処理システムです。CASL IIは情報処理試験で用いられるアセンブラ言語で、次の資料により仕様が公開されています。
+ <p>YACASL2は、UNIX／Linuxのコマンドラインインターフェイスで動作するオープンソースのCASL II処理システムです。CASL IIは情報処理試験で用いられるアセンブラ言語で、次の資料により仕様が公開されています。
 
  <blockquote>
 <a href="http://www.jitec.ipa.go.jp/1_00topic/topic_20081027_hani_yougo.pdf">試験で使用する情報処理用語・プログラム言語など（2008年10月版）</a>［PDFファイル］
@@ -246,13 +307,13 @@ YACASL2の動作はCASL IIの仕様に準拠しているため、情報処理試
      <li>実行時のメモリの内容
 </ul>
 
- <p>出力された動作内容は、GNU/Linuxのさまざまなツール、たとえば<kbd>cat</kbd>、<kbd>less</kbd>、<kbd>grep</kbd>、<kbd>wc</kbd>などを使って解析できます。
+ <p>出力された動作内容は、GNU/Linuxのさまざまなツール、たとえば、<kbd>cat</kbd> <kbd>less</kbd> <kbd>grep</kbd> <kbd>wc</kbd>などを使って解析できます。
 
  <p>YACASL2の操作は、端末を開いてコマンドを入力・実行することで行います。
 
 <h3 class="unnumberedsec">要件</h3>
 
-<p>YACASL2は、LinuxやMac OS Xなど、UNIX系のOS上で動作します。現在動作を確認しているのは、次の環境です。
+ <p>YACASL2は、LinuxやMac OS Xなど、UNIX系のOS上で動作します。現在動作を確認しているのは、次の環境です。
 
      <ul>
 <li>Ubuntu Linux 10.04
@@ -262,348 +323,453 @@ YACASL2の動作はCASL IIの仕様に準拠しているため、情報処理試
      <li>Mac OS X 10.6.5
 </ul>
 
- <p>インストール時に、<kbd>tar</kbd>、<kbd>gcc</kbd>、<kbd>make</kbd>が必要です。Linuxの場合は、標準でインストールされていることが多いと思います。Mac OS Xの場合、<code>Xcode</code>をインストールしてください。
+ <p>インストール時に、<kbd>tar</kbd> <kbd>gcc</kbd> <kbd>make</kbd>が必要です。Linuxでは多くの場合、標準でインストールされています。Mac OS Xの場合、<code>Xcode</code>をインストールするといっしょにインストールされます。
 
-<p><a name="Install"></a>
+<div class="node">
+<a name="Install"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Usage">Usage</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#About">About</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
 
 <h2 class="chapter">2 YACASL2のインストール</h2>
 
-<p>YACASL2をインストールするには、Linux上で次の作業をします。
+ <p>YACASL2をインストールするには、Linux上で次の作業をします。
 
-<p><a name="Download"></a>
+<ul class="menu">
+<li><a accesskey="1" href="#Download">Download</a>:                     YACASL2ファイルのダウンロード
+<li><a accesskey="2" href="#Verify">Verify</a>:                       YACASL2ファイルの検証
+<li><a accesskey="3" href="#Expand">Expand</a>:                       YACASL2ファイルの展開
+<li><a accesskey="4" href="#Build">Build</a>:                        <kbd>casl2</kbd> <kbd>comet2</kbd> <kbd>dumpword</kbd>のビルド
+<li><a accesskey="5" href="#Simple-Test">Simple Test</a>:                  <kbd>casl2</kbd>の実行テスト
+<li><a accesskey="6" href="#Detail-Test">Detail Test</a>:                  詳細なテスト
+<li><a accesskey="7" href="#Environment">Environment</a>:                  環境変数の設定
+</ul>
+
+<div class="node">
+<a name="Download"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Verify">Verify</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Install">Install</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Install">Install</a>
+
+</div>
 
 <h3 class="section">2.1 YACASL2ファイルのダウンロード</h3>
 
-<p>次の場所から最新版の<samp><span class="file">tar.gz</span></samp>ファイルをダウンロードします。
+ <p><a href="http://www.j8takagi.net/yacasl2/">YACASL2のサイト</a>または<a href="http://github.com/j8takagi/YACASL2/downloads/">githubのダウンロードページ</a>から最新版の<samp><span class="file">tar.gz</span></samp>ファイルをダウンロードします。
 
-     <ul>
-<li><a href="yacasl2.tar.gz">yacasl2.tar.gz</a> - YACASL2のファイル一式を<samp><span class="file">tar.gz</span></samp>形式で圧縮したもの
+<div class="node">
+<a name="Verify"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Expand">Expand</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Download">Download</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Install">Install</a>
 
-     <li><a href="yacasl2.tar.gz.md5sum">yacasl2.tar.gz.md5sum</a> - <samp><span class="file">yacasl2.tar.gz</span></samp>のMD5ハッシュ値
-</ul>
-
- <p>または、<a href="http://github.com/j8takagi/YACASL2/downloads">githubのダウンロードページ</a>からダウンロード、
-
-<p><a name="Verify"></a>
+</div>
 
 <h3 class="section">2.2 YACASL2ファイルの検証</h3>
 
-<p>ダウンロードが完了したら、<kbd>md5sum</kbd>と<kbd>diff</kbd>で正しくファイルがダウンロードができているかを検証します。
+ <p>ダウンロードが完了したら、<kbd>md5sum</kbd>と<kbd>diff</kbd>で正しくファイルがダウンロードができているかを検証します。
 
-<pre class="example">  $ <kbd>openssl md5sum yacasl2.tar.gz | diff -s yacasl2.tar.gz.md5sum -</kbd>
-  Files yacasl2.tar.gz.md5sum and - are identical
+<pre class="example">$ <kbd>openssl md5sum yacasl2.tar.gz | diff -s yacasl2.tar.gz.md5sum -</kbd>
+Files yacasl2.tar.gz.md5sum and - are identical
 </pre>
- <p><a name="Expand"></a>
+ <div class="node">
+<a name="Expand"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Build">Build</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Verify">Verify</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Install">Install</a>
+
+</div>
 
 <h3 class="section">2.3 YACASL2ファイルの展開</h3>
 
-<p>YACASL2ファイルをダウンロードしたら、次のコマンドで展開します。
+ <p>YACASL2ファイルをダウンロードしたら、次のコマンドで展開します。
 
-<pre class="example">  $ <kbd>tar xvzf yacasl2.tar.gz</kbd>
+<pre class="example">$ <kbd>tar xvzf yacasl2.tar.gz</kbd>
 </pre>
- <p><a name="Build"></a>
+ <div class="node">
+<a name="Build"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Simple-Test">Simple Test</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Expand">Expand</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Install">Install</a>
 
-<h3 class="section">2.4 <kbd>casl2</kbd>、<kbd>comet2</kbd>、<kbd>dumpword</kbd>のビルド</h3>
+</div>
 
-<p>展開したら、次のコマンドで<kbd>casl2</kbd>、<kbd>comet2</kbd>、<kbd>dumpword</kbd>をビルドします。
+<h3 class="section">2.4 <kbd>casl2</kbd> <kbd>comet2</kbd> <kbd>dumpword</kbd>のビルド</h3>
 
-<pre class="example">  $ <kbd>cd yacasl2</kbd>
-  $ <kbd>make</kbd>
-  make -C src
-  make[1]: Entering directory ‘/home/kazubito/yacasl2/src’
-  gcc -c -g -Wall -I ../include casl2.c
-  gcc -c -g -Wall -I ../include word.c
-  gcc -c -g -Wall -I ../include hash.c
-  gcc -c -g -Wall -I ../include cerr.c
-  gcc -c -g -Wall -I ../include struct.c
-  gcc -c -g -Wall -I ../include cmd.c
-  gcc -c -g -Wall -I ../include assemble.c
-  gcc -c -g -Wall -I ../include token.c
-  gcc -c -g -Wall -I ../include label.c
-  gcc -c -g -Wall -I ../include macro.c
-  gcc -c -g -Wall -I ../include exec.c
-  gcc -c -g -Wall -I ../include dump.c
-  gcc -g -Wall -I ../include -o ../casl2 casl2.o word.o hash.o cerr.o st
-  ruct.o cmd.o assemble.o token.o label.o macro.o exec.o dump.o
-  gcc -c -g -Wall -I ../include comet2.c
-  gcc -g -Wall -I ../include -o ../comet2 comet2.o word.o hash.o cerr.o
-  struct.o cmd.o exec.o dump.o
-  gcc -c -g -Wall -I ../include dumpword.c
-  gcc -g -Wall -I ../include -o ../dumpword dumpword.o word.o cerr.o
-  make[1]: Leaving directory ‘/home/kazubito/yacasl2/src’
+ <p>展開したら、次のコマンドで<kbd>casl2</kbd> <kbd>comet2</kbd> <kbd>dumpword</kbd>をビルドします。
+
+<pre class="example">$ <kbd>cd yacasl2</kbd>
+$ <kbd>make</kbd>
+make -C src
+make[1]: Entering directory ‘/home/kazubito/yacasl2/src’
+gcc -c -g -Wall -I ../include casl2.c
+gcc -c -g -Wall -I ../include word.c
+gcc -c -g -Wall -I ../include hash.c
+gcc -c -g -Wall -I ../include cerr.c
+gcc -c -g -Wall -I ../include struct.c
+gcc -c -g -Wall -I ../include cmd.c
+gcc -c -g -Wall -I ../include assemble.c
+gcc -c -g -Wall -I ../include token.c
+gcc -c -g -Wall -I ../include label.c
+gcc -c -g -Wall -I ../include macro.c
+gcc -c -g -Wall -I ../include exec.c
+gcc -c -g -Wall -I ../include dump.c
+gcc -g -Wall -I ../include -o ../casl2 casl2.o word.o hash.o cerr.o st
+ruct.o cmd.o assemble.o token.o label.o macro.o exec.o dump.o
+gcc -c -g -Wall -I ../include comet2.c
+gcc -g -Wall -I ../include -o ../comet2 comet2.o word.o hash.o cerr.o
+struct.o cmd.o exec.o dump.o
+gcc -c -g -Wall -I ../include dumpword.c
+gcc -g -Wall -I ../include -o ../dumpword dumpword.o word.o cerr.o
+make[1]: Leaving directory ‘/home/kazubito/yacasl2/src’
 </pre>
- <p><a name="Simple-Test"></a>
+ <div class="node">
+<a name="Simple-Test"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Detail-Test">Detail Test</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Build">Build</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Install">Install</a>
+
+</div>
 
 <h3 class="section">2.5 <kbd>casl2</kbd>の実行テスト</h3>
 
-<p>ビルドしたら、次のコマンドが正常に実行できるかを確認します。
+ <p>ビルドしたら、次のコマンドが正常に実行できるかを確認します。
 正常に実行された場合は、「Hello, World!」と表示されます。
 
-<pre class="example">  $ <kbd>./casl2 as/hello.casl</kbd>
-  Hello, World!
+<pre class="example">$ <kbd>./casl2 as/hello.casl</kbd>
+Hello, World!
 </pre>
- <p><a name="Detail-Test"></a>
+ <div class="node">
+<a name="Detail-Test"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Environment">Environment</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Simple-Test">Simple Test</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Install">Install</a>
+
+</div>
 
 <h3 class="section">2.6 詳細なテスト</h3>
 
-<p>次のコマンドを実行すると、正常にビルドできているかどうかを詳細にテストできます。
+ <p>次のコマンドを実行すると、正常にビルドできているかどうかを詳細にテストできます。
 
-<pre class="example">  $ <kbd>make check</kbd>
-  195 / 195 tests passed. Details in /home/username/yacasl2/test/integra
-  tion/casl2/Test.log
-  All tests are succeded.
-  149 / 149 tests passed. Details in /home/username/yacasl2/test/integra
-  tion/comet2/Test.log
-  All tests are succeded.
-  4 / 4 tests passed. Details in /home/username/yacasl2/test/integration
-  /dumpword/Test.log
-  All tests are succeded.
+<pre class="example">$ <kbd>make check</kbd>
+195 / 195 tests passed. Details in /home/username/yacasl2/test/integra
+tion/casl2/Test.log
+All tests are succeded.
+149 / 149 tests passed. Details in /home/username/yacasl2/test/integra
+tion/comet2/Test.log
+All tests are succeded.
+4 / 4 tests passed. Details in /home/username/yacasl2/test/integration
+/dumpword/Test.log
+All tests are succeded.
 </pre>
- <p><a name="Environment"></a>
+ <div class="node">
+<a name="Environment"></a>
+<p><hr>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Detail-Test">Detail Test</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Install">Install</a>
+
+</div>
 
 <h3 class="section">2.7 環境変数の設定</h3>
 
-<p>環境変数を設定することで、YACASL2が使いやすくなります。環境変数の設定は、シェルの初期設定ファイルに追加することでログインしたあと自動的に反映されます。
-するときは、
-環境変数<code>PATH</code>にYACASL2のディレクトリを追加すると、どのディレクトリでも<kbd>casl2</kbd>、<kbd>comet2</kbd>、<kbd>dumpword</kbd>を実行できます。また、
+ <p>環境変数<code>PATH</code>や<code>CASL2LIB</code>を設定することで、YACASL2が使いやすくなります。環境変数は、使っているシェルを確認してから設定します。
 
 <h4 class="unnumberedsubsec">シェルの確認</h4>
 
-<p>環境変数の設定方法は使っているシェルによって異なります。シェルは、次のコマンドで確認できます。
+ <p>環境変数の設定方法は使っているシェルによって異なります。シェルは、次のコマンドで確認できます。
 
-<pre class="example">  $ <kbd>echo $SHELL</kbd>
-  /bin/bash
+<pre class="example">$ <kbd>echo $SHELL</kbd>
+/bin/bash
 </pre>
- <p>現在もっとも多く使われているシェルは、BASHでしょう。以下、BASHでの設定方法を記載します。
+ <p>現在もっとも多く使われているシェルは、BASHでしょう。以下、BASHでの設定方法を説明します。
 
 <h4 class="unnumberedsubsec"><code>PATH</code>にYACASL2のディレクトリを追加</h4>
 
-<p><code>PATH</code>にYACASL2のディレクトリを追加すると、どのディレクトリでもディレクトリを指定せずに<kbd>casl2</kbd>、<kbd>comet2</kbd>、<kbd>dumpword</kbd>を実行できます。YACASL2をホームディレクトリ<code>~</code>にインストールしたときは、次のコマンドで設定できます。
+ <p><code>PATH</code>にYACASL2のディレクトリを追加すると、どのディレクトリでもディレクトリを指定せずに<kbd>casl2</kbd>、<kbd>comet2</kbd>、<kbd>dumpword</kbd>を実行できます。YACASL2をホームディレクトリ<code>~</code>にインストールしたときは、次のコマンドで設定できます。
 
-<pre class="example">  $ <kbd>PATH=$PATH:~/yacasl2 &amp;&amp; export PATH</kbd>
+<pre class="example">$ <kbd>PATH=$PATH:~/yacasl2 &amp;&amp; export PATH</kbd>
 </pre>
- <p>BASHではホームディレクトリにある<samp><span class="file">.bashrc</span></samp>が初期設定ファイルです。次のコマンドで追加できます。
+ <p>環境変数の設定は、シェルの初期設定ファイルに追加することでログインしたあと自動的に反映されるようになります。BASHではホームディレクトリにある<samp><span class="file">.bashrc</span></samp>が初期設定ファイルです。次のコマンドで追加できます。
 
-<pre class="example">  $ <kbd>echo ’PATH=$PATH:~/yacasl2 &amp;&amp; export PATH’ &gt;&gt;~/.bashrc</kbd>
+<pre class="example">$ <kbd>echo ’PATH=$PATH:~/yacasl2 &amp;&amp; export PATH’ &gt;&gt;~/.bashrc</kbd>
 </pre>
  <h4 class="unnumberedsubsec"><code>CASL2LIB</code>の設定</h4>
 
-<p>環境変数<code>CASL2LIB</code>を設定しておけば、後述するCASL2LIBを利用するときの手間が小さくなります。YACASL2をホームディレクトリ<code>~</code>にインストールしたときは、次のコマンドで設定できます。
+ <p>環境変数<code>CASL2LIB</code>を設定しておけば、後述するCASL2LIBを利用するときの手間が小さくなります。YACASL2をホームディレクトリ<code>~</code>にインストールしたときは、次のコマンドで設定できます。
 
-<pre class="example">  $ <kbd>CASL2LIB=~/yacasl2/as/casl2lib &amp;&amp; export CASL2LIB</kbd>
+<pre class="example">$ <kbd>CASL2LIB=~/yacasl2/as/casl2lib &amp;&amp; export CASL2LIB</kbd>
 </pre>
  <p>BASHの初期設定ファイル<samp><span class="file">.bashrc</span></samp>には、次のコマンドで追加できます。
 
-<pre class="example">  $ <kbd> echo 'CASL2LIB=~/yacasl2/as/casl2lib &amp;&amp; export CASL2LIB' &gt;&gt;~/.bashrc</kbd>
+<pre class="example">$ <kbd> echo 'CASL2LIB=~/yacasl2/as/casl2lib &amp;&amp; export CASL2LIB' &gt;&gt;~/.bashrc</kbd>
 </pre>
- <p><a name="Usage"></a>
+ <div class="node">
+<a name="Usage"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Command-Manual">Command Manual</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Install">Install</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
 
 <h2 class="chapter">3 YACASL2の使い方</h2>
 
-<p>YACASL2 は、テキストファイルに記述されたCASLプログラムを処理します。以下の例で用いられるCASLプログラムのファイルは、テキストエディタなどで作成してください。また、インストールしたディレクトリの中にある<samp><span class="file">as</span></samp>ディレクトリからコピーして作成することもできます。
+ <p>YACASL2 は、テキストファイルに記述されたCASLプログラムを処理します。以下の例で用いられるCASLプログラムのファイルは、テキストエディタなどで作成してください。また、インストールしたディレクトリの中にある<samp><span class="file">as</span></samp>ディレクトリからコピーして作成することもできます。
 
-<p><a name="Simple-Output"></a>
+<ul class="menu">
+<li><a accesskey="1" href="#Simple-Output">Simple Output</a>:                実行結果の出力だけを表示
+<li><a accesskey="2" href="#Assemble-Result">Assemble Result</a>:              アセンブル結果の確認
+<li><a accesskey="3" href="#Register-and-Memory">Register and Memory</a>:          実行時のレジスタとメモリを表示
+<li><a accesskey="4" href="#Only-Assemble">Only Assemble</a>:                アセンブルと実行を別に行う
+<li><a accesskey="5" href="#Analyze-Word">Analyze Word</a>:                 1語の解析
+<li><a accesskey="6" href="#Use-CASL2LIB">Use CASL2LIB</a>:                 CASL2ライブラリの使用
+</ul>
+
+<div class="node">
+<a name="Simple-Output"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Assemble-Result">Assemble Result</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Usage">Usage</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Usage">Usage</a>
+
+</div>
 
 <h3 class="section">3.1 実行結果の出力だけを表示</h3>
 
-<p>インストール時にコマンド実行の確認に使った<samp><span class="file">hello.casl</span></samp>は、次のような内容です。CASL IIのマクロ命令OUTは、文字列を出力します。
+ <p>インストール時にコマンド実行の確認に使った<samp><span class="file">hello.casl</span></samp>は、次のような内容です。CASL IIのマクロ命令OUTは、文字列を出力します。
 
-<pre class="example">  $ <kbd>cat hello.casl</kbd>
-  MAIN     START
-           OUT     OBUF,LEN
-           RET
-  OBUF     DC      'Hello, World!'
-  LEN      DC      13
-           END
+<pre class="example">$ <kbd>cat hello.casl</kbd>
+MAIN     START
+         OUT     OBUF,LEN
+         RET
+OBUF     DC      'Hello, World!'
+LEN      DC      13
+         END
 </pre>
  <p>次のコマンドを実行すると、CASL II のアセンブルと仮想マシン COMET II 上での実行が連続で行われ、文字列が出力されます。
 
-<pre class="example">  $ <kbd>casl2 hello.casl</kbd>
-  Hello, World!
+<pre class="example">$ <kbd>casl2 hello.casl</kbd>
+Hello, World!
 </pre>
  <p><samp><span class="file">addl.casl</span></samp>は、3と1の和を求めます。
 
-<pre class="example">  $ <kbd>cat addl.casl</kbd>
-  ;;; ADDL r,adr
-  MAIN     START
-           LD      GR1,A
-           ADDL    GR1,B
-           RET
-  A        DC      3
-  B        DC      1
-           END
+<pre class="example">$ <kbd>cat addl.casl</kbd>
+;;; ADDL r,adr
+MAIN     START
+         LD      GR1,A
+         ADDL    GR1,B
+         RET
+A        DC      3
+B        DC      1
+         END
 </pre>
  <p>このプログラムには出力命令がないため、オプションなしで実行した場合には結果が出力されません。
 
-<pre class="example">  $ <kbd>casl2 addl.casl</kbd>
-  $
+<pre class="example">$ <kbd>casl2 addl.casl</kbd>
+$
 </pre>
  <p>実行内容を確認するには、後述のようにCPU 内にあるレジスタやメモリの内容を表示するか、結果を出力するための処理を追加する必要があります。
 
-<p><a name="Assemble-Result"></a>
+<div class="node">
+<a name="Assemble-Result"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Register-and-Memory">Register and Memory</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Simple-Output">Simple Output</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Usage">Usage</a>
+
+</div>
 
 <h3 class="section">3.2 アセンブル結果の確認</h3>
 
-<p>casl2の処理途中で行われるアセンブルの結果を表示するには、オプション<samp><span class="option">-a</span></samp>を指定します。また、ラベルとアドレスの対応表を表示するには、オプション<samp><span class="option">-l</span></samp>を指定します。
+ <p>casl2の処理途中で行われるアセンブルの結果を表示するには、オプション<samp><span class="option">-a</span></samp>を指定します。また、ラベルとアドレスの対応表を表示するには、オプション<samp><span class="option">-l</span></samp>を指定します。
 
  <p>次のコマンドでは<samp><span class="file">hello.casl</span></samp>の、ラベルとアドレスの対応表と、アセンブル結果と、実行結果が表示されます。OUTはアセンブラ命令で複数の機械語命令で構成されているため、命令行1行に対して、複数行のコードが生成されます。
 
-<pre class="example">  $ <kbd>casl2 -a -l hello.casl</kbd>
-  
-  Assemble hello.casl (0)
-  
-  Label::::
-  MAIN.LEN ---&gt; #0020
-  MAIN ---&gt; #0000
-  MAIN.OBUF ---&gt; #0013
-  
-  Assemble hello.casl (1)
-  hello.casl:    1:MAIN    START
-  hello.casl:    2:        OUT     OBUF,LEN
-      #0000   #7001
-      #0001   #0000
-      #0002   #7002
-      #0003   #0000
-      #0004   #1210
-      #0005   #0013
-      #0006   #1220
-      #0007   #0020
-      #0008   #F000
-      #0009   #0002
-      #000A   #1210
-      #000B   #0021
-      #0021   #000A
-      #000C   #1220
-      #000D   #0022
-      #0022   #0001
-      #000E   #F000
-      #000F   #0002
-      #0010   #7120
-      #0011   #7110
-  hello.casl:    3:        RET
-      #0012   #8100
-  hello.casl:    4:OBUF    DC      'Hello, World!'
-      #0013   #0048
-      #0014   #0065
-      #0015   #006C
-      #0016   #006C
-      #0017   #006F
-      #0018   #002C
-      #0019   #0020
-      #001A   #0057
-      #001B   #006F
-      #001C   #0072
-      #001D   #006C
-      #001E   #0064
-      #001F   #0021
-  hello.casl:    5:LEN     DC      13
-      #0020   #000D
-  hello.casl:    6:        END
-  Hello, World!
+<pre class="example">$ <kbd>casl2 -a -l hello.casl</kbd>
+
+Assemble hello.casl (0)
+
+Label::::
+MAIN.LEN ---&gt; #0020
+MAIN ---&gt; #0000
+MAIN.OBUF ---&gt; #0013
+
+Assemble hello.casl (1)
+hello.casl:    1:MAIN    START
+hello.casl:    2:        OUT     OBUF,LEN
+    #0000   #7001
+    #0001   #0000
+    #0002   #7002
+    #0003   #0000
+    #0004   #1210
+    #0005   #0013
+    #0006   #1220
+    #0007   #0020
+    #0008   #F000
+    #0009   #0002
+    #000A   #1210
+    #000B   #0021
+    #0021   #000A
+    #000C   #1220
+    #000D   #0022
+    #0022   #0001
+    #000E   #F000
+    #000F   #0002
+    #0010   #7120
+    #0011   #7110
+hello.casl:    3:        RET
+    #0012   #8100
+hello.casl:    4:OBUF    DC      'Hello, World!'
+    #0013   #0048
+    #0014   #0065
+    #0015   #006C
+    #0016   #006C
+    #0017   #006F
+    #0018   #002C
+    #0019   #0020
+    #001A   #0057
+    #001B   #006F
+    #001C   #0072
+    #001D   #006C
+    #001E   #0064
+    #001F   #0021
+hello.casl:    5:LEN     DC      13
+    #0020   #000D
+hello.casl:    6:        END
+Hello, World!
 </pre>
  <p><samp><span class="file">addl.casl</span></samp>の、ラベルとアドレスの対応表と、アセンブル結果は、次のようになります。
 
-<pre class="example">  $ <kbd>casl2 -a -l addl.casl</kbd>
-  
-  Assemble addl.casl (0)
-  
-  Label::::
-  MAIN.A ---&gt; #0005
-  MAIN.B ---&gt; #0006
-  MAIN ---&gt; #0000
-  
-  Assemble addl.casl (1)
-  addl.casl:    1:;;; ADDL r,adr
-  addl.casl:    2:MAIN    START
-  addl.casl:    3:        LD      GR1,A
-      #0000   #1010
-      #0001   #0005
-  addl.casl:    4:        ADDL    GR1,B
-      #0002   #2210
-      #0003   #0006
-  addl.casl:    5:        RET
-      #0004   #8100
-  addl.casl:    6:A       DC      3
-      #0005   #0003
-  addl.casl:    7:B       DC      1
-      #0006   #0001
-  addl.casl:    8:        END
+<pre class="example">$ <kbd>casl2 -a -l addl.casl</kbd>
+
+Assemble addl.casl (0)
+
+Label::::
+MAIN.A ---&gt; #0005
+MAIN.B ---&gt; #0006
+MAIN ---&gt; #0000
+
+Assemble addl.casl (1)
+addl.casl:    1:;;; ADDL r,adr
+addl.casl:    2:MAIN    START
+addl.casl:    3:        LD      GR1,A
+    #0000   #1010
+    #0001   #0005
+addl.casl:    4:        ADDL    GR1,B
+    #0002   #2210
+    #0003   #0006
+addl.casl:    5:        RET
+    #0004   #8100
+addl.casl:    6:A       DC      3
+    #0005   #0003
+addl.casl:    7:B       DC      1
+    #0006   #0001
+addl.casl:    8:        END
 </pre>
  <p>なお、オプション<samp><span class="option">-A</span></samp>を指定すると、アセンブル結果が表示される時点で処理が終了します。仮想マシンCOMET II での実行は行われません。
 
-<p><a name="Register-and-Memory"></a>
+<div class="node">
+<a name="Register-and-Memory"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Only-Assemble">Only Assemble</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Assemble-Result">Assemble Result</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Usage">Usage</a>
+
+</div>
 
 <h3 class="section">3.3 実行時のレジスタとメモリを表示</h3>
 
-<p>YACASL2では実行中のCPUのレジスタとメモリの内容をそれぞれ、<samp><span class="option">-t</span></samp>と<samp><span class="option">-d</span></samp>を指定することで表示できます。
+ <p>YACASL2では実行中のCPUのレジスタとメモリの内容をそれぞれ、<samp><span class="option">-t</span></samp>と<samp><span class="option">-d</span></samp>を指定することで表示できます。
 
  <p>また、<samp><span class="option">-M</span></samp>で、仮想マシンCOMET II のメモリ容量を語(16 ビット)単位で指定できます。小さいプログラムを実行するときは、メモリ容量を小さくすれば結果が見やすくなります。
 
+<ul class="menu">
+<li><a accesskey="1" href="#Register-Specify">Register Specify</a>:             特定のレジスタを表示
+<li><a accesskey="2" href="#Ending-Value">Ending Value</a>:                 プログラム終了時の値を表示
+<li><a accesskey="3" href="#Step-Count">Step Count</a>:                   プログラムのステップ数を表示
+</ul>
+
  <p><samp><span class="file">addl.casl</span></samp>に必要なメモリ容量は8語のため、次のようにCPUのレジスタとメモリの内容を表示できます。
 
-<pre class="example">  $ <kbd>casl2 -t -d -M8 addl.casl | less</kbd>
-  
-  Assemble addl.casl (0)
-  
-  Assemble addl.casl (1)
-  
-  Executing machine codes
-  #0000: Register::::
-  #0000: GR0:      0 = #0000 = 0000000000000000
-  #0000: GR1:      0 = #0000 = 0000000000000000
-  #0000: GR2:      0 = #0000 = 0000000000000000
-  #0000: GR3:      0 = #0000 = 0000000000000000
-  #0000: GR4:      0 = #0000 = 0000000000000000
-  #0000: GR5:      0 = #0000 = 0000000000000000
-  #0000: GR6:      0 = #0000 = 0000000000000000
-  #0000: GR7:      0 = #0000 = 0000000000000000
-  #0000: SP:       8 = #0008 = 0000000000001000
-  #0000: PR:       0 = #0000 = 0000000000000000
-  #0000: FR (OF SF ZF): 000
-  #0000: Memory::::
-  #0000: adr : 0000 0001 0002 0003 0004 0005 0006 0007
-  #0000: 0000: 1010 0005 2210 0006 8100 0003 0001 0000
-  #0002: Register::::
-  #0002: GR0:      0 = #0000 = 0000000000000000
-  #0002: GR1:      3 = #0003 = 0000000000000011
-  #0002: GR2:      0 = #0000 = 0000000000000000
-  #0002: GR3:      0 = #0000 = 0000000000000000
-  #0002: GR4:      0 = #0000 = 0000000000000000
-  #0002: GR5:      0 = #0000 = 0000000000000000
-  #0002: GR6:      0 = #0000 = 0000000000000000
-  #0002: GR7:      0 = #0000 = 0000000000000000
-  #0002: SP:       8 = #0008 = 0000000000001000
-  #0002: PR:       2 = #0002 = 0000000000000010
-  #0002: FR (OF SF ZF): 000
-  #0002: Memory::::
-  #0002: adr : 0000 0001 0002 0003 0004 0005 0006 0007
-  #0002: 0000: 1010 0005 2210 0006 8100 0003 0001 0000
-  #0004: Register::::
-  #0004: GR0:      0 = #0000 = 0000000000000000
-  #0004: GR1:      4 = #0004 = 0000000000000100
-  #0004: GR2:      0 = #0000 = 0000000000000000
-  #0004: GR3:      0 = #0000 = 0000000000000000
-  #0004: GR4:      0 = #0000 = 0000000000000000
-  #0004: GR5:      0 = #0000 = 0000000000000000
-  #0004: GR6:      0 = #0000 = 0000000000000000
-  #0004: GR7:      0 = #0000 = 0000000000000000
-  #0004: SP:       8 = #0008 = 0000000000001000
-  #0004: PR:       4 = #0004 = 0000000000000100
-  #0004: FR (OF SF ZF): 000
-  #0004: Memory::::
-  #0004: adr : 0000 0001 0002 0003 0004 0005 0006 0007
-  #0004: 0000: 1010 0005 2210 0006 8100 0003 0001 0000
+<pre class="example">$ <kbd>casl2 -t -d -M8 addl.casl | less</kbd>
+
+Assemble addl.casl (0)
+
+Assemble addl.casl (1)
+
+Executing machine codes
+#0000: Register::::
+#0000: GR0:      0 = #0000 = 0000000000000000
+#0000: GR1:      0 = #0000 = 0000000000000000
+#0000: GR2:      0 = #0000 = 0000000000000000
+#0000: GR3:      0 = #0000 = 0000000000000000
+#0000: GR4:      0 = #0000 = 0000000000000000
+#0000: GR5:      0 = #0000 = 0000000000000000
+#0000: GR6:      0 = #0000 = 0000000000000000
+#0000: GR7:      0 = #0000 = 0000000000000000
+#0000: SP:       8 = #0008 = 0000000000001000
+#0000: PR:       0 = #0000 = 0000000000000000
+#0000: FR (OF SF ZF): 000
+#0000: Memory::::
+#0000: adr : 0000 0001 0002 0003 0004 0005 0006 0007
+#0000: 0000: 1010 0005 2210 0006 8100 0003 0001 0000
+#0002: Register::::
+#0002: GR0:      0 = #0000 = 0000000000000000
+#0002: GR1:      3 = #0003 = 0000000000000011
+#0002: GR2:      0 = #0000 = 0000000000000000
+#0002: GR3:      0 = #0000 = 0000000000000000
+#0002: GR4:      0 = #0000 = 0000000000000000
+#0002: GR5:      0 = #0000 = 0000000000000000
+#0002: GR6:      0 = #0000 = 0000000000000000
+#0002: GR7:      0 = #0000 = 0000000000000000
+#0002: SP:       8 = #0008 = 0000000000001000
+#0002: PR:       2 = #0002 = 0000000000000010
+#0002: FR (OF SF ZF): 000
+#0002: Memory::::
+#0002: adr : 0000 0001 0002 0003 0004 0005 0006 0007
+#0002: 0000: 1010 0005 2210 0006 8100 0003 0001 0000
+#0004: Register::::
+#0004: GR0:      0 = #0000 = 0000000000000000
+#0004: GR1:      4 = #0004 = 0000000000000100
+#0004: GR2:      0 = #0000 = 0000000000000000
+#0004: GR3:      0 = #0000 = 0000000000000000
+#0004: GR4:      0 = #0000 = 0000000000000000
+#0004: GR5:      0 = #0000 = 0000000000000000
+#0004: GR6:      0 = #0000 = 0000000000000000
+#0004: GR7:      0 = #0000 = 0000000000000000
+#0004: SP:       8 = #0008 = 0000000000001000
+#0004: PR:       4 = #0004 = 0000000000000100
+#0004: FR (OF SF ZF): 000
+#0004: Memory::::
+#0004: adr : 0000 0001 0002 0003 0004 0005 0006 0007
+#0004: 0000: 1010 0005 2210 0006 8100 0003 0001 0000
 </pre>
- <p><a name="Register-Specify"></a>
+ <div class="node">
+<a name="Register-Specify"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Ending-Value">Ending Value</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Register-and-Memory">Register and Memory</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Register-and-Memory">Register and Memory</a>
+
+</div>
 
 <h4 class="subsection">3.3.1 特定のレジスタを表示</h4>
 
-<p><samp><span class="file">addl.casl</span></samp>のレジスタやメモリの中で、実行中に値が変化しているのはGR1だけです。こうした場合は、<kbd>grep</kbd>を使って表示される内容を絞り込むことで動作を検証しやすくなります。
+ <p><samp><span class="file">addl.casl</span></samp>のレジスタやメモリの中で、実行中に値が変化しているのはGR1だけです。こうした場合は、<kbd>grep</kbd>を使って表示される内容を絞り込むことで動作を検証しやすくなります。
 
-<pre class="example">  $ <kbd>casl2 -t addl.casl | grep 'GR1:'</kbd>
-  #0000: GR1:      0 = #0000 = 0000000000000000
-  #0002: GR1:      3 = #0003 = 0000000000000011
-  #0004: GR1:      4 = #0004 = 0000000000000100
+<pre class="example">$ <kbd>casl2 -t addl.casl | grep 'GR1:'</kbd>
+#0000: GR1:      0 = #0000 = 0000000000000000
+#0002: GR1:      3 = #0003 = 0000000000000011
+#0004: GR1:      4 = #0004 = 0000000000000100
 </pre>
  <p>この内容を、先に出力したアセンブル結果と引き比べてください。
 次の表のように、PRとGR1、命令行が対応していることがわかります。
@@ -619,108 +785,141 @@ YACASL2の動作はCASL IIの仕様に準拠しているため、情報処理試
 </td><td valign="top" width="40%"><code>ADDL GR1,B</code>
  <br></td></tr></table>
 
-<p><a name="Ending-Value"></a>
+<div class="node">
+<a name="Ending-Value"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Step-Count">Step Count</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Register-Specify">Register Specify</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Register-and-Memory">Register and Memory</a>
+
+</div>
 
 <h4 class="subsection">3.3.2 プログラム終了時の値を表示</h4>
 
-<p><kbd>grep</kbd>と<kbd>tail</kbd>を組み合わせれば、プログラム終了時の値を表示できます。
+ <p><kbd>grep</kbd>と<kbd>tail</kbd>を組み合わせれば、プログラム終了時の値を表示できます。
 
  <p><samp><span class="file">addl.casl</span></samp>でプログラム終了時の値を確認するには、次のようにします。
 
-<pre class="example">  $ <kbd>casl2 -t addl.casl | grep 'GR1:' | tail -1</kbd>
-  #0004: GR1:      4 = #0004 = 0000000000000100
+<pre class="example">$ <kbd>casl2 -t addl.casl | grep 'GR1:' | tail -1</kbd>
+#0004: GR1:      4 = #0004 = 0000000000000100
 </pre>
  <p><samp><span class="file">sum_10.casl</span></samp>は、1から10までの整数の和を求めます。
 
-<pre class="example">  $ <kbd>cat sum_10.casl</kbd>
-  ;;; sum_10.casl
-  ;;; 出力 GR0: 1から10までの整数をすべて加算した値
-  MAIN    START
-          PUSH    0,GR1
-          LAD     GR0,0           ; GR0を初期化
-          LD      GR1,FST         ; GR1に初項を転送
-  LOOP    ADDL    GR0,GR1         ; ループ先頭
-          ADDL    GR1,STEP        ; GR1 &lt;- GR1 + 公差
-          CPL     GR1,LST         ; GR1が末項より大きい場合は終了
-          JPL     FIN             ; ↓
-          JUMP    LOOP            ; ループ終端
-  FIN     POP     GR1
-          RET
-  FST     DC      1               ; 初項
-  LST     DC      10              ; 末項
-  STEP    DC      1               ; 公差
-          END
+<pre class="example">$ <kbd>cat sum_10.casl</kbd>
+;;; sum_10.casl
+;;; 出力 GR0: 1から10までの整数をすべて加算した値
+MAIN    START
+        PUSH    0,GR1
+        LAD     GR0,0           ; GR0を初期化
+        LD      GR1,FST         ; GR1に初項を転送
+LOOP    ADDL    GR0,GR1         ; ループ先頭
+        ADDL    GR1,STEP        ; GR1 &lt;- GR1 + 公差
+        CPL     GR1,LST         ; GR1が末項より大きい場合は終了
+        JPL     FIN             ; ↓
+        JUMP    LOOP            ; ループ終端
+FIN     POP     GR1
+        RET
+FST     DC      1               ; 初項
+LST     DC      10              ; 末項
+STEP    DC      1               ; 公差
+        END
 </pre>
  <p><samp><span class="file">sum_10.casl</span></samp>でファイル終了時の値を確認するには、次のようにします。
 
-<pre class="example">  $ <kbd>casl2 -t sum_10.casl | grep 'GR0:' | tail -1</kbd>
-  #0010: GR0:     55 = #0037 = 0000000000110111 = '7'
+<pre class="example">$ <kbd>casl2 -t sum_10.casl | grep 'GR0:' | tail -1</kbd>
+#0010: GR0:     55 = #0037 = 0000000000110111 = '7'
 </pre>
- <p><a name="Step-Count"></a>
+ <div class="node">
+<a name="Step-Count"></a>
+<p><hr>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Ending-Value">Ending Value</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Register-and-Memory">Register and Memory</a>
+
+</div>
 
 <h4 class="subsection">3.3.3 プログラムのステップ数を表示</h4>
 
-<p><kbd>grep</kbd>と<kbd>wc</kbd>を組み合わせれば、プログラムのステップ数を表示できます。
+ <p><kbd>grep</kbd>と<kbd>wc</kbd>を組み合わせれば、プログラムのステップ数を表示できます。
 
-<pre class="example">  $ <kbd>casl2 -t hello.casl | grep 'GR1:' | wc -l</kbd>
-  11
+<pre class="example">$ <kbd>casl2 -t hello.casl | grep 'GR1:' | wc -l</kbd>
+11
 </pre>
- <pre class="example">  $ <kbd>casl2 -t addl.casl | grep 'GR1:' | wc -l</kbd>
-  3
+ <pre class="example">$ <kbd>casl2 -t addl.casl | grep 'GR1:' | wc -l</kbd>
+3
 </pre>
  <p><samp><span class="file">sum_10.casl</span></samp>はプログラム内にループがあるため、ステップ数が大きくなります。
 
-<pre class="example">  $ <kbd>casl2 -t sum_10.casl | grep 'GR0:' | wc -l</kbd>
-  54
+<pre class="example">$ <kbd>casl2 -t sum_10.casl | grep 'GR0:' | wc -l</kbd>
+54
 </pre>
- <p><a name="Only-Assemble"></a>
+ <div class="node">
+<a name="Only-Assemble"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Analyze-Word">Analyze Word</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Register-and-Memory">Register and Memory</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Usage">Usage</a>
+
+</div>
 
 <h3 class="section">3.4 アセンブルと実行を別に行う</h3>
 
-<p><kbd>casl2</kbd>に<samp><span class="option">-O</span></samp><samp><span class="file">ファイル名</span></samp>を指定すると、オブジェクトファイルを作成できます。
+ <p><kbd>casl2</kbd>に<samp><span class="option">-O</span></samp><samp><span class="file">ファイル名</span></samp>を指定すると、オブジェクトファイルを作成できます。
 
-<pre class="example">  $ <kbd>casl2 -Ohello.o hello.casl</kbd>
+<pre class="example">$ <kbd>casl2 -Ohello.o hello.casl</kbd>
 </pre>
  <p>作成されたオブジェクトファイルの内容は、<kbd>od</kbd>を使って確認できます。テキストファイルではないため、<kbd>cat</kbd>などでは確認できません。
 
-<pre class="example">  $ <kbd>od -t x2 hello.o</kbd>
-  0000000 7001 0000 7002 0000 1210 0013 1220 0020
-  0000020 f000 0002 1210 0021 1220 0022 f000 0002
-  0000040 7120 7110 8100 0048 0065 006c 006c 006f
-  0000060 002c 0020 0057 006f 0072 006c 0064 0021
-  0000100 000d 000a 0001
-  0000106
+<pre class="example">$ <kbd>od -t x2 hello.o</kbd>
+0000000 7001 0000 7002 0000 1210 0013 1220 0020
+0000020 f000 0002 1210 0021 1220 0022 f000 0002
+0000040 7120 7110 8100 0048 0065 006c 006c 006f
+0000060 002c 0020 0057 006f 0072 006c 0064 0021
+0000100 000d 000a 0001
+0000106
 </pre>
  <p>オブジェクトファイルの実行には、<kbd>comet2</kbd>を使います。
 
-<pre class="example">  $ <kbd>comet2 hello.o</kbd>
-  Hello, World!
+<pre class="example">$ <kbd>comet2 hello.o</kbd>
+Hello, World!
 </pre>
- <p><a name="Analyze-Word"></a>
+ <div class="node">
+<a name="Analyze-Word"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#Use-CASL2LIB">Use CASL2LIB</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Only-Assemble">Only Assemble</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Usage">Usage</a>
+
+</div>
 
 <h3 class="section">3.5 1語の解析</h3>
 
-<p>CASL IIでは、1語（16ビット）を単位としてデータが処理されます。
+ <p>CASL IIでは、1語（16ビット）を単位としてデータが処理されます。
 <kbd>dumpword</kbd>は、指定した1語を10進数、16進数、2進数で表示します。
 
-<pre class="example">  $ <kbd>dumpword 72</kbd>
-      72:     72 = #0048 = 0000000001001000 = 'H'
+<pre class="example">$ <kbd>dumpword 72</kbd>
+    72:     72 = #0048 = 0000000001001000 = 'H'
 </pre>
  <p>マイナスの数は、次のように<kbd>--</kbd>を付けて指定します。
 
-<pre class="example">  $ <kbd>dumpword -- -72</kbd>
-     -72:    -72 = #FFB8 = 1111111110111000
+<pre class="example">$ <kbd>dumpword -- -72</kbd>
+   -72:    -72 = #FFB8 = 1111111110111000
 </pre>
  <p>16進数は、次のように次のように<kbd>'</kbd>で囲み<kbd>#</kbd>を付けて指定します。
 
-<pre class="example">  $ <kbd>dumpword '#0048'</kbd>
-   #0048:     72 = #0048 = 0000000001001000 = 'H'
+<pre class="example">$ <kbd>dumpword '#0048'</kbd>
+ #0048:     72 = #0048 = 0000000001001000 = 'H'
 </pre>
- <p><a name="CASL2lib"></a>
+ <div class="node">
+<a name="Use-CASL2LIB"></a>
+<p><hr>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Analyze-Word">Analyze Word</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Usage">Usage</a>
+
+</div>
 
 <h3 class="section">3.6 CASL2ライブラリの使用</h3>
 
-<p>YACASL2の<samp><span class="file">as/casl2lib</span></samp>ディレクトリには、CASL IIで記述されたライブラリファイルが格納されています。
+ <p>YACASL2の<samp><span class="file">as/casl2lib</span></samp>ディレクトリには、CASL IIで記述されたライブラリファイルが格納されています。
 
  <p>このフォルダには、たとえば次のようなプログラムが含まれています。
 
@@ -736,53 +935,73 @@ YACASL2の動作はCASL IIの仕様に準拠しているため、情報処理試
 
 <h4 class="subsection">3.6.1 数値を出力する</h4>
 
-<p>3と1の和を求める<samp><span class="file">addl.casl</span></samp>で演算結果を出力するには、まず<samp><span class="file">addl.casl</span></samp>を編集します。CASL IIの<kbd>CALL</kbd>命令で<kbd>OUTL</kbd>を副プログラムとして呼び出します。
+ <p>3と1の和を求める<samp><span class="file">addl.casl</span></samp>で演算結果を出力するには、まず<samp><span class="file">addl.casl</span></samp>を編集します。CASL IIの<kbd>CALL</kbd>命令で<kbd>OUTL</kbd>を副プログラムとして呼び出します。
 
-<pre class="example">  $ <kbd>cat addl_outl.casl</kbd>
-  MAIN    START
-          LD      GR1,A
-          ADDL    GR1,B
-          <em>CALL    OUTL</em>
-          RET
-  A       DC      3
-  B       DC      1
-          END
+<pre class="example">$ <kbd>cat addl_outl.casl</kbd>
+MAIN    START
+        LD      GR1,A
+        ADDL    GR1,B
+        <em>CALL    OUTL</em>
+        RET
+A       DC      3
+B       DC      1
+        END
 </pre>
  <p>変更したら<kbd>casl2</kbd>を、複数のファイルを指定して実行します。
 
-<pre class="example">  $ <kbd>casl2 addl_outl.casl ~/yacasl2/as/casl2lib/outl.casl</kbd>
-  4
+<pre class="example">$ <kbd>casl2 addl_outl.casl ~/yacasl2/as/casl2lib/outl.casl</kbd>
+4
 </pre>
- <p><a name="Command-Manual"></a>
+ <div class="node">
+<a name="Command-Manual"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#CASL2LIB-Manual">CASL2LIB Manual</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Usage">Usage</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
 
 <h2 class="chapter">4 YACASL2コマンドマニュアル</h2>
 
-<p><a name="index-YACASL2_00e3_0082_00b3_00e3_0083_009e_00e3_0083_00b3_00e3_0083_0089_00e3_0083_009e_00e3_0083_008b_00e3_0083_00a5_00e3_0082_00a2_00e3_0083_00ab-1"></a>
+ <p><a name="index-YACASL2_00e3_0082_00b3_00e3_0083_009e_00e3_0083_00b3_00e3_0083_0089_00e3_0083_009e_00e3_0083_008b_00e3_0083_00a5_00e3_0082_00a2_00e3_0083_00ab-1"></a>
 YACASL2のコマンドとオプションについて解説します。
 
-<p><a name="casl2"></a>
+<ul class="menu">
+<li><a accesskey="1" href="#casl2">casl2</a>:                        <kbd>casl2</kbd>
+<li><a accesskey="2" href="#comet2">comet2</a>:                       <kbd>comet2</kbd>
+<li><a accesskey="3" href="#dumpword">dumpword</a>:                     <kbd>dumpword</kbd>
+</ul>
+
+<div class="node">
+<a name="casl2"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#comet2">comet2</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Command-Manual">Command Manual</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Command-Manual">Command Manual</a>
+
+</div>
 
 <h3 class="section">4.1 <kbd>casl2</kbd></h3>
 
-<p><a name="index-casl2-2"></a><a name="index-casl2-3"></a>
+ <p><a name="index-casl2-2"></a><a name="index-casl2-3"></a>
 <kbd>casl2</kbd>は、引数として指定されたCASLファイルをアセンブルし、仮想マシンCOMET II上で実行します。CASLファイルは、アセンブラ言語CASL IIで記述されたテキストファイルです。引数が指定されない場合は、エラーメッセージを表示して終了します。
 
-<pre class="example">  $ <kbd>casl2 hello.casl</kbd>
+<pre class="example">$ <kbd>casl2 hello.casl</kbd>
 </pre>
  <p>複数のCASLファイルを指定することで、副プログラムを呼び出せます。
 
-<pre class="example">  $ <kbd>casl2 addl_outl.casl ~/yacasl2/as/casl2lib/outl.casl</kbd>
+<pre class="example">$ <kbd>casl2 addl_outl.casl ~/yacasl2/as/casl2lib/outl.casl</kbd>
 </pre>
  <h4 class="unnumberedsubsec">オプション</h4>
 
-<p><kbd>casl2</kbd>は、次のオプションを指定できます。
+ <p><kbd>casl2</kbd>は、次のオプションを指定できます。
 
      <dl>
 <dt><samp><span class="option">-s</span></samp><dt><samp><span class="option">--source</span></samp><dd>CASLファイルの内容を表示します。
 
      <br><dt><samp><span class="option">-l</span></samp><dt><samp><span class="option">--label</span></samp><dd>ラベルの一覧を次の形式で表示します。表示後、ほかの作業を続行します。
 
-     <pre class="example">       &lt;プログラム名&gt;.&lt;ラベル名&gt; ---&gt; &lt;アドレスの16進数表現&gt;
+     <pre class="example">     &lt;プログラム名&gt;.&lt;ラベル名&gt; ---&gt; &lt;アドレスの16進数表現&gt;
 </pre>
      <br><dt><samp><span class="option">-L</span></samp><dt><samp><span class="option">--labelonly</span></samp><dd><samp><span class="option">-l</span></samp>と同じ形式でラベルの一覧を表示します。表示後、ほかの作業は続行せず、終了します。
 
@@ -796,8 +1015,8 @@ YACASL2のコマンドとオプションについて解説します。
 
      <br><dt><samp><span class="option">-t</span></samp><dt><samp><span class="option">--trace</span></samp><dt><samp><span class="option">--tracearithmetic</span></samp><dd>プログラム実行中のレジスタの値を次の形式で表示します。
 
-     <pre class="example">       &lt;PR値の16進数表現&gt;: &lt;レジスタ&gt;: &lt;値の10進数表現&gt; =
-       &lt;値の16進数表現&gt; = &lt;値の2進数表現&gt;[ ='文字']
+     <pre class="example">     &lt;PR値の16進数表現&gt;: &lt;レジスタ&gt;: &lt;値の10進数表現&gt; =
+     &lt;値の16進数表現&gt; = &lt;値の2進数表現&gt;[ ='文字']
 </pre>
           <ul>
 <li><code>&lt;PR値の16進数表現&gt;</code>と<code>&lt;レジスタ&gt;</code>、<code>&lt;値の16進数表現&gt;</code>は、4けたの16進数で表されます。<code>&lt;PR値の16進数表現&gt;</code>と<code>&lt;値の16進数表現&gt;</code>には、先頭に<code>#</code>が付きます。範囲は<code>#0000</code>から<code>#FFFF</code>です
@@ -823,7 +1042,7 @@ YACASL2のコマンドとオプションについて解説します。
 
      <p>例えば、次のように表示されます。
 
-     <pre class="example">       #0002: GR1:      3 = #0003 = 0000000000000011
+     <pre class="example">     #0002: GR1:      3 = #0003 = 0000000000000011
 </pre>
      <br><dt><samp><span class="option">-T</span></samp><dt><samp><span class="option">--tracelogical</span></samp><dd><samp><span class="option">-t</span></samp>と同じように、プログラム実行中のレジスタの値を表示します。ただし、<samp><span class="option">-t</span></samp>と異なり、<code>&lt;値の10進数表現&gt;</code>は符号の付かない10進数です。値の範囲は0から65535です。
 
@@ -836,25 +1055,32 @@ YACASL2のコマンドとオプションについて解説します。
      <br><dt><samp><span class="option">-h</span></samp><dt><samp><span class="option">--help</span></samp><dd><kbd>casl2</kbd>の使用方法を表示して終了します。
 </dl>
 
-<p><a name="comet2"></a>
+<div class="node">
+<a name="comet2"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#dumpword">dumpword</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#casl2">casl2</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Command-Manual">Command Manual</a>
+
+</div>
 
 <h3 class="section">4.2 <kbd>comet2</kbd></h3>
 
-<p><a name="index-comet2-4"></a><a name="index-comet2-5"></a>
+ <p><a name="index-comet2-4"></a><a name="index-comet2-5"></a>
 <kbd>comet2</kbd>は、引数として指定されたオブジェクトファイルを仮想マシンCOMET II上で実行します。オブジェクトファイルは、<kbd>casl</kbd>に<samp><span class="option">-o</span></samp>または<samp><span class="option">-O</span></samp>を指定して出力します。
 
-<pre class="example">  $ <kbd>comet2 hello.o</kbd>
+<pre class="example">$ <kbd>comet2 hello.o</kbd>
 </pre>
  <p>引数で指定できるオブジェクトファイルは1つだけです。引数が指定されない場合は、エラーメッセージを表示して終了します。複数の引数を指定した場合、2番目以降の引数は無視されます。
 
 <h4 class="unnumberedsubsec">オプション</h4>
 
-<p><kbd>comet2</kbd>は、次のオプションを指定できます。
+ <p><kbd>comet2</kbd>は、次のオプションを指定できます。
 
      <dl>
 <dt><samp><span class="option">-t</span></samp><dt><samp><span class="option">--trace</span></samp><dt><samp><span class="option">--tracearithmetic</span></samp><dd>プログラム実行中のレジスタの値を次の形式で表示します。<code>&lt;値の10進数表現&gt;</code>は符号の付いた10進数です。範囲は-32768から32767です。
 
-     <pre class="example">       &lt;PR値の16進数表現&gt;: &lt;レジスタ&gt;: &lt;値の10進数表現&gt; = &lt;値の16進数表現&gt; = &lt;値の2進数表現&gt;[ ='文字']
+     <pre class="example">     &lt;PR値の16進数表現&gt;: &lt;レジスタ&gt;: &lt;値の10進数表現&gt; = &lt;値の16進数表現&gt; = &lt;値の2進数表現&gt;[ ='文字']
 </pre>
           <ul>
 <li><code>&lt;PR値の16進数表現&gt;</code>と<code>&lt;値の16進数表現&gt;</code>は、先頭に<code>#</code>が付いた4けたの16進数で表されます。範囲は、<code>#0000</code>から<code>#FFFF</code>です
@@ -866,7 +1092,7 @@ YACASL2のコマンドとオプションについて解説します。
 
      <p>例えば、次のように表示されます。
 
-     <pre class="example">       #0002: GR1:      3 = #0003 = 0000000000000011
+     <pre class="example">     #0002: GR1:      3 = #0003 = 0000000000000011
 </pre>
      <p>表示されるレジスタには、次の種類があります。
 
@@ -891,20 +1117,26 @@ YACASL2のコマンドとオプションについて解説します。
      <br><dt><samp><span class="option">-h</span></samp><dt><samp><span class="option">--help</span></samp><dd><kbd>comet2</kbd>の使用方法を表示して終了します。
 </dl>
 
-<p><a name="dumpword"></a>
+<div class="node">
+<a name="dumpword"></a>
+<p><hr>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#comet2">comet2</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Command-Manual">Command Manual</a>
+
+</div>
 
 <h3 class="section">4.3 <kbd>dumpword</kbd></h3>
 
-<p><a name="index-dumpword-6"></a><a name="index-dumpword-7"></a>
+ <p><a name="index-dumpword-6"></a><a name="index-dumpword-7"></a>
 <kbd>dumpword</kbd>は、引数として指定された数値を、整数、#0000〜#FFFFの範囲の16進数、2進数で表示します。文字の組に該当する場合は、「 = 」のうしろに文字が表示されます。引数は、10進数または先頭に「#」の付いた16進数で指定します。表示される整数は、オプションにより符号付きか符号なしかを指定します。オプションなしの場合は符号付きです。整数の範囲は、符号付きの場合は-32768から32767、符号なしの場合は0から65535です。
 
-<pre class="example">  $ <kbd>dumpword 10</kbd>
+<pre class="example">$ <kbd>dumpword 10</kbd>
 </pre>
  <p>引数で指定できる1つだけです。引数が指定されない場合は、使い方を表示して終了します。複数の引数を指定した場合、2番目以降の引数は無視されます。
 
 <h4 class="unnumberedsubsec">オプション</h4>
 
-<p><kbd>dumpword</kbd>は、次のオプションを指定できます。
+ <p><kbd>dumpword</kbd>は、次のオプションを指定できます。
 
      <dl>
 <dt><samp><span class="option">-a</span></samp><dt><samp><span class="option">--arithmetic</span></samp><dd>出力される整数の範囲を-32,768〜32,767にします。オプションなしの場合と同じです。
@@ -914,15 +1146,46 @@ YACASL2のコマンドとオプションについて解説します。
      <br><dt><samp><span class="option">-h</span></samp><dt><samp><span class="option">--help</span></samp><dd><kbd>dumpword</kbd>の使用方法を表示して終了します。
 </dl>
 
-<p><a name="CASL2LIB-Manual"></a>
+<div class="node">
+<a name="CASL2LIB-Manual"></a>
+<p><hr>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#Command-Manual">Command Manual</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
+
+</div>
 
 <h2 class="chapter">5 CASL2LIBマニュアル</h2>
 
-<p><a name="ABS"></a>
+<ul class="menu">
+<li><a accesskey="1" href="#ABS">ABS</a>:                          <kbd>ABS</kbd> - <samp><span class="file">abs.casl</span></samp>
+<li><a accesskey="2" href="#DIVA">DIVA</a>:                         <kbd>DIVA</kbd> - <samp><span class="file">diva.casl</span></samp>
+<li><a accesskey="3" href="#DIVL">DIVL</a>:                         <kbd>DIVL</kbd> - <samp><span class="file">divl.casl</span></samp>
+<li><a accesskey="4" href="#INL">INL</a>:                          <kbd>INL</kbd> - <samp><span class="file">inl.casl</span></samp>
+<li><a accesskey="5" href="#L2STR">L2STR</a>:                        <kbd>L2STR</kbd> - <samp><span class="file">l2str.casl</span></samp>
+<li><a accesskey="6" href="#MAX">MAX</a>:                          <kbd>MAX</kbd> - <samp><span class="file">max.casl</span></samp>
+<li><a accesskey="7" href="#MINIM">MINIM</a>:                        <kbd>MINIM</kbd> - <samp><span class="file">minim.casl</span></samp>
+<li><a accesskey="8" href="#MULA">MULA</a>:                         <kbd>MULA</kbd> - <samp><span class="file">mula.casl</span></samp>
+<li><a accesskey="9" href="#MULL">MULL</a>:                         <kbd>MULL</kbd> - <samp><span class="file">mull.casl</span></samp>
+<li><a href="#OUTA">OUTA</a>:                         <kbd>OUTA</kbd> - <samp><span class="file">outa.casl</span></samp>
+<li><a href="#OUTB">OUTB</a>:                         <kbd>OUTB</kbd> - <samp><span class="file">outb.casl</span></samp>
+<li><a href="#OUTD_005fQ15">OUTD_Q15</a>:                     <kbd>OUTD_Q15</kbd> - <samp><span class="file">outd_q15.casl</span></samp>
+<li><a href="#OUTL">OUTL</a>:                         <kbd>OUTL</kbd> - <samp><span class="file">outl.casl</span></samp>
+<li><a href="#REV">REV</a>:                          <kbd>REV</kbd> - <samp><span class="file">rev.casl</span></samp>
+<li><a href="#STR2L">STR2L</a>:                        <kbd>STR2L</kbd> - <samp><span class="file">str2l.casl</span></samp>
+</ul>
+
+<div class="node">
+<a name="ABS"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#DIVA">DIVA</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#CASL2LIB-Manual">CASL2LIB Manual</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#CASL2LIB-Manual">CASL2LIB Manual</a>
+
+</div>
 
 <h3 class="section">5.1 <kbd>ABS</kbd> - <samp><span class="file">abs.casl</span></samp></h3>
 
-<p>GR1を符号付き整数とみなし、絶対値に変換
+ <p>GR1を符号付き整数とみなし、絶対値に変換
 
 <h4 class="unnumberedsubsec">入力</h4>
 
@@ -942,28 +1205,35 @@ YACASL2のコマンドとオプションについて解説します。
 
 <h4 class="unnumberedsubsec">依存する副プログラム</h4>
 
-<p>なし
+ <p>なし
 
 <h4 class="unnumberedsubsec">使用例</h4>
 
-<pre class="example"><pre class="verbatim">  ;;; CASL2LIB > ABSを呼び出し、-1の絶対値を表示
-  MAIN    START
-          LD      GR1,A
-          CALL    ABS
-          CALL    OUTA
-          RET
-  A       DC      -1
-          END
+<pre class="example"><pre class="verbatim">;;; CASL2LIB > ABSを呼び出し、-1の絶対値を表示
+MAIN    START
+        LD      GR1,A
+        CALL    ABS
+        CALL    OUTA
+        RET
+A       DC      -1
+        END
 </pre></pre>
-<pre class="example">  $ <kbd>casl2 call_abs.casl $CASL2LIBDIR/abs.casl $CASL2LIBDIR/outa.casl \
-    $CASL2LIBDIR/divl.casl $CASL2LIBDIR/rev.casl</kbd>
-  1
+ <pre class="example">$ <kbd>casl2 call_abs.casl $CASL2LIBDIR/abs.casl $CASL2LIBDIR/outa.casl \
+  $CASL2LIBDIR/divl.casl $CASL2LIBDIR/rev.casl</kbd>
+1
 </pre>
- <p><a name="DIVA"></a>
+ <div class="node">
+<a name="DIVA"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#DIVL">DIVL</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#ABS">ABS</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#CASL2LIB-Manual">CASL2LIB Manual</a>
+
+</div>
 
 <h3 class="section">5.2 <kbd>DIVA</kbd> - <samp><span class="file">diva.casl</span></samp></h3>
 
-<p>符号付き整数の割算を筆算方式で行う
+ <p>符号付き整数の割算を筆算方式で行う
 
 <h4 class="unnumberedsubsec">入力</h4>
 
@@ -1002,35 +1272,42 @@ YACASL2のコマンドとオプションについて解説します。
 
 <h4 class="unnumberedsubsec">使用例</h4>
 
-<pre class="example"><pre class="verbatim">  ;; CASL2LIB > DIVAを呼び出し、-32767 / 255 の商と剰余を表示
-  MAIN    START
-  BEGIN   LD      GR1,A
-          LD      GR2,B
-          CALL    DIVA
-          JOV     ERR
-          LD      GR1,GR0
-          CALL    OUTA
-          LD      GR1,GR3
-          CALL    OUTA
-          JUMP    FIN
-  ERR     OUT     EMSG,ELEN
-  FIN     RET
-  A       DC      -32767
-  B       DC      255
-  EMSG    DC      'error'
-  ELEN    DC      5
-          END
+<pre class="example"><pre class="verbatim">;; CASL2LIB > DIVAを呼び出し、-32767 / 255 の商と剰余を表示
+MAIN    START
+BEGIN   LD      GR1,A
+        LD      GR2,B
+        CALL    DIVA
+        JOV     ERR
+        LD      GR1,GR0
+        CALL    OUTA
+        LD      GR1,GR3
+        CALL    OUTA
+        JUMP    FIN
+ERR     OUT     EMSG,ELEN
+FIN     RET
+A       DC      -32767
+B       DC      255
+EMSG    DC      'error'
+ELEN    DC      5
+        END
 </pre></pre>
-<pre class="example">  $ <kbd>casl2 call_diva.casl $CASL2LIBDIR/diva.casl $CASL2LIBDIR/divl.casl \
-    $CASL2LIBDIR/outa.casl $CASL2LIBDIR/abs.casl $CASL2LIBDIR/rev.casl</kbd>
-  -128
-  -127
+ <pre class="example">$ <kbd>casl2 call_diva.casl $CASL2LIBDIR/diva.casl $CASL2LIBDIR/divl.casl \
+  $CASL2LIBDIR/outa.casl $CASL2LIBDIR/abs.casl $CASL2LIBDIR/rev.casl</kbd>
+-128
+-127
 </pre>
- <p><a name="DIVL"></a>
+ <div class="node">
+<a name="DIVL"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#INL">INL</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#DIVA">DIVA</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#CASL2LIB-Manual">CASL2LIB Manual</a>
+
+</div>
 
 <h3 class="section">5.3 <kbd>DIVL</kbd> - <samp><span class="file">divl.casl</span></samp></h3>
 
-<p>符号なし整数の割算を筆算方式で行う
+ <p>符号なし整数の割算を筆算方式で行う
 
 <h4 class="unnumberedsubsec">入力</h4>
 
@@ -1056,39 +1333,46 @@ YACASL2のコマンドとオプションについて解説します。
 
 <h4 class="unnumberedsubsec">依存する副プログラム</h4>
 
-<p>なし
+ <p>なし
 
 <h4 class="unnumberedsubsec">使用例</h4>
 
-<pre class="example"><pre class="verbatim">  ;; CASL2LIB > DIVLを呼び出し、65534 / 255 の商と剰余を表示
-  MAIN    START
-  BEGIN   LD      GR1,A
-          LD      GR2,B
-          CALL    DIVL
-          JOV     ERR
-          LD      GR1,GR0
-          CALL    OUTL
-          LD      GR1,GR3
-          CALL    OUTL
-          JUMP    FIN        
-  ERR     OUT     EMSG,ELEN
-  FIN     RET
-  A       DC      65534
-  B       DC      255
-  EMSG    DC      'error'
-  ELEN	DC	5
-          END
+<pre class="example"><pre class="verbatim">;; CASL2LIB > DIVLを呼び出し、65534 / 255 の商と剰余を表示
+MAIN    START
+BEGIN   LD      GR1,A
+        LD      GR2,B
+        CALL    DIVL
+        JOV     ERR
+        LD      GR1,GR0
+        CALL    OUTL
+        LD      GR1,GR3
+        CALL    OUTL
+        JUMP    FIN        
+ERR     OUT     EMSG,ELEN
+FIN     RET
+A       DC      65534
+B       DC      255
+EMSG    DC      'error'
+ELEN	DC	5
+        END
 </pre></pre>
-<pre class="example">  $ <kbd>casl2 call_divl.casl $CASL2LIBDIR/divl.casl $CASL2LIBDIR/outl.casl \
-    $CASL2LIBDIR/rev.casl</kbd>
-  256
-  254
+ <pre class="example">$ <kbd>casl2 call_divl.casl $CASL2LIBDIR/divl.casl $CASL2LIBDIR/outl.casl \
+  $CASL2LIBDIR/rev.casl</kbd>
+256
+254
 </pre>
- <p><a name="INL"></a>
+ <div class="node">
+<a name="INL"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#L2STR">L2STR</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#DIVL">DIVL</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#CASL2LIB-Manual">CASL2LIB Manual</a>
+
+</div>
 
 <h3 class="section">5.4 <kbd>INL</kbd> - <samp><span class="file">inl.casl</span></samp></h3>
 
-<p>符号なし整数の入力を受け付ける
+ <p>符号なし整数の入力を受け付ける
 
 <h4 class="unnumberedsubsec">入力</h4>
 
@@ -1112,35 +1396,42 @@ YACASL2のコマンドとオプションについて解説します。
 
 <h4 class="unnumberedsubsec">使用例</h4>
 
-<pre class="example"><pre class="verbatim">  ;; CASL2LIB > DIVLを呼び出し、65534 / 255 の商と剰余を表示
-  MAIN    START
-  BEGIN   LD      GR1,A
-          LD      GR2,B
-          CALL    DIVL
-          JOV     ERR
-          LD      GR1,GR0
-          CALL    OUTL
-          LD      GR1,GR3
-          CALL    OUTL
-          JUMP    FIN        
-  ERR     OUT     EMSG,ELEN
-  FIN     RET
-  A       DC      65534
-  B       DC      255
-  EMSG    DC      'error'
-  ELEN	DC	5
-          END
+<pre class="example"><pre class="verbatim">;; CASL2LIB > DIVLを呼び出し、65534 / 255 の商と剰余を表示
+MAIN    START
+BEGIN   LD      GR1,A
+        LD      GR2,B
+        CALL    DIVL
+        JOV     ERR
+        LD      GR1,GR0
+        CALL    OUTL
+        LD      GR1,GR3
+        CALL    OUTL
+        JUMP    FIN        
+ERR     OUT     EMSG,ELEN
+FIN     RET
+A       DC      65534
+B       DC      255
+EMSG    DC      'error'
+ELEN	DC	5
+        END
 </pre></pre>
-<pre class="example">  $ <kbd>casl2 call_divl.casl $CASL2LIBDIR/divl.casl $CASL2LIBDIR/outl.casl \
-    $CASL2LIBDIR/rev.casl</kbd>
-  256
-  254
+ <pre class="example">$ <kbd>casl2 call_divl.casl $CASL2LIBDIR/divl.casl $CASL2LIBDIR/outl.casl \
+  $CASL2LIBDIR/rev.casl</kbd>
+256
+254
 </pre>
- <p><a name="L2STR"></a>
+ <div class="node">
+<a name="L2STR"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#MAX">MAX</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#INL">INL</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#CASL2LIB-Manual">CASL2LIB Manual</a>
+
+</div>
 
 <h3 class="section">5.5 <kbd>L2STR</kbd> - <samp><span class="file">l2str.casl</span></samp></h3>
 
-<p>符号なし整数を文字列に変換する
+ <p>符号なし整数を文字列に変換する
 
 <h4 class="unnumberedsubsec">入力</h4>
 
@@ -1162,11 +1453,18 @@ YACASL2のコマンドとオプションについて解説します。
 <li><code>DIVL</code>
 </ul>
 
-<p><a name="MAX"></a>
+<div class="node">
+<a name="MAX"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#MINIM">MINIM</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#L2STR">L2STR</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#CASL2LIB-Manual">CASL2LIB Manual</a>
+
+</div>
 
 <h3 class="section">5.6 <kbd>MAX</kbd> - <samp><span class="file">max.casl</span></samp></h3>
 
-<p>連続した複数のWORDを符号付き整数とみなして最大値を返す
+ <p>連続した複数のWORDを符号付き整数とみなして最大値を返す
 
 <h4 class="unnumberedsubsec">入力</h4>
 
@@ -1184,13 +1482,20 @@ YACASL2のコマンドとオプションについて解説します。
 
 <h4 class="unnumberedsubsec">依存する副プログラム</h4>
 
-<p>なし
+ <p>なし
 
-<p><a name="MINIM"></a>
+<div class="node">
+<a name="MINIM"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#MULA">MULA</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#MAX">MAX</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#CASL2LIB-Manual">CASL2LIB Manual</a>
+
+</div>
 
 <h3 class="section">5.7 <kbd>MINIM</kbd> - <samp><span class="file">minim.casl</span></samp></h3>
 
-<p>連続した複数のWORDを符号付き整数とみなして最小値を返す
+ <p>連続した複数のWORDを符号付き整数とみなして最小値を返す
 
 <h4 class="unnumberedsubsec">入力</h4>
 
@@ -1208,38 +1513,93 @@ YACASL2のコマンドとオプションについて解説します。
 
 <h4 class="unnumberedsubsec">依存する副プログラム</h4>
 
-<p>なし
+ <p>なし
 
-<p><a name="MULA"></a>
+<div class="node">
+<a name="MULA"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#MULL">MULL</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#MINIM">MINIM</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#CASL2LIB-Manual">CASL2LIB Manual</a>
+
+</div>
 
 <h3 class="section">5.8 <kbd>MULA</kbd> - <samp><span class="file">mula.casl</span></samp></h3>
 
-<p><a name="MULL"></a>
+<div class="node">
+<a name="MULL"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#OUTA">OUTA</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#MULA">MULA</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#CASL2LIB-Manual">CASL2LIB Manual</a>
+
+</div>
 
 <h3 class="section">5.9 <kbd>MULL</kbd> - <samp><span class="file">mull.casl</span></samp></h3>
 
-<p><a name="OUTA"></a>
+<div class="node">
+<a name="OUTA"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#OUTB">OUTB</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#MULL">MULL</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#CASL2LIB-Manual">CASL2LIB Manual</a>
+
+</div>
 
 <h3 class="section">5.10 <kbd>OUTA</kbd> - <samp><span class="file">outa.casl</span></samp></h3>
 
-<p><a name="OUTB"></a>
+<div class="node">
+<a name="OUTB"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#OUTD_005fQ15">OUTD_Q15</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#OUTA">OUTA</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#CASL2LIB-Manual">CASL2LIB Manual</a>
+
+</div>
 
 <h3 class="section">5.11 <kbd>OUTB</kbd> - <samp><span class="file">outb.casl</span></samp></h3>
 
-<p><a name="OUTD_Q15"></a>
+<div class="node">
+<a name="OUTD_Q15"></a>
 <a name="OUTD_005fQ15"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#OUTL">OUTL</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#OUTB">OUTB</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#CASL2LIB-Manual">CASL2LIB Manual</a>
+
+</div>
 
 <h3 class="section">5.12 <kbd>OUTD_Q15</kbd> - <samp><span class="file">outd_q15.casl</span></samp></h3>
 
-<p><a name="OUTL"></a>
+<div class="node">
+<a name="OUTL"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#REV">REV</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#OUTD_005fQ15">OUTD_Q15</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#CASL2LIB-Manual">CASL2LIB Manual</a>
+
+</div>
 
 <h3 class="section">5.13 <kbd>OUTL</kbd> - <samp><span class="file">outl.casl</span></samp></h3>
 
-<p><a name="REV"></a>
+<div class="node">
+<a name="REV"></a>
+<p><hr>
+Next:&nbsp;<a rel="next" accesskey="n" href="#STR2L">STR2L</a>,
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#OUTL">OUTL</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#CASL2LIB-Manual">CASL2LIB Manual</a>
+
+</div>
 
 <h3 class="section">5.14 <kbd>REV</kbd> - <samp><span class="file">rev.casl</span></samp></h3>
 
-<p><a name="STR2L"></a>
+<div class="node">
+<a name="STR2L"></a>
+<p><hr>
+Previous:&nbsp;<a rel="previous" accesskey="p" href="#REV">REV</a>,
+Up:&nbsp;<a rel="up" accesskey="u" href="#CASL2LIB-Manual">CASL2LIB Manual</a>
+
+</div>
 
 <h3 class="section">5.15 <kbd>STR2L</kbd> - <samp><span class="file">str2l.casl</span></samp></h3>
 

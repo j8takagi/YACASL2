@@ -5,19 +5,17 @@
 @end ifnottex
 @setfilename yacasl2.info
 @documentencoding UTF-8
-@settitle YACASL2 - Linux上のCASL II処理系
-@firstparagraphindent none
+@settitle YACASL2 - CASL II処理システム
+@firstparagraphindent insert
 @paragraphindent 1
-@c @iftex
-@c @usedvipdfmx
-@c @end iftex
+@ifhtml
+@exampleindent 0
+@end ifhtml
 @c %**end of header
 
 @copying
 Copyright @copyright{} 2010-2011 j8takagi
 @end copying
-
-@exampleindent 2
 
 @dircategory Basics
 @direntry
@@ -31,9 +29,83 @@ Copyright @copyright{} 2010-2011 j8takagi
 @insertcopying
 @end titlepage
 
-@ifnottex
+@ifinfo
 @node Top, About, (dir), (dir)
-@end ifnottex
+
+@menu
+* About::                       YACASL2の概要
+* Install::                     YACASL2のインストール
+* Usage::                       YACASL2の使い方
+* Command Manual::              YACASL2コマンドマニュアル
+* CASL2LIB Manual::             CASL2LIBマニュアル
+
+@detailmenu
+ --- The Detailed Node Listing ---
+
+
+
+* About::                       YACASL2の概要
+* Install::                     YACASL2のインストール
+* Usage::                       YACASL2の使い方
+* Command Manual::              YACASL2コマンドマニュアル
+* CASL2LIB Manual::             CASL2LIBマニュアル
+
+YACASL2のインストール
+
+* Download::                    YACASL2ファイルのダウンロード
+* Verify::                      YACASL2ファイルの検証
+* Expand::                      YACASL2ファイルの展開
+* Build::                       @kbd{casl2}、@kbd{comet2}、@kbd{dumpword}のビルド
+* Simple Test::                 @kbd{casl2}の実行テスト
+* Detail Test::                 詳細なテスト
+* Environment::                 環境変数の設定
+
+YACASL2の使い方
+
+* Simple Output::               実行結果の出力だけを表示
+* Assemble Result::             アセンブル結果の確認
+* Register and Memory::         実行時のレジスタとメモリを表示
+* Only Assemble::               アセンブルと実行を別に行う
+* Analyze Word::                1語の解析
+* Use CASL2LIB::                CASL2ライブラリの使用
+
+実行時のレジスタとメモリを表示
+
+* Register Specify::            特定のレジスタを表示
+* Ending Value::                プログラム終了時の値を表示
+* Step Count::                  プログラムのステップ数を表示
+
+YACASL2コマンドマニュアル
+
+* casl2::                       @kbd{casl2}
+* comet2::                      @kbd{comet2}
+* dumpword::                    @kbd{dumpword}
+
+CASL2LIBマニュアル
+
+* ABS::                         @kbd{ABS} - @file{abs.casl}
+* DIVA::                        @kbd{DIVA} - @file{diva.casl}
+* DIVL::                        @kbd{DIVL} - @file{divl.casl}
+* INL::                         @kbd{INL} - @file{inl.casl}
+* L2STR::                       @kbd{L2STR} - @file{l2str.casl}
+* MAX::                         @kbd{MAX} - @file{max.casl}
+* MINIM::                       @kbd{MINIM} - @file{minim.casl}
+* MULA::                        @kbd{MULA} - @file{mula.casl}
+* MULL::                        @kbd{MULL} - @file{mull.casl}
+* OUTA::                        @kbd{OUTA} - @file{outa.casl}
+* OUTB::                        @kbd{OUTB} - @file{outb.casl}
+* OUTD_Q15::                    @kbd{OUTD_Q15} - @file{outd_q15.casl}
+* OUTL::                        @kbd{OUTL} - @file{outl.casl}
+* REV::                         @kbd{REV} - @file{rev.casl}
+* STR2L::                       @kbd{STR2L} - @file{str2l.casl}
+
+@end detailmenu
+@end menu
+
+@end ifinfo
+
+@ifnotinfo
+@node Top, About
 
 @menu
 * About::                       YACASL2の概要
@@ -44,6 +116,7 @@ Copyright @copyright{} 2010-2011 j8takagi
 @end menu
 
 @contents
+@end ifnotinfo
 
 @node About, Install, Top, Top
 @chapter YACASL2の概要
@@ -81,7 +154,7 @@ YACASL2は、「ふつうの処理系」として動作します。ほかの多�
 実行時のメモリの内容
 @end itemize
 
-出力された動作内容は、GNU/Linuxのさまざまなツール、たとえば@kbd{cat}、@kbd{less}、@kbd{grep}、@kbd{wc}などを使って解析できます。
+出力された動作内容は、GNU/Linuxのさまざまなツール、たとえば、@kbd{cat} @kbd{less} @kbd{grep} @kbd{wc}などを使って解析できます。
 
 YACASL2の操作は、端末を開いてコマンドを入力・実行することで行います。
 
@@ -100,36 +173,26 @@ Vine Linux 5.2
 Mac OS X 10.6.5
 @end itemize
 
-インストール時に、@kbd{tar}、@kbd{gcc}、@kbd{make}が必要です。Linuxの場合は、標準でインストールされていることが多いと思います。Mac OS Xの場合、@code{Xcode}をインストールしてください。
+インストール時に、@kbd{tar} @kbd{gcc} @kbd{make}が必要です。Linuxでは多くの場合、標準でインストールされています。Mac OS Xの場合、@code{Xcode}をインストールするといっしょにインストールされます。
 
 @node Install, Usage, About, Top
 @chapter YACASL2のインストール
 YACASL2をインストールするには、Linux上で次の作業をします。
 
 @menu
-* Download::    YACASL2ファイルのダウンロード
-* Verify::    YACASL2ファイルの検証
-* Expand::    YACASL2ファイルの展開
-* Build::    @kbd{casl2}、@kbd{comet2}、@kbd{dumpword}のビルド
-* Simple Test::    @kbd{casl2}の実行テスト
-* Detail Test::    詳細なテスト
+* Download::                    YACASL2ファイルのダウンロード
+* Verify::                      YACASL2ファイルの検証
+* Expand::                      YACASL2ファイルの展開
+* Build::                       @kbd{casl2} @kbd{comet2} @kbd{dumpword}のビルド
+* Simple Test::                 @kbd{casl2}の実行テスト
+* Detail Test::                 詳細なテスト
 * Environment::                 環境変数の設定
 @end menu
 
 @node Download, Verify, Install, Install
 @section YACASL2ファイルのダウンロード
 
-次の場所から最新版の@file{tar.gz}ファイルをダウンロードします。
-
-@itemize
-@item
-@uref{yacasl2.tar.gz} - YACASL2のファイル一式を@file{tar.gz}形式で圧縮したもの
-
-@item
-@uref{yacasl2.tar.gz.md5sum} - @file{yacasl2.tar.gz}のMD5ハッシュ値
-@end itemize
-
-または、@uref{http://github.com/j8takagi/YACASL2/downloads, githubのダウンロードページ}からダウンロード、
+@uref{http://www.j8takagi.net/yacasl2/, YACASL2のサイト}または@uref{http://github.com/j8takagi/YACASL2/downloads/, githubのダウンロードページ}から最新版の@file{tar.gz}ファイルをダウンロードします。
 
 @node Verify, Expand, Download, Install
 @section YACASL2ファイルの検証
@@ -151,9 +214,9 @@ $ @kbd{tar xvzf yacasl2.tar.gz}
 @end example
 
 @node Build, Simple Test, Expand, Install
-@section @kbd{casl2}、@kbd{comet2}、@kbd{dumpword}のビルド
+@section @kbd{casl2} @kbd{comet2} @kbd{dumpword}のビルド
 
-展開したら、次のコマンドで@kbd{casl2}、@kbd{comet2}、@kbd{dumpword}をビルドします。
+展開したら、次のコマンドで@kbd{casl2} @kbd{comet2} @kbd{dumpword}をビルドします。
 
 @example
 $ @kbd{cd yacasl2}
@@ -214,11 +277,7 @@ All tests are succeded.
 @node Environment,  , Detail Test, Install
 @section 環境変数の設定
 
-環境変数を設定することで、YACASL2が使いやすくなります。環境変数の設定は、シェルの初期設定ファイルに追加することでログインしたあと自動的に反映されます。
-するときは、
-環境変数@code{PATH}にYACASL2のディレクトリを追加すると、どのディレクトリでも@kbd{casl2}、@kbd{comet2}、@kbd{dumpword}を実行できます。また、
-
-
+環境変数@code{PATH}や@code{CASL2LIB}を設定することで、YACASL2が使いやすくなります。環境変数は、使っているシェルを確認してから設定します。
 
 @unnumberedsubsec シェルの確認
 
@@ -229,7 +288,7 @@ $ @kbd{echo $SHELL}
 /bin/bash
 @end example
 
-現在もっとも多く使われているシェルは、BASHでしょう。以下、BASHでの設定方法を記載します。
+現在もっとも多く使われているシェルは、BASHでしょう。以下、BASHでの設定方法を説明します。
 
 @unnumberedsubsec @code{PATH}にYACASL2のディレクトリを追加
 
@@ -239,7 +298,7 @@ $ @kbd{echo $SHELL}
 $ @kbd{PATH=$PATH:~/yacasl2 && export PATH}
 @end example
 
-BASHではホームディレクトリにある@file{.bashrc}が初期設定ファイルです。次のコマンドで追加できます。
+環境変数の設定は、シェルの初期設定ファイルに追加することでログインしたあと自動的に反映されるようになります。BASHではホームディレクトリにある@file{.bashrc}が初期設定ファイルです。次のコマンドで追加できます。
 
 @example
 $ @kbd{echo ’PATH=$PATH:~/yacasl2 && export PATH’ >>~/.bashrc}
@@ -272,7 +331,7 @@ YACASL2 は、テキストファイルに記述されたCASLプログラムを�
 * Register and Memory::         実行時のレジスタとメモリを表示
 * Only Assemble::               アセンブルと実行を別に行う
 * Analyze Word::                1語の解析
-* CASL2lib::                    CASL2LIBマニュアル
+* Use CASL2LIB::                CASL2ライブラリの使用
 @end menu
 
 @node Simple Output, Assemble Result, Usage, Usage
@@ -603,7 +662,7 @@ $ @kbd{comet2 hello.o}
 Hello, World!
 @end example
 
-@node Analyze Word, CASL2lib, Only Assemble, Usage
+@node Analyze Word, Use CASL2LIB, Only Assemble, Usage
 @section 1語の解析
 
 CASL IIでは、1語（16ビット）を単位としてデータが処理されます。
@@ -628,7 +687,7 @@ $ @kbd{dumpword '#0048'}
  #0048:     72 = #0048 = 0000000001001000 = 'H'
 @end example
 
-@node CASL2lib,  , Analyze Word, Usage
+@node Use CASL2LIB,  , Analyze Word, Usage
 @section CASL2ライブラリの使用
 
 YACASL2の@file{as/casl2lib}ディレクトリには、CASL IIで記述されたライブラリファイルが格納されています。
@@ -680,9 +739,9 @@ $ @kbd{casl2 addl_outl.casl ~/yacasl2/as/casl2lib/outl.casl}
 YACASL2のコマンドとオプションについて解説します。
 
 @menu
-* casl2::
-* comet2::
-* dumpword::
+* casl2::                       @kbd{casl2}
+* comet2::                      @kbd{comet2}
+* dumpword::                    @kbd{dumpword}
 @end menu
 
 @node casl2, comet2, Command Manual, Command Manual
