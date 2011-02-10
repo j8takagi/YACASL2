@@ -1218,8 +1218,8 @@ MAIN    START
 A       DC      -1
         END
 </pre></pre>
- <pre class="example">$ <kbd>casl2 call_abs.casl $CASL2LIBDIR/abs.casl $CASL2LIBDIR/outa.casl \
-  $CASL2LIBDIR/divl.casl $CASL2LIBDIR/rev.casl</kbd>
+ <pre class="example">$ <kbd>casl2 call_abs.casl $CASL2LIB/abs.casl $CASL2LIB/outa.casl \
+  $CASL2LIB/divl.casl $CASL2LIB/rev.casl</kbd>
 1
 </pre>
  <div class="node">
@@ -1291,8 +1291,8 @@ EMSG    DC      'error'
 ELEN    DC      5
         END
 </pre></pre>
- <pre class="example">$ <kbd>casl2 call_diva.casl $CASL2LIBDIR/diva.casl $CASL2LIBDIR/divl.casl \
-  $CASL2LIBDIR/outa.casl $CASL2LIBDIR/abs.casl $CASL2LIBDIR/rev.casl</kbd>
+ <pre class="example">$ <kbd>casl2 call_diva.casl $CASL2LIB/diva.casl $CASL2LIB/divl.casl \
+  $CASL2LIB/outa.casl $CASL2LIB/abs.casl $CASL2LIB/rev.casl</kbd>
 -128
 -127
 </pre>
@@ -1356,8 +1356,8 @@ EMSG    DC      'error'
 ELEN	DC	5
         END
 </pre></pre>
- <pre class="example">$ <kbd>casl2 call_divl.casl $CASL2LIBDIR/divl.casl $CASL2LIBDIR/outl.casl \
-  $CASL2LIBDIR/rev.casl</kbd>
+ <pre class="example">$ <kbd>casl2 call_divl.casl $CASL2LIB/divl.casl $CASL2LIB/outl.casl \
+  $CASL2LIB/rev.casl</kbd>
 256
 254
 </pre>
@@ -1396,29 +1396,37 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#CASL2LIB-Manual">CASL2LIB Manual</a>
 
 <h4 class="unnumberedsubsec">使用例</h4>
 
-<pre class="example"><pre class="verbatim">;; CASL2LIB > DIVLを呼び出し、65534 / 255 の商と剰余を表示
+ <p>次のコマンドを実行すると、数値の入力が受け付けられ、入力された数値が表示される。
+
+<pre class="example"><pre class="verbatim">;;; casl2 -M1024 call_inl.casl $CASL2LIB/inl.casl $CASL2LIB/str2l.casl  $CASL2LIB/mull.casl \
+;;;              $CASL2LIB/outl.casl $CASL2LIB/divl.casl $CASL2LIB/rev.casl
 MAIN    START
-BEGIN   LD      GR1,A
-        LD      GR2,B
-        CALL    DIVL
-        JOV     ERR
-        LD      GR1,GR0
+LOOP    CALL    INL             ; GR1に数値、GR0に文字列の長さ
+        JOV     OV
+        AND     GR0,GR0
+        JZE     FIN
+        CPL     GR0,=#FFFF
+        JZE     NAN
         CALL    OUTL
-        LD      GR1,GR3
-        CALL    OUTL
-        JUMP    FIN        
-ERR     OUT     EMSG,ELEN
+        JUMP    LOOP
+OV      CPL     GR0,=#FFFF
+        JZE     LENOV
+        OUT     OVMSG,MLEN1
+        JUMP    LOOP
+NAN     OUT     NANMSG,MLEN2
+        JUMP    LOOP
+LENOV   OUT     LENOVMSG,MLEN3
 FIN     RET
-A       DC      65534
-B       DC      255
-EMSG    DC      'error'
-ELEN	DC	5
+OVMSG   DC      'Over 65535'
+MLEN1   DC      10
+NANMSG  DC      'Not integer'
+MLEN2   DC      11
+LENOVMSG DC     'Str too long. Stop'
+MLEN3   DC      18
         END
 </pre></pre>
- <pre class="example">$ <kbd>casl2 call_divl.casl $CASL2LIBDIR/divl.casl $CASL2LIBDIR/outl.casl \
-  $CASL2LIBDIR/rev.casl</kbd>
-256
-254
+ <pre class="example">$ <kbd>casl2 -M1024 call_inl.casl $CASL2LIB/inl.casl $CASL2LIB/str2l.casl $CASL2LIB/mull.casl \
+  $CASL2LIB/outl.casl $CASL2LIB/divl.casl $CASL2LIB/rev.casl</kbd>
 </pre>
  <div class="node">
 <a name="L2STR"></a>

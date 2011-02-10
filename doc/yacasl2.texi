@@ -1034,8 +1034,8 @@ GR1を符号付き整数とみなし、絶対値に変換
 @end example
 
 @example
-$ @kbd{casl2 call_abs.casl $CASL2LIBDIR/abs.casl $CASL2LIBDIR/outa.casl \
-  $CASL2LIBDIR/divl.casl $CASL2LIBDIR/rev.casl}
+$ @kbd{casl2 call_abs.casl $CASL2LIB/abs.casl $CASL2LIB/outa.casl \
+  $CASL2LIB/divl.casl $CASL2LIB/rev.casl}
 1
 @end example
 
@@ -1091,8 +1091,8 @@ GR2が-32768
 @end example
 
 @example
-$ @kbd{casl2 call_diva.casl $CASL2LIBDIR/diva.casl $CASL2LIBDIR/divl.casl \
-  $CASL2LIBDIR/outa.casl $CASL2LIBDIR/abs.casl $CASL2LIBDIR/rev.casl}
+$ @kbd{casl2 call_diva.casl $CASL2LIB/diva.casl $CASL2LIB/divl.casl \
+  $CASL2LIB/outa.casl $CASL2LIB/abs.casl $CASL2LIB/rev.casl}
 -128
 -127
 @end example
@@ -1137,8 +1137,8 @@ GR2が0の場合、1
 @end example
 
 @example
-$ @kbd{casl2 call_divl.casl $CASL2LIBDIR/divl.casl $CASL2LIBDIR/outl.casl \
-  $CASL2LIBDIR/rev.casl}
+$ @kbd{casl2 call_divl.casl $CASL2LIB/divl.casl $CASL2LIB/outl.casl \
+  $CASL2LIB/rev.casl}
 256
 254
 @end example
@@ -1170,15 +1170,15 @@ $ @kbd{casl2 call_divl.casl $CASL2LIBDIR/divl.casl $CASL2LIBDIR/outl.casl \
 @end itemize
 
 @unnumberedsubsec 使用例
+次のコマンドを実行すると、数値の入力が受け付けられ、入力された数値が表示される。
+
 @example
-@verbatiminclude casl2lib/divl/call_divl.casl
+@verbatiminclude casl2lib/inl/call_inl.casl
 @end example
 
 @example
-$ @kbd{casl2 call_divl.casl $CASL2LIBDIR/divl.casl $CASL2LIBDIR/outl.casl \
-  $CASL2LIBDIR/rev.casl}
-256
-254
+$ @kbd{casl2 -M1024 call_inl.casl $CASL2LIB/inl.casl $CASL2LIB/str2l.casl $CASL2LIB/mull.casl \
+  $CASL2LIB/outl.casl $CASL2LIB/divl.casl $CASL2LIB/rev.casl}
 @end example
 
 @node L2STR, MAX, INL, CASL2LIB Manual

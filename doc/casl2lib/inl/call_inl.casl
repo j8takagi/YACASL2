@@ -1,4 +1,5 @@
-;;; casl2 inl.casl ../casl2lib/inl.casl ../casl2lib/outl.casl
+;;; casl2 -M1024 call_inl.casl $CASL2LIB/inl.casl $CASL2LIB/str2l.casl  $CASL2LIB/mull.casl \
+;;; $CASL2LIB/outl.casl $CASL2LIB/divl.casl $CASL2LIB/rev.casl
 MAIN    START
 LOOP    CALL    INL             ; GR1に数値、GR0に文字列の長さ
         JOV     OV
@@ -18,8 +19,8 @@ LENOV   OUT     LENOVMSG,MLEN3
 FIN     RET
 OVMSG   DC      'Over 65535'
 MLEN1   DC      10
-NANMSG  DC      'Not A Number'
-MLEN2   DC      12
+NANMSG  DC      'Not integer'
+MLEN2   DC      11
 LENOVMSG DC     'Str too long. Stop'
 MLEN3   DC      18
         END
