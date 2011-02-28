@@ -112,7 +112,7 @@ void freecerr()
         p = q;
     }
     /* 現在のエラーメッセージを解放 */
-    /* free_chk(cerr->msg, "cerr->msg"); */
+    free_chk(cerr->msg, "cerr.msg");
     /* 現在のエラーを解放 */
     free_chk(cerr, "cerr");
 }

@@ -104,7 +104,7 @@ bool create_cmdtype_code()
         *(cmdtype_code + i) = NULL;
     }
     for(i = 0; i < comet2cmdsize; i++) {
-        np = malloc_chk(sizeof(CMDTAB), "cmdtype_code.next");
+        np = malloc_chk(sizeof(CMDTAB), "cmdtype_code.np");
         np->cmd = NULL;
         np->next = NULL;
         /* ハッシュ値の生成 */
@@ -183,7 +183,7 @@ bool create_code_type()
         *(code_type + i) = NULL;
     }
     for(i = 0; i < comet2cmdsize; i++) {
-        np = malloc_chk(sizeof(CMDTAB), "code_type.next");
+        np = malloc_chk(sizeof(CMDTAB), "code_type.np");
         np->cmd = NULL;
         np->next = NULL;
         /* ハッシュ値の生成 */
@@ -222,7 +222,7 @@ void free_code_type()
         np = code_type[i];
         while(np != NULL) {
             nq = np->next;
-            free_chk(np, "np");
+            free_chk(np, "code_type.np");
             np = nq;
         }
     }

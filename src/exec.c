@@ -356,15 +356,19 @@ bool exec()
             sprintf(errpr, "PR:#%04X", sys->cpu->pr);
             setcerr(204, errpr);    /* Program Register (PR) - out of COMET II memory */
         }
+        /* スタック領域を確保できない場合はエラー */
+        else if(sys->cpu->sp <= prog->end) {
+            sprintf(errpr, "PR:#%04X", sys->cpu->pr);
+            setcerr(205, errpr);    /* Stack Pointer (SP) - cannot allocate stack buffer */
+        }
         /* スタック領域のアドレスが主記憶の範囲外の場合はエラー */
-        if(sys->cpu->sp > sys->memsize) {
+        else if(sys->cpu->sp > sys->memsize) {
             sprintf(errpr, "PR:#%04X", sys->cpu->pr);
             setcerr(207, errpr);    /* Stack Pointer (SP) - out of COMET II memory */
         }
-        /* スタック領域を確保できない場合はエラー */
-        if(sys->cpu->sp <= prog->end) {
-            sprintf(errpr, "PR:#%04X", sys->cpu->pr);
-            setcerr(205, errpr);    /* Stack Pointer (SP) - cannot allocate stack buffer */
+        /* エラー発生時は終了 */
+        if(cerr->num > 0) {
+            goto execerr;
         }
         /* 命令の取り出し */
         op = sys->memory[sys->cpu->pr] & 0xFF00;
@@ -372,10 +376,6 @@ bool exec()
         cmdtype = getcmdtype(op);
         r_r1 = (sys->memory[sys->cpu->pr] >> 4) & 0xF;
         x_r2 = sys->memory[sys->cpu->pr] & 0xF;
-        /* エラー発生時は終了 */
-        if(cerr->num > 0) {
-            goto execerr;
-        }
         /* traceオプション指定時、レジスタを出力 */
         if(execmode.trace){
             fprintf(stdout, "#%04X: Register::::\n", sys->cpu->pr);
@@ -386,7 +386,7 @@ bool exec()
             fprintf(stdout, "#%04X: Memory::::\n", sys->cpu->pr);
             dumpmemory();
         }
-        /* どちらかのオプション指定時、改行を出力 */
+        /* traceまたはdumpオプション指定時、改行を出力 */
         if(execmode.dump || execmode.trace) {
             fprintf(stdout, "\n");
         }
@@ -544,5 +544,6 @@ bool exec()
     return true;
 execerr:
     fprintf(stderr, "Execute error - %d: %s\n", cerr->num, cerr->msg);
+    cerr->msg = NULL;           /* Ubuntu 10.04 PPCでcerr.msg開放時にSegmentation Faultが発生する現象を回避するため */
     return false;
 }
