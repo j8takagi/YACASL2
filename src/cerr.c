@@ -25,7 +25,7 @@ CERR *cerr;
 CERRLIST *cerrlist;
 
 /**
- * エラーリストを作成・追加する
+ * エラーリストを作成または追加する
  */
 bool addcerrlist(int newerrc, CERR newerrv[])
 {
@@ -49,6 +49,22 @@ bool addcerrlist(int newerrc, CERR newerrv[])
     }
     q->next = NULL;
     return true;
+}
+
+/**
+ * エラーリストを表示する
+ */
+void printcerrlist()
+{
+    CERRLIST *p;
+
+    if(cerrlist == NULL) {
+        puts("error list is null.");
+    } else {
+        for(p = cerrlist; p != NULL; p = p->next) {
+            printf("%d: %s\n", p->cerr->num, p->cerr->msg);
+        }
+    }
 }
 
 /**
@@ -96,7 +112,7 @@ void freecerr()
         p = q;
     }
     /* 現在のエラーメッセージを解放 */
-    free_chk(cerr->msg, "cerr.msg");
+    /* free_chk(cerr->msg, "cerr->msg"); */
     /* 現在のエラーを解放 */
     free_chk(cerr, "cerr");
 }

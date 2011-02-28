@@ -38,7 +38,8 @@ int main(int argc, char *argv[])
     const char *usage = "Usage: %s [-tTdh] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE\n";
 
     cerr_init();
-    addcerrlist(ARRAYSIZE(cerr_comet2), cerr_comet2);	/* エラーリスト作成 */
+    addcerrlist(ARRAYSIZE(cerr_comet2), cerr_comet2);
+    addcerrlist_exec();
 
     /* オプションの処理 */
     while((opt = getopt_long(argc, argv, "tTdM:C:h", longopts, NULL)) != -1) {

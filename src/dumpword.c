@@ -26,6 +26,7 @@ int main(int argc, char *argv[])
     const char *usage = "Usage: %s [-alh] WORD\n";
 
     cerr_init();
+    addcerrlist_word();
     while((opt = getopt_long(argc, argv, "alh", longopts, NULL)) != -1) {
         switch(opt) {
         case 'l':

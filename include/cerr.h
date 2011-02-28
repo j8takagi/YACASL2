@@ -7,7 +7,7 @@
 /**
  * エラーの構造体
  */
-typedef struct {
+typedef struct _CERR {
     int num;        /**<エラー番号 */
     char *msg;      /**<エラーメッセージ */
 } CERR;
@@ -44,6 +44,11 @@ void cerr_init();
  * エラーリストを作成・追加する
  */
 bool addcerrlist(int cerrc, CERR cerrv[]);
+
+/**
+ * エラーリストを表示する
+ */
+void printcerrlist();
 
 /**
  * 現在のエラーを設定する

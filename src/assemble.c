@@ -610,6 +610,16 @@ bool assembleline(const char *line, PASS pass)
 }
 
 /**
+ * アセンブルのエラーをエラーリストに追加
+ */
+void addcerrlist_assemble()
+{
+    addcerrlist_tok();
+    addcerrlist_word();
+    addcerrlist(ARRAYSIZE(cerr_assemble), cerr_assemble);
+}
+
+/**
  * 指定された名前のファイルをアセンブル
  * 2回実行される
  */
@@ -621,7 +631,6 @@ bool assemble(const char *file, PASS pass)
     char *line;
     FILE *fp;
 
-    addcerrlist(ARRAYSIZE(cerr_assemble), cerr_assemble);
     if((fp = fopen(file, "r")) == NULL) {
         perror(file);
         return false;

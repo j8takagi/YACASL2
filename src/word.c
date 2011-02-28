@@ -17,6 +17,14 @@ static CERR cerr_word[] = {
 };
 
 /**
+ * wordのエラーをエラーリストに追加
+ */
+bool addcerrlist_word()
+{
+    return addcerrlist(ARRAYSIZE(cerr_word), cerr_word);
+}
+
+/**
  * 10進数の文字列をWORD値に変換
  */
 WORD n2word(const char *str)
@@ -67,7 +75,6 @@ WORD h2word(const char *str)
 WORD nh2word(const char *str)
 {
     assert(sizeof(WORD)*8 == 16); /* WORD型のサイズが16ビットであることを確認 */
-    addcerrlist(ARRAYSIZE(cerr_word), cerr_word); /* エラーの設定 */
 
     WORD word;
 

@@ -6,16 +6,10 @@
 #include "cerr.h"
 
 /**
- * アセンブルファイル読み込みエラーの定義
- */
-static CERR cerr_loadassemble[] = {
-    { 201, "Loading - full of COMET II memory" },
-};
-
-/**
  * 実行エラーの定義
  */
 static CERR cerr_exec[] = {
+    { 201, "Loading - full of COMET II memory" },
     { 202, "SVC input - out of Input memory" },
     { 203, "SVC output - out of COMET II memory" },
     { 204, "Program Register (PR) - out of COMET II memory" },
@@ -30,13 +24,21 @@ static CERR cerr_exec[] = {
 EXECMODE execmode = {false, false, false};
 
 /**
+ * 実行エラーをエラーリストに追加
+ */
+bool addcerrlist_exec()
+{
+    return addcerrlist(ARRAYSIZE(cerr_exec), cerr_exec);
+}
+
+/**
  * 指定されたファイルからアセンブル結果を読み込む
  */
-bool loadassemble(char *file) {
+bool loadassemble(char *file)
+{
     FILE *fp;
     bool status = true;
 
-    addcerrlist(ARRAYSIZE(cerr_exec), cerr_loadassemble);	/* エラーリスト作成 */
     assert(file != NULL);
     if((fp = fopen(file, "r")) == NULL) {
         perror(file);
@@ -339,7 +341,6 @@ bool exec()
     char *errpr = malloc_chk(CERRSTRSIZE + 1, "exec.errpr");
     clock_t clock_begin, clock_end;
 
-    addcerrlist(ARRAYSIZE(cerr_exec), cerr_exec);         /* エラーリスト作成 */
     if(execmode.trace == true) {
         fprintf(stdout, "\nExecuting machine codes\n");
     }

@@ -24,6 +24,11 @@ typedef struct {
 extern EXECMODE execmode;
 
 /**
+ * 実行エラーをエラーリストに追加
+ */
+bool addcerrlist_exec();
+
+/**
  * 指定されたファイルからアセンブル結果を読み込む
  */
 bool loadassemble(char *file);

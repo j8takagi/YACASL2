@@ -4,6 +4,34 @@
 #include "cmem.h"
 #include "assemble.h"
 
+
+/**
+ * 行トークン取得のエラー定義
+ */
+CERR cerr_linetok[] = {
+    { 104, "label length is too long" },
+    { 105, "no command in the line" },
+};
+
+/**
+ * オペランドトークン取得のエラー定義
+ */
+static CERR cerr_opdtok[] = {
+    { 117, "operand too many in DC" },
+    { 118, "operand length too long" },
+    { 121, "cannot get operand token" },
+    { 123, "unclosed quote" },
+};
+
+/**
+ * オペランドトークン取得のエラーを追加
+ */
+void addcerrlist_tok()
+{
+    addcerrlist(ARRAYSIZE(cerr_linetok), cerr_linetok);
+    addcerrlist(ARRAYSIZE(cerr_opdtok), cerr_opdtok);
+}
+
 /**
  * 「,」区切りの文字列から、オペランドのトークンを取得
  */
@@ -14,13 +42,6 @@ OPD *opdtok(const char *str)
     int sepc = ',', rcnt = 0;
     bool quoting = false;
 
-    CERR cerr_opdtok[] = {
-        { 117, "operand too many in DC" },
-        { 118, "operand length too long" },
-        { 121, "cannot get operand token" },
-        { 123, "unclosed quote" },
-    };
-    addcerrlist(ARRAYSIZE(cerr_opdtok), cerr_opdtok);
     opd->opdc = 0;
     if(str == NULL) {
         return opd;
@@ -84,11 +105,6 @@ CMDLINE *linetok(const char *line)
     bool quoting = false;
     CMDLINE *cmdl = malloc_chk(sizeof(CMDLINE), "cmdl");
 
-    CERR cerr_linetok[] = {
-        { 104, "label length is too long" },
-        { 105, "no command in the line" },
-    };
-    addcerrlist(ARRAYSIZE(cerr_linetok), cerr_linetok);
     if(line == NULL || strlen(line) == 0) {
         return NULL;
     }

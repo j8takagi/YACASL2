@@ -160,9 +160,19 @@ typedef struct {
 } CMDLINE;
 
 /**
+ * トークン取得のエラーを追加
+ */
+void addcerrlist_tok();
+
+/**
  * 空白またはタブで区切られた1行から、トークンを取得する
  */
 CMDLINE *linetok(const char *line);
+
+/**
+ * アセンブルエラーをエラーリストに追加
+ */
+void addcerrlist_assemble();
 
 /**
  * 指定された名前のファイルをアセンブル

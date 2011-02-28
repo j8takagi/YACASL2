@@ -4,10 +4,10 @@
 #define _GNU_SOURCE
 #include <getopt.h>
 
+#include "cmem.h"
+#include "cerr.h"
 #include "assemble.h"
 #include "exec.h"
-#include "cerr.h"
-#include "cmem.h"
 
 /**
  * casl2コマンドのオプション
@@ -33,7 +33,7 @@ static struct option longopts[] = {
 /**
  * casl2のエラー定義
  */
-static CERR cerr_casl2[] = {
+CERR cerr_casl2[] = {
     { 126, "no source file" },
 };
 
@@ -61,7 +61,9 @@ int main(int argc, char *argv[])
         "Usage: %s [-slLaAtTdh] [-oO[<OBJECTFILE>]] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE1[ FILE2  ...]\n";
 
     cerr_init();
-    addcerrlist(sizeof(cerr_casl2), cerr_casl2);
+    addcerrlist(ARRAYSIZE(cerr_casl2), cerr_casl2);
+    addcerrlist_assemble();
+    addcerrlist_exec();
     /* オプションの処理 */
     while((opt = getopt_long(argc, argv, "tTdslLao::O::AM:C:h", longopts, NULL)) != -1) {
         switch(opt) {
@@ -141,6 +143,7 @@ int main(int argc, char *argv[])
                 fprintf(stdout, "\nAssemble %s (%d)\n", argv[i], pass);
             }
             if((res = assemble(argv[i], pass)) == false) {
+                freecerr();            /* エラーの解放 */
                 exit(-1);
             }
         }
@@ -161,6 +164,7 @@ int main(int argc, char *argv[])
     if(res == true) {
         if(objfile != NULL) {
             outassemble(objfile);
+            free_chk(objfile, "objfile");
         }
         if(asmode.onlyassemble == false) {
             create_code_type();    /* 命令のコードとタイプがキーのハッシュ表を作成 */
@@ -173,8 +177,6 @@ int main(int argc, char *argv[])
     if(cerr->num > 0) {
         status = -1;
     }
-    free_chk(objfile, "objfile");
-    /* エラーの解放 */
-    freecerr();
+    freecerr();            /* エラーの解放 */
     return status;
 }
