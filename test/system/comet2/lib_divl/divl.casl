@@ -1,0 +1,38 @@
+MAIN    START
+        LD      GR1,XMAX
+LOOPX   CPA     GR1,XMIN
+        JMI     FIN
+        OUT     SEP,SLEN
+        LD      GR2,YMIN
+LOOPY   CPL     GR2,YMAX
+        JPL     XNEXT
+        CALL    OUTL
+        PUSH    0,GR1
+        LD      GR1,GR2
+        CALL    OUTL
+        POP     GR1
+        CALL    DIVL
+        JOV     WOV
+        PUSH    0,GR1
+        LD      GR1,GR0
+        CALL    OUTL
+        LD      GR1,GR3
+        CALL    OUTL
+        POP     GR1
+YNEXT   OUT     SEP,SLEN
+        LAD     GR2,1,GR2
+        JUMP    LOOPY
+WOV     OUT     Y0MSG,YLEN
+        JUMP    YNEXT
+XNEXT   LAD     GR1,-1,GR1
+        JUMP    LOOPX
+FIN     RET
+XMAX    DC      100
+XMIN    DC      0
+YMAX    DC      10
+YMIN    DC      0
+SEP     DC      '--------------------'
+SLEN    DC      20
+Y0MSG   DC      'Error: div by 0'
+YLEN    DC      15
+        END

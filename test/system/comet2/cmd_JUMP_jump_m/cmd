@@ -1,2 +1,3 @@
 ../../../../casl2 -O ../../../../as/cmd/JUMP/jump_m.casl
 ../../../../comet2 -td -M16 a.o
+rm -f a.o

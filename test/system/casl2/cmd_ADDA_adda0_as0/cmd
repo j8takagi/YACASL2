@@ -1,2 +1,3 @@
-cat ../../../../as/cmd/ADDA/adda0_as0.casl
-../../../../casl2 -atd -M8 ../../../../as/cmd/ADDA/adda0_as0.casl
+YACASL2DIR=../../../..
+cat $YACASL2DIR/as/cmd/ADDA/adda0_as0.casl
+$YACASL2DIR/casl2 -atd -M8 $YACASL2DIR/as/cmd/ADDA/adda0_as0.casl

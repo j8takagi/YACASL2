@@ -2,3 +2,4 @@
 ../../../../comet2 -td -M64 a.o <teststr.txt
 
 
+rm -f a.o

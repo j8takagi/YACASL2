@@ -1,2 +1,3 @@
 ../../../../casl2 -O ../../../../as/cmd/SLL/sll_oz.casl
 ../../../../comet2 -td -M8 a.o
+rm -f a.o

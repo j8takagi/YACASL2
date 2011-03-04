@@ -1,0 +1,3 @@
+../../../../casl2 -M640 -O divl.casl ../../../../as/casl2lib/outl.casl ../../../../as/casl2lib/divl.casl ../../../../as/casl2lib/rev.casl
+../../../../comet2 -M640 a.o
+rm -f a.o

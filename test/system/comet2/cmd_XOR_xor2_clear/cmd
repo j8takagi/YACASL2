@@ -1,2 +1,3 @@
 ../../../../casl2 -O ../../../../as/cmd/XOR/xor2_clear.casl
 ../../../../comet2 -td -M8 a.o
+rm -f a.o

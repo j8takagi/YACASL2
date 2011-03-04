@@ -1,2 +1,3 @@
 ../../../../casl2 -O ../../../../as/hello.casl
 ../../../../comet2 a.o
+rm -f a.o

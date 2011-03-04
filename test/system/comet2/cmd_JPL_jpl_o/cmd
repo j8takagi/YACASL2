@@ -1,2 +1,3 @@
 ../../../../casl2 -O ../../../../as/cmd/JPL/jpl_o.casl
 ../../../../comet2 -td -M16 a.o
+rm -f a.o

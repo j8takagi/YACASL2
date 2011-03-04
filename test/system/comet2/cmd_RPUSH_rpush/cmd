@@ -1,2 +1,3 @@
 ../../../../casl2 -O ../../../../as/cmd/RPUSH/rpush.casl
 ../../../../comet2 -td -M64 a.o
+rm -f a.o

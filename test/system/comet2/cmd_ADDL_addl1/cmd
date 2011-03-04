@@ -1,2 +1,3 @@
 ../../../../casl2 -O ../../../../as/cmd/ADDL/addl1.casl
 ../../../../comet2 -td -M16 a.o
+rm -f a.o
