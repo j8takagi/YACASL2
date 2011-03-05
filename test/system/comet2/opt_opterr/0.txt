@@ -1,2 +1,1 @@
-comet2: invalid option -- z
 Usage: ../../../../comet2 [-tTdh] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE

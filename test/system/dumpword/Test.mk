@@ -49,7 +49,7 @@ define exec_cmd
     if test ! -x $1; then $(CHMOD) u+x $1; fi
     ./$1 >>$2 2>$3
     if test -s $3; then $(CAT) $3 >>$2; fi
-    $(SED) -i '' -e "s%$(CURRDIR)%\$$PWD%g" $2
+    $(CP) $2 $2.tmp && $(SED) -e "s%$(CURRDIR)%\$$PWD%g" $2.tmp >$2 && $(RM) $2.tmp
     $(call rm_null,$3)
 endef
 
