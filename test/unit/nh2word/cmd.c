@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include "assemble.h"
-#include "test_h2word.h"
 #include "cerr.h"
 #include "word.h"
 
@@ -14,6 +13,7 @@ int main(){
     };
 
     cerr_init();    /* エラーの初期化 */
+    addcerrlist_word();
     for(i = 0; i < sizeof(str)/sizeof(str[0]); i++) {
         cerr->num = 0;
         r = nh2word(str[i]);

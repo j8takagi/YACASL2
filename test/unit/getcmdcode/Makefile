@@ -1,11 +1,15 @@
 include ../Define.mk
-include ../Define_test.mk
 include ../Test.mk
 
-.INTERMEDIATE: cmd
+CC := gcc
+CFLAGS := -Wall
 
-SRCDIR = ../../../src
-SRCFILES = $(SRCDIR)/hash.c $(SRCDIR)/cmd.c $(SRCDIR)/cmem.c  $(SRCDIR)/cerr.c
+.INTERMEDIATE: $(CMD_FILE)
 
-cmd: cmd.c $(SRCFILES)
-	gcc -g -Wall -I ../../../include -o $@ $^
+CMDSRC_FILE := cmd.c
+TARGETDIR := ../../../src
+INCLUDEDIR := ../../../include
+TESTTARGET_FILES := $(TARGETDIR)/hash.c $(TARGETDIR)/cmd.c $(TARGETDIR)/cmem.c  $(TARGETDIR)/cerr.c      # Set test target files
+
+$(CMD_FILE): $(CMDSRC_FILE) $(TESTTARGET_FILES)
+	$(CC) $(CFLAGS) -I $(INCLUDEDIR) -o $@ $^

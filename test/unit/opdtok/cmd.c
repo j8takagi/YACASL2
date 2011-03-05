@@ -17,6 +17,7 @@ int main(){
     };
 
     cerr = malloc_chk(sizeof(CERR), "cerr");    /* エラーの初期化 */
+    addcerrlist_assemble();
     for(i = 0; i < ARRAYSIZE(str); i++) {
         cerr->num = 0;
         printf("%s\n", str[i]);

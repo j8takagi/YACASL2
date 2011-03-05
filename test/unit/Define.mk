@@ -47,6 +47,8 @@ EXPR ?= expr
 
 LN ?= ln -s
 
+SED ?= sed
+
 ######################################################################
 # テストグループとテストでの共通マクロ
 ######################################################################
@@ -63,30 +65,56 @@ define chk_file_ext
     $(if $(wildcard $1),$(error $1 exists in $(CURRDIR)))
 endef
 
+# 指定したディレクトリーを作成
+# 引数は、ディレクトリー名
+# 用例: $(call create_dir,name)
+define create_dir
+    $(call chk_var_null,$1)
+    $(call chk_file_ext,$1)
+    $(MKDIR) $1
+endef
+
+# テストディレクトリーのMakefileを作成
+# 引数は、Makefile名、依存ファイル群
+# 用例: $(call create_makefile,file,list_include_file)
+define create_makefile
+    $(RM) $1
+    $(foreach infile,$2,$(ECHO) "include ../$(infile)" >>$1; )
+    $(if $(filter $(SRC),c),$(call puts_cmd_c,$1))
+endef
+
+# C言語の関数をテストするための設定を、指定されたファイルに出力
+# 引数は、ファイル名
+# 用例: $(call puts_cmd_c,file)
+define puts_cmd_c
+    $(ECHO) >>$1
+    $(ECHO) "CC := gcc" >>$1
+    $(ECHO) "CFLAGS := -Wall" >>$1
+    $(ECHO) >>$1
+    $(ECHO) ".INTERMEDIATE:" "$$""(CMD_FILE)" >>$1
+    $(ECHO) >>$1
+    $(ECHO) "CMDSRC_FILE := cmd.c" >>$1
+    $(ECHO) "TESTTARGET_FILES :=       # Set test target files" >>$1
+    $(ECHO) >>$1
+    $(ECHO) "$$""(CMD_FILE):" "$$""(CMDSRC_FILE)" "$$""(TESTTARGET_FILES)" >>$1
+    $(ECHO) "	""$$""(CC)" "$$""(CFLAGS)" "-o" "$$""@" "$$""^" >>$1
+endef
+
 ######################################################################
 # テストグループのディレクトリー
 ######################################################################
 
 # テストグループとテストの変数を定義したMakefile
-DEF_FILE := Define.mk
-
-# テストグループの変数を定義したMakefile
-DEF_GROUP_FILE := Define_group.mk
-
-# テストの変数を定義したMakefile
-DEF_TEST_FILE := Define_test.mk
+DEFINE_FILE := Define.mk
 
 # テストのターゲットを定義したMakefile
 TEST_MAKEFILE := Test.mk
 
 # すべてのMakefile群
-MAKEFILES := $(DEF_FILE) $(DEF_GROUP_FILE) $(DEF_TEST_FILE) $(TEST_MAKEFILE)
+MAKEFILES := $(DEFINE_FILE) $(TEST_MAKEFILE)
 
 # すべてのMakefile群の絶対パス
 MAKEFILES_ABS := $(foreach file,$(MAKEFILES),$(CURRDIR)/$(file))
-
-# テストごとのMakefileでインクルードするMakefile群
-TEST_MAKEFILES := $(DEF_FILE) $(DEF_TEST_FILE) $(TEST_MAKEFILE)
 
 ######################################################################
 # テストのディレクトリー
@@ -98,20 +126,20 @@ CMD_FILE := cmd
 # テスト説明ファイル
 DESC_FILE := desc.txt
 
-# テスト想定結果ファイル
+# テスト想定ファイル
 TEST0_FILE := 0.txt
 
 # テスト結果ファイル
 TEST1_FILE := 1.txt
 
 # テストの、想定結果と結果の差分ファイル
-DIFF_FILE := diff.txt
+DIFF_FILE := diff.log
 
 # テストエラーファイル
-ERR_FILE := err.txt
+ERR_FILE := err.log
 
 # テストログファイル
-LOG_FILE := test.log
+LOG_FILE := summary.log
 
 # 実行時間ファイル
 TIME_FILE := time.log

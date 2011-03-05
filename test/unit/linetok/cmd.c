@@ -21,6 +21,7 @@ int main(){
 
     CMDLINE *testcl = malloc(sizeof(CMDLINE));
     cerr_init();    /* エラーの初期化 */
+    addcerrlist_tok();
     for(i = 0; i < sizeof testline /sizeof testline[0]; i++) {
         printf("%d: %s", i, testline[i]);
         testcl = linetok(testline[i]);
