@@ -8,7 +8,7 @@
  */
 enum {
     CMDSIZE = 4,              /**<命令の最大文字数 */
-    GRSIZE = 8,               /**<汎用レジスタの数。COMET II規格により0から7までの8つ */
+    GRSIZE = 8,               /**<汎用レジスタの数。COMET II規格では、8（0から7） */
     DEFAULT_MEMSIZE = 512,    /**<デフォルトのメモリ容量。COMET II規格では、65535語（word） */
     DEFAULT_CLOCKS = 5000000, /**<デフォルトのクロック周波数。COMET II規格では、未定義 */
 };
@@ -58,7 +58,7 @@ typedef enum {
     R_ADR_X = 010,
     /**
      *  オペランド数2または3
-     *     第1オペランド: 汎用レジスタ、
+     *     第1オペランド: 汎用レジスタ
      *     第2オペランド: アドレスに格納されている内容
      *     第3オペランド: 指標レジスタ
      */
@@ -99,7 +99,7 @@ typedef struct {
  * 命令コードのハッシュ表
  */
 typedef struct _CMDTAB {
-    struct _CMDTAB *next;       /**<次項目へのポインタ */
+    struct _CMDTAB *next;       /**<リスト次項目へのポインタ */
     CMD *cmd;                   /**<命令コード表の項目 */
 } CMDTAB;
 
