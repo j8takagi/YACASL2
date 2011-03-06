@@ -45,9 +45,9 @@ bool loadassemble(char *file)
         perror(file);
         return false;
     }
-    prog->end = prog->start +
-        fread(sys->memory, sizeof(WORD), sys->memsize - prog->start, fp);
-    if(prog->end == sys->memsize) {
+    execptr->end = execptr->start +
+        fread(sys->memory, sizeof(WORD), sys->memsize - execptr->start, fp);
+    if(execptr->end == sys->memsize) {
         setcerr(201, file);    /* Loading - full of COMET II memory */
         fprintf(stderr, "Load error - %d: %s\n", cerr->num, cerr->msg);
         status = false;
@@ -348,7 +348,7 @@ bool exec()
     /* フラグレジスタの初期値設定 */
     sys->cpu->fr = 0x0;
     sys->cpu->sp = sys->memsize;
-    sys->cpu->pr = prog->start;
+    sys->cpu->pr = execptr->start;
     /* 機械語の実行 */
     for (; ; ) {
         clock_begin = clock();
@@ -358,7 +358,7 @@ bool exec()
             setcerr(204, errpr);    /* Program Register (PR) - out of COMET II memory */
         }
         /* スタック領域を確保できない場合はエラー */
-        else if(sys->cpu->sp <= prog->end) {
+        else if(sys->cpu->sp <= execptr->end) {
             sprintf(errpr, "PR:#%04X", sys->cpu->pr);
             setcerr(205, errpr);    /* Stack Pointer (SP) - cannot allocate stack buffer */
         }
@@ -512,20 +512,20 @@ bool exec()
             }
             break;
         case 0x7000:    /* PUSH */
-            assert(sys->cpu->sp > prog->end && sys->cpu->sp <= sys->memsize);
+            assert(sys->cpu->sp > execptr->end && sys->cpu->sp <= sys->memsize);
             sys->memory[--(sys->cpu->sp)] = val;
             break;
         case 0x7100:    /* POP */
-            assert(sys->cpu->sp > prog->end && sys->cpu->sp <= sys->memsize);
+            assert(sys->cpu->sp > execptr->end && sys->cpu->sp <= sys->memsize);
             sys->cpu->gr[r_r1] = sys->memory[(sys->cpu->sp)++];
             break;
         case 0x8000:    /* CALL */
-            assert(sys->cpu->sp > prog->end && sys->cpu->sp <= sys->memsize);
+            assert(sys->cpu->sp > execptr->end && sys->cpu->sp <= sys->memsize);
             sys->memory[--(sys->cpu->sp)] = sys->cpu->pr;
             sys->cpu->pr = val;
             break;
         case 0x8100:    /* RET */
-            assert(sys->cpu->sp > prog->end && sys->cpu->sp <= sys->memsize);
+            assert(sys->cpu->sp > execptr->end && sys->cpu->sp <= sys->memsize);
             if(sys->cpu->sp == sys->memsize) {
                 return true;
             } else {

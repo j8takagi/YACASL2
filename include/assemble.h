@@ -35,18 +35,15 @@ typedef struct {
 extern ASMODE asmode;
 
 /**
- * アセンブルのプロパティ
+ * アセンブル時の、現在およびリテラルのアドレスと入口名
  */
 typedef struct {
-    WORD ptr;     /**<現在のポインタ */
-    WORD lptr;    /**<リテラル（=付きの値）を格納するポインタ */
+    WORD ptr;     /**<現在のアドレス */
+    WORD lptr;    /**<リテラル（=付きの値）のアドレス */
     char *prog;   /**<他のプログラムで参照する入口名 */
-} ASPROP;
+} ASPTR;
 
-/**
- * アセンブルのプロパティ: ptr, lptr, *prog
- */
-extern ASPROP *asprop;
+extern ASPTR *asptr;
 
 /**
   * アセンブラ命令を表す番号
@@ -82,7 +79,7 @@ typedef enum {
  * マクロ命令を表す配列
  */
 typedef struct {
-    MACROCMDID cmdid;              /**<アセンブル命令のID */
+    MACROCMDID cmdid;              /**<マクロ命令のID */
     int opdc_min;                  /**<最小オペランド数 */
     int opdc_max;                  /**<最大オペランド数 */
     char *cmd;                     /**<コマンド名 */

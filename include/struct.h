@@ -87,31 +87,31 @@ typedef enum {
 } CMDTYPE;
 
 /**
- * 命令コード配列
+ * 命令コード表の項目
  */
 typedef struct {
-    char *name;
-    CMDTYPE type;
-    WORD code;
+    char *name;                 /**<命令名 */
+    CMDTYPE type;               /**<命令タイプ */
+    WORD code;                  /**<命令コード */
 } CMD;
 
 /**
  * 命令コードのハッシュ表
  */
 typedef struct _CMDTAB {
-    struct _CMDTAB *next;
-    CMD *cmd;
+    struct _CMDTAB *next;       /**<次項目へのポインタ */
+    CMD *cmd;                   /**<命令コード表の項目 */
 } CMDTAB;
 
 /**
- * CASL2プログラムのプロパティ
+ * プログラム実行時の開始と終了のアドレス
  */
 typedef struct {
-    WORD start;   /**<プログラムの開始番地 */
-    WORD end;     /**<プログラムの終了番地 */
-} PROGPROP;
+    WORD start;   /**<開始アドレス */
+    WORD end;     /**<終了アドレス */
+} EXECPTR;
 
-extern PROGPROP *prog;
+extern EXECPTR *execptr;
 
 /**
  * COMET II仮想マシンのリセット

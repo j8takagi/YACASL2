@@ -127,16 +127,16 @@ int main(int argc, char *argv[])
     for(pass = FIRST; pass <= SECOND; pass++) {
         if(pass == FIRST) {
             create_cmdtype_code();        /* 命令の名前とタイプがキーのハッシュ表を作成 */
-            asprop = malloc_chk(sizeof(ASPROP), "asprop"); /* アセンブル時のプロパティ用の領域確保 */
+            asptr = malloc_chk(sizeof(asptr), "asptr"); /* アセンブル時のプロパティ用の領域確保 */
         }
         for(i = optind; i < argc; i++) {
             /* データの格納開始位置 */
             if(pass == FIRST) {
-                beginptr[i] = asprop->ptr;
+                beginptr[i] = asptr->ptr;
             } else if(pass == SECOND) {
-                asprop->ptr = beginptr[i];
+                asptr->ptr = beginptr[i];
             }
-            asprop->prog = NULL;
+            asptr->prog = NULL;
             if(execmode.trace == true || execmode.dump == true || asmode.src == true ||
                asmode.label == true || asmode.asdetail == true)
             {
@@ -156,8 +156,8 @@ int main(int argc, char *argv[])
         }
         if(pass == SECOND) {
             freelabel();            /* ラベルハッシュ表を解放 */
-            free_chk(asprop->prog, "asprop.prog"); /* プログラム名を解放 */
-            free_chk(asprop, "asprop");       /* アセンブル時のプロパティを解放 */
+            free_chk(asptr->prog, "asptr.prog"); /* プログラム名を解放 */
+            free_chk(asptr, "asptr");       /* アセンブル時のプロパティを解放 */
             free_cmdtype_code();    /* 命令の名前とタイプがキーのハッシュ表を解放 */
         }
     }

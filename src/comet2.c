@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
     }
     /* COMET II仮想マシンのリセット */
     reset(memsize, clocks);
-    prog->start = 0;
+    execptr->start = 0;
     if(loadassemble(argv[optind]) == true) {
         create_code_type();    /* タイプがキーの命令ハッシュ表を作成 */
         exec();                /* プログラム実行 */
