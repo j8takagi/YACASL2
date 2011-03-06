@@ -4,6 +4,8 @@ define make_dirs
     $(foreach d,$1,$(MAKE) -sC $d $2)
 endef
 
+.PHONY: check clean
+
 check:
 	@$(call make_dirs,$(CMDS),$@; )
 
