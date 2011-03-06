@@ -16,6 +16,7 @@ static CERR cerr_exec[] = {
     { 205, "Stack Pointer (SP) - cannot allocate stack buffer" },
     { 206, "Address - out of COMET II memory" },
     { 207, "Stack Pointer (SP) - out of COMET II memory" },
+    { 209, "not GR in operand x" },
 };
 
 /**
@@ -393,11 +394,21 @@ bool exec()
         sys->cpu->pr++;
         /* オペランドの取り出し */
         if(cmdtype == R1_R2) {
-            assert(x_r2 < GRSIZE);
+            /* オペランドの数値が汎用レジスタの範囲外の場合はエラー */
+            if(x_r2 > GRSIZE - 1) {
+                sprintf(errpr, "PR:#%04X", sys->cpu->pr-1);
+                setcerr(209, errpr);    /* not GR in operand x */
+                goto execerr;
+            }
             val = sys->cpu->gr[x_r2];
         }
         else if(cmdtype ==  R_ADR_X || cmdtype == R_ADR_X_ || cmdtype == ADR_X) {
-            assert(x_r2 < GRSIZE);
+            /* オペランドの数値が汎用レジスタの範囲外の場合はエラー */
+            if(x_r2 > GRSIZE - 1) {
+                sprintf(errpr, "PR:#%04X", sys->cpu->pr-1);
+                setcerr(209, errpr);    /* not GR in operand x */
+                goto execerr;
+            }
             /* 実効アドレス（値または値が示す番地）を取得  */
             val = sys->memory[sys->cpu->pr++];
             /* 指標アドレスを加算  */
