@@ -204,7 +204,7 @@ bool assemblecmd(const CMDLINE *cmdl, PASS pass)
 bool macrocmd(const CMDLINE *cmdl, PASS pass)
 {
     int i = 0;
-    MACROCMDID cmdid;
+    MACROCMDID cmdid = 0;
      MACROCMD macrocmd[] = {
         { IN, 2, 2, "IN" },
         { OUT, 2, 2, "OUT" },
