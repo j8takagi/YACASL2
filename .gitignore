@@ -3,3 +3,7 @@
 /dumpword
 *.o
 *~
+GPATH
+GRTAGS
+GTAGS
+HTML
