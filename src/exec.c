@@ -333,13 +333,22 @@ static WORD srl(WORD val0, WORD val1)
 }
 
 /**
+ * プログラムレジスタ（PR）を表す文字列を返す
+ **/
+static char *pr2str(WORD pr) {
+    char *str = malloc_chk(CERRSTRSIZE + 1, "pr2str.pr");
+
+    sprintf(str, "PR:#%04X", pr);
+    return str;
+}
+
+/**
  * 仮想マシンCOMET IIの実行
  */
 bool exec()
 {
     WORD op, r_r1, x_r2, val;
     CMDTYPE cmdtype;
-    char *errpr = malloc_chk(CERRSTRSIZE + 1, "exec.errpr");
     clock_t clock_begin, clock_end;
 
     if(execmode.trace == true) {
@@ -354,18 +363,15 @@ bool exec()
         clock_begin = clock();
         /* プログラムレジスタのアドレスが主記憶の範囲外の場合はエラー */
         if(sys->cpu->pr >= sys->memsize) {
-            sprintf(errpr, "PR:#%04X", sys->cpu->pr);
-            setcerr(204, errpr);    /* Program Register (PR) - out of COMET II memory */
+            setcerr(204, pr2str(sys->cpu->pr));    /* Program Register (PR) - out of COMET II memory */
         }
         /* スタック領域を確保できない場合はエラー */
         else if(sys->cpu->sp <= execptr->end) {
-            sprintf(errpr, "PR:#%04X", sys->cpu->pr);
-            setcerr(205, errpr);    /* Stack Pointer (SP) - cannot allocate stack buffer */
+            setcerr(205, pr2str(sys->cpu->pr));    /* Stack Pointer (SP) - cannot allocate stack buffer */
         }
         /* スタック領域のアドレスが主記憶の範囲外の場合はエラー */
         else if(sys->cpu->sp > sys->memsize) {
-            sprintf(errpr, "PR:#%04X", sys->cpu->pr);
-            setcerr(207, errpr);    /* Stack Pointer (SP) - out of COMET II memory */
+            setcerr(207, pr2str(sys->cpu->pr));    /* Stack Pointer (SP) - out of COMET II memory */
         }
         /* エラー発生時は終了 */
         if(cerr->num > 0) {
@@ -396,8 +402,7 @@ bool exec()
         if(cmdtype == R1_R2) {
             /* オペランドの数値が汎用レジスタの範囲外の場合はエラー */
             if(x_r2 > GRSIZE - 1) {
-                sprintf(errpr, "PR:#%04X", sys->cpu->pr-1);
-                setcerr(209, errpr);    /* not GR in operand x */
+                setcerr(209, pr2str(sys->cpu->pr-1));    /* not GR in operand x */
                 goto execerr;
             }
             val = sys->cpu->gr[x_r2];
@@ -405,8 +410,7 @@ bool exec()
         else if(cmdtype ==  R_ADR_X || cmdtype == R_ADR_X_ || cmdtype == ADR_X) {
             /* オペランドの数値が汎用レジスタの範囲外の場合はエラー */
             if(x_r2 > GRSIZE - 1) {
-                sprintf(errpr, "PR:#%04X", sys->cpu->pr-1);
-                setcerr(209, errpr);    /* not GR in operand x */
+                setcerr(209, pr2str(sys->cpu->pr-1));    /* not GR in operand x */
                 goto execerr;
             }
             /* 実効アドレス（値または値が示す番地）を取得  */
@@ -418,14 +422,12 @@ bool exec()
             /* ロード／算術論理演算命令／比較演算命令では、アドレスに格納されている内容を取得 */
             if(cmdtype == R_ADR_X_) {
                 if(val >= sys->memsize) {
-                    sprintf(errpr, "PR:#%04X", sys->cpu->pr-1);
-                    setcerr(206, errpr);    /* Address - out of COMET II memory */
+                    setcerr(206, pr2str(sys->cpu->pr-1));    /* Address - out of COMET II memory */
                     goto execerr;
                 }
                 val = sys->memory[val];
             }
         }
-        free_chk(errpr, "errpr");
         /* 主オペランドが1から4の場合、第2ビットを無視 */
         if(op >= 0x1000 && op <= 0x4FFF) {
             op &= 0xFB00;
@@ -555,6 +557,5 @@ bool exec()
     return true;
 execerr:
     fprintf(stderr, "Execute error - %d: %s\n", cerr->num, cerr->msg);
-    cerr->msg = NULL;           /* Ubuntu 10.04 PPCでcerr.msg開放時にSegmentation Faultが発生する現象を回避するため */
     return false;
 }
