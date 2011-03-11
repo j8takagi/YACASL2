@@ -17,6 +17,7 @@ static CERR cerr_exec[] = {
     { 206, "Address - out of COMET II memory" },
     { 207, "Stack Pointer (SP) - out of COMET II memory" },
     { 209, "not GR in operand x" },
+    { 210, "not command code of COMET II" },
 };
 
 /**
@@ -380,7 +381,9 @@ bool exec()
         /* 命令の取り出し */
         op = sys->memory[sys->cpu->pr] & 0xFF00;
         /* 命令の解読 */
-        cmdtype = getcmdtype(op);
+        if((cmdtype = getcmdtype(op)) == NOTCMD) {
+            setcerr(210, pr2str(sys->cpu->pr));          /* not command code of COMET II */
+        }
         r_r1 = (sys->memory[sys->cpu->pr] >> 4) & 0xF;
         x_r2 = sys->memory[sys->cpu->pr] & 0xF;
         /* traceオプション指定時、レジスタを出力 */

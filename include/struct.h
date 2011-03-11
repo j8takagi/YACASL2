@@ -84,6 +84,10 @@ typedef enum {
      *  オペランドなし
      */
     NONE = 0,
+    /**
+     *  COMET II命令以外
+     */
+    NOTCMD = 077,
 } CMDTYPE;
 
 /**

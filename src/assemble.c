@@ -148,7 +148,7 @@ bool assemblecmd(const CMDLINE *cmdl, PASS pass)
         }
         /* プログラム名の設定 */
         asptr->prog = strdup_chk(cmdl->label, "asptr.prog");
-        /* オペランドがある場合、実行開始番地を設定 */
+        /* オペランドがある場合、実行開始アドレスを設定 */
         if(pass == SECOND && cmdl->opd->opdc == 1) {
             if((execptr->start = getlabel(asptr->prog, cmdl->opd->opdv[0])) == 0xFFFF) {
                 setcerr(103, cmdl->opd->opdv[0]);    /* label not found */
@@ -157,11 +157,11 @@ bool assemblecmd(const CMDLINE *cmdl, PASS pass)
         status = true;
         break;
     case END:
-        /* 1回目のアセンブルの場合は、リテラル領域開始番地を設定 */
+        /* 1回目のアセンブルの場合は、リテラル領域開始アドレスを設定 */
         if(pass == FIRST) {
             asptr->lptr = asptr->ptr;
         }
-        /* 2回目のアセンブルの場合は、リテラル領域終了番地を実行終了番地として設定 */
+        /* 2回目のアセンブルの場合は、リテラル領域終了アドレスを実行終了アドレスとして設定 */
         else if(pass == SECOND) {
             execptr->end = asptr->lptr;
         }

@@ -208,7 +208,7 @@ CMDTYPE getcmdtype(WORD code)
             return np->cmd->type;
         }
     }
-    return NONE;
+    return NOTCMD;
 }
 
 /**
