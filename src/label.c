@@ -129,16 +129,14 @@ void printlabel()
 void freelabel()
 {
     int i;
-    LABELTAB *np, *nq;
+    LABELTAB *p, *q;
 
     for(i = 0; i < LABELTABSIZE; i++) {
-        for(np = labels[i]; np != NULL; np = nq) {
-            nq = np->next;
-            if(np->prog != NULL) {
-                free_chk(np->prog, "np.prog");
-            }
-            free_chk(np->label, "np.label");
-            free_chk(np, "np");
+        for(p = labels[i]; p != NULL; p = q) {
+            q = p->next;
+            free_chk(p->prog, "freelabel.p.prog");
+            free_chk(p->label, "freelabel.p.label");
+            free_chk(p, "freelabel.p");
         }
     }
 }

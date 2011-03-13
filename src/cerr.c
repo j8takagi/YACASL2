@@ -105,14 +105,15 @@ void freecerr()
 {
     CERRLIST *p = cerrlist, *q;
 
-    /* エラーリストを解放 */
-    while(p != NULL) {
-        q = p->next;
-        free_chk(p, "freecerr.p");
-        p = q;
-    }
     /* 現在のエラーメッセージを解放 */
     free_chk(cerr->msg, "cerr.msg");
     /* 現在のエラーを解放 */
     free_chk(cerr, "cerr");
+    /* エラーリストを解放 */
+    for(p = cerrlist; p != NULL; p = q) {
+        q = p->next;
+        /* free_chk(p->cerr->msg, "freecerr.p.cerr.msg"); */
+        /* free_chk(p->cerr, "freecerr.p.cerr"); */
+        free_chk(p, "freecerr.p");
+    }
 }

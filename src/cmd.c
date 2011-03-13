@@ -94,25 +94,18 @@ unsigned hash_cmdtype(const char *cmd, CMDTYPE type)
  */
 bool create_cmdtype_code()
 {
-    CMDTAB *np;
+    CMDTAB *p;
     unsigned hashval;
     int i;
 
     cmdtabsize = comet2cmdsize;
     cmdtype_code = calloc_chk(cmdtabsize, sizeof(CMDTAB *), "cmdtype_code");
-    for(i = 0; i < cmdtabsize; i++) {
-        *(cmdtype_code + i) = NULL;
-    }
     for(i = 0; i < comet2cmdsize; i++) {
-        np = malloc_chk(sizeof(CMDTAB), "cmdtype_code.np");
-        np->cmd = NULL;
-        np->next = NULL;
-        /* ハッシュ値の生成 */
-        hashval = hash_cmdtype(comet2cmd[i].name, comet2cmd[i].type);
-        /* ハッシュ表に値を追加 */
-        np->next = cmdtype_code[hashval];
-        cmdtype_code[hashval] = np;
-        np->cmd = &(comet2cmd[i]);
+        p = malloc_chk(sizeof(CMDTAB), "cmdtype_code.p");
+        hashval = hash_cmdtype(comet2cmd[i].name, comet2cmd[i].type);    /* ハッシュ値の生成 */
+        p->next = cmdtype_code[hashval];    /* ハッシュ表に値を追加 */
+        p->cmd = &comet2cmd[i];
+        cmdtype_code[hashval] = p;
     }
     return true;
 }
@@ -123,12 +116,12 @@ bool create_cmdtype_code()
  */
 WORD getcmdcode(const char *cmd, CMDTYPE type)
 {
-    CMDTAB *np;
+    CMDTAB *p;
 
     assert(cmd != NULL);
-    for(np = cmdtype_code[hash_cmdtype(cmd, type)]; np != NULL; np = np->next){
-        if(strcmp(cmd, np->cmd->name) == 0 && type == np->cmd->type) {
-            return np->cmd->code;
+    for(p = cmdtype_code[hash_cmdtype(cmd, type)]; p != NULL; p = p->next){
+        if(strcmp(cmd, p->cmd->name) == 0 && type == p->cmd->type) {
+            return p->cmd->code;
         }
     }
     return 0xFFFF;
@@ -140,14 +133,12 @@ WORD getcmdcode(const char *cmd, CMDTYPE type)
 void free_cmdtype_code()
 {
     int i;
-    CMDTAB *np, *nq;
+    CMDTAB *p, *q;
 
     for(i = 0; i < cmdtabsize; i++) {
-        np = cmdtype_code[i];
-        while(np != NULL) {
-            nq = np->next;
-            free_chk(np, "free_cmdtype_code.np");
-            np = nq;
+        for(p = cmdtype_code[i]; p != NULL; p = q) {
+            q = p->next;
+            free_chk(p, "free_cmdtype_code.p");
         }
     }
     free_chk(cmdtype_code, "cmdtype_code");
@@ -173,39 +164,32 @@ unsigned hash_code(WORD code)
  */
 bool create_code_type()
 {
-    CMDTAB *np;
+    CMDTAB *p;
     unsigned hashval;
     int i;
 
     cmdtabsize = comet2cmdsize;
     code_type = calloc_chk(cmdtabsize, sizeof(CMDTAB *), "code_type");
-    for(i = 0; i < cmdtabsize; i++) {
-        *(code_type + i) = NULL;
-    }
     for(i = 0; i < comet2cmdsize; i++) {
-        np = malloc_chk(sizeof(CMDTAB), "code_type.np");
-        np->cmd = NULL;
-        np->next = NULL;
-        /* ハッシュ値の生成 */
-        hashval = hash_code((&comet2cmd[i])->code);
-        /* ハッシュ表に値を追加 */
-        np->next = code_type[hashval];
-        code_type[hashval] = np;
-        np->cmd = &comet2cmd[i];
+        p = malloc_chk(sizeof(CMDTAB), "code_type.p");
+        hashval = hash_code((&comet2cmd[i])->code);    /* ハッシュ値の生成 */
+        p->next = code_type[hashval];    /* ハッシュ表に値を追加 */
+        p->cmd = &comet2cmd[i];
+        code_type[hashval] = p;
     }
     return true;
 }
 
 /**
  * 命令コードから命令タイプを返す
- * 無効な場合はNONEを返す
+ * 無効な場合はNOTCMDを返す
  */
 CMDTYPE getcmdtype(WORD code)
 {
-    CMDTAB *np;
-    for(np = code_type[hash_code(code)]; np != NULL; np = np->next) {
-        if(code == np->cmd->code) {
-            return np->cmd->type;
+    CMDTAB *p;
+    for(p = code_type[hash_code(code)]; p != NULL; p = p->next) {
+        if(code == p->cmd->code) {
+            return p->cmd->type;
         }
     }
     return NOTCMD;
@@ -217,13 +201,13 @@ CMDTYPE getcmdtype(WORD code)
 void free_code_type()
 {
     int i;
-    CMDTAB *np, *nq;
+    CMDTAB *p, *q;
     for(i = 0; i < cmdtabsize; i++) {
-        np = code_type[i];
-        while(np != NULL) {
-            nq = np->next;
-            free_chk(np, "code_type.np");
-            np = nq;
+        p = code_type[i];
+        while(p != NULL) {
+            q = p->next;
+            free_chk(p, "code_type.p");
+            p = q;
         }
     }
     free_chk(code_type, "code_type");

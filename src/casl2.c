@@ -38,6 +38,14 @@ CERR cerr_casl2[] = {
 };
 
 /**
+ * CASL IIのエラーをエラーリストに追加
+ */
+void addcerrlist_casl2()
+{
+    addcerrlist(ARRAYSIZE(cerr_casl2), cerr_casl2);
+}
+
+/**
  * アセンブル結果を書き込むファイルの名前
  */
 static const char *objfile_name(const char *str)
@@ -61,7 +69,7 @@ int main(int argc, char *argv[])
         "Usage: %s [-slLaAtTdh] [-oO[<OBJECTFILE>]] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE1[ FILE2  ...]\n";
 
     cerr_init();
-    addcerrlist(ARRAYSIZE(cerr_casl2), cerr_casl2);
+    addcerrlist_casl2();
     addcerrlist_assemble();
     addcerrlist_exec();
     /* オプションの処理 */
@@ -127,7 +135,7 @@ int main(int argc, char *argv[])
     for(pass = FIRST; pass <= SECOND; pass++) {
         if(pass == FIRST) {
             create_cmdtype_code();        /* 命令の名前とタイプがキーのハッシュ表を作成 */
-            asptr = malloc_chk(sizeof(asptr), "asptr"); /* アセンブル時のプロパティ用の領域確保 */
+            asptr = malloc_chk(sizeof(ASPTR), "asptr"); /* アセンブル時のプロパティ用の領域確保 */
         }
         for(i = optind; i < argc; i++) {
             /* データの格納開始位置 */
