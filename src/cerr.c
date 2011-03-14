@@ -42,10 +42,9 @@ bool addcerrlist(int newerrc, CERR newerrv[])
         p = q->next = malloc_chk(sizeof(CERRLIST), "cerrlist.next");
     }
     for(i = 0; i < newerrc; i++) {
-        p->cerr = &(newerrv[i]);
-        p->next = malloc_chk(sizeof(CERRLIST), "cerrlist.next");
+        p->cerr = &newerrv[i];
         q = p;
-        p = p->next;
+        p = p->next = malloc_chk(sizeof(CERRLIST), "cerrlist.next");
     }
     q->next = NULL;
     return true;
@@ -89,13 +88,15 @@ void setcerr(int num, const char *str)
 char *getcerrmsg(int num)
 {
     CERRLIST *p;
+    char *msg = "unknown error";
 
     for(p = cerrlist; p != NULL; p = p->next) {
         if(num == p->cerr->num) {
-            return p->cerr->msg;
+            msg = p->cerr->msg;
+            break;
         }
     }
-    return "unknown error";
+    return msg;
 }
 
 /**
@@ -112,8 +113,6 @@ void freecerr()
     /* エラーリストを解放 */
     for(p = cerrlist; p != NULL; p = q) {
         q = p->next;
-        /* free_chk(p->cerr->msg, "freecerr.p.cerr.msg"); */
-        /* free_chk(p->cerr, "freecerr.p.cerr"); */
         free_chk(p, "freecerr.p");
     }
 }

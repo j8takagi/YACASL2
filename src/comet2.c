@@ -18,7 +18,7 @@ static struct option longopts[] = {
     {"memorysize", required_argument, NULL, 'M'},
     {"clocks", required_argument, NULL, 'C'},
     {"help", no_argument, NULL, 'h'},
-    {0, 0, 0, 0}
+    {0, 0, 0, 0},
 };
 
 /**
