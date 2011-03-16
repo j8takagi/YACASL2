@@ -22,32 +22,28 @@ CERR *cerr;
 /**
  * エラーリスト
  */
-CERRLIST *cerrlist;
+CERRLIST *cerrlist = NULL;
 
 /**
  * エラーリストを作成または追加する
  */
-bool addcerrlist(int newerrc, CERR newerrv[])
+void addcerrlist(int newerrc, CERR newerrv[])
 {
     int i;
-    CERRLIST *p, *q;
+    CERRLIST *p = NULL, *q;
 
     assert(newerrc > 0 && newerrv != NULL);
-    if(cerrlist == NULL) {
-        p = cerrlist = malloc_chk(sizeof(CERRLIST), "cerrlist");
-    } else {
-        for(p = cerrlist; p != NULL; p = p->next) {
-            q = p;
-        }
-        p = q->next = malloc_chk(sizeof(CERRLIST), "cerrlist.next");
-    }
     for(i = 0; i < newerrc; i++) {
+        if(p == NULL) {
+            p = q = malloc_chk(sizeof(CERRLIST), "cerrlist");
+        } else {
+            p = p->next = malloc_chk(sizeof(CERRLIST), "cerrlist.next");
+        }
         p->cerr = &newerrv[i];
-        q = p;
-        p = p->next = malloc_chk(sizeof(CERRLIST), "cerrlist.next");
+        p->next = NULL;
     }
-    q->next = NULL;
-    return true;
+    p->next = cerrlist;
+    cerrlist = q;
 }
 
 /**
@@ -107,12 +103,12 @@ void freecerr()
     CERRLIST *p = cerrlist, *q;
 
     /* 現在のエラーメッセージを解放 */
-    free_chk(cerr->msg, "cerr.msg");
+    FREE(cerr->msg);
     /* 現在のエラーを解放 */
-    free_chk(cerr, "cerr");
+    FREE(cerr);
     /* エラーリストを解放 */
     for(p = cerrlist; p != NULL; p = q) {
         q = p->next;
-        free_chk(p, "freecerr.p");
+        FREE(p);
     }
 }

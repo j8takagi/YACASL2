@@ -82,9 +82,9 @@ unsigned hash_cmdtype(const char *cmd, CMDTYPE type)
     keys[1]->val.i = (int)(type & 070);
     /* ハッシュ値の計算 */
     hashval = hash(2, keys, cmdtabsize);
-    free_chk(keys[0]->val.s, "keys[0].val.s");
-    free_chk(keys[0], "keys[0]");
-    free_chk(keys[1], "keys[1]");
+    FREE(keys[0]->val.s);
+    FREE(keys[0]);
+    FREE(keys[1]);
     /* ハッシュ値を返す */
     return hashval;
 }
@@ -140,7 +140,7 @@ void free_cmdtype_code()
     for(i = 0; i < cmdtabsize; i++) {
         for(p = cmdtype_code[i]; p != NULL; p = q) {
             q = p->next;
-            free_chk(p, "free_cmdtype_code");
+            FREE(p);
         }
     }
 }
@@ -151,13 +151,15 @@ void free_cmdtype_code()
 unsigned hash_code(WORD code)
 {
     HKEY *keys[1];
+    unsigned h;
 
     /* 命令コードを設定 */
     keys[0] = malloc_chk(sizeof(HKEY), "hash_code.key");
     keys[0]->type = INT;
     keys[0]->val.i = (int)(code >> 8);
-    /* ハッシュ値を返す */
-    return hash(1, keys, cmdtabsize);
+    h = hash(1, keys, cmdtabsize);
+    FREE(keys[0]);
+    return h;
 }
 
 /**
@@ -209,7 +211,7 @@ void free_code_type()
     for(i = 0; i < cmdtabsize; i++) {
         for(p = code_type[i]; p != NULL; p = q) {
             q = p->next;
-            free_chk(p, "code_type");
+            FREE(p);
         }
     }
 }

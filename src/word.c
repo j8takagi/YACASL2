@@ -19,9 +19,9 @@ static CERR cerr_word[] = {
 /**
  * wordのエラーをエラーリストに追加
  */
-bool addcerrlist_word()
+void addcerrlist_word()
 {
-    return addcerrlist(ARRAYSIZE(cerr_word), cerr_word);
+    addcerrlist(ARRAYSIZE(cerr_word), cerr_word);
 }
 
 /**
@@ -108,7 +108,7 @@ char *word2n(WORD word)
         *(digit + j) = *(p + (i - 1) - j);
     }
     *(digit + j + 1) = '\0';
-    free_chk(p, "word2n.p");
+    FREE(p);
     return digit;
 }
 

@@ -165,8 +165,7 @@ bool assemblecmd(const CMDLINE *cmdl, PASS pass)
         else if(pass == SECOND) {
             execptr->end = asptr->lptr;
         }
-        /* プログラム名のクリア */
-        asptr->prog = NULL;
+        FREE(asptr->prog);
         status = true;
         break;
     case DS:
@@ -268,7 +267,7 @@ void writeIN(const char *ibuf, const char *len, PASS pass)
     assembleline("    POP GR2", pass);
     assembleline("    POP GR1", pass);
 
-    free_chk(line, "writeIN.line");
+    FREE(line);
 }
 
 /**
@@ -300,7 +299,7 @@ void writeOUT(const char *obuf, const char *len, PASS pass)
     assembleline("    SVC 2", pass);
     assembleline("    POP GR2", pass);
     assembleline("    POP GR1", pass);
-    free_chk(line, "writeOUT.line");
+    FREE(line);
 }
 
 /** マクロ命令「RPUSH」をメモリに書き込む
@@ -321,7 +320,7 @@ void writeRPUSH(PASS pass)
         sprintf(line, "    PUSH 0,GR%d", i);
         assembleline(line, pass);
     }
-    free_chk(line, "writeRPUSH.line");
+    FREE(line);
 }
 
 /**
@@ -344,7 +343,7 @@ void writeRPOP(PASS pass)
         sprintf(line, "    POP GR%d", i);
         assembleline(line, pass);
     }
-    free_chk(line, "writeRPOP.line");
+    FREE(line);
 }
 
 /**
@@ -525,17 +524,15 @@ void writeDC(const char *str, PASS pass)
 }
 
 /**
- * 1行をアセンブル
+ * トークンをアセンブル
  */
 bool assembletok(const CMDLINE *cmdl, PASS pass)
 {
     bool status = false;
+
     /* 命令がない場合 */
     if(cmdl->cmd == NULL){
-        /* ラベルが定義されていて命令がない場合はエラー */
-        if(cmdl->label != NULL) {
-            setcerr(105, NULL);    /* no command in the line */
-        }
+        ;
     }
     /* アセンブラ命令の処理 */
     else if(cerr->num == 0 && assemblecmd(cmdl, pass) == true) {
@@ -595,18 +592,31 @@ WORD getadr(const char *prog, const char *str, PASS pass)
 bool assembleline(const char *line, PASS pass)
 {
     CMDLINE *cmdl;
+    bool status = true;
+    int i;
 
-    if((cmdl = linetok(line)) != NULL) {
-        if(pass == FIRST && cmdl->label != NULL) {
-            if(addlabel(asptr->prog, cmdl->label, asptr->ptr) == false) {
-                return false;
+    cmdl = linetok(line);
+    status = (cerr->num == 0) ? true : false;
+    if(cmdl != NULL) {
+        if(status == true) {
+            if(pass == FIRST && cmdl->label != NULL) {
+                status = addlabel(asptr->prog, cmdl->label, asptr->ptr);
+            }
+            if(status == true) {
+                status = assembletok(cmdl, pass);
+            }
+            FREE(cmdl->label);
+        }
+        if(cmdl->opd != NULL) {
+            for(i = 0; i < cmdl->opd->opdc; i++) {
+                FREE(cmdl->opd->opdv[i]);
             }
         }
-        if(assembletok(cmdl, pass) == false) {
-            return false;
-        }
+        FREE(cmdl->opd);
+        FREE(cmdl->cmd);
     }
-    return true;
+    FREE(cmdl);
+    return status;
 }
 
 /**
@@ -627,20 +637,14 @@ bool assemble(const char *file, PASS pass)
 {
     int lineno = 0;
     bool status = true;
-    CMDLINE *cmdl;
-    char *line;
+    char *line = malloc_chk(LINESIZE + 1, "line");
     FILE *fp;
 
     if((fp = fopen(file, "r")) == NULL) {
         perror(file);
         return false;
     }
-    for(; ;) {
-        cmdl = malloc_chk(sizeof(CMDLINE), "cmdl");
-        line = malloc_chk(LINESIZE + 1, "line");
-        if((line = fgets(line, LINESIZE, fp)) == NULL) {
-            break;
-        }
+    while(fgets(line, LINESIZE, fp)) {
         lineno++;
         if((pass == FIRST && asmode.src == true) ||
            (pass == SECOND && asmode.asdetail == true))
@@ -650,17 +654,13 @@ bool assemble(const char *file, PASS pass)
         if(assembleline(line, pass) == false) {
             break;
         }
-        if(cerr->num > 0) {
-            break;
-        }
-        free_chk(line, "line");
-        free_chk(cmdl, "cmdl");
     }
     if(cerr->num > 0) {
         fprintf(stderr, "Assemble error - %d: %s\n", cerr->num, cerr->msg);
         printline(stderr, file, lineno, line);
         status = false;
     }
+    FREE(line);
     fclose(fp);
     return status;
 }

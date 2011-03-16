@@ -144,7 +144,6 @@ int main(int argc, char *argv[])
             } else if(pass == SECOND) {
                 asptr->ptr = beginptr[i];
             }
-            asptr->prog = NULL;
             if(execmode.trace == true || execmode.dump == true || asmode.src == true ||
                asmode.label == true || asmode.asdetail == true)
             {
@@ -164,15 +163,14 @@ int main(int argc, char *argv[])
         }
         if(pass == SECOND) {
             freelabel();            /* ラベルハッシュ表を解放 */
-            free_chk(asptr->prog, "asptr.prog"); /* プログラム名を解放 */
-            free_chk(asptr, "asptr");       /* アセンブル時のプロパティを解放 */
             free_cmdtype_code();    /* 命令の名前とタイプがキーのハッシュ表を解放 */
+            FREE(asptr);       /* アセンブル時のプロパティを解放 */
         }
     }
     if(res == true) {
         if(objfile != NULL) {
             outassemble(objfile);
-            free_chk(objfile, "objfile");
+            FREE(objfile);
         }
         if(asmode.onlyassemble == false) {
             create_code_type();    /* 命令のコードとタイプがキーのハッシュ表を作成 */

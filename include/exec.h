@@ -26,7 +26,12 @@ extern EXECMODE execmode;
 /**
  * 実行エラーをエラーリストに追加
  */
-bool addcerrlist_exec();
+void addcerrlist_exec();
+
+/**
+ * アセンブル結果読み込みエラーをエラーリストに追加
+ */
+void addcerrlist_load();
 
 /**
  * 指定されたファイルからアセンブル結果を読み込む

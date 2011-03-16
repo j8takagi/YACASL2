@@ -9,7 +9,7 @@ typedef unsigned short WORD;
 /**
  * wordのエラーをエラーリストに追加
  */
-bool addcerrlist_word();
+void addcerrlist_word();
 
 /**
  * 10進数または16進数の文字列をWORD値に変換

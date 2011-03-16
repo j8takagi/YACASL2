@@ -22,13 +22,6 @@ static struct option longopts[] = {
 };
 
 /**
- * comet2コマンドのエラー
- */
-static CERR cerr_comet2[] = {
-    { 208, "object file is not specified" },
-};
-
-/**
  * comet2コマンドのメイン
  */
 int main(int argc, char *argv[])
@@ -38,7 +31,7 @@ int main(int argc, char *argv[])
     const char *usage = "Usage: %s [-tTdh] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE\n";
 
     cerr_init();
-    addcerrlist(ARRAYSIZE(cerr_comet2), cerr_comet2);
+    addcerrlist_load();
     addcerrlist_exec();
 
     /* オプションの処理 */

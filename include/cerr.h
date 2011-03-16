@@ -43,7 +43,7 @@ void cerr_init();
 /**
  * エラーリストを作成・追加する
  */
-bool addcerrlist(int cerrc, CERR cerrv[]);
+void addcerrlist(int cerrc, CERR cerrv[]);
 
 /**
  * エラーリストを表示する

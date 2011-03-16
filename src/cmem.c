@@ -47,12 +47,3 @@ char *strdup_chk(const char *s, char *tag)
     strcpy(t, s);
     return t;
 }
-
-/**
- * メモリを解放
- */
-void free_chk(void *ptr, char *tag)
-{
-    free(ptr);
-    ptr = NULL;
-}

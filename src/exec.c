@@ -9,7 +9,6 @@
  * 実行エラーの定義
  */
 static CERR cerr_exec[] = {
-    { 201, "Loading - full of COMET II memory" },
     { 202, "SVC input - out of Input memory" },
     { 203, "SVC output - out of COMET II memory" },
     { 204, "Program Register (PR) - out of COMET II memory" },
@@ -21,18 +20,33 @@ static CERR cerr_exec[] = {
 };
 
 /**
+ * アセンブル結果読み込みエラーの定義
+ */
+static CERR cerr_load[] = {
+    { 201, "Loading - full of COMET II memory" },
+    { 208, "object file is not specified" },
+};
+
+/**
  * 実行モード: trace, logical, dump
  */
 EXECMODE execmode = {false, false, false};
 
 /**
- * 実行エラーをエラーリストに追加
+ * アセンブル結果読み込みエラーをエラーリストに追加
  */
-bool addcerrlist_exec()
+void addcerrlist_load()
 {
-    return addcerrlist(ARRAYSIZE(cerr_exec), cerr_exec);
+    addcerrlist(ARRAYSIZE(cerr_load), cerr_load);
 }
 
+/**
+ * 実行エラーをエラーリストに追加
+ */
+void addcerrlist_exec()
+{
+    addcerrlist(ARRAYSIZE(cerr_exec), cerr_exec);
+}
 /**
  * 指定されたファイルからアセンブル結果を読み込む
  */
@@ -81,7 +95,7 @@ static void svcin()
         sys->memory[sys->cpu->gr[1]+i] = *(buffer + i);
     }
     sys->memory[sys->cpu->gr[2]] = i + 1;
-    free_chk(buffer, "buffer");
+    FREE(buffer);
 }
 
 /**

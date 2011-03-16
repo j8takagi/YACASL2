@@ -17,18 +17,24 @@ static LABELTAB *labels[LABELTABSIZE];  /* ラベル表 */
 unsigned labelhash(const char *prog, const char *label)
 {
     HKEY *keys[2];
-    int i = 0;
+    int i = 0, j;
+    unsigned h;
 
     if(prog != NULL) {
-        keys[i] = malloc_chk(sizeof(HKEY), "labelhash.key[]");
+        keys[i] = malloc_chk(sizeof(HKEY), "labelhash.key");
         keys[i]->type = CHARS;
-        keys[i]->val.s = strdup_chk(prog, "labelhash.key[].val");
+        keys[i]->val.s = strdup_chk(prog, "labelhash.key.val");
+        i++;
     }
-    keys[i] = malloc_chk(sizeof(HKEY), "labelhash.key[]");
+    keys[i] = malloc_chk(sizeof(HKEY), "labelhash.key");
     keys[i]->type = CHARS;
-    keys[i]->val.s = strdup_chk(label, "labelhash.key[].val");
-    /* ハッシュ値を返す */
-    return hash(i+1, keys, LABELTABSIZE);
+    keys[i]->val.s = strdup_chk(label, "labelhash.key.val");
+    h = hash(i+1, keys, LABELTABSIZE);
+    for(j = 0; j < i + 1; j++) {
+        FREE(keys[j]->val.s);
+        FREE(keys[j]);
+    }
+    return h;
 }
 
 /**
@@ -37,13 +43,13 @@ unsigned labelhash(const char *prog, const char *label)
 WORD getlabel(const char *prog, const char *label)
 {
     assert(label != NULL);
-    LABELTAB *np;
+    LABELTAB *p;
 
-    for(np = labels[labelhash(prog, label)]; np != NULL; np = np->next) {
-        if((prog == NULL || (np->prog != NULL && strcmp(prog, np->prog) == 0)) &&
-           strcmp(label, np->label) == 0)
+    for(p = labels[labelhash(prog, label)]; p != NULL; p = p->next) {
+        if((prog == NULL || (p->prog != NULL && strcmp(prog, p->prog) == 0)) &&
+           strcmp(label, p->label) == 0)
         {
-            return np->adr;
+            return p->adr;
         }
     }
     return 0xFFFF;
@@ -98,20 +104,20 @@ int compare_adr(const void *a, const void *b)
 void printlabel()
 {
     int i, asize = 0;
-    LABELTAB *np;
+    LABELTAB *p;
     LABELARRAY *ar[labelcnt];
 
     for(i = 0; i < LABELTABSIZE; i++) {
-        for(np = labels[i]; np != NULL; np = np->next) {
-            assert(np->label != NULL);
+        for(p = labels[i]; p != NULL; p = p->next) {
+            assert(p->label != NULL);
             ar[asize] = malloc_chk(sizeof(LABELARRAY), "ar[]");
-            if(np->prog == NULL) {
+            if(p->prog == NULL) {
                 ar[asize]->prog = NULL;
             } else {
-                ar[asize]->prog = strdup_chk(np->prog, "ar[].prog");
+                ar[asize]->prog = strdup_chk(p->prog, "ar[].prog");
             }
-            ar[asize]->label = strdup_chk(np->label, "ar[].label");
-            ar[asize++]->adr = np->adr;
+            ar[asize]->label = strdup_chk(p->label, "ar[].label");
+            ar[asize++]->adr = p->adr;
         }
     }
     qsort(ar, asize, sizeof(*ar), compare_adr);
@@ -134,9 +140,9 @@ void freelabel()
     for(i = 0; i < LABELTABSIZE; i++) {
         for(p = labels[i]; p != NULL; p = q) {
             q = p->next;
-            free_chk(p->prog, "freelabel.p.prog");
-            free_chk(p->label, "freelabel.p.label");
-            free_chk(p, "freelabel.p");
+            FREE(p->prog);
+            FREE(p->label);
+            FREE(p);
         }
     }
 }

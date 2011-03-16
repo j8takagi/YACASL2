@@ -10,6 +10,13 @@
 #endif
 
 /**
+ * メモリを解放
+ */
+#ifndef FREE
+#define FREE(ptr) {free(ptr); ptr = NULL;}
+#endif
+
+/**
  * mallocを実行し、0で初期化
  * メモリを確保できない場合はエラーを出力して終了
  */
@@ -26,8 +33,4 @@ void *calloc_chk(size_t nmemb, size_t size, char *tag);
  */
 char *strdup_chk(const char *s, char *tag);
 
-/**
- * メモリを解放
- */
-void free_chk(void *ptr, char *tag);
 #endif

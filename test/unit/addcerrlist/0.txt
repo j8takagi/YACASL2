@@ -1,4 +1,16 @@
-126: source file is not specified
+202: SVC input - out of Input memory
+203: SVC output - out of COMET II memory
+204: Program Register (PR) - out of COMET II memory
+205: Stack Pointer (SP) - cannot allocate stack buffer
+206: Address - out of COMET II memory
+207: Stack Pointer (SP) - out of COMET II memory
+201: Load object file - full of COMET II memory
+114: not integer
+115: not hex
+116: out of hex range
+114: not integer
+115: not hex
+116: out of hex range
 101: label already defined
 102: label table is full
 103: label not found
@@ -21,16 +33,4 @@
 123: unclosed quote
 124: more than one character in literal
 125: not GR in operand x
-114: not integer
-115: not hex
-116: out of hex range
-114: not integer
-115: not hex
-116: out of hex range
-201: Load object file - full of COMET II memory
-202: SVC input - out of Input memory
-203: SVC output - out of COMET II memory
-204: Program Register (PR) - out of COMET II memory
-205: Stack Pointer (SP) - cannot allocate stack buffer
-206: Address - out of COMET II memory
-207: Stack Pointer (SP) - out of COMET II memory
+126: source file is not specified

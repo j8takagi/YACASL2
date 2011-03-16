@@ -40,8 +40,8 @@ void reset(int memsize, int clocks)
  */
 void shutdown()
 {
-    free_chk(execptr, "execptr");
-    free_chk(sys->memory, "sys.memory");
-    free_chk(sys->cpu, "sys.cpu");
-    free_chk(sys, "sys");
+    FREE(execptr);
+    FREE(sys->memory);
+    FREE(sys->cpu);
+    FREE(sys);
 }
