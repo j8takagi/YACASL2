@@ -105,7 +105,7 @@ CMDLINE *linetok(const char *line)
     bool quoting = false;
     CMDLINE *cmdl = NULL;
 
-    if(line == NULL || strlen(line) == 0) {
+    if(*line == '\0') {
         return NULL;
     }
     tokens = strdup_chk(line, "tokens");

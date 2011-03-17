@@ -73,11 +73,11 @@ unsigned hash_cmdtype(const char *cmd, CMDTYPE type)
     unsigned hashval;
 
     /* 命令名を設定 */
-    keys[0] = malloc_chk(sizeof(HKEY), "hash_cmdtype.keys[0]");
+    keys[0] = malloc_chk(sizeof(HKEY *), "hash_cmdtype.keys[0]");
     keys[0]->type = CHARS;
     keys[0]->val.s = strdup_chk(cmd, "keys[0].val.s");
     /* 命令タイプを設定 */
-    keys[1] = malloc_chk(sizeof(HKEY), "hash_cmdtype.keys[1]");
+    keys[1] = malloc_chk(sizeof(HKEY *), "hash_cmdtype.keys[1]");
     keys[1]->type = INT;
     keys[1]->val.i = (int)(type & 070);
     /* ハッシュ値の計算 */
@@ -101,7 +101,7 @@ bool create_cmdtype_code()
     cmdtabsize = comet2cmdsize;                                            /* ハッシュ表のサイズ */
     cmdtype_code = calloc_chk(cmdtabsize, sizeof(CMDTAB *), "cmdtype_code");
     for(i = 0; i < comet2cmdsize; i++) {
-        p = malloc_chk(sizeof(CMDTAB), "create_cmdtype_code.p");
+        p = malloc_chk(sizeof(CMDTAB *), "create_cmdtype_code.p");
         hashval = hash_cmdtype(comet2cmd[i].name, comet2cmd[i].type);    /* ハッシュ値の生成 */
         p->next = cmdtype_code[hashval];                                 /* ハッシュ表に値を追加 */
         p->cmd = &comet2cmd[i];
@@ -154,7 +154,7 @@ unsigned hash_code(WORD code)
     unsigned h;
 
     /* 命令コードを設定 */
-    keys[0] = malloc_chk(sizeof(HKEY), "hash_code.key");
+    keys[0] = malloc_chk(sizeof(HKEY *), "hash_code.key");
     keys[0]->type = INT;
     keys[0]->val.i = (int)(code >> 8);
     h = hash(1, keys, cmdtabsize);
@@ -174,7 +174,7 @@ bool create_code_type()
     cmdtabsize = comet2cmdsize;                    /* ハッシュ表のサイズ */
     code_type = calloc_chk(comet2cmdsize, sizeof(CMDTAB *), "code_type");
     for(i = 0; i < comet2cmdsize; i++) {
-        p = malloc_chk(sizeof(CMDTAB), "code_type.p");
+        p = malloc_chk(sizeof(CMDTAB *), "code_type.p");
         hashval = hash_code((&comet2cmd[i])->code);    /* ハッシュ値の生成 */
         p->next = code_type[hashval];                  /* ハッシュ表に値を追加 */
         p->cmd = &comet2cmd[i];

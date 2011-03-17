@@ -32,7 +32,7 @@ void reset(int memsize, int clocks)
     }
     sys->cpu->sp = sys->cpu->pr = sys->cpu->fr = 0x0;
     /* CASL2プログラムの開始と終了のアドレスを初期化 */
-    execptr = malloc_chk(sizeof(execptr), "prog");
+    execptr = malloc_chk(sizeof(EXECPTR *), "prog");
 }
 
 /**

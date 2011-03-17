@@ -120,6 +120,11 @@ typedef enum {
 } PASS;
 
 /**
+ * ラベルのエラーをエラーリストに追加
+ */
+void addcerrlist_label();
+
+/**
  * プログラム名とラベルに対応するアドレスをラベル表から検索する
  */
 WORD getlabel(const char *prog, const char *label);

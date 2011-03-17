@@ -12,6 +12,23 @@ static int labelcnt = 0;                /* ラベル数 */
 static LABELTAB *labels[LABELTABSIZE];  /* ラベル表 */
 
 /**
+ * ラベルのエラー定義
+ */
+static CERR cerr_label[] = {
+    { 101, "label already defined" },
+    { 102, "label table is full" },
+    { 103, "label not found" },
+};
+
+/**
+ * ラベルのエラーをエラーリストに追加
+ */
+void addcerrlist_label()
+{
+    addcerrlist(ARRAYSIZE(cerr_label), cerr_label);
+}
+
+/**
  * プログラム名とラベルに対応するハッシュ値を返す
  */
 unsigned labelhash(const char *prog, const char *label)
@@ -61,7 +78,7 @@ WORD getlabel(const char *prog, const char *label)
 bool addlabel(const char *prog, const char *label, WORD adr)
 {
     assert(label != NULL);
-    LABELTAB *np;
+    LABELTAB *p;
     unsigned hashval;
 
     /* 登録されたラベルを検索。すでに登録されている場合はエラー発生 */
@@ -70,23 +87,23 @@ bool addlabel(const char *prog, const char *label, WORD adr)
         return false;
     }
     /* メモリを確保 */
-    np = malloc_chk(sizeof(LABELTAB), "labels.next");
+    p = malloc_chk(sizeof(LABELTAB), "labels.next");
     /* プログラム名を設定 */
     if(prog == NULL) {
-        np->prog = NULL;
+        p->prog = NULL;
     } else {
-        np->prog = strdup_chk(prog, "labels.prog");
+        p->prog = strdup_chk(prog, "labels.prog");
     }
     /* ラベルを設定 */
-    np->label = strdup_chk(label, "labels.label");
+    p->label = strdup_chk(label, "labels.label");
     /* アドレスを設定 */
-    np->adr = adr;
+    p->adr = adr;
     /* ラベル数を設定 */
     labelcnt++;
     /* ハッシュ表へ追加 */
     hashval = labelhash(prog, label);
-    np->next = labels[hashval];
-    labels[hashval] = np;
+    p->next = labels[hashval];
+    labels[hashval] = p;
     return true;
 }
 
@@ -103,29 +120,29 @@ int compare_adr(const void *a, const void *b)
  */
 void printlabel()
 {
-    int i, asize = 0;
+    int i, s = 0;
     LABELTAB *p;
-    LABELARRAY *ar[labelcnt];
+    LABELARRAY *l[labelcnt];
 
     for(i = 0; i < LABELTABSIZE; i++) {
         for(p = labels[i]; p != NULL; p = p->next) {
             assert(p->label != NULL);
-            ar[asize] = malloc_chk(sizeof(LABELARRAY), "ar[]");
+            l[s] = malloc_chk(sizeof(LABELARRAY), "l[]");
             if(p->prog == NULL) {
-                ar[asize]->prog = NULL;
+                l[s]->prog = NULL;
             } else {
-                ar[asize]->prog = strdup_chk(p->prog, "ar[].prog");
+                l[s]->prog = strdup_chk(p->prog, "l[].prog");
             }
-            ar[asize]->label = strdup_chk(p->label, "ar[].label");
-            ar[asize++]->adr = p->adr;
+            l[s]->label = strdup_chk(p->label, "l[].label");
+            l[s++]->adr = p->adr;
         }
     }
-    qsort(ar, asize, sizeof(*ar), compare_adr);
-    for(i = 0; i < asize; i++) {
-        if(ar[i]->prog != NULL) {
-            fprintf(stdout, "%s.", ar[i]->prog);
+    qsort(l, s, sizeof(*l), compare_adr);
+    for(i = 0; i < s; i++) {
+        if(l[i]->prog != NULL) {
+            fprintf(stdout, "%s.", l[i]->prog);
         }
-        fprintf(stdout, "%s ---> #%04X\n", ar[i]->label, ar[i]->adr);
+        fprintf(stdout, "%s ---> #%04X\n", l[i]->label, l[i]->adr);
     }
 }
 

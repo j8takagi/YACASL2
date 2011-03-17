@@ -626,6 +626,7 @@ void addcerrlist_assemble()
 {
     addcerrlist_tok();
     addcerrlist_word();
+    addcerrlist_label();
     addcerrlist(ARRAYSIZE(cerr_assemble), cerr_assemble);
 }
 
