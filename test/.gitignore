@@ -3,3 +3,4 @@ report.txt
 diff.txt
 err.txt
 *.log
+*.comet
