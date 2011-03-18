@@ -159,7 +159,7 @@ CMDLINE *linetok(const char *line)
                 *sepp = '\0';
                 cmdl->opd = opdtok(p);
             } else {
-                cmdl->opd = malloc_chk(sizeof(OPD *), "cmdl.opd");
+                cmdl->opd = malloc_chk(sizeof(OPD), "cmdl.opd");
                 cmdl->opd->opdc = 0;
             }
         }

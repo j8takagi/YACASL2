@@ -10,7 +10,7 @@
  */
 void cerr_init()
 {
-    cerr = malloc_chk(sizeof(CERR *), "cerr");
+    cerr = malloc_chk(sizeof(CERR), "cerr");
     cerr->num = 0;
 }
 
@@ -30,14 +30,14 @@ CERRLIST *cerrlist = NULL;
 void addcerrlist(int errc, CERR errv[])
 {
     int i;
-    CERRLIST *p = NULL, *q = malloc_chk(sizeof(CERRLIST *), "cerrlist");
+    CERRLIST *p = NULL, *q = malloc_chk(sizeof(CERRLIST), "cerrlist");
 
     assert(errc > 0 && errv != NULL);
     for(i = 0; i < errc; i++) {
         if(p == NULL) {
             p = q;
         } else {
-            p = p->next = malloc_chk(sizeof(CERRLIST *), "cerrlist.next");
+            p = p->next = malloc_chk(sizeof(CERRLIST), "cerrlist.next");
         }
         p->cerr = &errv[i];
         p->next = NULL;

@@ -53,7 +53,7 @@ WORD h2word(const char *str)
 {
     assert(*str == '#');
 
-    WORD word = 0x0;
+    WORD w = 0x0;
     char *check;
     str++;
     if(*str == '-' || strlen(str) > 4) {
@@ -61,12 +61,12 @@ WORD h2word(const char *str)
         return 0;
     }
     /* WORD値に変換 */
-    word = (WORD)strtol(str, &check, 16);
+    w = (WORD)strtol(str, &check, 16);
     if(*check != '\0') {
         setcerr(115, str-1);    /* not hex */
         return 0x0;
     }
-    return word;
+    return w;
 }
 
 /**
@@ -74,20 +74,19 @@ WORD h2word(const char *str)
  */
 WORD nh2word(const char *str)
 {
-    assert(sizeof(WORD)*8 == 16); /* WORD型のサイズが16ビットであることを確認 */
+    WORD w;
 
-    WORD word;
-
+    assert(sizeof(WORD) * 8 == 16); /* WORD型のサイズが16ビットであることを確認 */
     if(!isdigit(*str) && *str != '-' && *str != '#') {
         setcerr(114, str);    /* not integer */
         return 0x0;
     }
     if(*str == '#') {
-        word = h2word(str);
+        w = h2word(str);
     } else {
-        word = n2word(str);
+        w = n2word(str);
     }
-    return word;
+    return w;
 }
 
 /**

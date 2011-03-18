@@ -147,7 +147,7 @@ static WORD adda(WORD val0, WORD val1)
 
     sys->cpu->fr = 0x0;
     /* 引数の値を16ビット符号付整数として加算し、オーバーフローをチェック */
-    assert(sizeof(short)*8 == 16 && (short)0xFFFF == -1);
+    assert(sizeof(short) * 8 == 16 && (short)0xFFFF == -1);
     if((tmp = (short)val0 + (short)val1) > 32767 || tmp < -32768) {
         sys->cpu->fr += OF;
     }
