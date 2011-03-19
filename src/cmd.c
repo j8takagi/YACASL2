@@ -101,10 +101,10 @@ bool create_cmdtype_code()
     cmdtabsize = comet2cmdsize;                                            /* ハッシュ表のサイズ */
     cmdtype_code = calloc_chk(cmdtabsize, sizeof(CMDTAB), "cmdtype_code");
     for(i = 0; i < comet2cmdsize; i++) {
-        p = malloc_chk(sizeof(CMDTAB), "create_cmdtype_code.p");
         hashval = hash_cmdtype(comet2cmd[i].name, comet2cmd[i].type);    /* ハッシュ値の生成 */
-        p->next = cmdtype_code[hashval];                                 /* ハッシュ表に値を追加 */
+        p = malloc_chk(sizeof(CMDTAB), "cmdtype_code");
         p->cmd = &comet2cmd[i];
+        p->next = cmdtype_code[hashval];                                 /* ハッシュ表に値を追加 */
         cmdtype_code[hashval] = p;
     }
     return true;
@@ -172,12 +172,12 @@ bool create_code_type()
     int i;
 
     cmdtabsize = comet2cmdsize;                    /* ハッシュ表のサイズ */
-    code_type = calloc_chk(comet2cmdsize, sizeof(CMDTAB), "code_type");
+    code_type = calloc_chk(comet2cmdsize, sizeof(CMDTAB **), "code_type");
     for(i = 0; i < comet2cmdsize; i++) {
-        p = malloc_chk(sizeof(CMDTAB), "code_type.p");
         hashval = hash_code((&comet2cmd[i])->code);    /* ハッシュ値の生成 */
-        p->next = code_type[hashval];                  /* ハッシュ表に値を追加 */
+        p = malloc_chk(sizeof(CMDTAB), "code_type");
         p->cmd = &comet2cmd[i];
+        p->next = code_type[hashval];                  /* ハッシュ表に値を追加 */
         code_type[hashval] = p;
     }
     return true;
