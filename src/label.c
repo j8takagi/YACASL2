@@ -122,18 +122,19 @@ void printlabel()
 {
     int i, s = 0;
     LABELTAB *p;
-    LABELARRAY *l[labelcnt];
+    LABELARRAY **l;
 
+    l = calloc_chk(labelcnt, sizeof(LABELARRAY **), "labels");
     for(i = 0; i < LABELTABSIZE; i++) {
         for(p = labels[i]; p != NULL; p = p->next) {
             assert(p->label != NULL);
-            l[s] = malloc_chk(sizeof(LABELARRAY), "l[]");
+            l[s] = malloc_chk(sizeof(LABELARRAY), "lables");
             if(p->prog == NULL) {
                 l[s]->prog = NULL;
             } else {
-                l[s]->prog = strdup_chk(p->prog, "l[].prog");
+                l[s]->prog = strdup_chk(p->prog, "labels.prog");
             }
-            l[s]->label = strdup_chk(p->label, "l[].label");
+            l[s]->label = strdup_chk(p->label, "labels.label");
             l[s++]->adr = p->adr;
         }
     }
