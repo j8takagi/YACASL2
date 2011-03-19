@@ -99,7 +99,7 @@ bool create_cmdtype_code()
     int i;
 
     cmdtabsize = comet2cmdsize;                                            /* ハッシュ表のサイズ */
-    cmdtype_code = calloc_chk(cmdtabsize, sizeof(CMDTAB), "cmdtype_code");
+    cmdtype_code = calloc_chk(cmdtabsize, sizeof(CMDTAB **), "cmdtype_code");
     for(i = 0; i < comet2cmdsize; i++) {
         hashval = hash_cmdtype(comet2cmd[i].name, comet2cmd[i].type);    /* ハッシュ値の生成 */
         p = malloc_chk(sizeof(CMDTAB), "cmdtype_code");
