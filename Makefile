@@ -2,7 +2,7 @@
 DOXYGEN = doxygen
 GTAGS = gtags
 HTAGS = htags
-
+HTAGSFLAG = --map-file
 build:
 	$(MAKE) -C src
 
@@ -12,14 +12,14 @@ check:
 doc:
 	@$(MAKE) -sC doc
 
-doxygen:
+doxygen: htags
 	@$(DOXYGEN)
 
 gtags:
 	@$(GTAGS)
 
-htags:
-	@$(HTAGS)
+htags: gtags
+	@$(HTAGS) $(HTAGSFLAG) doc/doxygen/html/
 
 clean:
 	@$(MAKE) -sC src clean
