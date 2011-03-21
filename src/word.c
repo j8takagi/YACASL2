@@ -95,9 +95,9 @@ WORD nh2word(const char *str)
 char *word2n(WORD word)
 {
     enum {
-        MAXLEN = 6,        /* WORD値を10進数で表したときの最大桁数 */
+        MAXLEN = 5,        /* WORD値を10進数で表したときの最大桁数 */
     };
-    char *p = malloc_chk(MAXLEN, "word2n.p"), *digit = malloc_chk(MAXLEN, "word2n.digit");
+    char *p = malloc_chk(MAXLEN + 1, "word2n.p"), *digit = malloc_chk(MAXLEN + 1, "word2n.digit");
     int i = 0, j;
 
     do{

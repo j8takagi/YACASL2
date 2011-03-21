@@ -35,7 +35,7 @@ typedef struct {
 extern ASMODE asmode;
 
 /**
- * アセンブル時の、現在およびリテラルのアドレスと入口名
+ * アセンブル時の、現在およびリテラルのアドレスとプログラム入口名
  */
 typedef struct {
     WORD ptr;     /**<現在のアドレス */

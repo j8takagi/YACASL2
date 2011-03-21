@@ -13,7 +13,7 @@
 ASMODE asmode = {false, false, false, false, false};
 
 /**
- * アセンブルのプロパティ: ptr, lptr, *prog
+ * アセンブル時の、現在およびリテラルのアドレスとプログラム入口名: ptr, lptr, prog
  */
 ASPTR *asptr;
 
@@ -80,6 +80,7 @@ WORD getgr(const char *str, bool is_x)
 {
     assert(str != NULL);
     WORD r;
+
     /* 「GR[0-7]」以外の文字列では、0xFFFFを返して終了 */
     if(!(strlen(str) == 3 && strncmp(str, "GR", 2) == 0 &&
          (*(str+2) >= '0' && *(str+2) <= '0' + (GRSIZE - 1))))
@@ -101,8 +102,9 @@ WORD getgr(const char *str, bool is_x)
  */
 WORD getliteral(const char *str, PASS pass)
 {
-    WORD adr = asptr->lptr;
     assert(*str == '=');
+    WORD adr = asptr->lptr;
+
     if(*(++str) == '\'') {    /* 文字定数 */
         writestr(str, true, pass);
     } else {
@@ -204,7 +206,7 @@ bool macrocmd(const CMDLINE *cmdl, PASS pass)
 {
     int i = 0;
     MACROCMDID cmdid = 0;
-     MACROCMD macrocmd[] = {
+    MACROCMD macrocmd[] = {
         { IN, 2, 2, "IN" },
         { OUT, 2, 2, "OUT" },
         { RPUSH, 0, 0, "RPUSH" },
@@ -255,7 +257,7 @@ bool macrocmd(const CMDLINE *cmdl, PASS pass)
  */
 void writeIN(const char *ibuf, const char *len, PASS pass)
 {
-    char *line = malloc_chk(LINESIZE+1, "writeIN.line");
+    char *line = malloc_chk(LINESIZE + 1, "writeIN.line");
 
     assembleline("    PUSH 0,GR1", pass);
     assembleline("    PUSH 0,GR2", pass);
@@ -285,7 +287,7 @@ void writeIN(const char *ibuf, const char *len, PASS pass)
  */
 void writeOUT(const char *obuf, const char *len, PASS pass)
 {
-    char *line = malloc_chk(LINESIZE+1, "writeOUT.line");
+    char *line = malloc_chk(LINESIZE + 1, "writeOUT.line");
 
     assembleline("    PUSH 0,GR1", pass);
     assembleline("    PUSH 0,GR2", pass);
@@ -314,7 +316,7 @@ void writeOUT(const char *obuf, const char *len, PASS pass)
 void writeRPUSH(PASS pass)
 {
     int i;
-    char *line = malloc_chk(LINESIZE+1, "writeRPUSH.line");
+    char *line = malloc_chk(LINESIZE + 1, "writeRPUSH.line");
 
     for(i = 1; i <= GRSIZE-1; i++) {
         sprintf(line, "    PUSH 0,GR%d", i);
@@ -337,7 +339,7 @@ void writeRPUSH(PASS pass)
 void writeRPOP(PASS pass)
 {
     int i;
-    char *line = malloc_chk(LINESIZE+1, "writeRPOP.line");
+    char *line = malloc_chk(LINESIZE + 1, "writeRPOP.line");
 
     for(i = GRSIZE-1; i >= 1; i--) {
         sprintf(line, "    POP GR%d", i);
@@ -476,7 +478,7 @@ bool writememory(WORD word, WORD adr, PASS pass)
  */
 void writestr(const char *str, bool literal, PASS pass)
 {
-    assert(cerr->num == 0 && *str == '\'');
+    assert(*str == '\'');
     const char *p = str + 1;
     bool lw = false;
 
@@ -509,6 +511,7 @@ void writestr(const char *str, bool literal, PASS pass)
 void writeDC(const char *str, PASS pass)
 {
     WORD adr = 0x0;
+
     if(*str == '\'') {
         writestr(str, false, pass);
     } else {
@@ -571,6 +574,7 @@ void printline(FILE *stream, const char *filename, int lineno, char *line)
 WORD getadr(const char *prog, const char *str, PASS pass)
 {
     WORD adr = 0x0;
+
     if(*str == '=') {
         adr = getliteral(str, pass);
     } else if(isdigit(*str) || *str == '-' || *str == '#') {
@@ -638,7 +642,7 @@ bool assemble(const char *file, PASS pass)
 {
     int lineno = 0;
     bool status = true;
-    char *line = malloc_chk(LINESIZE + 1, "line");
+    char *line = malloc_chk(LINESIZE + 1, "assemble.line");
     FILE *fp;
 
     if((fp = fopen(file, "r")) == NULL) {
