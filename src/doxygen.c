@@ -1,31 +1,31 @@
 /**
  * \mainpage YACASL2 内部仕様書
  * \section メイン関数
- * - casl2.c
- * - comet2.c
- * - dumpword.c
+ * - src/casl2.c
+ * - src/comet2.c
+ * - src/dumpword.c
  *
  * \section そのほかのソースファイル
- * - assemble.c
- * - cerr.c
- * - cmd.c
- * - cmem.c
- * - dump.c
- * - exec.c
- * - hash.c
- * - label.c
- * - struct.c
- * - token.c
- * - word.c
+ * - src/assemble.c
+ * - src/cerr.c
+ * - src/cmd.c
+ * - src/cmem.c
+ * - src/dump.c
+ * - src/exec.c
+ * - src/hash.c
+ * - src/label.c
+ * - src/struct.c
+ * - src/token.c
+ * - src/word.c
  *
  * \section ヘッダファイル
- * - assemble.h
- * - exec.h
- * - struct.h
- * - word.h
- * - hash.h
- * - cerr.h
- * - cmem.h
+ * - include/assemble.h
+ * - include/exec.h
+ * - include/struct.h
+ * - include/word.h
+ * - include/hash.h
+ * - include/cerr.h
+ * - include/cmem.h
  *
  * \section Webサイト
  * http://www.j8takagi.net/yacasl2/
