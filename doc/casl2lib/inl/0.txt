@@ -8,7 +8,7 @@
 65535
 Over 65535
 Over 65535
-Not A Number
-Not A Number
+Not integer
+Not integer
 12345
 Str too long. Stop

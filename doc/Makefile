@@ -11,7 +11,7 @@ MAKEINFO = makeinfo
 
 .INTERMEDIATE: $(DOCNAME).dvi
 
-all: info htmlnosplit html pdf
+doc: info htmlnosplit html pdf
 
 htmlnosplit: $(DOCNAME).html
 
@@ -39,3 +39,4 @@ $(DOCNAME).dvi: $(SRC)
 
 clean:
 	@rm -rf html $(DOCNAME).info $(DOCNAME).pdf $(DOCNAME).html $(DOCNAME).dvi
+	@rm -rf $(DOCNAME).aux $(DOCNAME).cp $(DOCNAME).cps $(DOCNAME).fn $(DOCNAME).ky $(DOCNAME).log $(DOCNAME).pg $(DOCNAME).pgs $(DOCNAME).tmp $(DOCNAME).toc $(DOCNAME).tp $(DOCNAME).vr
