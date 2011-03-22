@@ -1,8 +1,10 @@
 .PHONY: build check doc doxygen clean gtags htags
+MKDIR = mkdir -p
 DOXYGEN = doxygen
 GTAGS = gtags
 HTAGS = htags
-HTAGSFLAG = --map-file
+HTAGSFLAG = --map-file -anos --tree-view
+
 build:
 	$(MAKE) -C src
 
@@ -18,8 +20,11 @@ doxygen: htags
 gtags:
 	@$(GTAGS)
 
-htags: gtags
-	@$(HTAGS) $(HTAGSFLAG) doc/doxygen/html/
+htags: doc/doxygen/html gtags
+	@$(HTAGS) $(HTAGSFLAG) $</
+
+doc/doxygen/html:
+	@$(MKDIR) $@
 
 clean:
 	@$(MAKE) -sC src clean
