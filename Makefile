@@ -3,7 +3,7 @@ MKDIR = mkdir -p
 DOXYGEN = doxygen
 GTAGS = gtags
 HTAGS = htags
-HTAGSFLAG = --map-file -anos --tree-view
+HTAGSFLAG = --map-file -anosx --tree-view
 
 build:
 	$(MAKE) -C src
