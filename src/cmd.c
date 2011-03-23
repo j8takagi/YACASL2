@@ -57,12 +57,14 @@ static int comet2cmdsize = ARRAYSIZE(comet2cmd);
 /**
  * ハッシュ表のサイズ
  */
-static int cmdtabsize;
+enum {
+    CMDTABSIZE = 39,
+};
 
 /**
  * ハッシュ表
  */
-static CMDTAB **cmdtype_code, **code_type;
+static CMDTAB *cmdtype_code[CMDTABSIZE], *code_type[CMDTABSIZE];
 
 /**
  * 命令の名前とタイプからハッシュ値を生成する
@@ -81,7 +83,7 @@ unsigned hash_cmdtype(const char *cmd, CMDTYPE type)
     keys[1]->type = INT;
     keys[1]->val.i = (int)(type & 070);
     /* ハッシュ値の計算 */
-    hashval = hash(2, keys, cmdtabsize);
+    hashval = hash(2, keys, CMDTABSIZE);
     FREE(keys[0]->val.s);
     FREE(keys[0]);
     FREE(keys[1]);
@@ -98,8 +100,6 @@ bool create_cmdtype_code()
     unsigned hashval;
     int i;
 
-    cmdtabsize = comet2cmdsize;                                            /* ハッシュ表のサイズ */
-    cmdtype_code = calloc_chk(cmdtabsize, sizeof(CMDTAB **), "cmdtype_code");
     for(i = 0; i < comet2cmdsize; i++) {
         hashval = hash_cmdtype(comet2cmd[i].name, comet2cmd[i].type);    /* ハッシュ値の生成 */
         p = malloc_chk(sizeof(CMDTAB), "cmdtype_code");
@@ -137,7 +137,7 @@ void free_cmdtype_code()
     int i;
     CMDTAB *p, *q;
 
-    for(i = 0; i < cmdtabsize; i++) {
+    for(i = 0; i < CMDTABSIZE; i++) {
         for(p = cmdtype_code[i]; p != NULL; p = q) {
             q = p->next;
             FREE(p);
@@ -157,7 +157,7 @@ unsigned hash_code(WORD code)
     keys[0] = malloc_chk(sizeof(HKEY), "hash_code.key");
     keys[0]->type = INT;
     keys[0]->val.i = (int)(code >> 8);
-    h = hash(1, keys, cmdtabsize);
+    h = hash(1, keys, CMDTABSIZE);
     FREE(keys[0]);
     return h;
 }
@@ -171,8 +171,6 @@ bool create_code_type()
     unsigned hashval;
     int i;
 
-    cmdtabsize = comet2cmdsize;                    /* ハッシュ表のサイズ */
-    code_type = calloc_chk(comet2cmdsize, sizeof(CMDTAB **), "code_type");
     for(i = 0; i < comet2cmdsize; i++) {
         hashval = hash_code((&comet2cmd[i])->code);    /* ハッシュ値の生成 */
         p = malloc_chk(sizeof(CMDTAB), "code_type");
@@ -208,7 +206,7 @@ void free_code_type()
 {
     int i;
     CMDTAB *p, *q;
-    for(i = 0; i < cmdtabsize; i++) {
+    for(i = 0; i < CMDTABSIZE; i++) {
         for(p = code_type[i]; p != NULL; p = q) {
             q = p->next;
             FREE(p);
