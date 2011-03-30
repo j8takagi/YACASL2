@@ -114,6 +114,7 @@ typedef struct _CMDTAB {
 typedef struct {
     WORD start;   /**<開始アドレス */
     WORD end;     /**<終了アドレス */
+    bool stop;    /**<終了フラグ */
 } EXECPTR;
 
 extern EXECPTR *execptr;

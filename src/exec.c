@@ -496,7 +496,10 @@ void call(const WORD r, const WORD v)
  */
 void ret(const WORD r, const WORD v)
 {
-    if(sys->cpu->sp < sys->memsize) {
+    assert(sys->cpu->sp <= sys->memsize);
+    if(sys->cpu->sp == sys->memsize) {
+        execptr->stop = true;
+    } else if(sys->cpu->sp < sys->memsize) {
         sys->cpu->pr = sys->memory[(sys->cpu->sp)++];
     }
 }
@@ -508,6 +511,9 @@ void svc(const WORD r, const WORD v)
 {
     switch(v)
     {
+    case 0x0:
+        execptr->stop = true;
+        break;
     case 0x1:                   /* IN */
         svcin();
         break;
@@ -532,33 +538,37 @@ bool exec()
     }
     /* フラグレジスタの初期値設定 */
     sys->cpu->fr = 0x0;
+    /* スタックポインタの初期値設定 */
     sys->cpu->sp = sys->memsize;
-    sys->cpu->pr = execptr->start;
+    /* 終了フラグの初期値設定 */
+    execptr->stop = false;
     /* 機械語の実行 */
-    for (; ; ) {
+    for (sys->cpu->pr = execptr->start; ; ) {
         clock_begin = clock();
-        /* プログラムレジスタのアドレスが主記憶の範囲外の場合はエラー */
+        /* プログラムレジスタのアドレスが主記憶の範囲外の場合はエラー終了 */
         if(sys->cpu->pr >= sys->memsize) {
             setcerr(204, pr2str(sys->cpu->pr));    /* Program Register (PR) - out of COMET II memory */
+            goto execerr;
         }
-        /* スタック領域を確保できない場合はエラー */
+        /* スタック領域を確保できない場合はエラー終了 */
         else if(sys->cpu->sp <= execptr->end) {
             setcerr(205, pr2str(sys->cpu->pr));    /* Stack Pointer (SP) - cannot allocate stack buffer */
+            goto execerr;
         }
-        /* スタック領域のアドレスが主記憶の範囲外の場合はエラー */
+        /* スタック領域のアドレスが主記憶の範囲外の場合はエラー終了 */
         else if(sys->cpu->sp > sys->memsize) {
             setcerr(207, pr2str(sys->cpu->pr));    /* Stack Pointer (SP) - out of COMET II memory */
+            goto execerr;
         }
         /* 命令の取り出し */
         op = sys->memory[sys->cpu->pr] & 0xFF00;
         /* 命令の解読 */
+        /* 命令がCOMET II命令ではない場合はエラー終了 */
         if((cmdtype = getcmdtype(op)) == NOTCMD) {
             setcerr(210, pr2str(sys->cpu->pr));          /* not command code of COMET II */
-        }
-        /* エラー発生時は終了 */
-        if(cerr->num > 0) {
             goto execerr;
         }
+        cmdptr = getcmdptr(op);
         r_r1 = (sys->memory[sys->cpu->pr] >> 4) & 0xF;
         x_r2 = sys->memory[sys->cpu->pr] & 0xF;
         /* traceオプション指定時、レジスタを出力 */
@@ -611,11 +621,14 @@ bool exec()
             op &= 0xFB00;
         }
         /* 命令の実行 */
-        if((op == 0x8100 && sys->cpu->sp == sys->memsize) || (op == 0xF000 && val == 0x0)) {
-            return true;
-        } else {
-            cmdptr = getcmdptr(op);
-            (*cmdptr)(r_r1, val);
+        (*cmdptr)(r_r1, val);
+        /* エラー発生時はエラー終了 */
+        if(cerr->num > 0) {
+            goto execerr;
+        }
+        /* 終了フラグがtrueの場合は、正常終了 */
+        if(execptr->stop == true) {
+            break;
         }
         /* クロック周波数の設定 */
         do {
