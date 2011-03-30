@@ -72,6 +72,16 @@ bool loadassemble(char *file)
 }
 
 /**
+ * プログラムレジスタ（PR）を表す文字列を返す
+ **/
+static char *pr2str(WORD pr) {
+    char *str = malloc_chk(CERRSTRSIZE + 1, "pr2str.pr");
+
+    sprintf(str, "PR:#%04X", pr);
+    return str;
+}
+
+/**
  * 標準入力から文字データを読込（SVC 1）
  */
 static void svcin()
@@ -138,108 +148,160 @@ static void setfr(WORD val)
 }
 
 /**
- * 算術加算。フラグを設定して値を返す
+ * NOP命令
  */
-static WORD adda(WORD val0, WORD val1)
+void nop(const WORD r, const WORD v)
 {
-    WORD res;
+
+}
+
+/**
+ * LD命令
+ */
+void ld(const WORD r, const WORD v)
+{
+    setfr(sys->cpu->gr[r] = v);
+}
+
+/**
+ * ST命令
+ */
+void st(const WORD r, const WORD v)
+{
+    sys->memory[v] = sys->cpu->gr[r];
+}
+
+/**
+ * LAD命令
+ */
+void lad(const WORD r, const WORD v)
+{
+    sys->cpu->gr[r] = v;
+}
+
+/**
+ * ADDA命令
+ */
+void adda(const WORD r, const WORD v)
+{
     long tmp;
 
     sys->cpu->fr = 0x0;
     /* 引数の値を16ビット符号付整数として加算し、オーバーフローをチェック */
     assert(sizeof(short) * 8 == 16 && (short)0xFFFF == -1);
-    if((tmp = (short)val0 + (short)val1) > 32767 || tmp < -32768) {
+    if((tmp = (short)(sys->cpu->gr[r]) + (short)v) > 32767 || tmp < -32768) {
         sys->cpu->fr += OF;
     }
     /* 加算した結果を、WORD値に戻す */
-    res = (WORD)(tmp & 0xFFFF);
-    if((res & 0x8000) == 0x8000) {
+    sys->cpu->gr[r] = (WORD)(tmp & 0xFFFF);
+    if((sys->cpu->gr[r] & 0x8000) == 0x8000) {
         sys->cpu->fr += SF;
-    } else if(res == 0x0) {
+    } else if(sys->cpu->gr[r] == 0x0) {
         sys->cpu->fr += ZF;
     }
-    return res;
 }
 
 /**
- * 算術減算。フラグを設定して値を返す
+ * SUBA命令
  */
-static WORD suba(WORD val0, WORD val1)
+void suba(const WORD r, const WORD v)
 {
-    return adda(val0, (~val1 + 1));
+    adda(r, (~v + 1));
 }
 
 /**
- * 論理加算。フラグを設定して値を返す
+ * ADDL命令
  */
-static WORD addl(WORD val0, WORD val1)
+void addl(const WORD r, const WORD v)
 {
     long tmp;
-    WORD res;
     sys->cpu->fr = 0x0;
 
-    if((tmp = val0 + val1) < 0 || tmp > 65535) {
+    if((tmp = sys->cpu->gr[r] + v) < 0 || tmp > 65535) {
         sys->cpu->fr += OF;
     }
-    if(((res = (WORD)(tmp & 0xFFFF)) & 0x8000) == 0x8000) {
+    if(((sys->cpu->gr[r] = (WORD)(tmp & 0xFFFF)) & 0x8000) == 0x8000) {
         sys->cpu->fr += SF;
-    } else if(res == 0x0) {
+    } else if(sys->cpu->gr[r] == 0x0) {
         sys->cpu->fr += ZF;
     }
-    return res;
 }
 
 /**
- * 論理減算。フラグを設定して値を返す
+ * SUBL命令
  */
-static WORD subl(WORD val0, WORD val1)
+void subl(const WORD r, const WORD v)
 {
-    return addl(val0, (~val1 + 1));
+    addl(r, (~v + 1));
 }
 
 /**
- * 算術比較のフラグ設定。OFは常に0
+ * AND命令
  */
-static void cpa(WORD val0, WORD val1)
+void and(const WORD r, const WORD v)
+{
+    setfr(sys->cpu->gr[r] &= v);
+}
+
+/**
+ * OR命令
+ */
+void or(const WORD r, const WORD v)
+{
+    setfr(sys->cpu->gr[r] |= v);
+}
+
+/**
+ * XOR命令
+ */
+void xor(const WORD r, const WORD v)
+{
+    setfr(sys->cpu->gr[r] ^= v);
+}
+
+/**
+ * CPA命令
+ */
+void cpa(const WORD r, const WORD v)
 {
     sys->cpu->fr = 0x0;
-    if((short)val0 < (short)val1) {
+    if((short)sys->cpu->gr[r] < (short)v) {
         sys->cpu->fr = SF;
-    } else if(val0 == val1) {
+    } else if(sys->cpu->gr[r] == v) {
         sys->cpu->fr = ZF;
     }
 }
 
 /**
- * 論理比較のフラグ設定。OFは常に0
+ * CPL命令
  */
-static void cpl(WORD val0, WORD val1)
+void cpl(const WORD r, const WORD v)
 {
     sys->cpu->fr = 0x0;
-    if(val0 < val1) {
+    if(sys->cpu->gr[r] < v) {
         sys->cpu->fr = SF;
-    } else if(val0 == val1) {
+    } else if(sys->cpu->gr[r] == v) {
         sys->cpu->fr = ZF;
     }
 }
 
+
 /**
- * 算術左シフト。フラグを設定して値を返す
- * 算術演算なので、第15ビットは送り出されない
+ * SLA命令。算術演算なので、第15ビットは送り出されない
  */
-static WORD sla(WORD val0, WORD val1)
+void sla(const WORD r, const WORD v)
 {
-    WORD sign, res, last = 0x0;
+    WORD sign, last = 0x0;
     int i;
 
     sys->cpu->fr = 0x0;
-    sign = val0 & 0x8000;
-    res = val0 & 0x7FFF;
-    for(i = 0; i < val1; i++) {
-        last = res & 0x4000;
-        res <<= 1;
+    sign = sys->cpu->gr[r] & 0x8000;
+    sys->cpu->gr[r] &= 0x7FFF;
+    for(i = 0; i < v; i++) {
+        last = sys->cpu->gr[r] & 0x4000;
+        sys->cpu->gr[r] <<= 1;
     }
-    res = sign | (res & 0x7FFF);
+    sys->cpu->gr[r] = sign | (sys->cpu->gr[r] & 0x7FFF);
     /* OFに、レジスタから最後に送り出されたビットの値を設定 */
     if(last > 0x0) {
         sys->cpu->fr += OF;
@@ -249,33 +311,32 @@ static WORD sla(WORD val0, WORD val1)
         sys->cpu->fr += SF;
     }
     /* 演算結果が0のとき、ZFは1 */
-    if(res == 0x0) {
+    if(sys->cpu->gr[r] == 0x0) {
         sys->cpu->fr += ZF;
     }
-    return res;
 }
 
 /**
- * 算術右シフト。フラグを設定して値を返す
+ * SRA命令
  * 算術演算なので、第15ビットは送り出されない
  * 空いたビット位置には符号と同じものが入る
  */
-static WORD sra(WORD val0, WORD val1)
+void sra(const WORD r, const WORD v)
 {
-    WORD sign, res, last = 0x0;
+    WORD sign, last = 0x0;
     int i;
 
     sys->cpu->fr = 0x0;
-    sign = val0 & 0x8000;
-    res = val0 & 0x7FFF;
-    for(i = 0; i < val1; i++) {
-        last = res & 0x1;
-        res >>= 1;
+    sign = sys->cpu->gr[r] & 0x8000;
+    sys->cpu->gr[r] &= 0x7FFF;
+    for(i = 0; i < v; i++) {
+        last = sys->cpu->gr[r] & 0x1;
+        sys->cpu->gr[r] >>= 1;
         if(sign > 0) {
-            res |= 0x4000;
+            sys->cpu->gr[r] |= 0x4000;
         }
     }
-    res = sign | res;
+    sys->cpu->gr[r] = sign | sys->cpu->gr[r];
     /* OFに、レジスタから最後に送り出されたビットの値を設定 */
     if(last > 0x0) {
         sys->cpu->fr += OF;
@@ -285,76 +346,175 @@ static WORD sra(WORD val0, WORD val1)
         sys->cpu->fr += SF;
     }
     /* 演算結果が0のとき、ZFは1 */
-    if(res == 0x0) {
+    if(sys->cpu->gr[r] == 0x0) {
         sys->cpu->fr += ZF;
     }
-    return res;
 }
 
 /**
- * 論理左シフト。フラグを設定して値を返す
+ * SLL命令
  */
-static WORD sll(WORD val0, WORD val1)
+void sll(const WORD r, const WORD v)
 {
-    WORD res = val0, last = 0x0;
+    WORD last = 0x0;
     int i;
 
     sys->cpu->fr = 0x0;
-    for(i = 0; i < val1; i++) {
-        last = res & 0x8000;
-        res <<= 1;
+    for(i = 0; i < v; i++) {
+        last = sys->cpu->gr[r] & 0x8000;
+        sys->cpu->gr[r] <<= 1;
     }
     /* OFに、レジスタから最後に送り出されたビットの値を設定 */
     if(last > 0x0) {
         sys->cpu->fr += OF;
     }
     /* 第15ビットが1のとき、SFは1 */
-    if((res & 0x8000) > 0x0) {
+    if((sys->cpu->gr[r] & 0x8000) > 0x0) {
         sys->cpu->fr += SF;
     }
     /* 演算結果が0のとき、ZFは1 */
-    if(res == 0x0) {
+    if(sys->cpu->gr[r] == 0x0) {
         sys->cpu->fr += ZF;
     }
-    return res;
 }
 
 /**
- * 論理右シフト。フラグを設定して値を返す
+ * SRL命令
  */
-static WORD srl(WORD val0, WORD val1)
+void srl(const WORD r, const WORD v)
 {
-    WORD res = val0, last = 0x0;
+    WORD last = 0x0;
     int i;
 
     sys->cpu->fr = 0x0;
-    for(i = 0; i < val1; i++) {
-        last = res & 0x0001;
-        res >>= 1;
+    for(i = 0; i < v; i++) {
+        last = sys->cpu->gr[r] & 0x0001;
+        sys->cpu->gr[r] >>= 1;
     }
     /* OFに、レジスタから最後に送り出されたビットの値を設定 */
     if(last > 0x0) {
         sys->cpu->fr += OF;
     }
     /* 第15ビットが1のとき、SFは1 */
-    if((res & 0x8000) > 0x0) {
+    if((sys->cpu->gr[r] & 0x8000) > 0x0) {
         sys->cpu->fr += SF;
     }
     /* 演算結果が0のとき、ZFは1 */
-    if(res == 0x0) {
+    if(sys->cpu->gr[r] == 0x0) {
         sys->cpu->fr += ZF;
     }
-    return res;
 }
 
 /**
- * プログラムレジスタ（PR）を表す文字列を返す
- **/
-static char *pr2str(WORD pr) {
-    char *str = malloc_chk(CERRSTRSIZE + 1, "pr2str.pr");
+ * JMI命令
+ */
+void jmi(const WORD r, const WORD v)
+{
+    if((sys->cpu->fr & SF) > 0) {
+        sys->cpu->pr = v;
+    }
+}
 
-    sprintf(str, "PR:#%04X", pr);
-    return str;
+/**
+ * JNZ命令
+ */
+void jnz(const WORD r, const WORD v)
+{
+    if((sys->cpu->fr & ZF) == 0) {
+        sys->cpu->pr = v;
+    }
+}
+
+/**
+ * JZE命令
+ */
+void jze(const WORD r, const WORD v)
+{
+    if((sys->cpu->fr & ZF) > 0) {
+        sys->cpu->pr = v;
+    }
+}
+
+/**
+ * JUMP命令
+ */
+void jump(const WORD r, const WORD v)
+{
+    sys->cpu->pr = v;
+}
+
+/**
+ * JPL命令
+ */
+void jpl(const WORD r, const WORD v)
+{
+    if((sys->cpu->fr & (SF | ZF)) == 0) {
+        sys->cpu->pr = v;
+    }
+}
+
+/**
+ * JOV命令
+ */
+void jov(const WORD r, const WORD v)
+{
+    if((sys->cpu->fr & OF) > 0) {
+        sys->cpu->pr = v;
+    }
+}
+
+/**
+ * PUSH命令
+ */
+void push(const WORD r, const WORD v)
+{
+    assert(sys->cpu->sp > execptr->end && sys->cpu->sp <= sys->memsize);
+    sys->memory[--(sys->cpu->sp)] = v;
+}
+
+/**
+ * POP命令
+ */
+void pop(const WORD r, const WORD v)
+{
+    assert(sys->cpu->sp > execptr->end && sys->cpu->sp <= sys->memsize);
+    sys->cpu->gr[r] = sys->memory[(sys->cpu->sp)++];
+}
+
+/**
+ * CALL命令
+ */
+void call(const WORD r, const WORD v)
+{
+    assert(sys->cpu->sp > execptr->end && sys->cpu->sp <= sys->memsize);
+    sys->memory[--(sys->cpu->sp)] = sys->cpu->pr;
+    sys->cpu->pr = v;
+}
+
+/**
+ * RET命令
+ */
+void ret(const WORD r, const WORD v)
+{
+    if(sys->cpu->sp < sys->memsize) {
+        sys->cpu->pr = sys->memory[(sys->cpu->sp)++];
+    }
+}
+
+/**
+ * SVC命令
+ */
+void svc(const WORD r, const WORD v)
+{
+    switch(v)
+    {
+    case 0x1:                   /* IN */
+        svcin();
+        break;
+    case 0x2:                   /* OUT */
+        svcout();
+        break;
+    }
 }
 
 /**
@@ -364,6 +524,7 @@ bool exec()
 {
     WORD op, r_r1, x_r2, val;
     CMDTYPE cmdtype;
+    void (*cmdptr)();
     clock_t clock_begin, clock_end;
 
     if(execmode.trace == true) {
@@ -388,15 +549,15 @@ bool exec()
         else if(sys->cpu->sp > sys->memsize) {
             setcerr(207, pr2str(sys->cpu->pr));    /* Stack Pointer (SP) - out of COMET II memory */
         }
-        /* エラー発生時は終了 */
-        if(cerr->num > 0) {
-            goto execerr;
-        }
         /* 命令の取り出し */
         op = sys->memory[sys->cpu->pr] & 0xFF00;
         /* 命令の解読 */
         if((cmdtype = getcmdtype(op)) == NOTCMD) {
             setcerr(210, pr2str(sys->cpu->pr));          /* not command code of COMET II */
+        }
+        /* エラー発生時は終了 */
+        if(cerr->num > 0) {
+            goto execerr;
         }
         r_r1 = (sys->memory[sys->cpu->pr] >> 4) & 0xF;
         x_r2 = sys->memory[sys->cpu->pr] & 0xF;
@@ -450,121 +611,11 @@ bool exec()
             op &= 0xFB00;
         }
         /* 命令の実行 */
-        switch(op)
-        {
-        case 0x0:       /* NOP */
-            break;
-        case 0x1000:    /* LD */
-            setfr(sys->cpu->gr[r_r1] = val);
-            break;
-        case 0x1100:    /* ST */
-            sys->memory[val] = sys->cpu->gr[r_r1];
-            break;
-        case 0x1200:    /* LAD */
-            sys->cpu->gr[r_r1] = val;
-            break;
-        case 0x2000:    /* ADDA */
-            sys->cpu->gr[r_r1] = adda(sys->cpu->gr[r_r1], val);
-            break;
-        case 0x2100:    /* SUBA */
-            sys->cpu->gr[r_r1] = suba(sys->cpu->gr[r_r1], val);
-            break;
-        case 0x2200:    /* ADDL */
-            sys->cpu->gr[r_r1] = addl(sys->cpu->gr[r_r1], val);
-            break;
-        case 0x2300:    /* SUBL */
-            sys->cpu->gr[r_r1] = subl(sys->cpu->gr[r_r1], val);
-            break;
-        case 0x3000:    /* AND */
-            setfr(sys->cpu->gr[r_r1] &= val);
-            break;
-        case 0x3100:    /* OR */
-            setfr(sys->cpu->gr[r_r1] |= val);
-            break;
-        case 0x3200:    /* XOR */
-            setfr(sys->cpu->gr[r_r1] ^= val);
-            break;
-        case 0x4000:    /* CPA */
-            cpa(sys->cpu->gr[r_r1], val);
-            break;
-        case 0x4100:    /* CPL */
-            cpl(sys->cpu->gr[r_r1], val);
-            break;
-        case 0x5000:    /* SLA */
-            sys->cpu->gr[r_r1] = sla(sys->cpu->gr[r_r1], val);
-            break;
-        case 0x5100:    /* SRA */
-            sys->cpu->gr[r_r1] = sra(sys->cpu->gr[r_r1], val);
-            break;
-        case 0x5200:    /* SLL */
-            sys->cpu->gr[r_r1] = sll(sys->cpu->gr[r_r1], val);
-            break;
-        case 0x5300:    /* SRL */
-            sys->cpu->gr[r_r1] = srl(sys->cpu->gr[r_r1], val);
-            break;
-        case 0x6100:    /* JMI */
-            if((sys->cpu->fr & SF) > 0) {
-                sys->cpu->pr = val;
-            }
-            break;
-        case 0x6200:    /* JNZ */
-            if((sys->cpu->fr & ZF) == 0) {
-                sys->cpu->pr = val;
-            }
-            break;
-        case 0x6300:    /* JZE */
-            if((sys->cpu->fr & ZF) > 0) {
-                sys->cpu->pr = val;
-            }
-            break;
-        case 0x6400:    /* JUMP */
-            sys->cpu->pr = val;
-            break;
-        case 0x6500:    /* JPL */
-            if((sys->cpu->fr & (SF | ZF)) == 0) {
-                sys->cpu->pr = val;
-            }
-            break;
-        case 0x6600:    /* JOV */
-            if((sys->cpu->fr & OF) > 0) {
-                sys->cpu->pr = val;
-            }
-            break;
-        case 0x7000:    /* PUSH */
-            assert(sys->cpu->sp > execptr->end && sys->cpu->sp <= sys->memsize);
-            sys->memory[--(sys->cpu->sp)] = val;
-            break;
-        case 0x7100:    /* POP */
-            assert(sys->cpu->sp > execptr->end && sys->cpu->sp <= sys->memsize);
-            sys->cpu->gr[r_r1] = sys->memory[(sys->cpu->sp)++];
-            break;
-        case 0x8000:    /* CALL */
-            assert(sys->cpu->sp > execptr->end && sys->cpu->sp <= sys->memsize);
-            sys->memory[--(sys->cpu->sp)] = sys->cpu->pr;
-            sys->cpu->pr = val;
-            break;
-        case 0x8100:    /* RET */
-            assert(sys->cpu->sp > execptr->end && sys->cpu->sp <= sys->memsize);
-            if(sys->cpu->sp == sys->memsize) {
-                return true;
-            } else {
-                sys->cpu->pr = sys->memory[(sys->cpu->sp)++];
-                break;
-            }
-        case 0xF000:    /* SVC */
-            switch(val)
-            {
-            case 0x0: /* EXIT */
-                return true;
-            case 0x1: /* IN */
-                svcin();
-                break;
-            case 0x2: /* OUT */
-                svcout();
-                break;
-            }
-        default:
-            break;
+        if((op == 0x8100 && sys->cpu->sp == sys->memsize) || (op == 0xF000 && val == 0x0)) {
+            return true;
+        } else {
+            cmdptr = getcmdptr(op);
+            (*cmdptr)(r_r1, val);
         }
         /* クロック周波数の設定 */
         do {

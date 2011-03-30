@@ -4,49 +4,50 @@
 #include "hash.h"
 #include "struct.h"
 #include "cmem.h"
+#include "exec.h"
 
 /**
  * 機械語命令のリスト
  */
 static CMD comet2cmd[] = {
-    { "NOP", NONE, 0x0 },
-    { "LD", R_ADR_X_, 0x1000 },
-    { "ST", R_ADR_X, 0x1100 },
-    { "LAD", R_ADR_X, 0x1200 },
-    { "LD", R1_R2, 0x1400 },
-    { "ADDA", R_ADR_X_, 0x2000 },
-    { "SUBA", R_ADR_X_, 0x2100 },
-    { "ADDL", R_ADR_X_, 0x2200 },
-    { "SUBL", R_ADR_X_, 0x2300 },
-    { "ADDA", R1_R2, 0x2400 },
-    { "SUBA", R1_R2, 0x2500 },
-    { "ADDL", R1_R2, 0x2600 },
-    { "SUBL", R1_R2, 0x2700 },
-    { "AND", R_ADR_X_, 0x3000 },
-    { "OR", R_ADR_X_, 0x3100 },
-    { "XOR", R_ADR_X_, 0x3200 },
-    { "AND", R1_R2, 0x3400 },
-    { "OR", R1_R2, 0x3500 },
-    { "XOR", R1_R2, 0x3600 },
-    { "CPA", R_ADR_X_, 0x4000 },
-    { "CPL", R_ADR_X_, 0x4100 },
-    { "CPA", R1_R2, 0x4400 },
-    { "CPL", R1_R2, 0x4500 },
-    { "SLA", R_ADR_X, 0x5000 },
-    { "SRA", R_ADR_X, 0x5100 },
-    { "SLL", R_ADR_X, 0x5200 },
-    { "SRL", R_ADR_X, 0x5300 },
-    { "JMI", ADR_X, 0x6100 },
-    { "JNZ", ADR_X, 0x6200 },
-    { "JZE", ADR_X, 0x6300 },
-    { "JUMP", ADR_X, 0x6400 },
-    { "JPL", ADR_X, 0x6500 },
-    { "JOV", ADR_X, 0x6600 },
-    { "PUSH", ADR_X, 0x7000 },
-    { "POP", R_, 0x7100 },
-    { "CALL", ADR_X, 0x8000 },
-    { "SVC", ADR_X, 0xF000 },
-    { "RET", NONE, 0x8100 },
+    { "NOP", NONE, 0x0, nop },
+    { "LD", R_ADR_X_, 0x1000, ld },
+    { "ST", R_ADR_X, 0x1100, st },
+    { "LAD", R_ADR_X, 0x1200, lad },
+    { "LD", R1_R2, 0x1400, ld },
+    { "ADDA", R_ADR_X_, 0x2000, adda },
+    { "SUBA", R_ADR_X_, 0x2100, suba },
+    { "ADDL", R_ADR_X_, 0x2200, addl },
+    { "SUBL", R_ADR_X_, 0x2300, subl },
+    { "ADDA", R1_R2, 0x2400, adda },
+    { "SUBA", R1_R2, 0x2500, suba },
+    { "ADDL", R1_R2, 0x2600, addl },
+    { "SUBL", R1_R2, 0x2700, subl },
+    { "AND", R_ADR_X_, 0x3000, and },
+    { "OR", R_ADR_X_, 0x3100, or },
+    { "XOR", R_ADR_X_, 0x3200, xor },
+    { "AND", R1_R2, 0x3400, and },
+    { "OR", R1_R2, 0x3500, or },
+    { "XOR", R1_R2, 0x3600, xor },
+    { "CPA", R_ADR_X_, 0x4000, cpa },
+    { "CPL", R_ADR_X_, 0x4100, cpl },
+    { "CPA", R1_R2, 0x4400, cpa },
+    { "CPL", R1_R2, 0x4500, cpl },
+    { "SLA", R_ADR_X, 0x5000, sla },
+    { "SRA", R_ADR_X, 0x5100, sra },
+    { "SLL", R_ADR_X, 0x5200, sll },
+    { "SRL", R_ADR_X, 0x5300, srl },
+    { "JMI", ADR_X, 0x6100, jmi },
+    { "JNZ", ADR_X, 0x6200, jnz },
+    { "JZE", ADR_X, 0x6300, jze },
+    { "JUMP", ADR_X, 0x6400, jump },
+    { "JPL", ADR_X, 0x6500, jpl },
+    { "JOV", ADR_X, 0x6600, jov },
+    { "PUSH", ADR_X, 0x7000, push },
+    { "POP", R_, 0x7100, pop },
+    { "CALL", ADR_X, 0x8000, call },
+    { "SVC", ADR_X, 0xF000, svc },
+    { "RET", NONE, 0x8100, ret },
 };
 
 /**
@@ -197,6 +198,23 @@ CMDTYPE getcmdtype(WORD code)
         }
     }
     return t;
+}
+
+/**
+ * 命令コードから命令の関数ポインタを返す
+ */
+const void (*getcmdptr(WORD code))
+{
+    CMDTAB *t;
+    const void (*ptr);
+
+    for(t = code_type[hash_code(code)]; t != NULL; t = t->next) {
+        if(code == t->cmd->code) {
+            ptr = t->cmd->ptr;
+            break;
+        }
+    }
+    return ptr;
 }
 
 /**

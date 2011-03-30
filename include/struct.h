@@ -97,6 +97,7 @@ typedef struct {
     char *name;                 /**<命令名 */
     CMDTYPE type;               /**<命令タイプ */
     WORD code;                  /**<命令コード */
+    const void (*ptr);                   /**<命令の関数ポインタ */
 } CMD;
 
 /**
@@ -153,6 +154,11 @@ bool create_code_type();
  * 無効な場合はNONEを返す
  */
 CMDTYPE getcmdtype(WORD code);
+
+/**
+ * 命令コードから命令の関数ポインタを返す
+ */
+const void (*getcmdptr(WORD code));
 
 /**
  * コードがキーの命令ハッシュ表を解放する
