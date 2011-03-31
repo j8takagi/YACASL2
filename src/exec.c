@@ -150,7 +150,7 @@ static void setfr(WORD val)
 /**
  * NOP命令
  */
-void nop(const WORD r, const WORD v)
+void nop(const WORD r, const WORD adr)
 {
 
 }
@@ -158,38 +158,38 @@ void nop(const WORD r, const WORD v)
 /**
  * LD命令
  */
-void ld(const WORD r, const WORD v)
+void ld(const WORD r, const WORD adr)
 {
-    setfr(sys->cpu->gr[r] = v);
+    setfr(sys->cpu->gr[r] = adr);
 }
 
 /**
  * ST命令
  */
-void st(const WORD r, const WORD v)
+void st(const WORD r, const WORD adr)
 {
-    sys->memory[v] = sys->cpu->gr[r];
+    sys->memory[adr] = sys->cpu->gr[r];
 }
 
 /**
  * LAD命令
  */
-void lad(const WORD r, const WORD v)
+void lad(const WORD r, const WORD adr)
 {
-    sys->cpu->gr[r] = v;
+    sys->cpu->gr[r] = adr;
 }
 
 /**
  * ADDA命令
  */
-void adda(const WORD r, const WORD v)
+void adda(const WORD r, const WORD adr)
 {
     long tmp;
 
     sys->cpu->fr = 0x0;
     /* 引数の値を16ビット符号付整数として加算し、オーバーフローをチェック */
     assert(sizeof(short) * 8 == 16 && (short)0xFFFF == -1);
-    if((tmp = (short)(sys->cpu->gr[r]) + (short)v) > 32767 || tmp < -32768) {
+    if((tmp = (short)(sys->cpu->gr[r]) + (short)adr) > 32767 || tmp < -32768) {
         sys->cpu->fr += OF;
     }
     /* 加算した結果を、WORD値に戻す */
@@ -204,20 +204,20 @@ void adda(const WORD r, const WORD v)
 /**
  * SUBA命令
  */
-void suba(const WORD r, const WORD v)
+void suba(const WORD r, const WORD adr)
 {
-    adda(r, (~v + 1));
+    adda(r, (~adr + 1));
 }
 
 /**
  * ADDL命令
  */
-void addl(const WORD r, const WORD v)
+void addl(const WORD r, const WORD adr)
 {
     long tmp;
     sys->cpu->fr = 0x0;
 
-    if((tmp = sys->cpu->gr[r] + v) < 0 || tmp > 65535) {
+    if((tmp = sys->cpu->gr[r] + adr) < 0 || tmp > 65535) {
         sys->cpu->fr += OF;
     }
     if(((sys->cpu->gr[r] = (WORD)(tmp & 0xFFFF)) & 0x8000) == 0x8000) {
@@ -230,44 +230,44 @@ void addl(const WORD r, const WORD v)
 /**
  * SUBL命令
  */
-void subl(const WORD r, const WORD v)
+void subl(const WORD r, const WORD adr)
 {
-    addl(r, (~v + 1));
+    addl(r, (~adr + 1));
 }
 
 /**
  * AND命令
  */
-void and(const WORD r, const WORD v)
+void and(const WORD r, const WORD adr)
 {
-    setfr(sys->cpu->gr[r] &= v);
+    setfr(sys->cpu->gr[r] &= adr);
 }
 
 /**
  * OR命令
  */
-void or(const WORD r, const WORD v)
+void or(const WORD r, const WORD adr)
 {
-    setfr(sys->cpu->gr[r] |= v);
+    setfr(sys->cpu->gr[r] |= adr);
 }
 
 /**
  * XOR命令
  */
-void xor(const WORD r, const WORD v)
+void xor(const WORD r, const WORD adr)
 {
-    setfr(sys->cpu->gr[r] ^= v);
+    setfr(sys->cpu->gr[r] ^= adr);
 }
 
 /**
  * CPA命令
  */
-void cpa(const WORD r, const WORD v)
+void cpa(const WORD r, const WORD adr)
 {
     sys->cpu->fr = 0x0;
-    if((short)sys->cpu->gr[r] < (short)v) {
+    if((short)sys->cpu->gr[r] < (short)adr) {
         sys->cpu->fr = SF;
-    } else if(sys->cpu->gr[r] == v) {
+    } else if(sys->cpu->gr[r] == adr) {
         sys->cpu->fr = ZF;
     }
 }
@@ -275,12 +275,12 @@ void cpa(const WORD r, const WORD v)
 /**
  * CPL命令
  */
-void cpl(const WORD r, const WORD v)
+void cpl(const WORD r, const WORD adr)
 {
     sys->cpu->fr = 0x0;
-    if(sys->cpu->gr[r] < v) {
+    if(sys->cpu->gr[r] < adr) {
         sys->cpu->fr = SF;
-    } else if(sys->cpu->gr[r] == v) {
+    } else if(sys->cpu->gr[r] == adr) {
         sys->cpu->fr = ZF;
     }
 }
@@ -289,7 +289,7 @@ void cpl(const WORD r, const WORD v)
 /**
  * SLA命令。算術演算なので、第15ビットは送り出されない
  */
-void sla(const WORD r, const WORD v)
+void sla(const WORD r, const WORD adr)
 {
     WORD sign, last = 0x0;
     int i;
@@ -297,7 +297,7 @@ void sla(const WORD r, const WORD v)
     sys->cpu->fr = 0x0;
     sign = sys->cpu->gr[r] & 0x8000;
     sys->cpu->gr[r] &= 0x7FFF;
-    for(i = 0; i < v; i++) {
+    for(i = 0; i < adr; i++) {
         last = sys->cpu->gr[r] & 0x4000;
         sys->cpu->gr[r] <<= 1;
     }
@@ -321,7 +321,7 @@ void sla(const WORD r, const WORD v)
  * 算術演算なので、第15ビットは送り出されない
  * 空いたビット位置には符号と同じものが入る
  */
-void sra(const WORD r, const WORD v)
+void sra(const WORD r, const WORD adr)
 {
     WORD sign, last = 0x0;
     int i;
@@ -329,7 +329,7 @@ void sra(const WORD r, const WORD v)
     sys->cpu->fr = 0x0;
     sign = sys->cpu->gr[r] & 0x8000;
     sys->cpu->gr[r] &= 0x7FFF;
-    for(i = 0; i < v; i++) {
+    for(i = 0; i < adr; i++) {
         last = sys->cpu->gr[r] & 0x1;
         sys->cpu->gr[r] >>= 1;
         if(sign > 0) {
@@ -354,13 +354,13 @@ void sra(const WORD r, const WORD v)
 /**
  * SLL命令
  */
-void sll(const WORD r, const WORD v)
+void sll(const WORD r, const WORD adr)
 {
     WORD last = 0x0;
     int i;
 
     sys->cpu->fr = 0x0;
-    for(i = 0; i < v; i++) {
+    for(i = 0; i < adr; i++) {
         last = sys->cpu->gr[r] & 0x8000;
         sys->cpu->gr[r] <<= 1;
     }
@@ -381,13 +381,13 @@ void sll(const WORD r, const WORD v)
 /**
  * SRL命令
  */
-void srl(const WORD r, const WORD v)
+void srl(const WORD r, const WORD adr)
 {
     WORD last = 0x0;
     int i;
 
     sys->cpu->fr = 0x0;
-    for(i = 0; i < v; i++) {
+    for(i = 0; i < adr; i++) {
         last = sys->cpu->gr[r] & 0x0001;
         sys->cpu->gr[r] >>= 1;
     }
@@ -408,74 +408,74 @@ void srl(const WORD r, const WORD v)
 /**
  * JMI命令
  */
-void jmi(const WORD r, const WORD v)
+void jmi(const WORD r, const WORD adr)
 {
     if((sys->cpu->fr & SF) > 0) {
-        sys->cpu->pr = v;
+        sys->cpu->pr = adr;
     }
 }
 
 /**
  * JNZ命令
  */
-void jnz(const WORD r, const WORD v)
+void jnz(const WORD r, const WORD adr)
 {
     if((sys->cpu->fr & ZF) == 0) {
-        sys->cpu->pr = v;
+        sys->cpu->pr = adr;
     }
 }
 
 /**
  * JZE命令
  */
-void jze(const WORD r, const WORD v)
+void jze(const WORD r, const WORD adr)
 {
     if((sys->cpu->fr & ZF) > 0) {
-        sys->cpu->pr = v;
+        sys->cpu->pr = adr;
     }
 }
 
 /**
  * JUMP命令
  */
-void jump(const WORD r, const WORD v)
+void jump(const WORD r, const WORD adr)
 {
-    sys->cpu->pr = v;
+    sys->cpu->pr = adr;
 }
 
 /**
  * JPL命令
  */
-void jpl(const WORD r, const WORD v)
+void jpl(const WORD r, const WORD adr)
 {
     if((sys->cpu->fr & (SF | ZF)) == 0) {
-        sys->cpu->pr = v;
+        sys->cpu->pr = adr;
     }
 }
 
 /**
  * JOV命令
  */
-void jov(const WORD r, const WORD v)
+void jov(const WORD r, const WORD adr)
 {
     if((sys->cpu->fr & OF) > 0) {
-        sys->cpu->pr = v;
+        sys->cpu->pr = adr;
     }
 }
 
 /**
  * PUSH命令
  */
-void push(const WORD r, const WORD v)
+void push(const WORD r, const WORD adr)
 {
     assert(sys->cpu->sp > execptr->end && sys->cpu->sp <= sys->memsize);
-    sys->memory[--(sys->cpu->sp)] = v;
+    sys->memory[--(sys->cpu->sp)] = adr;
 }
 
 /**
  * POP命令
  */
-void pop(const WORD r, const WORD v)
+void pop(const WORD r, const WORD adr)
 {
     assert(sys->cpu->sp > execptr->end && sys->cpu->sp <= sys->memsize);
     sys->cpu->gr[r] = sys->memory[(sys->cpu->sp)++];
@@ -484,17 +484,17 @@ void pop(const WORD r, const WORD v)
 /**
  * CALL命令
  */
-void call(const WORD r, const WORD v)
+void call(const WORD r, const WORD adr)
 {
     assert(sys->cpu->sp > execptr->end && sys->cpu->sp <= sys->memsize);
     sys->memory[--(sys->cpu->sp)] = sys->cpu->pr;
-    sys->cpu->pr = v;
+    sys->cpu->pr = adr;
 }
 
 /**
  * RET命令
  */
-void ret(const WORD r, const WORD v)
+void ret(const WORD r, const WORD adr)
 {
     assert(sys->cpu->sp <= sys->memsize);
     if(sys->cpu->sp == sys->memsize) {
@@ -507,9 +507,9 @@ void ret(const WORD r, const WORD v)
 /**
  * SVC命令
  */
-void svc(const WORD r, const WORD v)
+void svc(const WORD r, const WORD adr)
 {
-    switch(v)
+    switch(adr)
     {
     case 0x0:
         execptr->stop = true;
@@ -545,6 +545,20 @@ bool exec()
     /* 機械語の実行 */
     for (sys->cpu->pr = execptr->start; ; ) {
         clock_begin = clock();
+        /* traceオプション指定時、レジスタを出力 */
+        if(execmode.trace){
+            fprintf(stdout, "#%04X: Register::::\n", sys->cpu->pr);
+            dspregister();
+        }
+        /* dumpオプション指定時、メモリを出力 */
+        if(execmode.dump){
+            fprintf(stdout, "#%04X: Memory::::\n", sys->cpu->pr);
+            dumpmemory();
+        }
+        /* traceまたはdumpオプション指定時、改行を出力 */
+        if(execmode.dump || execmode.trace) {
+            fprintf(stdout, "\n");
+        }
         /* プログラムレジスタのアドレスが主記憶の範囲外の場合はエラー終了 */
         if(sys->cpu->pr >= sys->memsize) {
             setcerr(204, pr2str(sys->cpu->pr));    /* Program Register (PR) - out of COMET II memory */
@@ -571,20 +585,6 @@ bool exec()
         cmdptr = getcmdptr(op);
         r_r1 = (sys->memory[sys->cpu->pr] >> 4) & 0xF;
         x_r2 = sys->memory[sys->cpu->pr] & 0xF;
-        /* traceオプション指定時、レジスタを出力 */
-        if(execmode.trace){
-            fprintf(stdout, "#%04X: Register::::\n", sys->cpu->pr);
-            dspregister();
-        }
-        /* dumpオプション指定時、メモリを出力 */
-        if(execmode.dump){
-            fprintf(stdout, "#%04X: Memory::::\n", sys->cpu->pr);
-            dumpmemory();
-        }
-        /* traceまたはdumpオプション指定時、改行を出力 */
-        if(execmode.dump || execmode.trace) {
-            fprintf(stdout, "\n");
-        }
         sys->cpu->pr++;
         /* オペランドの取り出し */
         if(cmdtype == R1_R2) {
