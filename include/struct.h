@@ -151,10 +151,10 @@ void free_cmdtype_code();
 bool create_code_type();
 
 /**
- * 命令コードから命令タイプを返す
- * 無効な場合はNONEを返す
+ * 命令コードから命令を返す
+ * 命令コードでない場合はNULLを返す
  */
-CMDTYPE getcmdtype(WORD code);
+CMD *getcmd(WORD code);
 
 /**
  * 命令コードから命令の関数ポインタを返す

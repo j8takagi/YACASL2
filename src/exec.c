@@ -529,7 +529,7 @@ void svc(const WORD r, const WORD adr)
 bool exec()
 {
     WORD op, r_r1, x_r2, val;
-    CMDTYPE cmdtype;
+    CMD *cmd;
     void (*cmdptr)();
     clock_t clock_begin, clock_end;
 
@@ -574,16 +574,16 @@ bool exec()
         op = sys->memory[sys->cpu->pr] & 0xFF00;
         /* 命令の解読 */
         /* 命令がCOMET II命令ではない場合はエラー終了 */
-        if((cmdtype = getcmdtype(op)) == NOTCMD) {
+        if((cmd = getcmd(op)) == NULL) {
             setcerr(210, pr2str(sys->cpu->pr));          /* not command code of COMET II */
             goto execerr;
         }
-        cmdptr = getcmdptr(op);
+        cmdptr = cmd->ptr;
         r_r1 = (sys->memory[sys->cpu->pr] >> 4) & 0xF;
         x_r2 = sys->memory[sys->cpu->pr] & 0xF;
         sys->cpu->pr++;
         /* オペランドの取り出し */
-        if(cmdtype == R1_R2) {
+        if(cmd->type == R1_R2) {
             /* オペランドの数値が汎用レジスタの範囲外の場合はエラー */
             if(x_r2 > GRSIZE - 1) {
                 setcerr(209, pr2str(sys->cpu->pr-1));    /* not GR in operand x */
@@ -591,7 +591,7 @@ bool exec()
             }
             val = sys->cpu->gr[x_r2];
         }
-        else if(cmdtype ==  R_ADR_X || cmdtype == R_ADR_X_ || cmdtype == ADR_X) {
+        else if(cmd->type ==  R_ADR_X || cmd->type == R_ADR_X_ || cmd->type == ADR_X) {
             /* オペランドの数値が汎用レジスタの範囲外の場合はエラー */
             if(x_r2 > GRSIZE - 1) {
                 setcerr(209, pr2str(sys->cpu->pr-1));    /* not GR in operand x */
@@ -604,7 +604,7 @@ bool exec()
                 val += sys->cpu->gr[x_r2];
             }
             /* ロード／算術論理演算命令／比較演算命令では、アドレスに格納されている内容を取得 */
-            if(cmdtype == R_ADR_X_) {
+            if(cmd->type == R_ADR_X_) {
                 if(val >= sys->memsize) {
                     setcerr(206, pr2str(sys->cpu->pr-1));    /* Address - out of COMET II memory */
                     goto execerr;

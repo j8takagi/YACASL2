@@ -183,21 +183,21 @@ bool create_code_type()
 }
 
 /**
- * 命令コードから命令タイプを返す
- * 無効な場合はNOTCMDを返す
+ * 命令コードから命令を返す
+ * 命令コードでない場合はNULLを返す
  */
-CMDTYPE getcmdtype(WORD code)
+CMD *getcmd(WORD code)
 {
     CMDTAB *p;
-    CMDTYPE t = NOTCMD;
+    CMD *c = NULL;
 
     for(p = code_type[hash_code(code)]; p != NULL; p = p->next) {
         if(code == p->cmd->code) {
-            t = p->cmd->type;
+            c = p->cmd;
             break;
         }
     }
-    return t;
+    return c;
 }
 
 /**
