@@ -545,33 +545,29 @@ bool exec()
     /* 機械語の実行 */
     for (sys->cpu->pr = execptr->start; ; ) {
         clock_begin = clock();
-        /* traceオプション指定時、レジスタを出力 */
-        if(execmode.trace){
-            fprintf(stdout, "#%04X: Register::::\n", sys->cpu->pr);
-            dspregister();
-        }
-        /* dumpオプション指定時、メモリを出力 */
-        if(execmode.dump){
-            fprintf(stdout, "#%04X: Memory::::\n", sys->cpu->pr);
-            dumpmemory();
-        }
         /* traceまたはdumpオプション指定時、改行を出力 */
         if(execmode.dump || execmode.trace) {
+            /* traceオプション指定時、レジスタを出力 */
+            if(execmode.trace){
+                fprintf(stdout, "#%04X: Register::::\n", sys->cpu->pr);
+                dspregister();
+            }
+            /* dumpオプション指定時、メモリを出力 */
+            if(execmode.dump){
+                fprintf(stdout, "#%04X: Memory::::\n", sys->cpu->pr);
+                dumpmemory();
+            }
             fprintf(stdout, "\n");
         }
-        /* プログラムレジスタのアドレスが主記憶の範囲外の場合はエラー終了 */
-        if(sys->cpu->pr >= sys->memsize) {
-            setcerr(204, pr2str(sys->cpu->pr));    /* Program Register (PR) - out of COMET II memory */
-            goto execerr;
-        }
-        /* スタック領域を確保できない場合はエラー終了 */
-        else if(sys->cpu->sp <= execptr->end) {
-            setcerr(205, pr2str(sys->cpu->pr));    /* Stack Pointer (SP) - cannot allocate stack buffer */
-            goto execerr;
-        }
-        /* スタック領域のアドレスが主記憶の範囲外の場合はエラー終了 */
-        else if(sys->cpu->sp > sys->memsize) {
-            setcerr(207, pr2str(sys->cpu->pr));    /* Stack Pointer (SP) - out of COMET II memory */
+        /* プログラムレジスタとスタックポインタをチェック */
+        if(sys->cpu->pr >= sys->memsize || sys->cpu->sp <= execptr->end || sys->cpu->sp > sys->memsize) {
+            if(sys->cpu->pr >= sys->memsize) {
+                setcerr(204, pr2str(sys->cpu->pr));    /* Program Register (PR) - out of COMET II memory */
+            } else if(sys->cpu->sp <= execptr->end) {
+                setcerr(205, pr2str(sys->cpu->pr));    /* Stack Pointer (SP) - cannot allocate stack buffer */
+            } else if(sys->cpu->sp > sys->memsize) {
+                setcerr(207, pr2str(sys->cpu->pr));    /* Stack Pointer (SP) - out of COMET II memory */
+            }
             goto execerr;
         }
         /* 命令の取り出し */
