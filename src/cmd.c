@@ -11,28 +11,28 @@
  */
 static CMD comet2cmd[] = {
     { "NOP", NONE, 0x0, nop },
-    { "LD", R_ADR_X_, 0x1000, ld },
+    { "LD", R_ADR_X, 0x1000, ld_r_adr_x },
     { "ST", R_ADR_X, 0x1100, st },
     { "LAD", R_ADR_X, 0x1200, lad },
-    { "LD", R1_R2, 0x1400, ld },
-    { "ADDA", R_ADR_X_, 0x2000, adda },
-    { "SUBA", R_ADR_X_, 0x2100, suba },
-    { "ADDL", R_ADR_X_, 0x2200, addl },
-    { "SUBL", R_ADR_X_, 0x2300, subl },
-    { "ADDA", R1_R2, 0x2400, adda },
-    { "SUBA", R1_R2, 0x2500, suba },
-    { "ADDL", R1_R2, 0x2600, addl },
-    { "SUBL", R1_R2, 0x2700, subl },
-    { "AND", R_ADR_X_, 0x3000, and },
-    { "OR", R_ADR_X_, 0x3100, or },
-    { "XOR", R_ADR_X_, 0x3200, xor },
-    { "AND", R1_R2, 0x3400, and },
-    { "OR", R1_R2, 0x3500, or },
-    { "XOR", R1_R2, 0x3600, xor },
-    { "CPA", R_ADR_X_, 0x4000, cpa },
-    { "CPL", R_ADR_X_, 0x4100, cpl },
-    { "CPA", R1_R2, 0x4400, cpa },
-    { "CPL", R1_R2, 0x4500, cpl },
+    { "LD", R1_R2, 0x1400, ld_r1_r2 },
+    { "ADDA", R_ADR_X, 0x2000, adda_r_adr_x },
+    { "SUBA", R_ADR_X, 0x2100, suba_r_adr_x },
+    { "ADDL", R_ADR_X, 0x2200, addl_r_adr_x },
+    { "SUBL", R_ADR_X, 0x2300, subl_r_adr_x },
+    { "ADDA", R1_R2, 0x2400, adda_r1_r2 },
+    { "SUBA", R1_R2, 0x2500, suba_r1_r2 },
+    { "ADDL", R1_R2, 0x2600, addl_r1_r2 },
+    { "SUBL", R1_R2, 0x2700, subl_r1_r2 },
+    { "AND", R_ADR_X, 0x3000, and_r_adr_x },
+    { "OR", R_ADR_X, 0x3100, or_r_adr_x },
+    { "XOR", R_ADR_X, 0x3200, xor_r_adr_x },
+    { "AND", R1_R2, 0x3400, and_r1_r2 },
+    { "OR", R1_R2, 0x3500, or_r1_r2 },
+    { "XOR", R1_R2, 0x3600, xor_r1_r2 },
+    { "CPA", R_ADR_X, 0x4000, cpa_r_adr_x },
+    { "CPL", R_ADR_X, 0x4100, cpl_r_adr_x },
+    { "CPA", R1_R2, 0x4400, cpa_r1_r2 },
+    { "CPL", R1_R2, 0x4500, cpl_r1_r2 },
     { "SLA", R_ADR_X, 0x5000, sla },
     { "SRA", R_ADR_X, 0x5100, sra },
     { "SLL", R_ADR_X, 0x5200, sll },
@@ -180,24 +180,6 @@ bool create_code_type()
         code_type[hashval] = p;
     }
     return true;
-}
-
-/**
- * 命令コードから命令を返す
- * 命令コードでない場合はNULLを返す
- */
-CMD *getcmd(WORD code)
-{
-    CMDTAB *p;
-    CMD *c = NULL;
-
-    for(p = code_type[hash_code(code)]; p != NULL; p = p->next) {
-        if(code == p->cmd->code) {
-            c = p->cmd;
-            break;
-        }
-    }
-    return c;
 }
 
 /**

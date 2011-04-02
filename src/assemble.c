@@ -394,9 +394,7 @@ bool cometcmd(const CMDLINE *cmdl, PASS pass)
         /* オペランド数2または3。第2オペランドはアドレス、 */
         /* 第3オペランドは指標レジスタとして用いる汎用レジスタ */
         else if(cmdl->opd->opdc == 2 || cmdl->opd->opdc == 3) {
-            if((cmd = getcmdcode(cmdl->cmd, R_ADR_X_)) == 0xFFFF &&
-               (cmd = getcmdcode(cmdl->cmd, R_ADR_X)) == 0xFFFF)
-            {
+            if((cmd = getcmdcode(cmdl->cmd, R_ADR_X)) == 0xFFFF) {
                 setcerr(110, cmdl->cmd);    /* not command of operand "r,adr[,x]" */
                 return false;
             }

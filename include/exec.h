@@ -44,145 +44,207 @@ bool loadassemble(char *file);
 void reset();
 
 /**
- * NOP命令
+ * NOP命令。語長1（OPのみ）
  */
-void nop(const WORD r, const WORD adr);
+void nop();
 
 /**
- * LD命令
+ * LD命令 - オペランドr,adr,x。語長2
  */
-void ld(const WORD r, const WORD adr);
+void ld_r_adr_x();
 
 /**
- * ST命令
+ * LD命令 - オペランドr1,r2。語長1
  */
-void st(const WORD r, const WORD adr);
+void ld_r1_r2();
 
 /**
- * LAD命令
+ * ST命令。語長2
  */
-void lad(const WORD r, const WORD adr);
+void st();
 
 /**
- * ADDA命令
+ * LAD命令。語長2
  */
-void adda(const WORD r, const WORD adr);
+void lad();
 
 /**
- * SUBA命令
+ * ADDA命令 - オペランドr,adr,x。語長2
  */
-void suba(const WORD r, const WORD adr);
+void adda_r_adr_x();
 
 /**
- * ADDL命令
+ * ADDA命令 - オペランドr1,r2。語長1
  */
-void addl(const WORD r, const WORD adr);
+void adda_r1_r2();
 
 /**
- * SUBL命令
+ * SUBA命令 - オペランドr,adr,x。語長2
  */
-void subl(const WORD r, const WORD adr);
+void suba_r_adr_x();
 
 /**
- * AND命令
+ * SUBA命令 - オペランドr1,r2。語長1
  */
-void and(const WORD r, const WORD adr);
+void suba_r1_r2();
 
 /**
- * OR命令
+ * ADDL命令のテンプレート
  */
-void or(const WORD r, const WORD adr);
+void addl(const WORD r, const WORD val);
 
 /**
- * XOR命令
+ * ADDL命令 - オペランドr,adr,x。語長2
  */
-void xor(const WORD r, const WORD adr);
+void addl_r_adr_x();
 
 /**
- * CPA命令
+ * ADDL命令 - オペランドr1,r2。語長1
  */
-void cpa(const WORD r, const WORD adr);
+void addl_r1_r2();
 
 /**
- * CPL命令
+ * SUBL命令 - オペランドr,adr,x。語長2
  */
-void cpl(const WORD r, const WORD adr);
+void subl_r_adr_x();
 
 /**
- * SLA命令
+ * SUBL命令 - オペランドr1,r2。語長1
  */
-void sla(const WORD r, const WORD adr);
+void subl_r1_r2();
 
 /**
- * SRA命令
+ * AND命令 - オペランドr,adr,x。語長2
  */
-void sra(const WORD r, const WORD adr);
+void and_r_adr_x();
 
 /**
- * SLL命令
+ * AND命令 - オペランドr1,r2。語長1
  */
-void sll(const WORD r, const WORD adr);
+void and_r1_r2();
 
 /**
- * SRL命令
+ * OR命令 - オペランドr,adr,x。語長2
  */
-void srl(const WORD r, const WORD adr);
+void or_r_adr_x();
 
 /**
- * JMI命令
+ * OR命令 - オペランドr1,r2。語長1
  */
-void jmi(const WORD r, const WORD adr);
+void or_r1_r2();
 
 /**
- * JNZ命令
+ * XOR命令 - オペランドr,adr,x。語長2
  */
-void jnz(const WORD r, const WORD adr);
+void xor_r_adr_x();
 
 /**
- * JZE命令
+ * XOR命令 - オペランドr1,r2。語長1
  */
-void jze(const WORD r, const WORD adr);
+void xor_r1_r2();
 
 /**
- * JUMP命令
+ * CPA命令 - オペランドr,adr,x。語長2
  */
-void jump(const WORD r, const WORD adr);
+void cpa_r_adr_x();
 
 /**
- * JPL命令
+ * CPA命令 - オペランドr1,r2。語長1
  */
-void jpl(const WORD r, const WORD adr);
+void cpa_r1_r2();
 
 /**
- * JOV命令
+ * CPL命令のテンプレート
  */
-void jov(const WORD r, const WORD adr);
+void cpl(const WORD r, const WORD val);
 
 /**
- * PUSH命令
+ * CPL命令 - オペランドr,adr,x。語長2
  */
-void push(const WORD r, const WORD adr);
+void cpl_r_adr_x();
 
 /**
- * POP命令
+ * CPL命令 - オペランドr1,r2。語長1
  */
-void pop(const WORD r, const WORD adr);
+void cpl_r1_r2();
 
 /**
- * CALL命令
+ * SLA命令 - オペランドr,adr,x。語長2
+ * 算術演算なので、第15ビットは送り出されない
  */
-void call(const WORD r, const WORD adr);
+void sla();
 
 /**
- * RET命令
+ * SRA命令 - オペランドr,adr,x。語長2
+ * 算術演算なので、第15ビットは送り出されない
+ * 空いたビット位置には符号と同じものが入る
  */
-void ret(const WORD r, const WORD adr);
+void sra();
 
 /**
- * SVC命令
+ * SLL命令 - オペランドr,adr,x。語長2
  */
-void svc(const WORD r, const WORD adr);
+void sll();
 
+/**
+ * SRL命令 - オペランドr,adr,x。語長2
+ */
+void srl();
+
+/**
+ * JPL命令。語長2
+ */
+void jpl();
+
+/**
+ * JMI命令。語長2
+ */
+void jmi();
+
+/**
+ * JNZ命令。語長2
+ */
+void jnz();
+
+/**
+ * JZE命令。語長2
+ */
+void jze();
+
+/**
+ * JOV命令。語長2
+ */
+void jov();
+
+/**
+ * JUMP命令。語長2
+ */
+void jump();
+
+/**
+ * PUSH命令。語長2
+ */
+void push();
+
+/**
+ * POP命令。語長1
+ */
+void pop();
+
+/**
+ * CALL命令。語長2
+ */
+void call();
+
+/**
+ * RET命令。語長1（OPのみ）
+ */
+void ret();
+
+/**
+ * SVC命令。語長2
+ */
+void svc();
 
 /**
  * COMET II仮想マシンの実行
