@@ -36,7 +36,7 @@ void addcerrlist_load();
 /**
  * 指定されたファイルからアセンブル結果を読み込む
  */
-bool loadassemble(char *file);
+bool loadassemble(const char *file);
 
 /**
  * COMET II仮想マシンのリセット
@@ -87,11 +87,6 @@ void suba_r_adr_x();
  * SUBA命令 - オペランドr1,r2。語長1
  */
 void suba_r1_r2();
-
-/**
- * ADDL命令のテンプレート
- */
-void addl(const WORD r, const WORD val);
 
 /**
  * ADDL命令 - オペランドr,adr,x。語長2
@@ -152,11 +147,6 @@ void cpa_r_adr_x();
  * CPA命令 - オペランドr1,r2。語長1
  */
 void cpa_r1_r2();
-
-/**
- * CPL命令のテンプレート
- */
-void cpl(const WORD r, const WORD val);
 
 /**
  * CPL命令 - オペランドr,adr,x。語長2

@@ -51,7 +51,7 @@ void addcerrlist_exec()
 /**
  * 指定されたファイルからアセンブル結果を読み込む
  */
-bool loadassemble(char *file)
+bool loadassemble(const char *file)
 {
     FILE *fp;
     bool status = true;
@@ -75,7 +75,7 @@ bool loadassemble(char *file)
 /**
  * プログラムレジスタ（PR）を表す文字列を返す
  **/
-static char *pr2str(WORD pr) {
+char *pr2str(WORD pr) {
     char *str = malloc_chk(CERRSTRSIZE + 1, "pr2str.pr");
 
     sprintf(str, "PR:#%04X", pr);
@@ -85,7 +85,7 @@ static char *pr2str(WORD pr) {
 /**
  * 標準入力から文字データを読込（SVC 1）
  */
-static void svcin()
+void svcin()
 {
     int i;
     char *buffer = malloc_chk(INSIZE + 1, "svcin.buffer");
@@ -112,7 +112,7 @@ static void svcin()
 /**
  * 標準出力へ文字データを書出（SVC 2）
  */
-static void svcout()
+void svcout()
 {
     int i;
     WORD w;
@@ -135,7 +135,7 @@ static void svcout()
 /**
  * ロード／論理積／論理和／排他的論理和のフラグ設定。OFは常に0
  */
-static void setfr(const WORD adr)
+void setfr(WORD adr)
 {
     sys->cpu->fr = 0x0;
     /* 第15ビットが1のとき、SFは1 */
@@ -151,7 +151,7 @@ static void setfr(const WORD adr)
 /**
  * WORD値からx/r2を取得
  */
-static WORD x_r2(const WORD oprx)
+WORD x_r2(WORD oprx)
 {
     WORD x;
     if((x = (oprx & 0x000F)) > GRSIZE - 1) {
@@ -164,7 +164,7 @@ static WORD x_r2(const WORD oprx)
 /**
  * 2つのWORD値からadr[,x]を取得
  */
-static WORD adrx(const WORD adr, const WORD oprx)
+WORD adrx(WORD adr, WORD oprx)
 {
     WORD a = adr, x;
     if((x = x_r2(oprx)) > 0) {
@@ -177,7 +177,7 @@ static WORD adrx(const WORD adr, const WORD oprx)
 /**
  * 2つのWORD値からadr[,x]のアドレスに格納されている内容を取得
  */
-static WORD val_adrx(const WORD adr, const WORD oprx)
+WORD val_adrx(WORD adr, WORD oprx)
 {
     WORD a;
     if((a = adrx(adr, oprx)) >= sys->memsize) {
@@ -190,7 +190,7 @@ static WORD val_adrx(const WORD adr, const WORD oprx)
 /**
  * WORD値からr/r2を取得
  */
-static WORD r_r1(const WORD oprx)
+WORD r_r1(WORD oprx)
 {
     WORD r;
     if((r = ((oprx & 0x00F0) >>4)) > GRSIZE - 1) {
@@ -259,7 +259,7 @@ void lad()
  * ADDA命令のテンプレート
  * 汎用レジスタrに値valを算術加算
  */
-void adda(const WORD r, const WORD val)
+void adda(WORD r, WORD val)
 {
     long tmp;
 
@@ -328,7 +328,7 @@ void suba_r1_r2()
  * ADDL命令のテンプレート
  * 汎用レジスタrに値valを論理加算
  */
-void addl(const WORD r, const WORD val)
+void addl(WORD r, WORD val)
 {
     long tmp;
     sys->cpu->fr = 0x0;
@@ -462,7 +462,7 @@ void xor_r1_r2()
  * CPA命令のテンプレート
  * 汎用レジスタrの内容と値valを算術比較
  */
-void cpa(const WORD r, const WORD val)
+void cpa(WORD r, WORD val)
 {
     sys->cpu->fr = 0x0;
     if((short)sys->cpu->gr[r] < (short)val) {
@@ -499,7 +499,7 @@ void cpa_r1_r2()
  * CPL命令のテンプレート
  * 汎用レジスタrの内容と値valを論理比較
  */
-void cpl(const WORD r, const WORD val)
+void cpl(WORD r, WORD val)
 {
     WORD w[1];
     w[0] = sys->memory[sys->cpu->pr];
