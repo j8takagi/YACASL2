@@ -1,5 +1,0 @@
-;;; casl2 -M8 err_206.casl
-MAIN    START
-        LD      GR1,#FFFF
-        RET
-        END

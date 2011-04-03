@@ -1,3 +1,1 @@
-../../../../casl2 -O ../../../../as/err/err_204.casl
-../../../../comet2 -M8 a.o
-rm -f a.o
+make a.comet >/dev/null && ../../../../comet2 a.comet

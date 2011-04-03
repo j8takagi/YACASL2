@@ -1,1 +1,1 @@
-comet2 error - 208: object file is not specified
+Execute error - 202: SVC input - out of Input memory

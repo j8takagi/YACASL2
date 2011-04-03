@@ -1,2 +1,0 @@
-cat ../../../../as/cmd/ADDA/adda1.casl
-../../../../casl2 -atd -M16 ../../../../as/cmd/ADDA/adda1.casl

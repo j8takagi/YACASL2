@@ -1,1 +1,0 @@
-エラー209 "not GR in operand x"の発生
