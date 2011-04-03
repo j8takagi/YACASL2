@@ -27,12 +27,15 @@ void reset(int memsize, int clocks)
     sys->memory = calloc_chk(sys->memsize, sizeof(WORD), "memory");
     /* CPUを初期化 */
     sys->cpu = malloc_chk(sizeof(CPU), "cpu");
-    for(i = 0; i < GRSIZE; i++) {
+    for(i = 0; i < GRSIZE; i++) {                    /* 汎用レジスタ  */
         sys->cpu->gr[i] = 0x0;
     }
-    sys->cpu->sp = sys->cpu->pr = sys->cpu->fr = 0x0;
+    sys->cpu->sp = sys->memsize;   /* スタックポインタ */
+    sys->cpu->pr = 0x0;            /* プログラムレジスタ */
+    sys->cpu->fr = 0x0;            /* フラグレジスタ */
     /* CASL2プログラムの開始と終了のアドレスを初期化 */
-    execptr = malloc_chk(sizeof(EXECPTR), "prog");
+    execptr = malloc_chk(sizeof(EXECPTR), "execptr");
+    execptr->stop = false;
 }
 
 /**

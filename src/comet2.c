@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
         }
     }
     if(argv[optind] == NULL) {
-        setcerr(208, NULL);    /* object file is not specified */
+        setcerr(211, NULL);    /* object file not specified */
         fprintf(stderr, "comet2 error - %d: %s\n", cerr->num, cerr->msg);
         exit(-1);
     }

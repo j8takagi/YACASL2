@@ -9,23 +9,23 @@
  * 実行エラーの定義
  */
 static CERR cerr_exec[] = {
-    { 202, "SVC input - out of Input memory" },
-    { 203, "SVC output - out of COMET II memory" },
-    { 204, "Program Register (PR) - out of COMET II memory" },
-    { 205, "Stack Pointer (SP) - cannot allocate stack buffer" },
-    { 206, "Address - out of COMET II memory" },
-    { 207, "Stack Pointer (SP) - out of COMET II memory" },
-    { 209, "not GR in x/r2" },
-    { 210, "not command code of COMET II" },
-    { 211, "not GR in r/r1" },
+    { 201, "Program Register (PR) - memory overflow" },
+    { 202, "Stack Pointer (SP) - stack overflow" },
+    { 203, "Stack Pointer (SP) - stack underflow" },
+    { 204, "OP in word #1 - not command code" },
+    { 205, "r/r1 in word #1 - not GR" },
+    { 206, "x/r2 in word #1 - not GR" },
+    { 207, "Address in word #2 - out of memory" },
+    { 208, "SVC input - memory overflow" },
+    { 209, "SVC output - memory overflow" },
 };
 
 /**
  * アセンブル結果読み込みエラーの定義
  */
 static CERR cerr_load[] = {
-    { 201, "Loading - full of COMET II memory" },
-    { 208, "object file is not specified" },
+    { 210, "load - memory overflow" },
+    { 211, "object file not specified" },
 };
 
 /**
@@ -64,7 +64,7 @@ bool loadassemble(const char *file)
     execptr->end = execptr->start +
         fread(sys->memory, sizeof(WORD), sys->memsize - execptr->start, fp);
     if(execptr->end == sys->memsize) {
-        setcerr(201, file);    /* Loading - full of COMET II memory */
+        setcerr(210, file);    /* load - memory overflow */
         fprintf(stderr, "Load error - %d: %s\n", cerr->num, cerr->msg);
         status = false;
     }
@@ -100,7 +100,7 @@ void svcin()
             break;
         }
         if(sys->cpu->gr[1] + i >= sys->memsize - 1) {
-            setcerr(202, NULL);    /* SVC input - out of Input memory */
+            setcerr(208, NULL);    /* SVC input - memory overflow */
             break;
         }
         sys->memory[sys->cpu->gr[1]+i] = *(buffer + i);
@@ -119,7 +119,7 @@ void svcout()
 
     for(i = 0; i < sys->memory[sys->cpu->gr[2]]; i++) {
         if(sys->cpu->gr[1] + i >= sys->memsize - 1) {
-            setcerr(203, NULL);    /* SVC output - out of Comet II memory */
+            setcerr(209, NULL);    /* SVC output - memory overflow */
             return;
         }
         /* 「文字の組」の符号表に記載された文字と、改行（CR）／タブを表示 */
@@ -149,13 +149,26 @@ void setfr(WORD adr)
 }
 
 /**
+ * WORD値からr/r1を取得
+ */
+WORD r_r1(WORD oprx)
+{
+    WORD r;
+    if((r = ((oprx & 0x00F0) >>4)) > GRSIZE - 1) {
+        setcerr(205, pr2str(sys->cpu->pr));    /* r/r1 in word #1 - not GR */
+        return 0x0;
+    }
+    return r;
+}
+
+/**
  * WORD値からx/r2を取得
  */
 WORD x_r2(WORD oprx)
 {
     WORD x;
     if((x = (oprx & 0x000F)) > GRSIZE - 1) {
-        setcerr(209, pr2str(sys->cpu->pr));    /* not GR in x/r2 */
+        setcerr(206, pr2str(sys->cpu->pr));    /* r/r1 in word #1 - not GR */
         return 0x0;
     }
     return x;
@@ -181,23 +194,10 @@ WORD val_adrx(WORD adr, WORD oprx)
 {
     WORD a;
     if((a = adrx(adr, oprx)) >= sys->memsize) {
-        setcerr(206, pr2str(sys->cpu->pr + 1));    /* Address - out of COMET II memory */
+        setcerr(207, pr2str(sys->cpu->pr + 1));    /* Address in word #2 - out of memory */
         return 0x0;
     }
     return sys->memory[a];
-}
-
-/**
- * WORD値からr/r2を取得
- */
-WORD r_r1(WORD oprx)
-{
-    WORD r;
-    if((r = ((oprx & 0x00F0) >>4)) > GRSIZE - 1) {
-        setcerr(211, pr2str(sys->cpu->pr));    /* not GR in r/r1 */
-        return 0x0;
-    }
-    return r;
 }
 
 /**
@@ -677,7 +677,7 @@ void jpl()
     w[0] = sys->memory[sys->cpu->pr];
     w[1] = sys->memory[sys->cpu->pr + 1];
     if((sys->cpu->fr & (SF | ZF)) == 0) {
-        sys->cpu->pr = adrx(w[1], w[0]); 
+        sys->cpu->pr = adrx(w[1], w[0]);
     } else {
         sys->cpu->pr += 2;
     }
@@ -833,18 +833,15 @@ void svc()
  */
 bool exec()
 {
-    void (*cmdptr)();
     clock_t clock_begin, clock_end;
+    void (*cmdptr)();
 
     if(execmode.trace == true) {
         fprintf(stdout, "\nExecuting machine codes\n");
     }
-    sys->cpu->fr = 0x0;            /* フラグレジスタ */
-    sys->cpu->sp = sys->memsize;   /* スタックポインタ */
-    execptr->stop = false;         /* 終了フラグ */
     /* 機械語の実行 */
     for (sys->cpu->pr = execptr->start; ; ) {
-        clock_begin = clock();
+        clock_begin = clock();                       /* クロック周波数設定のため、実行開始時間を格納 */
         if(execmode.dump || execmode.trace) {        /* traceまたはdumpオプション指定時、改行を出力 */
             if(execmode.trace){                      /* traceオプション指定時、レジスタを出力 */
                 fprintf(stdout, "#%04X: Register::::\n", sys->cpu->pr);
@@ -857,20 +854,20 @@ bool exec()
             fprintf(stdout, "\n");
         }
         /* プログラムレジスタとスタックポインタをチェック */
-        if(sys->cpu->pr >= sys->memsize || sys->cpu->sp <= execptr->end || sys->cpu->sp > sys->memsize) {
+        if(sys->cpu->pr >= sys->memsize || sys->cpu->sp > sys->memsize || sys->cpu->sp <= execptr->end) {
             if(sys->cpu->pr >= sys->memsize) {
-                setcerr(204, pr2str(sys->cpu->pr));    /* Program Register (PR) - out of COMET II memory */
+                setcerr(201, pr2str(sys->cpu->pr));        /* Program Register (PR) - memory overflow */
             } else if(sys->cpu->sp <= execptr->end) {
-                setcerr(205, pr2str(sys->cpu->pr));    /* Stack Pointer (SP) - cannot allocate stack buffer */
+                setcerr(202, pr2str(sys->cpu->pr));        /* Stack Pointer (SP) - stack overflow */
             } else if(sys->cpu->sp > sys->memsize) {
-                setcerr(207, pr2str(sys->cpu->pr));    /* Stack Pointer (SP) - out of COMET II memory */
+                setcerr(203, pr2str(sys->cpu->pr));        /* Stack Pointer (SP) - stack underflow */
             }
             goto execerr;
         }
         /* コードから命令を取得 */
         /* 取得できない場合はエラー終了 */
         if((cmdptr = getcmdptr(sys->memory[sys->cpu->pr] & 0xFF00)) == NULL) {
-            setcerr(210, pr2str(sys->cpu->pr));        /* not command code of COMET II */
+            setcerr(204, pr2str(sys->cpu->pr));            /* OP in word #1 - not command code */
             goto execerr;
         }
         /* 命令の実行 */
