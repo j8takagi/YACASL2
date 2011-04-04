@@ -1,1 +1,2 @@
-make a.comet >/dev/null && ../../../../comet2 -td a.comet
+make a.o >/dev/null
+../../../../comet2 -td a.o

@@ -1,6 +1,0 @@
-;;; casl2 -M8  err_204.casl
-MAIN    START
-        JUMP    #FFFF
-FIN     RET
-        END
-Execute error - 204: PR:#FFFF: Program Register (PR) - out of COMET II memory

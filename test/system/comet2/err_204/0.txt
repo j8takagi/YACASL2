@@ -1,1 +1,1 @@
-Execute error - 210: PR:#0002: not command code of COMET II
+Execute error - 204: PR:#0002: OP in word #1 - not command code

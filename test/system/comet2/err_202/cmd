@@ -1,3 +1,4 @@
-../../../../casl2 -O ../../../../as/err/err_202.casl
-../../../../comet2 -M32 a.o
+YACASL2DIR=../../../..
+$YACASL2DIR/casl2 -O $YACASL2DIR/as/err/err_202.casl
+$YACASL2DIR/comet2 -M32 a.o
 rm -f a.o

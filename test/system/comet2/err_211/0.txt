@@ -1,1 +1,1 @@
-comet2 error - 208: object file is not specified
+comet2 error - 211: object file not specified

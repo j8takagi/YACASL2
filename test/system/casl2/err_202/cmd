@@ -1,2 +1,2 @@
-cat ../../../../as/err/err_202.casl teststr.txt
-../../../../casl2 -M32 ../../../../as/err/err_202.casl <teststr.txt
+cat ../../../../as/err/err_202.casl
+../../../../casl2 -M32 ../../../../as/err/err_202.casl

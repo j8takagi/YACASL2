@@ -1,0 +1,3 @@
+../../../../casl2 -O ../../../../as/err/err_209.casl
+../../../../comet2 -M32 a.o
+rm -f a.o

@@ -5,15 +5,15 @@ CC := gcc
 CFLAGS := -Wall
 INCLUDEDIR := ../../../../include
 
-.INTERMEDIATE: create_a a.comet
+.INTERMEDIATE: create_a a.o
 
-a.comet: create_a
+a.o: create_a
 	./$^
 
 create_a: create_a.c
 	$(CC) $(CFLAGS) -I $(INCLUDEDIR) -o $@ $^
 
-$(CMD_FILE): a.comet
+$(CMD_FILE): a.o
 
 clean: clean0
 

@@ -1,2 +1,0 @@
-cat ../../../../as/err/err_205.casl
-../../../../casl2 -M32 ../../../../as/err/err_205.casl

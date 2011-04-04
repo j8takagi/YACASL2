@@ -1,0 +1,9 @@
+;;; casl2 -M32 err_209.casl
+MAIN    START
+        OUT     BUF,LEN
+        RET
+BUF     DC      ' !'
+LEN     DC      60
+        END
+ !<
+........Execute error - 209: SVC output - memory overflow

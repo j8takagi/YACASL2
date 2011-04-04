@@ -1,9 +1,6 @@
-;;; casl2 -M32 err_203.casl
+;;; casl2 -M8 err_203.casl
 MAIN    START
-        OUT     BUF,LEN
+        POP     GR1
         RET
-BUF     DC      ' !'
-LEN     DC      60
         END
- !<
-........Execute error - 203: SVC output - out of COMET II memory
+Execute error - 203: PR:#0001: Stack Pointer (SP) - stack underflow

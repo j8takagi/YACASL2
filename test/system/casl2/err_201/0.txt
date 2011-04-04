@@ -3,3 +3,4 @@ MAIN    START
         JUMP    #FFFF
 FIN     RET
         END
+Execute error - 201: PR:#FFFF: Program Register (PR) - memory overflow
