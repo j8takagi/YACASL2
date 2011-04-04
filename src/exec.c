@@ -15,7 +15,7 @@ static CERR cerr_exec[] = {
     { 204, "OP in word #1 - not command code" },
     { 205, "r/r1 in word #1 - not GR" },
     { 206, "x/r2 in word #1 - not GR" },
-    { 207, "Address in word #2 - out of memory" },
+    { 207, "address in word #2 - out of memory" },
     { 208, "SVC input - memory overflow" },
     { 209, "SVC output - memory overflow" },
 };
@@ -194,7 +194,7 @@ WORD val_adrx(WORD adr, WORD oprx)
 {
     WORD a;
     if((a = adrx(adr, oprx)) >= sys->memsize) {
-        setcerr(207, pr2str(sys->cpu->pr + 1));    /* Address in word #2 - out of memory */
+        setcerr(207, pr2str(sys->cpu->pr + 1));    /* address in word #2 - out of memory */
         return 0x0;
     }
     return sys->memory[a];
