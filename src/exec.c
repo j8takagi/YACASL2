@@ -831,23 +831,24 @@ void svc()
 /**
  * 仮想マシンCOMET IIの実行
  */
-bool exec()
+void exec()
 {
     clock_t clock_begin, clock_end;
     void (*cmdptr)();
 
+    create_code_type();                             /* 命令のコードとタイプがキーのハッシュ表を作成 */
     if(execmode.trace == true) {
         fprintf(stdout, "\nExecuting machine codes\n");
     }
     /* 機械語の実行 */
     for (sys->cpu->pr = execptr->start; ; ) {
-        clock_begin = clock();                       /* クロック周波数設定のため、実行開始時間を格納 */
-        if(execmode.dump || execmode.trace) {        /* traceまたはdumpオプション指定時、改行を出力 */
-            if(execmode.trace){                      /* traceオプション指定時、レジスタを出力 */
+        clock_begin = clock();                     /* クロック周波数設定のため、実行開始時間を格納 */
+        if(execmode.dump || execmode.trace) {      /* traceまたはdumpオプション指定時、改行を出力 */
+            if(execmode.trace) {                   /* traceオプション指定時、レジスタを出力 */
                 fprintf(stdout, "#%04X: Register::::\n", sys->cpu->pr);
                 dspregister();
             }
-            if(execmode.dump){                       /* dumpオプション指定時、メモリを出力 */
+            if(execmode.dump) {                    /* dumpオプション指定時、メモリを出力 */
                 fprintf(stdout, "#%04X: Memory::::\n", sys->cpu->pr);
                 dumpmemory();
             }
@@ -862,19 +863,19 @@ bool exec()
             } else if(sys->cpu->sp > sys->memsize) {
                 setcerr(203, pr2str(sys->cpu->pr));        /* Stack Pointer (SP) - stack underflow */
             }
-            goto execerr;
+            goto execfin;
         }
         /* コードから命令を取得 */
         /* 取得できない場合はエラー終了 */
         if((cmdptr = getcmdptr(sys->memory[sys->cpu->pr] & 0xFF00)) == NULL) {
             setcerr(204, pr2str(sys->cpu->pr));            /* OP in word #1 - not command code */
-            goto execerr;
+            goto execfin;
         }
         /* 命令の実行 */
         (*cmdptr)();
         /* エラー発生時はエラー終了 */
         if(cerr->num > 0) {
-            goto execerr;
+            goto execfin;
         }
         /* 終了フラグがtrueの場合は、正常終了 */
         if(execptr->stop == true) {
@@ -885,8 +886,9 @@ bool exec()
             clock_end = clock();
         } while(clock_end - clock_begin < CLOCKS_PER_SEC / sys->clocks);
     }
-    return true;
-execerr:
-    fprintf(stderr, "Execute error - %d: %s\n", cerr->num, cerr->msg);
-    return false;
+execfin:
+    free_code_type();                              /* 命令のコードとタイプがキーのハッシュ表を解放 */
+    if(cerr->num > 0) {
+        fprintf(stderr, "Execute error - %d: %s\n", cerr->num, cerr->msg);
+    }
 }

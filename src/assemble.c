@@ -636,7 +636,7 @@ void addcerrlist_assemble()
  * 指定された名前のファイルをアセンブル
  * 2回実行される
  */
-bool assemble(const char *file, PASS pass)
+void assemble(const char *file, PASS pass)
 {
     int lineno = 0;
     bool status = true;
@@ -645,7 +645,8 @@ bool assemble(const char *file, PASS pass)
 
     if((fp = fopen(file, "r")) == NULL) {
         perror(file);
-        return false;
+        setcerr(127, NULL);
+        return;
     }
     while(fgets(line, LINESIZE, fp)) {
         lineno++;
@@ -665,7 +666,6 @@ bool assemble(const char *file, PASS pass)
     }
     FREE(line);
     fclose(fp);
-    return status;
 }
 
 /**

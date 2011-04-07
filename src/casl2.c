@@ -48,10 +48,54 @@ void addcerrlist_casl2()
 /**
  * アセンブル結果を書き込むファイルの名前
  */
-static const char *objfile_name(const char *str)
+const char *objfile_name(const char *str)
 {
     const char *default_name = "a.o";
     return (str == NULL) ? default_name : str;
+}
+
+/**
+ * アセンブルを実行
+ */
+void doassemble(int filec, char *filev[])
+{
+    int i;
+    PASS pass;
+    WORD bp[filec];
+
+    create_cmdtype_code();                         /* 命令の名前とタイプがキーのハッシュ表を作成 */
+    asptr = malloc_chk(sizeof(ASPTR), "asptr");    /* アセンブル時のプロパティ用の領域確保 */
+    /* アセンブル。ラベル表作成のため、2回行う */
+    for(pass = FIRST; pass <= SECOND; pass++) {
+        for(i = 0; i < filec; i++) {
+            /* データの格納開始位置 */
+            if(pass == FIRST) {
+                bp[i] = asptr->ptr;
+            } else if(pass == SECOND) {
+                asptr->ptr = bp[i];
+            }
+            if(execmode.trace == true || execmode.dump == true || asmode.src == true ||
+               asmode.label == true || asmode.asdetail == true)
+            {
+                fprintf(stdout, "\nAssemble %s (%d)\n", filev[i], pass);
+            }
+            assemble(filev[i], pass);
+            if(cerr->num > 0) {
+                goto assemblefin;
+            }
+        }
+        if(pass == FIRST && asmode.label == true) {
+            fprintf(stdout, "\nLabel::::\n");
+            printlabel();
+            if(asmode.onlylabel == true) {
+                break;
+            }
+        }
+    }
+assemblefin:
+    freelabel();                                  /* ラベルハッシュ表を解放 */
+    free_cmdtype_code();                          /* 命令の名前とタイプがキーのハッシュ表を解放 */
+    FREE(asptr);                                  /* アセンブル時のプロパティを解放 */
 }
 
 /**
@@ -59,11 +103,8 @@ static const char *objfile_name(const char *str)
  */
 int main(int argc, char *argv[])
 {
-    int memsize = DEFAULT_MEMSIZE, clocks = DEFAULT_CLOCKS;
-    int status = 0, opt, i;
-    PASS pass;
-    bool res = false;
-    WORD beginptr[argc];
+    int memsize = DEFAULT_MEMSIZE, clocks = DEFAULT_CLOCKS, opt, i, status;
+    char *af[argc];
     char *objfile = NULL;
     const char *usage =
         "Usage: %s [-slLaAtTdh] [-oO[<OBJECTFILE>]] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE1[ FILE2  ...]\n";
@@ -129,60 +170,26 @@ int main(int argc, char *argv[])
         fprintf(stderr, "CASL2 error - %d: %s\n", cerr->num, cerr->msg);
         exit(-1);
     }
-    /* COMET II仮想マシンのリセット */
-    reset(memsize, clocks);
-    /* アセンブル。ラベル表作成のため、2回行う */
-    for(pass = FIRST; pass <= SECOND; pass++) {
-        if(pass == FIRST) {
-            create_cmdtype_code();        /* 命令の名前とタイプがキーのハッシュ表を作成 */
-            asptr = malloc_chk(sizeof(ASPTR), "asptr"); /* アセンブル時のプロパティ用の領域確保 */
-        }
-        for(i = optind; i < argc; i++) {
-            /* データの格納開始位置 */
-            if(pass == FIRST) {
-                beginptr[i] = asptr->ptr;
-            } else if(pass == SECOND) {
-                asptr->ptr = beginptr[i];
-            }
-            if(execmode.trace == true || execmode.dump == true || asmode.src == true ||
-               asmode.label == true || asmode.asdetail == true)
-            {
-                fprintf(stdout, "\nAssemble %s (%d)\n", argv[i], pass);
-            }
-            if((res = assemble(argv[i], pass)) == false) {
-                freecerr();            /* エラーの解放 */
-                exit(-1);
-            }
-        }
-        if(pass == FIRST && asmode.label == true) {
-            fprintf(stdout, "\nLabel::::\n");
-            printlabel();
-            if(asmode.onlylabel == true) {
-                return 0;
-            }
-        }
-        if(pass == SECOND) {
-            freelabel();            /* ラベルハッシュ表を解放 */
-            free_cmdtype_code();    /* 命令の名前とタイプがキーのハッシュ表を解放 */
-            FREE(asptr);       /* アセンブル時のプロパティを解放 */
-        }
+    reset(memsize, clocks);                        /* 仮想マシンCOMET IIのリセット */
+    for(i = 0; i < argc - optind; i++) {           /* 引数からファイル名配列を取得 */
+        af[i] = argv[optind + i];
     }
-    if(res == true) {
-        if(objfile != NULL) {
-            outassemble(objfile);
-            FREE(objfile);
-        }
-        if(asmode.onlyassemble == false) {
-            create_code_type();    /* 命令のコードとタイプがキーのハッシュ表を作成 */
-            res = exec();          /* プログラム実行 */
-            free_code_type();      /* 命令のコードとタイプがキーのハッシュ表を解放 */
-        }
+    doassemble(i, af);                             /* アセンブル */
+    if(asmode.onlylabel == true || cerr->num > 0) {
+        goto casl2fin;
     }
-    /* COMET II仮想マシンのシャットダウン */
-    shutdown();
-    if(cerr->num > 0) {
-        status = -1;
+    /* オブジェクトファイル名が指定されている場合は、アセンブル結果をオブジェクトファイルに出力 */
+    if(objfile != NULL) {
+        outassemble(objfile);
+        FREE(objfile);
     }
-    freecerr();            /* エラーの解放 */
+    /* onlyassembleモード以外の場合、仮想マシンCOMET IIを実行 */
+    if(asmode.onlyassemble == false) {
+        exec();                                    /* 仮想マシンCOMET IIの実行 */
+    }
+casl2fin:
+    shutdown();                                    /* 仮想マシンCOMET IIのシャットダウン */
+    status = (cerr->num == 0) ? 0 : -1;
+    freecerr();                                    /* エラーの解放 */
     return status;
 }

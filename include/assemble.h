@@ -180,7 +180,7 @@ void addcerrlist_assemble();
  * 指定された名前のファイルをアセンブル
  * 2回実行される
  */
-bool assemble(const char *file, PASS pass);
+void assemble(const char *file, PASS pass);
 
 /**
  * 引数で指定したファイルにアセンブル結果を書込

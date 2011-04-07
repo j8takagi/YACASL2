@@ -70,15 +70,11 @@ int main(int argc, char *argv[])
     reset(memsize, clocks);
     execptr->start = 0;
     if(loadassemble(argv[optind]) == true) {
-        create_code_type();    /* タイプがキーの命令ハッシュ表を作成 */
         exec();                /* プログラム実行 */
-        free_code_type();      /* タイプがキーの命令ハッシュ表を解放 */
     }
     /* COMET II仮想マシンのシャットダウン */
     shutdown();
-    if(cerr->num > 0) {
-        status = -1;
-    }
+    status = (cerr->num == 0) ? 0 : -1;
     /* エラーの解放 */
     freecerr();
     return status;

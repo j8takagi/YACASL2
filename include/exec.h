@@ -239,7 +239,7 @@ void svc();
 /**
  * COMET II仮想マシンの実行
  */
-bool exec();
+void exec();
 
 /**
  * COMET IIのメモリを表示
