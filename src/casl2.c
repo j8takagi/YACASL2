@@ -65,6 +65,7 @@ void assemble(int filec, char *filev[])
 
     create_cmdtype_code();                         /* 命令の名前とタイプがキーのハッシュ表を作成 */
     asptr = malloc_chk(sizeof(ASPTR), "asptr");    /* アセンブル時のプロパティ用の領域確保 */
+    asptr->ptr = 0;
     /* アセンブル。ラベル表作成のため、2回行う */
     for(pass = FIRST; pass <= SECOND; pass++) {
         for(i = 0; i < filec; i++) {
@@ -74,13 +75,14 @@ void assemble(int filec, char *filev[])
             } else if(pass == SECOND) {
                 asptr->ptr = bp[i];
             }
-            if(execmode.trace == true || execmode.dump == true || asmode.src == true ||
-               asmode.label == true || asmode.asdetail == true)
+            if(execmode.trace == true || execmode.dump == true ||
+               asmode.src == true || asmode.label == true || asmode.asdetail == true)
             {
                 fprintf(stdout, "\nAssemble %s (%d)\n", filev[i], pass);
             }
+            /* ファイルをアセンブル */
             if(assemblefile(filev[i], pass) == false) {
-                goto assemblefin;
+                goto asfin;
             }
         }
         if(pass == FIRST && asmode.label == true) {
@@ -91,7 +93,7 @@ void assemble(int filec, char *filev[])
             }
         }
     }
-assemblefin:
+asfin:
     freelabel();                                  /* ラベルハッシュ表を解放 */
     free_cmdtype_code();                          /* 命令の名前とタイプがキーのハッシュ表を解放 */
     FREE(asptr);                                  /* アセンブル時のプロパティを解放 */
