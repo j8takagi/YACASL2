@@ -6,4 +6,4 @@ BUF     DC      ' !'
 LEN     DC      60
         END
  !<
-........Execute error - 209: SVC output - memory overflow
+..Execute error - 209: SVC output - memory overflow

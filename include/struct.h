@@ -91,7 +91,7 @@ typedef struct {
     char *name;                 /**<命令名 */
     CMDTYPE type;               /**<命令タイプ */
     WORD code;                  /**<命令コード */
-    const void (*ptr);                   /**<命令の関数ポインタ */
+    const void (*ptr);          /**<命令の関数ポインタ */
 } CMD;
 
 /**

@@ -99,7 +99,7 @@ void svcin()
             --i;
             break;
         }
-        if(sys->cpu->gr[1] + i >= sys->memsize - 1) {
+        if(sys->cpu->gr[1] + i > execptr->end) {
             setcerr(208, NULL);    /* SVC input - memory overflow */
             break;
         }
@@ -118,7 +118,7 @@ void svcout()
     WORD w;
 
     for(i = 0; i < sys->memory[sys->cpu->gr[2]]; i++) {
-        if(sys->cpu->gr[1] + i >= sys->memsize - 1) {
+        if(sys->cpu->gr[1] + i > execptr->end) {
             setcerr(209, NULL);    /* SVC output - memory overflow */
             return;
         }
