@@ -639,15 +639,14 @@ void addcerrlist_assemble()
 void assemble(const char *file, PASS pass)
 {
     int lineno = 0;
-    bool status = true;
-    char *line = malloc_chk(LINESIZE + 1, "assemble.line");
+    char *line;
     FILE *fp;
 
     if((fp = fopen(file, "r")) == NULL) {
         perror(file);
-        setcerr(127, NULL);
-        return;
+        exit(-1);
     }
+    line = malloc_chk(LINESIZE + 1, "assemble.line");
     while(fgets(line, LINESIZE, fp)) {
         lineno++;
         if((pass == FIRST && asmode.src == true) ||
@@ -662,7 +661,6 @@ void assemble(const char *file, PASS pass)
     if(cerr->num > 0) {
         fprintf(stderr, "Assemble error - %d: %s\n", cerr->num, cerr->msg);
         printline(stderr, file, lineno, line);
-        status = false;
     }
     FREE(line);
     fclose(fp);
