@@ -178,9 +178,10 @@ void addcerrlist_assemble();
 
 /**
  * 指定された名前のファイルをアセンブル
- * 2回実行される
+ * 1回目ではラベルを登録し、2回目ではラベルからアドレスを読み込む
+ * アセンブル完了時はtrue、エラー発生時はfalseを返す
  */
-void assemble(const char *file, PASS pass);
+bool assemblefile(const char *file, PASS pass);
 
 /**
  * 引数で指定したファイルにアセンブル結果を書込

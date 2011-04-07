@@ -55,9 +55,9 @@ const char *objfile_name(const char *str)
 }
 
 /**
- * アセンブルを実行
+ * 指定された1つまたは複数のファイルを2回アセンブル
  */
-void doassemble(int filec, char *filev[])
+void assemble(int filec, char *filev[])
 {
     int i;
     PASS pass;
@@ -79,8 +79,7 @@ void doassemble(int filec, char *filev[])
             {
                 fprintf(stdout, "\nAssemble %s (%d)\n", filev[i], pass);
             }
-            assemble(filev[i], pass);
-            if(cerr->num > 0) {
+            if(assemblefile(filev[i], pass) == false) {
                 goto assemblefin;
             }
         }
@@ -174,7 +173,7 @@ int main(int argc, char *argv[])
     for(i = 0; i < argc - optind; i++) {           /* 引数からファイル名配列を取得 */
         af[i] = argv[optind + i];
     }
-    doassemble(i, af);                             /* アセンブル */
+    assemble(i, af);                               /* アセンブル */
     if(asmode.onlylabel == true || cerr->num > 0) {
         goto casl2fin;
     }

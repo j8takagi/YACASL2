@@ -634,9 +634,10 @@ void addcerrlist_assemble()
 
 /**
  * 指定された名前のファイルをアセンブル
- * 2回実行される
+ * 1回目ではラベルを登録し、2回目ではラベルからアドレスを読み込む
+ * アセンブル完了時はtrue、エラー発生時はfalseを返す
  */
-void assemble(const char *file, PASS pass)
+bool assemblefile(const char *file, PASS pass)
 {
     int lineno = 0;
     char *line;
@@ -644,7 +645,7 @@ void assemble(const char *file, PASS pass)
 
     if((fp = fopen(file, "r")) == NULL) {
         perror(file);
-        exit(-1);
+        return false;
     }
     line = malloc_chk(LINESIZE + 1, "assemble.line");
     while(fgets(line, LINESIZE, fp)) {
@@ -664,6 +665,7 @@ void assemble(const char *file, PASS pass)
     }
     FREE(line);
     fclose(fp);
+    return (cerr->num == 0) ? true : false;
 }
 
 /**
