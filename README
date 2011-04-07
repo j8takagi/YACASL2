@@ -9,8 +9,7 @@ CASL IIは、情報処理試験で用いられるアセンブラ言語で、次�
       別紙 1 アセンブラ言語の仕様
 
 ■ドキュメント
-YACASL2のインストール方法、使い方などは次のドキュメントを参照してください。
-doc/yacasl2.html
+YACASL2のインストール方法、使い方などはファイルdoc/index.htmlを参照してください。
 
 ■Webサイト
 次のURLを参照してください。
@@ -20,4 +19,4 @@ http://www.j8takagi.net/yacasl2/
 Copyright 2010-2011, j8takagi.
 YACASL2 is licensed under the MIT license.
 
-詳細は、LICENSEを参照してください。
+ライセンスの詳細は、ファイルLICENSEを参照してください。

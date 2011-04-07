@@ -6,6 +6,7 @@ PTEX = ptex
 TEXI2DVI = texi2dvi
 DVI2PDF = dvipdfmx
 MAKEINFO = makeinfo
+MV = mv
 
 .PHONY: all htmlnosplit pdf clean
 
@@ -14,6 +15,7 @@ MAKEINFO = makeinfo
 doc: info htmlnosplit html pdf
 
 htmlnosplit: $(DOCNAME).html
+	$(MV) $< index.html
 
 html: $(SRC) $(CSS)
 	@if test ! -s $@; then mkdir $@; fi;

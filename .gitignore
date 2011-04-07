@@ -1,6 +1,7 @@
 /casl2
 /comet2
 /dumpword
+/doc_inner
 *.o
 *~
 GPATH
