@@ -151,7 +151,7 @@ void setfr(WORD adr)
 /**
  * WORD値からr/r1を取得
  */
-WORD r_r1(WORD oprx)
+WORD get_r_r1(WORD oprx)
 {
     WORD r;
     if((r = ((oprx & 0x00F0) >>4)) > GRSIZE - 1) {
@@ -164,7 +164,7 @@ WORD r_r1(WORD oprx)
 /**
  * WORD値からx/r2を取得
  */
-WORD x_r2(WORD oprx)
+WORD get_x_r2(WORD oprx)
 {
     WORD x;
     if((x = (oprx & 0x000F)) > GRSIZE - 1) {
@@ -177,10 +177,10 @@ WORD x_r2(WORD oprx)
 /**
  * 2つのWORD値からadr[,x]を取得
  */
-WORD adrx(WORD adr, WORD oprx)
+WORD get_adr_x(WORD adr, WORD oprx)
 {
     WORD a = adr, x;
-    if((x = x_r2(oprx)) > 0) {
+    if((x = get_x_r2(oprx)) > 0) {
         a += sys->cpu->gr[x];
     }
     return a;
@@ -190,10 +190,10 @@ WORD adrx(WORD adr, WORD oprx)
 /**
  * 2つのWORD値からadr[,x]のアドレスに格納されている内容を取得
  */
-WORD val_adrx(WORD adr, WORD oprx)
+WORD get_val_adr_x(WORD adr, WORD oprx)
 {
     WORD a;
-    if((a = adrx(adr, oprx)) >= sys->memsize) {
+    if((a = get_adr_x(adr, oprx)) >= sys->memsize) {
         setcerr(207, pr2str(sys->cpu->pr + 1));    /* address in word #2 - out of memory */
         return 0x0;
     }
@@ -216,7 +216,7 @@ void ld_r_adr_x()
     WORD w[2];
     w[0] = sys->memory[sys->cpu->pr];
     w[1] = sys->memory[sys->cpu->pr + 1];
-    setfr(sys->cpu->gr[r_r1(w[0])] = val_adrx(w[1], w[0]));
+    setfr(sys->cpu->gr[get_r_r1(w[0])] = get_val_adr_x(w[1], w[0]));
     sys->cpu->pr += 2;
 }
 
@@ -227,7 +227,7 @@ void ld_r1_r2()
 {
     WORD w[1];
     w[0] = sys->memory[sys->cpu->pr];
-    setfr(sys->cpu->gr[r_r1(w[0])] = sys->cpu->gr[x_r2(w[0])]);
+    setfr(sys->cpu->gr[get_r_r1(w[0])] = sys->cpu->gr[get_x_r2(w[0])]);
     sys->cpu->pr += 1;
 }
 
@@ -239,7 +239,7 @@ void st()
     WORD w[2];
     w[0] = sys->memory[sys->cpu->pr];
     w[1] = sys->memory[sys->cpu->pr + 1];
-    sys->memory[adrx(w[1], w[0])] = sys->cpu->gr[r_r1(w[0])];
+    sys->memory[get_adr_x(w[1], w[0])] = sys->cpu->gr[get_r_r1(w[0])];
     sys->cpu->pr += 2;
 }
 
@@ -251,7 +251,7 @@ void lad()
     WORD w[2];
     w[0] = sys->memory[sys->cpu->pr];
     w[1] = sys->memory[sys->cpu->pr + 1];
-    sys->cpu->gr[r_r1(w[0])] = adrx(w[1], w[0]);
+    sys->cpu->gr[get_r_r1(w[0])] = get_adr_x(w[1], w[0]);
     sys->cpu->pr += 2;
 }
 
@@ -286,7 +286,7 @@ void adda_r_adr_x()
     WORD w[2];
     w[0] = sys->memory[sys->cpu->pr];
     w[1] = sys->memory[sys->cpu->pr + 1];
-    adda(r_r1(w[0]), val_adrx(w[1], w[0]));
+    adda(get_r_r1(w[0]), get_val_adr_x(w[1], w[0]));
     sys->cpu->pr += 2;
 }
 
@@ -297,7 +297,7 @@ void adda_r1_r2()
 {
     WORD w[1];
     w[0] = sys->memory[sys->cpu->pr];
-    adda(r_r1(w[0]), sys->cpu->gr[x_r2(w[0])]);
+    adda(get_r_r1(w[0]), sys->cpu->gr[get_x_r2(w[0])]);
     sys->cpu->pr += 1;
 }
 
@@ -309,7 +309,7 @@ void suba_r_adr_x()
     WORD w[2];
     w[0] = sys->memory[sys->cpu->pr];
     w[1] = sys->memory[sys->cpu->pr + 1];
-    adda(r_r1(w[0]), ~(val_adrx(w[1], w[0])) + 1);
+    adda(get_r_r1(w[0]), ~(get_val_adr_x(w[1], w[0])) + 1);
     sys->cpu->pr += 2;
 }
 
@@ -320,7 +320,7 @@ void suba_r1_r2()
 {
     WORD w[1];
     w[0] = sys->memory[sys->cpu->pr];
-    adda(r_r1(w[0]), ~(sys->cpu->gr[x_r2(w[0])]) + 1);
+    adda(get_r_r1(w[0]), ~(sys->cpu->gr[get_x_r2(w[0])]) + 1);
     sys->cpu->pr += 1;
 }
 
@@ -351,7 +351,7 @@ void addl_r_adr_x()
     WORD w[2];
     w[0] = sys->memory[sys->cpu->pr];
     w[1] = sys->memory[sys->cpu->pr + 1];
-    addl(r_r1(w[0]), val_adrx(w[1], w[0]));
+    addl(get_r_r1(w[0]), get_val_adr_x(w[1], w[0]));
     sys->cpu->pr += 2;
 }
 
@@ -362,7 +362,7 @@ void addl_r1_r2()
 {
     WORD w[1];
     w[0] = sys->memory[sys->cpu->pr];
-    addl(r_r1(w[0]), sys->cpu->gr[x_r2(w[0])]);
+    addl(get_r_r1(w[0]), sys->cpu->gr[get_x_r2(w[0])]);
     sys->cpu->pr += 1;
 }
 
@@ -374,7 +374,7 @@ void subl_r_adr_x()
     WORD w[2];
     w[0] = sys->memory[sys->cpu->pr];
     w[1] = sys->memory[sys->cpu->pr + 1];
-    addl(r_r1(w[0]), ~(val_adrx(w[1], w[0])) + 1);
+    addl(get_r_r1(w[0]), ~(get_val_adr_x(w[1], w[0])) + 1);
     sys->cpu->pr += 2;
 }
 
@@ -385,7 +385,7 @@ void subl_r1_r2()
 {
     WORD w[1];
     w[0] = sys->memory[sys->cpu->pr];
-    addl(r_r1(w[0]), ~(sys->cpu->gr[x_r2(w[0])]) + 1);
+    addl(get_r_r1(w[0]), ~(sys->cpu->gr[get_x_r2(w[0])]) + 1);
     sys->cpu->pr += 1;
 }
 
@@ -397,7 +397,7 @@ void and_r_adr_x()
     WORD w[2];
     w[0] = sys->memory[sys->cpu->pr];
     w[1] = sys->memory[sys->cpu->pr + 1];
-    setfr(sys->cpu->gr[r_r1(w[0])] &= val_adrx(w[1], w[0]));
+    setfr(sys->cpu->gr[get_r_r1(w[0])] &= get_val_adr_x(w[1], w[0]));
     sys->cpu->pr += 2;
 }
 
@@ -408,7 +408,7 @@ void and_r1_r2()
 {
     WORD w[1];
     w[0] = sys->memory[sys->cpu->pr];
-    setfr(sys->cpu->gr[r_r1(w[0])] &= sys->cpu->gr[x_r2(w[0])]);
+    setfr(sys->cpu->gr[get_r_r1(w[0])] &= sys->cpu->gr[get_x_r2(w[0])]);
     sys->cpu->pr += 1;
 }
 
@@ -420,7 +420,7 @@ void or_r_adr_x()
     WORD w[2];
     w[0] = sys->memory[sys->cpu->pr];
     w[1] = sys->memory[sys->cpu->pr + 1];
-    setfr(sys->cpu->gr[r_r1(w[0])] |= val_adrx(w[1], w[0]));
+    setfr(sys->cpu->gr[get_r_r1(w[0])] |= get_val_adr_x(w[1], w[0]));
     sys->cpu->pr += 2;
 }
 
@@ -431,7 +431,7 @@ void or_r1_r2()
 {
     WORD w[1];
     w[0] = sys->memory[sys->cpu->pr];
-    setfr(sys->cpu->gr[r_r1(w[0])] |= sys->cpu->gr[x_r2(w[0])]);
+    setfr(sys->cpu->gr[get_r_r1(w[0])] |= sys->cpu->gr[get_x_r2(w[0])]);
     sys->cpu->pr += 1;
 }
 
@@ -443,7 +443,7 @@ void xor_r_adr_x()
     WORD w[2];
     w[0] = sys->memory[sys->cpu->pr];
     w[1] = sys->memory[sys->cpu->pr + 1];
-    setfr(sys->cpu->gr[r_r1(w[0])] ^= val_adrx(w[1], w[0]));
+    setfr(sys->cpu->gr[get_r_r1(w[0])] ^= get_val_adr_x(w[1], w[0]));
     sys->cpu->pr += 2;
 }
 
@@ -454,7 +454,7 @@ void xor_r1_r2()
 {
     WORD w[1];
     w[0] = sys->memory[sys->cpu->pr];
-    setfr(sys->cpu->gr[r_r1(w[0])] ^= sys->cpu->gr[x_r2(w[0])]);
+    setfr(sys->cpu->gr[get_r_r1(w[0])] ^= sys->cpu->gr[get_x_r2(w[0])]);
     sys->cpu->pr += 1;
 }
 
@@ -480,7 +480,7 @@ void cpa_r_adr_x()
     WORD w[2];
     w[0] = sys->memory[sys->cpu->pr];
     w[1] = sys->memory[sys->cpu->pr + 1];
-    cpa(r_r1(w[0]), val_adrx(w[1], w[0]));
+    cpa(get_r_r1(w[0]), get_val_adr_x(w[1], w[0]));
     sys->cpu->pr += 2;
 }
 
@@ -491,7 +491,7 @@ void cpa_r1_r2()
 {
     WORD w[1];
     w[0] = sys->memory[sys->cpu->pr];
-    cpa(r_r1(w[0]), sys->cpu->gr[x_r2(w[0])]);
+    cpa(get_r_r1(w[0]), sys->cpu->gr[get_x_r2(w[0])]);
     sys->cpu->pr += 1;
 }
 
@@ -520,7 +520,7 @@ void cpl_r_adr_x()
     WORD w[2];
     w[0] = sys->memory[sys->cpu->pr];
     w[1] = sys->memory[sys->cpu->pr + 1];
-    cpl(r_r1(w[0]), val_adrx(w[1], w[0]));
+    cpl(get_r_r1(w[0]), get_val_adr_x(w[1], w[0]));
     sys->cpu->pr += 2;
 }
 
@@ -531,7 +531,7 @@ void cpl_r1_r2()
 {
     WORD w[1];
     w[0] = sys->memory[sys->cpu->pr];
-    cpl(r_r1(w[0]), sys->cpu->gr[x_r2(w[0])]);
+    cpl(get_r_r1(w[0]), sys->cpu->gr[get_x_r2(w[0])]);
     sys->cpu->pr += 1;
 }
 
@@ -547,9 +547,9 @@ void sla()
     w[0] = sys->memory[sys->cpu->pr];
     w[1] = sys->memory[sys->cpu->pr + 1];
     sys->cpu->fr = 0x0;
-    sign = sys->cpu->gr[(r = r_r1(w[0]))] & 0x8000;
+    sign = sys->cpu->gr[(r = get_r_r1(w[0]))] & 0x8000;
     sys->cpu->gr[r] &= 0x7FFF;
-    for(i = 0; i < adrx(w[1], w[0]); i++) {
+    for(i = 0; i < get_adr_x(w[1], w[0]); i++) {
         last = sys->cpu->gr[r] & 0x4000;
         sys->cpu->gr[r] <<= 1;
     }
@@ -582,9 +582,9 @@ void sra()
     w[0] = sys->memory[sys->cpu->pr];
     w[1] = sys->memory[sys->cpu->pr + 1];
     sys->cpu->fr = 0x0;
-    sign = sys->cpu->gr[(r = r_r1(w[0]))] & 0x8000;
+    sign = sys->cpu->gr[(r = get_r_r1(w[0]))] & 0x8000;
     sys->cpu->gr[r] &= 0x7FFF;
-    for(i = 0; i < adrx(w[1], w[0]); i++) {
+    for(i = 0; i < get_adr_x(w[1], w[0]); i++) {
         last = sys->cpu->gr[r] & 0x1;
         sys->cpu->gr[r] >>= 1;
         if(sign > 0) {
@@ -618,8 +618,8 @@ void sll()
     w[0] = sys->memory[sys->cpu->pr];
     w[1] = sys->memory[sys->cpu->pr + 1];
     sys->cpu->fr = 0x0;
-    for(i = 0; i < adrx(w[1], w[0]); i++) {
-        last = sys->cpu->gr[(r = r_r1(w[0]))] & 0x8000;
+    for(i = 0; i < get_adr_x(w[1], w[0]); i++) {
+        last = sys->cpu->gr[(r = get_r_r1(w[0]))] & 0x8000;
         sys->cpu->gr[r] <<= 1;
     }
     /* OFに、レジスタから最後に送り出されたビットの値を設定 */
@@ -648,8 +648,8 @@ void srl()
     w[0] = sys->memory[sys->cpu->pr];
     w[1] = sys->memory[sys->cpu->pr + 1];
     sys->cpu->fr = 0x0;
-    r = r_r1(w[0]);
-    for(i = 0; i < adrx(w[1], w[0]); i++) {
+    r = get_r_r1(w[0]);
+    for(i = 0; i < get_adr_x(w[1], w[0]); i++) {
         last = sys->cpu->gr[r] & 0x0001;
         sys->cpu->gr[r] >>= 1;
     }
@@ -677,7 +677,7 @@ void jpl()
     w[0] = sys->memory[sys->cpu->pr];
     w[1] = sys->memory[sys->cpu->pr + 1];
     if((sys->cpu->fr & (SF | ZF)) == 0) {
-        sys->cpu->pr = adrx(w[1], w[0]);
+        sys->cpu->pr = get_adr_x(w[1], w[0]);
     } else {
         sys->cpu->pr += 2;
     }
@@ -692,7 +692,7 @@ void jmi()
     w[0] = sys->memory[sys->cpu->pr];
     w[1] = sys->memory[sys->cpu->pr + 1];
     if((sys->cpu->fr & SF) > 0) {
-        sys->cpu->pr = adrx(w[1], w[0]);
+        sys->cpu->pr = get_adr_x(w[1], w[0]);
     } else {
         sys->cpu->pr += 2;
     }
@@ -707,7 +707,7 @@ void jnz()
     w[0] = sys->memory[sys->cpu->pr];
     w[1] = sys->memory[sys->cpu->pr + 1];
     if((sys->cpu->fr & ZF) == 0) {
-        sys->cpu->pr = adrx(w[1], w[0]);
+        sys->cpu->pr = get_adr_x(w[1], w[0]);
     } else {
         sys->cpu->pr += 2;
     }
@@ -722,7 +722,7 @@ void jze()
     w[0] = sys->memory[sys->cpu->pr];
     w[1] = sys->memory[sys->cpu->pr + 1];
     if((sys->cpu->fr & ZF) > 0) {
-        sys->cpu->pr = adrx(w[1], w[0]);
+        sys->cpu->pr = get_adr_x(w[1], w[0]);
     } else {
         sys->cpu->pr += 2;
     }
@@ -737,7 +737,7 @@ void jov()
     w[0] = sys->memory[sys->cpu->pr];
     w[1] = sys->memory[sys->cpu->pr + 1];
     if((sys->cpu->fr & OF) > 0) {
-        sys->cpu->pr = adrx(w[1], w[0]);
+        sys->cpu->pr = get_adr_x(w[1], w[0]);
     } else {
         sys->cpu->pr += 2;
     }
@@ -751,7 +751,7 @@ void jump()
     WORD w[2];
     w[0] = sys->memory[sys->cpu->pr];
     w[1] = sys->memory[sys->cpu->pr + 1];
-    sys->cpu->pr = adrx(w[1], w[0]);
+    sys->cpu->pr = get_adr_x(w[1], w[0]);
 }
 
 /**
@@ -763,7 +763,7 @@ void push()
     w[0] = sys->memory[sys->cpu->pr];
     w[1] = sys->memory[sys->cpu->pr + 1];
     assert(sys->cpu->sp > execptr->end && sys->cpu->sp <= sys->memsize);
-    sys->memory[--(sys->cpu->sp)] = adrx(w[1], w[0]);
+    sys->memory[--(sys->cpu->sp)] = get_adr_x(w[1], w[0]);
     sys->cpu->pr += 2;
 }
 
@@ -775,7 +775,7 @@ void pop()
     assert(sys->cpu->sp > execptr->end && sys->cpu->sp <= sys->memsize);
     WORD w[1];
     w[0] = sys->memory[sys->cpu->pr];
-    sys->cpu->gr[r_r1(w[0])] = sys->memory[(sys->cpu->sp)++];
+    sys->cpu->gr[get_r_r1(w[0])] = sys->memory[(sys->cpu->sp)++];
     sys->cpu->pr += 1;
 }
 
@@ -789,7 +789,7 @@ void call()
     w[0] = sys->memory[sys->cpu->pr];
     w[1] = sys->memory[sys->cpu->pr + 1];
     sys->memory[--(sys->cpu->sp)] = sys->cpu->pr + 1;
-    sys->cpu->pr = adrx(w[1], w[0]);
+    sys->cpu->pr = get_adr_x(w[1], w[0]);
 }
 
 /**
@@ -813,7 +813,7 @@ void svc()
     WORD w[2];
     w[0] = sys->memory[sys->cpu->pr];
     w[1] = sys->memory[sys->cpu->pr + 1];
-    switch(adrx(w[1], w[0]))
+    switch(get_adr_x(w[1], w[0]))
     {
     case 0x0:                   /* STOP */
         execptr->stop = true;

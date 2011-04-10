@@ -346,7 +346,7 @@ void writeRPOP(PASS pass)
  */
 bool cometcmd(const CMDLINE *cmdl, PASS pass)
 {
-    WORD cmd, rr1, xr2, adr;
+    WORD cmd, r_r1, x_r2, adr;
 
     /* オペランドなし */
     if(cmdl->opd->opdc == 0) {
@@ -357,23 +357,23 @@ bool cometcmd(const CMDLINE *cmdl, PASS pass)
         writememory(cmd, (asptr->ptr)++, pass);
     }
     /* 第1オペランドは汎用レジスタ */
-    else if((rr1 = getgr(cmdl->opd->opdv[0], false)) != 0xFFFF) {
+    else if((r_r1 = getgr(cmdl->opd->opdv[0], false)) != 0xFFFF) {
         /* オペランド数1 */
         if(cmdl->opd->opdc == 1) {
             if((cmd = getcmdcode(cmdl->cmd, R_)) == 0xFFFF) {
                 setcerr(108, cmdl->cmd);    /* not command of operand "r" */
                 return false;
             }
-            cmd |= (rr1 << 4);
+            cmd |= (r_r1 << 4);
             writememory(cmd, (asptr->ptr)++, pass);
         }
         /* オペランド数2。第2オペランドは汎用レジスタ */
-        else if(cmdl->opd->opdc == 2 && (xr2 = getgr(cmdl->opd->opdv[1], false)) != 0xFFFF) {
+        else if(cmdl->opd->opdc == 2 && (x_r2 = getgr(cmdl->opd->opdv[1], false)) != 0xFFFF) {
             if((cmd = getcmdcode(cmdl->cmd, R1_R2)) == 0xFFFF) {
                 setcerr(109, cmdl->cmd);    /* not command of operand "r1,r2" */
                 return false;
             }
-            cmd |= ((rr1 << 4) | xr2);               /* 第1オペランド、第2オペランドともに汎用レジスタ */
+            cmd |= ((r_r1 << 4) | x_r2);               /* 第1オペランド、第2オペランドともに汎用レジスタ */
             /* メモリへの書き込み */
             writememory(cmd, (asptr->ptr)++, pass);
         }
@@ -383,14 +383,14 @@ bool cometcmd(const CMDLINE *cmdl, PASS pass)
                 setcerr(110, cmdl->cmd);    /* not command of operand "r,adr[,x]" */
                 return false;
             }
-            cmd |= (rr1 << 4);                    /* 第1オペランドは汎用レジスタ */
+            cmd |= (r_r1 << 4);                    /* 第1オペランドは汎用レジスタ */
             /* オペランド数3の場合 */
             if(cmdl->opd->opdc == 3) {             /* 第3オペランドは指標レジスタとして用いる汎用レジスタ */
-                if((xr2 = getgr(cmdl->opd->opdv[2], true)) == 0xFFFF) {
+                if((x_r2 = getgr(cmdl->opd->opdv[2], true)) == 0xFFFF) {
                     setcerr(125, cmdl->cmd);    /* not GR in operand x */
                     return false;
                 }
-                cmd |= xr2;
+                cmd |= x_r2;
             }
             adr = getadr(asptr->prog, cmdl->opd->opdv[1], pass); /* 第2オペランドはアドレス */
             /* メモリへの書き込み */
@@ -409,11 +409,11 @@ bool cometcmd(const CMDLINE *cmdl, PASS pass)
         }
         /* オペランド数2の場合 */
         if(cmdl->opd->opdc == 2) {             /* 第2オペランドは指標レジスタとして用いる汎用レジスタ */
-            xr2 = getgr(cmdl->opd->opdv[1], true);
+            x_r2 = getgr(cmdl->opd->opdv[1], true);
             if(cerr->num > 0) {
                 return false;
             }
-            cmd |= xr2;
+            cmd |= x_r2;
         }
         /* CALLの場合はプログラムの入口名を表すラベルを取得 */
         /* CALL以外の命令の場合と、プログラムの入口名を取得できない場合は、 */
