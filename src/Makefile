@@ -1,6 +1,6 @@
 INCLUDE := ../include
 CC := gcc
-CFLAGS := -g -Wall -I $(INCLUDE)
+CFLAGS := -g -Wall -Wextra -I $(INCLUDE)
 RM := rm -f
 
 COMMONSRC := word.c cmem.c cerr.c

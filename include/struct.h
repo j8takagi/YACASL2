@@ -39,7 +39,7 @@ typedef struct {
     CPU *cpu;        /**<CPU */
     WORD *memory;    /**<メモリ */
     int memsize;     /**<メモリサイズ */
-    int clocks;      /**<クロック周波数 */
+    unsigned clocks;      /**<クロック周波数 */
 } SYSTEM;
 
 extern SYSTEM *sys;
