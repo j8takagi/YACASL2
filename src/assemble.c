@@ -112,7 +112,7 @@ WORD getliteral(const char *str, PASS pass)
 
 /**
  * アセンブラ命令をメモリに書込
- * 実行に成功した場合はtrue、それ以外の場合はfalseを返す
+ * アセンブラ命令の場合はtrue、それ以外の場合はfalseを返す
  */
 bool assemblecmd(const CMDLINE *cmdl, PASS pass)
 {
@@ -130,7 +130,7 @@ bool assemblecmd(const CMDLINE *cmdl, PASS pass)
         if(strcmp(cmdl->cmd, ascmd[i].cmd) == 0) {
             if(cmdl->opd->opdc < ascmd[i].opdc_min || cmdl->opd->opdc > ascmd[i].opdc_max) {
                 setcerr(106, NULL);    /* operand count mismatch */
-                return false;
+                return true;
             }
             cmdid = ascmd[i].cmdid;
             break;
@@ -142,7 +142,7 @@ bool assemblecmd(const CMDLINE *cmdl, PASS pass)
     case START:
         if(cmdl->label == NULL) {
             setcerr(107, NULL);    /* no label in START */
-            return false;
+            return true;
         }
         /* プログラム名の設定 */
         asptr->prog = strdup_chk(cmdl->label, "asptr.prog");
@@ -183,13 +183,13 @@ bool assemblecmd(const CMDLINE *cmdl, PASS pass)
     default:
         return false;
     }
-    return (cerr->num == 0) ? true : false;
+    return true;
 }
 
 /**
  *  macrocmd
- *  マクロ命令をメモリに書込
- *  書込に成功した場合はtrue、それ以外の場合はfalseを返す
+ * マクロ命令をメモリに書込
+ * マクロ命令の場合はtrue、それ以外の場合はfalseを返す
  */
 bool macrocmd(const CMDLINE *cmdl, PASS pass)
 {
@@ -209,7 +209,7 @@ bool macrocmd(const CMDLINE *cmdl, PASS pass)
                cmdl->opd->opdc > macrocmd[i].opdc_max)
             {
                 setcerr(106, NULL);    /* operand count mismatch */
-                return false;
+                return true;
             }
             cmdid = macrocmd[i].cmdid;
             break;
@@ -219,19 +219,20 @@ bool macrocmd(const CMDLINE *cmdl, PASS pass)
     {
     case IN:
         writeIN(cmdl->opd->opdv[0], cmdl->opd->opdv[1], pass);
-        return true;
+        break;
     case OUT:
         writeOUT(cmdl->opd->opdv[0], cmdl->opd->opdv[1], pass);
-        return true;
+        break;
     case RPUSH:
         writeRPUSH(pass);
-        return true;
+        break;
     case RPOP:
         writeRPOP(pass);
-        return true;
+        break;
     default:
         return false;
     }
+    return true;
 }
 
 /**
@@ -502,32 +503,18 @@ void writeDC(const char *str, PASS pass)
  */
 bool assembletok(const CMDLINE *cmdl, PASS pass)
 {
-    bool status = false;
-
     /* 命令がない場合 */
     if(cmdl->cmd == NULL){
-        ;
+        return true;
     }
-    /* アセンブラ命令の処理 */
-    else if(cerr->num == 0 && assemblecmd(cmdl, pass) == true) {
-        ;
+    /* アセンブラ命令またはマクロ命令の書込 */
+    if(assemblecmd(cmdl, pass) == false && macrocmd(cmdl, pass) == false) {
+        /* COMET II命令の書込 */
+        if(cometcmd(cmdl, pass) == false && cerr->num == 0) {
+            setcerr(113, cmdl->cmd);    /* operand too many in COMET II command */
+        }
     }
-    /* マクロ命令の書込 */
-    else if(cerr->num == 0 && macrocmd(cmdl, pass) == true) {
-        ;
-    }
-    /* 機械語命令の書込 */
-    else if(cerr->num == 0 && cometcmd(cmdl, pass) == true) {
-        ;
-    }
-    else if(cerr->num == 0) {
-        setcerr(113, cmdl->cmd);    /* operand too many in COMET II command */
-    }
-    /* エラーが発生していないか確認 */
-    if(cerr->num == 0) {
-        status = true;
-    }
-    return status;
+    return (cerr->num == 0) ? true : false;
 }
 
 /**

@@ -104,7 +104,7 @@ asfin:
  */
 int main(int argc, char *argv[])
 {
-    int memsize = DEFAULT_MEMSIZE, clocks = DEFAULT_CLOCKS, opt, i, status;
+    int memsize = DEFAULT_MEMSIZE, clocks = DEFAULT_CLOCKS, opt, i, stat;
     char *af[argc];
     char *objfile = NULL;
     const char *usage =
@@ -190,7 +190,7 @@ int main(int argc, char *argv[])
     }
 casl2fin:
     shutdown();                                    /* 仮想マシンCOMET IIのシャットダウン */
-    status = (cerr->num == 0) ? 0 : -1;
+    stat = (cerr->num == 0) ? 0 : -1;
     freecerr();                                    /* エラーの解放 */
-    return status;
+    return stat;
 }

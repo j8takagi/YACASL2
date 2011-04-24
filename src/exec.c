@@ -54,7 +54,7 @@ void addcerrlist_exec()
 bool loadassemble(const char *file)
 {
     FILE *fp;
-    bool status = true;
+    bool stat = true;
 
     assert(file != NULL);
     if((fp = fopen(file, "r")) == NULL) {
@@ -66,10 +66,10 @@ bool loadassemble(const char *file)
     if(execptr->end == sys->memsize) {
         setcerr(210, file);    /* load - memory overflow */
         fprintf(stderr, "Load error - %d: %s\n", cerr->num, cerr->msg);
-        status = false;
+        stat = false;
     }
     fclose(fp);
-    return status;
+    return stat;
 }
 
 /**
