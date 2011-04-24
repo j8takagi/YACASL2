@@ -1,2 +1,0 @@
-cat ../../../../as/cmd/ADDL/addl2.casl
-../../../../casl2 -atd -M16 ../../../../as/cmd/ADDL/addl2.casl

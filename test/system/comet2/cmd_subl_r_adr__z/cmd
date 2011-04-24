@@ -1,0 +1,3 @@
+../../../../casl2 -O ../../../../as/cmd/SUBL/subl_r_adr__z.casl
+../../../../comet2 -td -M8 a.o
+rm -f a.o

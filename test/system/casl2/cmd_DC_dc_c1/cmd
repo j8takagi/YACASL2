@@ -1,2 +1,0 @@
-cat ../../../../as/cmd/DC/dc_c1.casl
-../../../../casl2 -atd -M128 ../../../../as/cmd/DC/dc_c1.casl

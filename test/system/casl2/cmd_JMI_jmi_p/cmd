@@ -1,2 +1,0 @@
-cat ../../../../as/cmd/JMI/jmi_p.casl
-../../../../casl2 -atd -M16 ../../../../as/cmd/JMI/jmi_p.casl

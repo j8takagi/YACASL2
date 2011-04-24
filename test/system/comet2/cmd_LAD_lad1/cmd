@@ -1,3 +1,0 @@
-../../../../casl2 -O ../../../../as/cmd/LAD/lad1.casl
-../../../../comet2 -td -M8 a.o
-rm -f a.o

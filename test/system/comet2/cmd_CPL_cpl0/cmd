@@ -1,3 +1,0 @@
-../../../../casl2 -O ../../../../as/cmd/CPL/cpl0.casl
-../../../../comet2 -td -M8 a.o
-rm -f a.o

@@ -1,2 +1,0 @@
-cat ../../../../as/cmd/SUBA/suba0__o.casl
-../../../../casl2 -atd -M8 ../../../../as/cmd/SUBA/suba0__o.casl

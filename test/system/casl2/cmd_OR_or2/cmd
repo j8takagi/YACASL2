@@ -1,2 +1,0 @@
-cat ../../../../as/cmd/OR/or2.casl
-../../../../casl2 -atd -M16 ../../../../as/cmd/OR/or2.casl

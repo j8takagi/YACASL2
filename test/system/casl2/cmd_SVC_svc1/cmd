@@ -1,2 +1,0 @@
-cat ../../../../as/cmd/SVC/svc1.casl teststr.txt
-../../../../casl2 -atd -M64 ../../../../as/cmd/SVC/svc1.casl <teststr.txt

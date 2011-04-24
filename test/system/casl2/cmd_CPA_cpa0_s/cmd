@@ -1,2 +1,0 @@
-cat ../../../../as/cmd/CPA/cpa0_s.casl
-../../../../casl2 -atd -M8 ../../../../as/cmd/CPA/cpa0_s.casl

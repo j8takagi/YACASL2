@@ -1,2 +1,0 @@
-cat ../../../../as/cmd/XOR/xor0.casl
-../../../../casl2 -atd -M8 ../../../../as/cmd/XOR/xor0.casl

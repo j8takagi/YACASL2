@@ -1,9 +1,0 @@
-;;; ADDA r1,r2
-MAIN    START
-BEGIN   LD      GR1,A
-        LD      GR0,B
-        ADDA    GR1,GR0
-        RET
-A       DC      3
-B       DC      1
-        END

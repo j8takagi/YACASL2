@@ -1,0 +1,3 @@
+../../../../casl2 -O ../../../../as/cmd/ADDL/addl_r_adr_x.casl
+../../../../comet2 -td -M16 a.o
+rm -f a.o

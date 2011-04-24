@@ -1,2 +1,0 @@
-cat ../../../../as/cmd/CALL/call1.casl
-../../../../casl2 -atd -M16 ../../../../as/cmd/CALL/call1.casl

@@ -1,0 +1,2 @@
+cat ../../../../as/cmd/OR/or_r_adr__z.casl
+../../../../casl2 -atd -M8 ../../../../as/cmd/OR/or_r_adr__z.casl

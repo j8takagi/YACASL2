@@ -1,3 +1,3 @@
-../../../../casl2 -O ../../../../as/cmd/ADDA/adda0.casl
+../../../../casl2 -O ../../../../as/cmd/ADDA/adda_r_adr.casl
 ../../../../comet2 -M2 a.o
 rm -f a.o

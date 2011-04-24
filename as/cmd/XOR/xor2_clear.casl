@@ -1,7 +1,0 @@
-;;; XOR r,r rの内容をクリア
-MAIN    START
-BEGIN   LD      GR1,A
-        XOR     GR1,GR1
-        RET
-A       DC      3
-        END
