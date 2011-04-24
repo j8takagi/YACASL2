@@ -21,9 +21,6 @@ ASPTR *asptr;
  * アセンブルのエラー定義
  */
 static CERR cerr_assemble[] = {
-    { 101, "label already defined" },
-    { 102, "label table is full" },
-    { 103, "label not found" },
     { 106, "operand mismatch in assemble command" },
     { 107, "no label in START" },
     { 108, "not command of operand \"r\"" },

@@ -27,7 +27,7 @@ static struct option longopts[] = {
 int main(int argc, char *argv[])
 {
     int memsize = DEFAULT_MEMSIZE, clocks = DEFAULT_CLOCKS;
-    int opt, status = 0;
+    int opt, stat = 0;
     const char *usage = "Usage: %s [-tTdh] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE\n";
 
     cerr_init();
@@ -74,8 +74,8 @@ int main(int argc, char *argv[])
     }
     /* COMET II仮想マシンのシャットダウン */
     shutdown();
-    status = (cerr->num == 0) ? 0 : -1;
+    stat = (cerr->num == 0) ? 0 : -1;
     /* エラーの解放 */
     freecerr();
-    return status;
+    return stat;
 }
