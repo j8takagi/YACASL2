@@ -46,46 +46,6 @@ typedef struct {
 extern ASPTR *asptr;
 
 /**
-  * アセンブラ命令を表す番号
-  */
-typedef enum {
-    START = 01,
-    END = 02,
-    DS = 03,
-    DC = 04,
-} ASCMDID;
-
-/**
-  * アセンブラ命令を表す配列
-  */
-typedef struct {
-    ASCMDID cmdid;              /**<アセンブル命令のID */
-    int opdc_min;               /**<最小オペランド数 */
-    int opdc_max;               /**<最大オペランド数 */
-    char *cmd;                  /**<コマンド名 */
-} ASCMD;
-
-/**
- * マクロ命令を表す番号
- */
-typedef enum {
-    IN = 011,
-    OUT = 012,
-    RPUSH = 013,
-    RPOP = 014,
-} MACROCMDID;
-
-/**
- * マクロ命令を表す配列
- */
-typedef struct {
-    MACROCMDID cmdid;              /**<マクロ命令のID */
-    int opdc_min;                  /**<最小オペランド数 */
-    int opdc_max;                  /**<最大オペランド数 */
-    char *cmd;                     /**<コマンド名 */
-} MACROCMD;
-
-/**
  * ラベル配列
  */
 typedef struct {

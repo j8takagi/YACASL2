@@ -33,4 +33,5 @@ TAGS: $(INCLUDE)/*.h *.c
 	@if test `which etags`; then etags $^; fi
 
 clean:
-	@rm -f ../casl2 ../comet2 ../dumpword *.o *.d
+	@rm -f ../casl2 ../comet2 ../dumpword
+	@rm -f *.o *.d

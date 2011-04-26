@@ -89,17 +89,25 @@ typedef enum {
  */
 typedef struct {
     char *name;                 /**<命令名 */
+    const void (*ptr);          /**<命令の関数ポインタ */
+} CMD;
+
+/**
+ * COMET II命令コード表の項目
+ */
+typedef struct {
+    char *name;                 /**<命令名 */
     CMDTYPE type;               /**<命令タイプ */
     WORD code;                  /**<命令コード */
     const void (*ptr);          /**<命令の関数ポインタ */
-} CMD;
+} COMET2CMD;
 
 /**
  * 命令コードのハッシュ表
  */
 typedef struct _CMDTAB {
     struct _CMDTAB *next;       /**<リスト次項目へのポインタ */
-    CMD *cmd;                   /**<命令コード表の項目 */
+    COMET2CMD *cmd;             /**<命令コード表の項目 */
 } CMDTAB;
 
 /**

@@ -36,37 +36,86 @@ static CERR cerr_assemble[] = {
     { 125, "not GR in operand x" },
 };
 
+void printline(FILE *stream, const char *filename, int lineno, char *line);
+
 WORD getadr(const char *prog, const char *str, PASS pass);
 
 WORD getgr(const char *str, bool is_x);
 
 WORD getliteral(const char *str, PASS pass);
 
-bool assemblecmd(const CMDLINE *cmdl, PASS pass);
-
-bool macrocmd(const CMDLINE *cmdl, PASS pass);
-
-void writeIN(const char *ibuf, const char *len, PASS pass);
-
-void writeOUT(const char *obuf, const char *len, PASS pass);
-
-void writeRPUSH(PASS pass);
-
-void writeRPOP(PASS pass);
-
-bool cometcmd(const CMDLINE *cmdl, PASS pass);
-
 void writememory(WORD word, WORD adr, PASS pass);
 
 void writestr(const char *str, bool literal, PASS pass);
 
-void writeDC(const char *str, PASS pass);
+void writedc(const char *str, PASS pass);
+
+void assemble_start(const CMDLINE *cmdl, PASS pass);
+
+void assemble_ds(const CMDLINE *cmdl, PASS pass);
+
+void assemble_end(const CMDLINE *cmdl, PASS pass);
+
+void assemble_dc(const CMDLINE *cmdl, PASS pass);
+
+bool assemble_ascmd(const CMDLINE *cmdl, PASS pass);
+
+void assemble_in(const CMDLINE *cmdl, PASS pass);
+
+void assemble_out(const CMDLINE *cmdl, PASS pass);
+
+void assemble_rpush(const CMDLINE *cmdl, PASS pass);
+
+void assemble_rpop(const CMDLINE *cmdl, PASS pass);
+
+bool assemble_macrocmd(const CMDLINE *cmdl, PASS pass);
+
+bool assemble_cometcmd(const CMDLINE *cmdl, PASS pass);
 
 bool assembletok(const CMDLINE *cmdl, PASS pass);
 
 bool assembleline(const char *line, PASS pass);
 
-void printline(FILE *stream, const char *filename, int lineno, char *line);
+/**
+ * アセンブルのエラーをエラーリストに追加
+ */
+void addcerrlist_assemble()
+{
+    addcerrlist_tok();
+    addcerrlist_word();
+    addcerrlist_label();
+    addcerrlist(ARRAYSIZE(cerr_assemble), cerr_assemble);
+}
+
+/**
+ * ファイルストリームの現在行を番号付きで表示する
+ */
+void printline(FILE *stream, const char *filename, int lineno, char *line)
+{
+    fprintf(stream, "%s:%5d:%s", filename, lineno, line);
+}
+
+/**
+ * アドレスを返す
+ * アドレスには、リテラル／10進定数／16進定数／アドレス定数が含まれる
+ */
+WORD getadr(const char *prog, const char *str, PASS pass)
+{
+    WORD adr = 0x0;
+
+    if(*str == '=') {
+        adr = getliteral(str, pass);
+    } else if(isdigit(*str) || *str == '-' || *str == '#') {
+        adr = nh2word(str);
+    } else {
+        if(pass == SECOND && (adr = getlabel(prog, str)) == 0xFFFF) {
+            if(prog != NULL) {
+                setcerr(103, str);    /* label not found */
+            }
+        }
+    }
+    return adr;
+}
 
 /**
  * 汎用レジスタを表す文字列「GR[0-7]」から、レジスタ番号[0-7]をWORD値で返す
@@ -111,132 +160,176 @@ WORD getliteral(const char *str, PASS pass)
 }
 
 /**
- * アセンブラ命令をメモリに書込
+ * アドレス値をメモリに書き込む
+ */
+void writememory(WORD word, WORD adr, PASS pass)
+{
+    /* メモリオーバーの場合、エラー発生 */
+    if(adr >= sys->memsize) {
+        setcerr(119, word2n(adr));    /* out of COMET II memory */
+        return;
+    }
+    (sys->memory)[adr] = word;
+    if(pass == SECOND && asmode.asdetail == true) {
+        fprintf(stdout, "\t#%04X\t#%04X\n", adr, word);
+    }
+}
+
+/**
+ * 文字をメモリに書き込む
+ */
+void writestr(const char *str, bool literal, PASS pass)
+{
+    assert(*str == '\'');
+    const char *p = str + 1;
+    bool lw = false;
+
+    for(; ;) {
+        /* 閉じ「'」がないまま文字列が終了した場合 */
+        if(*p == '\0') {
+            setcerr(123, str);    /* unclosed quote */
+            break;
+        }
+        /* 「'」の場合、次の文字が「'」でない場合は正常終了 */
+        if(*p == '\'' && *(++p) != '\'') {
+            break;
+        } else if(literal == true && lw == true) {
+            setcerr(124, str);    /* more than one character in literal */
+            break;
+        }
+        /*リテラルの場合はリテラル領域に書込 */
+        if(literal == true) {
+            writememory(*(p++), (asptr->lptr)++, pass);
+            lw = true;
+        } else {
+            writememory(*(p++), (asptr->ptr)++, pass);
+        }
+    }
+}
+
+/**
+ * DC命令を書込
+ */
+void writedc(const char *str, PASS pass)
+{
+    WORD adr = 0x0;
+
+    if(*str == '\'') {
+        writestr(str, false, pass);
+    } else {
+        if(*str == '#' || isdigit(*str) || *str == '-') {
+            adr = nh2word(str);
+        } else {
+            if(pass == SECOND && (adr = getlabel(asptr->prog, str)) == 0xFFFF) {
+                setcerr(103, str);    /* label not found */
+            }
+        }
+        writememory(adr, (asptr->ptr)++, pass);
+    }
+}
+
+/**
+ * アセンブル命令STARTの処理
+ */
+void assemble_start(const CMDLINE *cmdl, PASS pass)
+{
+    if(cmdl->opd->opdc > 1) {
+        setcerr(106, NULL);    /* operand count mismatch */
+        return;
+    }
+    if(cmdl->label == NULL) {
+        setcerr(107, NULL);    /* no label in START */
+        return;
+    }
+    /* プログラム名の設定 */
+    asptr->prog = strdup_chk(cmdl->label, "asptr.prog");
+    /* オペランドがある場合、実行開始アドレスを設定 */
+    if(pass == SECOND && cmdl->opd->opdv[0] != NULL) {
+        if((execptr->start = getlabel(asptr->prog, cmdl->opd->opdv[0])) == 0xFFFF) {
+            setcerr(103, cmdl->opd->opdv[0]);    /* label not found */
+        }
+    }
+}
+
+/**
+ * アセンブル命令ENDの処理
+ */
+void assemble_end(const CMDLINE *cmdl, PASS pass)
+{
+    if(cmdl->opd->opdc > 0) {
+        setcerr(106, NULL);    /* operand count mismatch */
+        return;
+    }
+    /* 1回目のアセンブルの場合は、リテラル領域開始アドレスを設定 */
+    if(pass == FIRST) {
+        asptr->lptr = asptr->ptr;
+    }
+    /* 2回目のアセンブルの場合は、リテラル領域終了アドレスを実行終了アドレスとして設定 */
+    else if(pass == SECOND) {
+        execptr->end = asptr->lptr;
+    }
+    FREE(asptr->prog);
+}
+
+/**
+ * アセンブル命令DSの処理
+ */
+void assemble_ds(const CMDLINE *cmdl, PASS pass)
+{
+    int i;
+    if(cmdl->opd->opdc != 1) {
+        setcerr(106, NULL);    /* operand count mismatch */
+        return;
+    }
+    for(i = 0; i < atoi(cmdl->opd->opdv[0]); i++) {
+        writememory(0x0, (asptr->ptr)++, pass);
+        if(cerr->num > 0) {
+            break;
+        }
+    }
+}
+
+/**
+ * アセンブル命令DCの処理
+ */
+void assemble_dc(const CMDLINE *cmdl, PASS pass)
+{
+    int i;
+    if(cmdl->opd->opdc == 0 || cmdl->opd->opdc >= OPDSIZE) {
+        setcerr(106, NULL);    /* operand count mismatch */
+        return;
+    }
+    for(i = 0; i < cmdl->opd->opdc; i++) {
+        writedc(cmdl->opd->opdv[i], pass);
+        if(cerr->num > 0) {
+            break;
+        }
+    }
+}
+
+/**
+ * アセンブラ命令を処理
  * アセンブラ命令の場合はtrue、それ以外の場合はfalseを返す
+ * エラー発生時は、cerrを設定
  */
-bool assemblecmd(const CMDLINE *cmdl, PASS pass)
+bool assemble_ascmd(const CMDLINE *cmdl, PASS pass)
 {
-    int i = 0;
-    ASCMDID cmdid = 0;
-    ASCMD ascmd[] = {
-        { START, 0, 1, "START" },
-        { END, 0, 0, "END" },
-        { DC, 1, OPDSIZE, "DC" },
-        { DS, 1, 1, "DS" },
-        { 0, 0, 0, NULL }
-    };
-
-    do {
-        if(strcmp(cmdl->cmd, ascmd[i].cmd) == 0) {
-            if(cmdl->opd->opdc < ascmd[i].opdc_min || cmdl->opd->opdc > ascmd[i].opdc_max) {
-                setcerr(106, NULL);    /* operand count mismatch */
-                return true;
-            }
-            cmdid = ascmd[i].cmdid;
-            break;
-        }
-    } while(ascmd[++i].cmdid != 0);
-    /* アセンブラ命令 */
-    switch(cmdid)
-    {
-    case START:
-        if(cmdl->label == NULL) {
-            setcerr(107, NULL);    /* no label in START */
-            return true;
-        }
-        /* プログラム名の設定 */
-        asptr->prog = strdup_chk(cmdl->label, "asptr.prog");
-        /* オペランドがある場合、実行開始アドレスを設定 */
-        if(pass == SECOND && cmdl->opd->opdc == 1) {
-            if((execptr->start = getlabel(asptr->prog, cmdl->opd->opdv[0])) == 0xFFFF) {
-                setcerr(103, cmdl->opd->opdv[0]);    /* label not found */
-            }
-        }
-        break;
-    case END:
-        /* 1回目のアセンブルの場合は、リテラル領域開始アドレスを設定 */
-        if(pass == FIRST) {
-            asptr->lptr = asptr->ptr;
-        }
-        /* 2回目のアセンブルの場合は、リテラル領域終了アドレスを実行終了アドレスとして設定 */
-        else if(pass == SECOND) {
-            execptr->end = asptr->lptr;
-        }
-        FREE(asptr->prog);
-        break;
-    case DS:
-        for(i = 0; i < atoi(cmdl->opd->opdv[0]); i++) {
-            writememory(0x0, (asptr->ptr)++, pass);
-            if(cerr->num > 0) {
-                break;
-            }
-        }
-        break;
-    case DC:
-        for(i = 0; i < cmdl->opd->opdc; i++) {
-            writeDC(cmdl->opd->opdv[i], pass);
-            if(cerr->num > 0) {
-                break;
-            }
-        }
-        break;
-    default:
+    if(strcmp(cmdl->cmd, "START") == 0) {
+        assemble_start(cmdl, pass);
+    } else if(strcmp(cmdl->cmd, "END") == 0) {
+        assemble_end(cmdl, pass);
+    } else if(strcmp(cmdl->cmd, "DS") == 0) {
+        assemble_ds(cmdl, pass);
+    } else if(strcmp(cmdl->cmd, "DC") == 0) {
+        assemble_dc(cmdl, pass);
+    } else {
         return false;
     }
     return true;
 }
 
 /**
- *  macrocmd
- * マクロ命令をメモリに書込
- * マクロ命令の場合はtrue、それ以外の場合はfalseを返す
- */
-bool macrocmd(const CMDLINE *cmdl, PASS pass)
-{
-    int i = 0;
-    MACROCMDID cmdid = 0;
-    MACROCMD macrocmd[] = {
-        { IN, 2, 2, "IN" },
-        { OUT, 2, 2, "OUT" },
-        { RPUSH, 0, 0, "RPUSH" },
-        { RPOP, 0, 0, "RPOP" },
-        { 0, 0, 0, NULL }
-    };
-
-    do {
-        if(strcmp(cmdl->cmd, macrocmd[i].cmd) == 0) {
-            if(cmdl->opd->opdc < macrocmd[i].opdc_min ||
-               cmdl->opd->opdc > macrocmd[i].opdc_max)
-            {
-                setcerr(106, NULL);    /* operand count mismatch */
-                return true;
-            }
-            cmdid = macrocmd[i].cmdid;
-            break;
-        }
-    } while(macrocmd[++i].cmdid != 0);
-    switch(cmdid)
-    {
-    case IN:
-        writeIN(cmdl->opd->opdv[0], cmdl->opd->opdv[1], pass);
-        break;
-    case OUT:
-        writeOUT(cmdl->opd->opdv[0], cmdl->opd->opdv[1], pass);
-        break;
-    case RPUSH:
-        writeRPUSH(pass);
-        break;
-    case RPOP:
-        writeRPOP(pass);
-        break;
-    default:
-        return false;
-    }
-    return true;
-}
-
-/**
- * マクロ命令「IN IBUF,LEN」をメモリに書込
+ * マクロ命令「IN IBUF,LEN」をアセンブル
  *      PUSH 0,GR1
  *      PUSH 0,GR2
  *      LAD GR1,IBUF
@@ -245,25 +338,27 @@ bool macrocmd(const CMDLINE *cmdl, PASS pass)
  *      POP GR2
  *      POP GR1
  */
-void writeIN(const char *ibuf, const char *len, PASS pass)
+void assemble_in(const CMDLINE *cmdl, PASS pass)
 {
-    char *line = malloc_chk(LINESIZE + 1, "writeIN.line");
-
+    char *line = malloc_chk(LINESIZE + 1, "assemble_in.line");
+    if(cmdl->opd->opdc == 0 || cmdl->opd->opdc > 2) {
+        setcerr(106, NULL);    /* operand count mismatch */
+        return;
+    }
     assembleline("    PUSH 0,GR1", pass);
     assembleline("    PUSH 0,GR2", pass);
-    sprintf(line, "    LAD GR1,%s", ibuf);
+    sprintf(line, "    LAD GR1,%s", cmdl->opd->opdv[0]);
     assembleline(line, pass);
-    sprintf(line, "    LAD GR2,%s", len);
+    sprintf(line, "    LAD GR2,%s", cmdl->opd->opdv[1]);
     assembleline(line, pass);
     assembleline("    SVC 1", pass);
     assembleline("    POP GR2", pass);
     assembleline("    POP GR1", pass);
-
     FREE(line);
 }
 
 /**
- *  マクロ命令「OUT OBUF,LEN」をメモリに書込
+ *  マクロ命令「OUT OBUF,LEN」をアセンブル
  *      PUSH 0,GR1
  *      PUSH 0,GR2
  *      LAD GR1,OBUF
@@ -275,15 +370,18 @@ void writeIN(const char *ibuf, const char *len, PASS pass)
  *      POP GR2
  *      POP GR1
  */
-void writeOUT(const char *obuf, const char *len, PASS pass)
+void assemble_out(const CMDLINE *cmdl, PASS pass)
 {
-    char *line = malloc_chk(LINESIZE + 1, "writeOUT.line");
-
+    char *line = malloc_chk(LINESIZE + 1, "assemble_out.line");
+    if(cmdl->opd->opdc == 0 || cmdl->opd->opdc > 2) {
+        setcerr(106, NULL);    /* operand count mismatch */
+        return;
+    }
     assembleline("    PUSH 0,GR1", pass);
     assembleline("    PUSH 0,GR2", pass);
-    sprintf(line, "    LAD GR1,%s", obuf);
+    sprintf(line, "    LAD GR1,%s", cmdl->opd->opdv[0]);
     assembleline(line, pass);
-    sprintf(line, "    LAD GR2,%s", len);
+    sprintf(line, "    LAD GR2,%s", cmdl->opd->opdv[1]);
     assembleline(line, pass);
     assembleline("    SVC 2", pass);
     assembleline("    LAD GR1,=#A", pass);
@@ -303,11 +401,14 @@ void writeOUT(const char *obuf, const char *len, PASS pass)
  *       PUSH 0,GR6
  *       PUSH 0,GR7
  */
-void writeRPUSH(PASS pass)
+void assemble_rpush(const CMDLINE *cmdl, PASS pass)
 {
     int i;
-    char *line = malloc_chk(LINESIZE + 1, "writeRPUSH.line");
-
+    char *line = malloc_chk(LINESIZE + 1, "assemble_rpush.line");
+    if(cmdl->opd->opdc > 0) {
+        setcerr(106, NULL);    /* operand count mismatch */
+        return;
+    }
     for(i = 1; i <= GRSIZE-1; i++) {
         sprintf(line, "    PUSH 0,GR%d", i);
         assembleline(line, pass);
@@ -326,11 +427,14 @@ void writeRPUSH(PASS pass)
  *      POP GR2
  *      POP GR1
  */
-void writeRPOP(PASS pass)
+void assemble_rpop(const CMDLINE *cmdl, PASS pass)
 {
     int i;
-    char *line = malloc_chk(LINESIZE + 1, "writeRPOP.line");
-
+    char *line = malloc_chk(LINESIZE + 1, "assemble_rpop.line");
+    if(cmdl->opd->opdc > 0) {
+        setcerr(106, NULL);    /* operand count mismatch */
+        return;
+    }
     for(i = GRSIZE-1; i >= 1; i--) {
         sprintf(line, "    POP GR%d", i);
         assembleline(line, pass);
@@ -339,10 +443,32 @@ void writeRPOP(PASS pass)
 }
 
 /**
- * 機械語命令をメモリに書込
- * 書込に、成功した場合はtrue、失敗した場合はfalse、を返す
+ * assemble_macrocmd
+ * マクロ命令をアセンブル
+ * マクロ命令の場合はtrue、それ以外の場合はfalseを返す
+ * エラー発生時はcerrを設定
  */
-bool cometcmd(const CMDLINE *cmdl, PASS pass)
+bool assemble_macrocmd(const CMDLINE *cmdl, PASS pass)
+{
+    if(strcmp(cmdl->cmd, "IN") == 0) {
+        assemble_in(cmdl, pass);
+    } else if(strcmp(cmdl->cmd, "OUT") == 0) {
+        assemble_out(cmdl, pass);
+    } else if(strcmp(cmdl->cmd, "RPUSH") == 0) {
+        assemble_rpush(cmdl, pass);
+    } else if(strcmp(cmdl->cmd, "RPOP") == 0) {
+        assemble_rpop(cmdl, pass);
+    } else {
+        return false;
+    }
+    return true;
+}
+
+/**
+ * 機械語命令をアセンブル
+ * 成功した場合はtrue、失敗した場合はfalseを返す
+ */
+bool assemble_cometcmd(const CMDLINE *cmdl, PASS pass)
 {
     WORD cmd, r_r1, x_r2, adr;
 
@@ -430,75 +556,6 @@ bool cometcmd(const CMDLINE *cmdl, PASS pass)
 }
 
 /**
- * COMET IIのメモリにアドレス値を書き込む
- */
-void writememory(WORD word, WORD adr, PASS pass)
-{
-    /* COMET IIメモリオーバーの場合、エラー発生 */
-    if(adr >= sys->memsize) {
-        setcerr(119, word2n(adr));    /* out of COMET II memory */
-        return;
-    }
-    (sys->memory)[adr] = word;
-    if(pass == SECOND && asmode.asdetail == true) {
-        fprintf(stdout, "\t#%04X\t#%04X\n", adr, word);
-    }
-}
-
-/**
- * 文字をメモリに書き込む
- */
-void writestr(const char *str, bool literal, PASS pass)
-{
-    assert(*str == '\'');
-    const char *p = str + 1;
-    bool lw = false;
-
-    for(; ;) {
-        /* 閉じ「'」がないまま文字列が終了した場合 */
-        if(*p == '\0') {
-            setcerr(123, str);    /* unclosed quote */
-            break;
-        }
-        /* 「'」の場合、次の文字が「'」でない場合は正常終了 */
-        if(*p == '\'' && *(++p) != '\'') {
-            break;
-        } else if(literal == true && lw == true) {
-            setcerr(124, str);    /* more than one character in literal */
-            break;
-        }
-        /*リテラルの場合はリテラル領域に書込 */
-        if(literal == true) {
-            writememory(*(p++), (asptr->lptr)++, pass);
-            lw = true;
-        } else {
-            writememory(*(p++), (asptr->ptr)++, pass);
-        }
-    }
-}
-
-/**
- * DC命令の内容を書き込む
- */
-void writeDC(const char *str, PASS pass)
-{
-    WORD adr = 0x0;
-
-    if(*str == '\'') {
-        writestr(str, false, pass);
-    } else {
-        if(*str == '#' || isdigit(*str) || *str == '-') {
-            adr = nh2word(str);
-        } else {
-            if(pass == SECOND && (adr = getlabel(asptr->prog, str)) == 0xFFFF) {
-                setcerr(103, str);    /* label not found */
-            }
-        }
-        writememory(adr, (asptr->ptr)++, pass);
-    }
-}
-
-/**
  * トークンをアセンブル
  */
 bool assembletok(const CMDLINE *cmdl, PASS pass)
@@ -508,45 +565,16 @@ bool assembletok(const CMDLINE *cmdl, PASS pass)
         return true;
     }
     /* アセンブラ命令またはマクロ命令の書込 */
-    if(assemblecmd(cmdl, pass) == false && macrocmd(cmdl, pass) == false) {
-        /* COMET II命令の書込 */
-        if(cometcmd(cmdl, pass) == false && cerr->num == 0) {
-            setcerr(113, cmdl->cmd);    /* operand too many in COMET II command */
+    if(assemble_ascmd(cmdl, pass) == false && assemble_macrocmd(cmdl, pass) == false) {
+        /* 機械語命令の書込 */
+        if(assemble_cometcmd(cmdl, pass) == false) {
+            if(cerr->num == 0) {
+                setcerr(113, cmdl->cmd);    /* operand too many in COMET II command */
+            }
         }
     }
     return (cerr->num == 0) ? true : false;
 }
-
-/**
- * ファイルストリームの現在行を番号付きで表示する
- */
-void printline(FILE *stream, const char *filename, int lineno, char *line)
-{
-    fprintf(stream, "%s:%5d:%s", filename, lineno, line);
-}
-
-/**
- * アドレスを返す
- * アドレスには、リテラル／10進定数／16進定数／アドレス定数が含まれる
- */
-WORD getadr(const char *prog, const char *str, PASS pass)
-{
-    WORD adr = 0x0;
-
-    if(*str == '=') {
-        adr = getliteral(str, pass);
-    } else if(isdigit(*str) || *str == '-' || *str == '#') {
-        adr = nh2word(str);
-    } else {
-        if(pass == SECOND && (adr = getlabel(prog, str)) == 0xFFFF) {
-            if(prog != NULL) {
-                setcerr(103, str);    /* label not found */
-            }
-        }
-    }
-    return adr;
-}
-
 
 /**
  * 1行をアセンブル
@@ -580,17 +608,6 @@ bool assembleline(const char *line, PASS pass)
     }
     FREE(cmdl);
     return stat;
-}
-
-/**
- * アセンブルのエラーをエラーリストに追加
- */
-void addcerrlist_assemble()
-{
-    addcerrlist_tok();
-    addcerrlist_word();
-    addcerrlist_label();
-    addcerrlist(ARRAYSIZE(cerr_assemble), cerr_assemble);
 }
 
 /**

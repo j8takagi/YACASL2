@@ -9,7 +9,7 @@
 /**
  * 機械語命令のリスト
  */
-static CMD comet2cmd[] = {
+static COMET2CMD comet2cmd[] = {
     { "NOP", NONE, 0x0, nop },
     { "LD", R_ADR_X, 0x1000, ld_r_adr_x },
     { "ST", R_ADR_X, 0x1100, st },
