@@ -119,7 +119,7 @@ CMDLINE *linetok(const char *line)
             break;
         }
     }
-    if(*tokens != '\0') {
+    if(*tokens != '\n' && *tokens != '\0') {
         p = tokens;
         cmdl = malloc_chk(sizeof(CMDLINE), "cmdl");
         /* ラベルの取得。行の先頭が空白またはタブの場合、ラベルは空 */
@@ -143,6 +143,7 @@ CMDLINE *linetok(const char *line)
             if(cmdl->label != NULL) {         /* ラベルが定義されていて命令がない場合はエラー */
                 setcerr(105, NULL);    /* no command in the line */
             }
+            FREE(cmdl);
         } else {
             /* 命令の取得 */
             sepp = p + strcspn(p, " \t\n");
