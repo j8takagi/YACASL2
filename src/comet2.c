@@ -58,13 +58,13 @@ int main(int argc, char *argv[])
             return 0;
         case '?':
             fprintf(stderr, usage, argv[0]);
-            exit(-1);
+            exit(1);
         }
     }
     if(argv[optind] == NULL) {
         setcerr(211, NULL);    /* object file not specified */
         fprintf(stderr, "comet2 error - %d: %s\n", cerr->num, cerr->msg);
-        exit(-1);
+        exit(1);
     }
     /* COMET II仮想マシンのリセット */
     reset(memsize, clocks);

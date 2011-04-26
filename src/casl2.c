@@ -162,14 +162,14 @@ int main(int argc, char *argv[])
             return 0;
         case '?':
             fprintf(stderr, usage, argv[0]);
-            exit(-1);
+            exit(1);
         }
     }
     /* ソースファイルが指定されていない場合は終了 */
     if(argv[optind] == NULL) {
         setcerr(126, NULL);    /* no source file */
         fprintf(stderr, "CASL2 error - %d: %s\n", cerr->num, cerr->msg);
-        exit(-1);
+        exit(1);
     }
     reset(memsize, clocks);                        /* 仮想マシンCOMET IIのリセット */
     for(i = 0; i < argc - optind; i++) {           /* 引数からファイル名配列を取得 */
@@ -190,7 +190,7 @@ int main(int argc, char *argv[])
     }
 casl2fin:
     shutdown();                                    /* 仮想マシンCOMET IIのシャットダウン */
-    stat = (cerr->num == 0) ? 0 : -1;
+    stat = (cerr->num == 0) ? 0 : 1;
     freecerr();                                    /* エラーの解放 */
     return stat;
 }

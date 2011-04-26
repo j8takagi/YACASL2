@@ -37,19 +37,19 @@ int main(int argc, char *argv[])
             return 0;
         case '?':
             fprintf(stderr, usage, argv[0]);
-            exit(-1);
+            exit(1);
         }
     }
 
     if(argv[optind] == NULL) {
         fprintf(stderr, usage, argv[0]);
-        exit(-1);
+        exit(1);
     }
     /* WORD値に変換 */
     word = nh2word(argv[optind]);
     if(cerr->num > 0) {
         fprintf(stderr, "Dumpword Error - %d: %s\n", cerr->num, cerr->msg);
-        exit(-1);
+        exit(1);
     }
     fprintf(stdout, "%6s: ", argv[optind]);
     print_dumpword(word, logicalmode);

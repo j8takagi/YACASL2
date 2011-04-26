@@ -53,7 +53,7 @@ OPD *opdtok(const char *str)
             setcerr(117, NULL);    /* operand is too many */
             break;
         }
-        /* 先頭が「=」の場合 */
+        /* 先頭が等号（=）の場合 */
         if(*r == '=') {
             r++;
         }
@@ -153,8 +153,8 @@ CMDLINE *linetok(const char *line)
             while(*p == ' ' || *p == '\t') {
                 p++;
             }
-            /* 改行かタブまでの文字列を取得。
-               「'」で囲まれた文字列に含まれる場合があるため、空白は無視 */
+            /* 改行かタブまでの文字列を取得 */
+            /* 「'」で囲まれた文字列に含まれる場合があるため、空白は無視 */
             if((sepp = p + strcspn(p, "\t\n")) > p) {
                 *sepp = '\0';
                 cmdl->opd = opdtok(p);

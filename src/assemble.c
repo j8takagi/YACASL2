@@ -58,8 +58,6 @@ void assemble_end(const CMDLINE *cmdl, PASS pass);
 
 void assemble_dc(const CMDLINE *cmdl, PASS pass);
 
-bool assemble_ascmd(const CMDLINE *cmdl, PASS pass);
-
 void assemble_in(const CMDLINE *cmdl, PASS pass);
 
 void assemble_out(const CMDLINE *cmdl, PASS pass);
@@ -68,13 +66,35 @@ void assemble_rpush(const CMDLINE *cmdl, PASS pass);
 
 void assemble_rpop(const CMDLINE *cmdl, PASS pass);
 
-bool assemble_macrocmd(const CMDLINE *cmdl, PASS pass);
+bool casl2cmd(CMD *cmdtbl, const CMDLINE *cmdl, PASS pass);
 
-bool assemble_cometcmd(const CMDLINE *cmdl, PASS pass);
+bool assemble_comet2cmd(const CMDLINE *cmdl, PASS pass);
 
 bool assembletok(const CMDLINE *cmdl, PASS pass);
 
 bool assembleline(const char *line, PASS pass);
+
+/**
+ * アセンブラ命令
+ */
+static CMD ascmd[] = {
+    { "START", assemble_start },
+    { "END", assemble_end },
+    { "DS", assemble_ds },
+    { "DC", assemble_dc },
+    { NULL, NULL }
+};
+
+/**
+ * マクロ命令
+ */
+static CMD macrocmd[] = {
+    { "OUT", assemble_out },
+    { "IN", assemble_in },
+    { "RPUSH", assemble_rpush },
+    { "RPOP", assemble_rpop },
+    { NULL, NULL }
+};
 
 /**
  * アセンブルのエラーをエラーリストに追加
@@ -127,7 +147,7 @@ WORD getgr(const char *str, bool is_x)
     assert(str != NULL);
     WORD r;
 
-    /* 「GR[0-7]」以外の文字列では、0xFFFFを返して終了 */
+    /*  "GR[0-7]" 以外の文字列では、0xFFFFを返して終了 */
     if(!(strlen(str) == 3 && strncmp(str, "GR", 2) == 0 &&
          (*(str+2) >= '0' && *(str+2) <= '0' + (GRSIZE - 1))))
     {
@@ -308,28 +328,7 @@ void assemble_dc(const CMDLINE *cmdl, PASS pass)
 }
 
 /**
- * アセンブラ命令を処理
- * アセンブラ命令の場合はtrue、それ以外の場合はfalseを返す
- * エラー発生時は、cerrを設定
- */
-bool assemble_ascmd(const CMDLINE *cmdl, PASS pass)
-{
-    if(strcmp(cmdl->cmd, "START") == 0) {
-        assemble_start(cmdl, pass);
-    } else if(strcmp(cmdl->cmd, "END") == 0) {
-        assemble_end(cmdl, pass);
-    } else if(strcmp(cmdl->cmd, "DS") == 0) {
-        assemble_ds(cmdl, pass);
-    } else if(strcmp(cmdl->cmd, "DC") == 0) {
-        assemble_dc(cmdl, pass);
-    } else {
-        return false;
-    }
-    return true;
-}
-
-/**
- * マクロ命令「IN IBUF,LEN」をアセンブル
+ * マクロ命令 "IN IBUF,LEN" をアセンブル
  *      PUSH 0,GR1
  *      PUSH 0,GR2
  *      LAD GR1,IBUF
@@ -358,7 +357,7 @@ void assemble_in(const CMDLINE *cmdl, PASS pass)
 }
 
 /**
- *  マクロ命令「OUT OBUF,LEN」をアセンブル
+ *  マクロ命令 "OUT OBUF,LEN" をアセンブル
  *      PUSH 0,GR1
  *      PUSH 0,GR2
  *      LAD GR1,OBUF
@@ -392,7 +391,7 @@ void assemble_out(const CMDLINE *cmdl, PASS pass)
     FREE(line);
 }
 
-/** マクロ命令「RPUSH」をメモリに書き込む
+/** マクロ命令 "RPUSH" をメモリに書き込む
  *       PUSH 0,GR1
  *       PUSH 0,GR2
  *       PUSH 0,GR3
@@ -443,32 +442,29 @@ void assemble_rpop(const CMDLINE *cmdl, PASS pass)
 }
 
 /**
- * assemble_macrocmd
- * マクロ命令をアセンブル
- * マクロ命令の場合はtrue、それ以外の場合はfalseを返す
- * エラー発生時はcerrを設定
+ * アセンブラ言語CASL IIの命令を処理
+ * 命令が表で定義されている場合はtrue、それ以外の場合はfalseを返す
+ * エラー発生時は、cerrを設定
  */
-bool assemble_macrocmd(const CMDLINE *cmdl, PASS pass)
+bool casl2cmd(CMD *cmdtbl, const CMDLINE *cmdl, PASS pass)
 {
-    if(strcmp(cmdl->cmd, "IN") == 0) {
-        assemble_in(cmdl, pass);
-    } else if(strcmp(cmdl->cmd, "OUT") == 0) {
-        assemble_out(cmdl, pass);
-    } else if(strcmp(cmdl->cmd, "RPUSH") == 0) {
-        assemble_rpush(cmdl, pass);
-    } else if(strcmp(cmdl->cmd, "RPOP") == 0) {
-        assemble_rpop(cmdl, pass);
-    } else {
-        return false;
+    int i;
+    void (*cmdptr)();
+    for(i = 0; cmdtbl[i].name != NULL; i++) {
+        if(strcmp(cmdl->cmd, cmdtbl[i].name) == 0) {
+            cmdptr = cmdtbl[i].ptr;
+            (*cmdptr)(cmdl, pass);
+            return true;
+        }
     }
-    return true;
+    return false;
 }
 
 /**
- * 機械語命令をアセンブル
- * 成功した場合はtrue、失敗した場合はfalseを返す
+ * システムCOMET IIの命令をアセンブル
+ * アセンブルに成功した場合はtrue、失敗した場合はfalseを返す
  */
-bool assemble_cometcmd(const CMDLINE *cmdl, PASS pass)
+bool assemble_comet2cmd(const CMDLINE *cmdl, PASS pass)
 {
     WORD cmd, r_r1, x_r2, adr;
 
@@ -548,7 +544,7 @@ bool assemble_cometcmd(const CMDLINE *cmdl, PASS pass)
         if(cmd != 0x8000 || (pass == SECOND && adr == 0xFFFF)) {
             adr = getadr(asptr->prog, cmdl->opd->opdv[0], pass);
         }
-        /* メモリへの書き込み */
+        /* メモリへの書込 */
         writememory(cmd, (asptr->ptr)++, pass);
         writememory(adr, (asptr->ptr)++, pass);
     }
@@ -561,13 +557,13 @@ bool assemble_cometcmd(const CMDLINE *cmdl, PASS pass)
 bool assembletok(const CMDLINE *cmdl, PASS pass)
 {
     /* 命令がない場合 */
-    if(cmdl->cmd == NULL){
+    if(cmdl->cmd == NULL) {
         return true;
     }
     /* アセンブラ命令またはマクロ命令の書込 */
-    if(assemble_ascmd(cmdl, pass) == false && assemble_macrocmd(cmdl, pass) == false) {
+    if(casl2cmd(ascmd, cmdl, pass) == false && casl2cmd(macrocmd, cmdl, pass) == false) {
         /* 機械語命令の書込 */
-        if(assemble_cometcmd(cmdl, pass) == false) {
+        if(assemble_comet2cmd(cmdl, pass) == false) {
             if(cerr->num == 0) {
                 setcerr(113, cmdl->cmd);    /* operand too many in COMET II command */
             }
@@ -650,7 +646,7 @@ void outassemble(const char *file)
 
     if((fp = fopen(file, "w")) == NULL) {
         perror(file);
-        exit(-1);
+        exit(1);
     }
     fwrite(sys->memory, sizeof(WORD), execptr->end, fp);
     fclose(fp);

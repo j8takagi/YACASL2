@@ -11,6 +11,7 @@ EXECSRC := exec.c dump.c
 .PHONY: all clean
 
 all: ../casl2 ../comet2 ../dumpword
+	@rm -f *.o
 
 ../casl2: casl2.o $(subst .c,.o,$(COMMONSRC) $(CASL2SRC) $(ASSRC) $(EXECSRC))
 	$(CC) $(CFLAGS) -o $@ $^

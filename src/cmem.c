@@ -15,7 +15,7 @@ void *malloc_chk(size_t size, char *tag)
 
     if((p = malloc(size)) == NULL) {
         fprintf(stderr, "%s: cannot allocate memory\n", tag);
-        exit(-1);
+        exit(1);
     }
     return memset(p, 0, size);
 }
@@ -30,7 +30,7 @@ void *calloc_chk(size_t nmemb, size_t size, char *tag)
 
     if((p = calloc(nmemb, size)) == NULL) {
         fprintf(stderr, "%s: cannot allocate memory\n", tag);
-        exit(-1);
+        exit(1);
     }
     return p;
 }
