@@ -237,7 +237,8 @@ void ret();
 void svc();
 
 /**
- * COMET II仮想マシンの実行
+ * COMET II仮想マシンの実行\n
+ * 関数へのポインタで呼び出す関数は、Class Reference 参照
  */
 void exec();
 

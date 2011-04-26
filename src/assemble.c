@@ -21,7 +21,7 @@ ASPTR *asptr;
  * アセンブルのエラー定義
  */
 static CERR cerr_assemble[] = {
-    { 106, "operand mismatch in assemble command" },
+    { 106, "operand mismatch in CASL II command" },
     { 107, "no label in START" },
     { 108, "not command of operand \"r\"" },
     { 109, "not command of operand \"r1,r2\"" },
@@ -116,7 +116,7 @@ void printline(FILE *stream, const char *filename, int lineno, char *line)
 }
 
 /**
- * アドレスを返す
+ * アドレスを返す\n
  * アドレスには、リテラル／10進定数／16進定数／アドレス定数が含まれる
  */
 WORD getadr(const char *prog, const char *str, PASS pass)
@@ -138,8 +138,8 @@ WORD getadr(const char *prog, const char *str, PASS pass)
 }
 
 /**
- * 汎用レジスタを表す文字列 "GR[0-7]" から、レジスタ番号 [0-7] をWORD値で返す
- * 文字列が汎用レジスタを表さない場合は、0xFFFFを返す
+ * 汎用レジスタを表す文字列 "GR[0-7]" から、レジスタ番号 [0-7] をWORD値で返す\n
+ * 文字列が汎用レジスタを表さない場合は、0xFFFFを返す\n
  * is_xがtrueの場合は指標レジスタ。GR0が指定された場合は、COMET IIの仕様によりエラー発生
  */
 WORD getgr(const char *str, bool is_x)
@@ -163,7 +163,7 @@ WORD getgr(const char *str, bool is_x)
 }
 
 /**
- * 定数の前に等号（=）をつけて記述されるリテラルを返す
+ * 定数の前に等号（=）をつけて記述されるリテラルを返す\n
  * リテラルには、10進定数／16進定数／文字定数が含まれる
  */
 WORD getliteral(const char *str, PASS pass)
@@ -250,6 +250,7 @@ void writedc(const char *str, PASS pass)
 
 /**
  * アセンブラ命令STARTの処理
+ * \relates casl2cmd
  */
 void assemble_start(const CMDLINE *cmdl, PASS pass)
 {
@@ -273,6 +274,7 @@ void assemble_start(const CMDLINE *cmdl, PASS pass)
 
 /**
  * アセンブラ命令ENDの処理
+ * \relates casl2cmd
  */
 void assemble_end(const CMDLINE *cmdl, PASS pass)
 {
@@ -293,6 +295,7 @@ void assemble_end(const CMDLINE *cmdl, PASS pass)
 
 /**
  * アセンブラ命令DSの処理
+ * \relates casl2cmd
  */
 void assemble_ds(const CMDLINE *cmdl, PASS pass)
 {
@@ -311,6 +314,7 @@ void assemble_ds(const CMDLINE *cmdl, PASS pass)
 
 /**
  * アセンブラ命令DCの処理
+ * \relates casl2cmd
  */
 void assemble_dc(const CMDLINE *cmdl, PASS pass)
 {
@@ -328,7 +332,8 @@ void assemble_dc(const CMDLINE *cmdl, PASS pass)
 }
 
 /**
- * マクロ命令 "IN IBUF,LEN" をアセンブル
+ * マクロ命令 "IN IBUF,LEN" をアセンブル\n
+ * \code
  *      PUSH 0,GR1
  *      PUSH 0,GR2
  *      LAD GR1,IBUF
@@ -336,6 +341,8 @@ void assemble_dc(const CMDLINE *cmdl, PASS pass)
  *      SVC 1
  *      POP GR2
  *      POP GR1
+ * \endcode
+ * \relates casl2cmd
  */
 void assemble_in(const CMDLINE *cmdl, PASS pass)
 {
@@ -357,7 +364,8 @@ void assemble_in(const CMDLINE *cmdl, PASS pass)
 }
 
 /**
- *  マクロ命令 "OUT OBUF,LEN" をアセンブル
+ * マクロ命令 "OUT OBUF,LEN" をアセンブル\n
+ * \code
  *      PUSH 0,GR1
  *      PUSH 0,GR2
  *      LAD GR1,OBUF
@@ -368,6 +376,8 @@ void assemble_in(const CMDLINE *cmdl, PASS pass)
  *      SVC 2
  *      POP GR2
  *      POP GR1
+ * \endcode
+ * \relates casl2cmd
  */
 void assemble_out(const CMDLINE *cmdl, PASS pass)
 {
@@ -391,7 +401,9 @@ void assemble_out(const CMDLINE *cmdl, PASS pass)
     FREE(line);
 }
 
-/** マクロ命令 "RPUSH" をメモリに書き込む
+/**
+ * マクロ命令 "RPUSH" をメモリに書き込む
+ * \code
  *       PUSH 0,GR1
  *       PUSH 0,GR2
  *       PUSH 0,GR3
@@ -399,6 +411,8 @@ void assemble_out(const CMDLINE *cmdl, PASS pass)
  *       PUSH 0,GR5
  *       PUSH 0,GR6
  *       PUSH 0,GR7
+ * \endcode
+ * \relates casl2cmd
  */
 void assemble_rpush(const CMDLINE *cmdl, PASS pass)
 {
@@ -416,7 +430,8 @@ void assemble_rpush(const CMDLINE *cmdl, PASS pass)
 }
 
 /**
- * マクロ命令 "RPOP" をメモリに書き込む
+ * マクロ命令 "RPOP" をメモリに書き込む\n
+ * \code
  *      POP GR7
  *      POP GR6
  *      POP GR5
@@ -425,6 +440,8 @@ void assemble_rpush(const CMDLINE *cmdl, PASS pass)
  *      POP GR3
  *      POP GR2
  *      POP GR1
+ * \endcode
+ * \relates casl2cmd
  */
 void assemble_rpop(const CMDLINE *cmdl, PASS pass)
 {
@@ -442,9 +459,11 @@ void assemble_rpop(const CMDLINE *cmdl, PASS pass)
 }
 
 /**
- * アセンブラ言語CASL IIの命令を処理
- * 命令が表で定義されている場合はtrue、それ以外の場合はfalseを返す
- * エラー発生時は、cerrを設定
+ * アセンブラ言語CASL IIの命令を処理\n
+ * 命令が表で定義されている場合はtrue、それ以外の場合はfalseを返す\n
+ * エラー発生時は、cerrを設定\n
+ * 関数へのポインタで呼び出す関数は、Class Reference 参照
+ * \class casl2cmd
  */
 bool casl2cmd(CMD *cmdtbl, const CMDLINE *cmdl, PASS pass)
 {
@@ -461,7 +480,7 @@ bool casl2cmd(CMD *cmdtbl, const CMDLINE *cmdl, PASS pass)
 }
 
 /**
- * システムCOMET IIの命令をアセンブル
+ * システムCOMET IIの命令をアセンブル\n
  * アセンブルに成功した場合はtrue、失敗した場合はfalseを返す
  */
 bool assemble_comet2cmd(const CMDLINE *cmdl, PASS pass)
@@ -573,7 +592,7 @@ bool assembletok(const CMDLINE *cmdl, PASS pass)
 }
 
 /**
- * 1行をアセンブル
+ * 1行をアセンブル\n
  * passが1の場合はラベルを登録し、2の場合はラベルからアドレスを読み込む
  */
 bool assembleline(const char *line, PASS pass)
@@ -607,7 +626,7 @@ bool assembleline(const char *line, PASS pass)
 }
 
 /**
- * 指定された名前のファイルをアセンブル
+ * 指定された名前のファイルをアセンブル\n
  * アセンブル完了時はtrue、エラー発生時はfalseを返す
  */
 bool assemblefile(const char *file, PASS pass)

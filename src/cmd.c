@@ -7,7 +7,7 @@
 #include "exec.h"
 
 /**
- * 機械語命令のリスト
+ * システムCOMET IIの命令表
  */
 static COMET2CMD comet2cmd[] = {
     { "NOP", NONE, 0x0, nop },
@@ -51,7 +51,7 @@ static COMET2CMD comet2cmd[] = {
 };
 
 /**
- * 命令コード配列のサイズ
+ * 命令表のサイズ
  */
 static int comet2cmdsize = ARRAYSIZE(comet2cmd);
 
@@ -112,7 +112,7 @@ bool create_cmdtype_code()
 }
 
 /**
- * 命令の名前とタイプから、命令コードを返す
+ * 命令の名前とタイプから、命令コードを返す\n
  * 無効な場合は0xFFFFを返す
  */
 WORD getcmdcode(const char *cmd, CMDTYPE type)

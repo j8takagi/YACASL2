@@ -74,7 +74,7 @@ bool loadassemble(const char *file)
 
 /**
  * プログラムレジスタ（PR）を表す文字列を返す
- **/
+ */
 char *pr2str(WORD pr) {
     char *str = malloc_chk(CERRSTRSIZE + 1, "pr2str.pr");
 
@@ -202,6 +202,7 @@ WORD get_val_adr_x(WORD adr, WORD oprx)
 
 /**
  * NOP命令。語長1（OPのみ）
+ * \relates exec
  */
 void nop()
 {
@@ -210,6 +211,7 @@ void nop()
 
 /**
  * LD命令 - オペランドr,adr,x。語長2
+ * \relates exec
  */
 void ld_r_adr_x()
 {
@@ -222,6 +224,7 @@ void ld_r_adr_x()
 
 /**
  * LD命令 - オペランドr1,r2。語長1
+ * \relates exec
  */
 void ld_r1_r2()
 {
@@ -233,6 +236,7 @@ void ld_r1_r2()
 
 /**
  * ST命令。語長2
+ * \relates exec
  */
 void st()
 {
@@ -245,6 +249,7 @@ void st()
 
 /**
  * LAD命令。語長2
+ * \relates exec
  */
 void lad()
 {
@@ -256,8 +261,9 @@ void lad()
 }
 
 /**
- * ADDA命令のテンプレート
+ * ADDA命令のテンプレート\n
  * 汎用レジスタrに値valを算術加算
+ * \relates exec
  */
 void adda(WORD r, WORD val)
 {
@@ -280,6 +286,7 @@ void adda(WORD r, WORD val)
 
 /**
  * ADDA命令 - オペランドr,adr,x。語長2
+ * \relates exec
  */
 void adda_r_adr_x()
 {
@@ -292,6 +299,7 @@ void adda_r_adr_x()
 
 /**
  * ADDA命令 - オペランドr1,r2。語長1
+ * \relates exec
  */
 void adda_r1_r2()
 {
@@ -303,6 +311,7 @@ void adda_r1_r2()
 
 /**
  * SUBA命令 - オペランドr,adr,x。語長2
+ * \relates exec
  */
 void suba_r_adr_x()
 {
@@ -315,6 +324,7 @@ void suba_r_adr_x()
 
 /**
  * SUBA命令 - オペランドr1,r2。語長1
+ * \relates exec
  */
 void suba_r1_r2()
 {
@@ -325,8 +335,9 @@ void suba_r1_r2()
 }
 
 /**
- * ADDL命令のテンプレート
+ * ADDL命令のテンプレート\n
  * 汎用レジスタrに値valを論理加算
+ * \relates exec
  */
 void addl(WORD r, WORD val)
 {
@@ -345,6 +356,7 @@ void addl(WORD r, WORD val)
 
 /**
  * ADDL命令 - オペランドr,adr,x。語長2
+ * \relates exec
  */
 void addl_r_adr_x()
 {
@@ -357,6 +369,7 @@ void addl_r_adr_x()
 
 /**
  * ADDL命令 - オペランドr1,r2。語長1
+ * \relates exec
  */
 void addl_r1_r2()
 {
@@ -368,6 +381,7 @@ void addl_r1_r2()
 
 /**
  * SUBL命令 - オペランドr,adr,x。語長2
+ * \relates exec
  */
 void subl_r_adr_x()
 {
@@ -378,8 +392,10 @@ void subl_r_adr_x()
     sys->cpu->pr += 2;
 }
 
+
 /**
  * SUBL命令 - オペランドr1,r2。語長1
+ * \relates exec
  */
 void subl_r1_r2()
 {
@@ -391,6 +407,7 @@ void subl_r1_r2()
 
 /**
  * AND命令 - オペランドr,adr,x。語長2
+ * \relates exec
  */
 void and_r_adr_x()
 {
@@ -403,6 +420,7 @@ void and_r_adr_x()
 
 /**
  * AND命令 - オペランドr1,r2。語長1
+ * \relates exec
  */
 void and_r1_r2()
 {
@@ -414,6 +432,7 @@ void and_r1_r2()
 
 /**
  * OR命令 - オペランドr,adr,x。語長2
+ * \relates exec
  */
 void or_r_adr_x()
 {
@@ -426,6 +445,7 @@ void or_r_adr_x()
 
 /**
  * OR命令 - オペランドr1,r2。語長1
+ * \relates exec
  */
 void or_r1_r2()
 {
@@ -437,6 +457,7 @@ void or_r1_r2()
 
 /**
  * XOR命令 - オペランドr,adr,x。語長2
+ * \relates exec
  */
 void xor_r_adr_x()
 {
@@ -449,6 +470,7 @@ void xor_r_adr_x()
 
 /**
  * XOR命令 - オペランドr1,r2。語長1
+ * \relates exec
  */
 void xor_r1_r2()
 {
@@ -459,7 +481,7 @@ void xor_r1_r2()
 }
 
 /**
- * CPA命令のテンプレート
+ * CPA命令のテンプレート\n
  * 汎用レジスタrの内容と値valを算術比較
  */
 void cpa(WORD r, WORD val)
@@ -474,6 +496,7 @@ void cpa(WORD r, WORD val)
 
 /**
  * CPA命令 - オペランドr,adr,x。語長2
+ * \relates exec
  */
 void cpa_r_adr_x()
 {
@@ -486,6 +509,7 @@ void cpa_r_adr_x()
 
 /**
  * CPA命令 - オペランドr1,r2。語長1
+ * \relates exec
  */
 void cpa_r1_r2()
 {
@@ -496,7 +520,7 @@ void cpa_r1_r2()
 }
 
 /**
- * CPL命令のテンプレート
+ * CPL命令のテンプレート\n
  * 汎用レジスタrの内容と値valを論理比較
  */
 void cpl(WORD r, WORD val)
@@ -514,6 +538,7 @@ void cpl(WORD r, WORD val)
 
 /**
  * CPL命令 - オペランドr,adr,x。語長2
+ * \relates exec
  */
 void cpl_r_adr_x()
 {
@@ -526,6 +551,7 @@ void cpl_r_adr_x()
 
 /**
  * CPL命令 - オペランドr1,r2。語長1
+ * \relates exec
  */
 void cpl_r1_r2()
 {
@@ -536,7 +562,8 @@ void cpl_r1_r2()
 }
 
 /**
- * SLA命令 - オペランドr,adr,x。語長2
+ * SLA命令 - オペランドr,adr,x。語長2\n
+ * \relates exec
  * 算術演算なので、第15ビットは送り出されない
  */
 void sla()
@@ -570,9 +597,10 @@ void sla()
 }
 
 /**
- * SRA命令 - オペランドr,adr,x。語長2
- * 算術演算なので、第15ビットは送り出されない
+ * SRA命令 - オペランドr,adr,x。語長2\n
+ * 算術演算なので、第15ビットは送り出されない\n
  * 空いたビット位置には符号と同じものが入る
+ * \relates exec
  */
 void sra()
 {
@@ -609,6 +637,7 @@ void sra()
 
 /**
  * SLL命令 - オペランドr,adr,x。語長2
+ * \relates exec
  */
 void sll()
 {
@@ -639,6 +668,7 @@ void sll()
 
 /**
  * SRL命令 - オペランドr,adr,x。語長2
+ * \relates exec
  */
 void srl()
 {
@@ -670,6 +700,7 @@ void srl()
 
 /**
  * JPL命令。語長2
+ * \relates exec
  */
 void jpl()
 {
@@ -685,6 +716,7 @@ void jpl()
 
 /**
  * JMI命令。語長2
+ * \relates exec
  */
 void jmi()
 {
@@ -700,6 +732,7 @@ void jmi()
 
 /**
  * JNZ命令。語長2
+ * \relates exec
  */
 void jnz()
 {
@@ -715,6 +748,7 @@ void jnz()
 
 /**
  * JZE命令。語長2
+ * \relates exec
  */
 void jze()
 {
@@ -730,6 +764,7 @@ void jze()
 
 /**
  * JOV命令。語長2
+ * \relates exec
  */
 void jov()
 {
@@ -745,6 +780,7 @@ void jov()
 
 /**
  * JUMP命令。語長2
+ * \relates exec
  */
 void jump()
 {
@@ -756,6 +792,7 @@ void jump()
 
 /**
  * PUSH命令。語長2
+ * \relates exec
  */
 void push()
 {
@@ -769,6 +806,7 @@ void push()
 
 /**
  * POP命令。語長1
+ * \relates exec
  */
 void pop()
 {
@@ -781,6 +819,7 @@ void pop()
 
 /**
  * CALL命令。語長2
+ * \relates exec
  */
 void call()
 {
@@ -794,6 +833,7 @@ void call()
 
 /**
  * RET命令。語長1（OPのみ）
+ * \relates exec
  */
 void ret()
 {
@@ -807,6 +847,7 @@ void ret()
 
 /**
  * SVC命令。語長2
+ * \relates exec
  */
 void svc()
 {
@@ -830,6 +871,7 @@ void svc()
 
 /**
  * 仮想マシンCOMET IIの実行
+ * \class exec
  */
 void exec()
 {

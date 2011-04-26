@@ -6,7 +6,7 @@
 #include "cmem.h"
 
 /**
- * mallocを実行し、0で初期化
+ * mallocを実行し、0で初期化\n
  * メモリを確保できない場合はエラーを出力して終了
  */
 void *malloc_chk(size_t size, char *tag)
@@ -21,7 +21,7 @@ void *malloc_chk(size_t size, char *tag)
 }
 
 /**
- * callocを実行
+ * callocを実行\n
  * メモリを確保できない場合はエラーを出力して終了
  */
 void *calloc_chk(size_t nmemb, size_t size, char *tag)
