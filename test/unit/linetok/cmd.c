@@ -7,7 +7,7 @@
 int main(){
     int i, j;
     char *testline[] = {
-        "IOTEST START\n",
+        /* "IOTEST START\n", */
         "	OUT OBUF1,OLEN1\n",
         "	OUT OBUF2,OLEN2	;comment\n",
         "	OUT OBUF1,OLEN1 \n",
@@ -16,13 +16,14 @@ int main(){
         "	OUT OBUF1, OLEN1 \n",
         "BEGIN	LD	GR1, A\n",
         "\n",
+        ";comment\n",
         "	;comment\n"
     };
 
     CMDLINE *testcl = malloc(sizeof(CMDLINE));
-    cerr_init();    /* エラーの初期化 */
     addcerrlist_tok();
     for(i = 0; i < sizeof testline /sizeof testline[0]; i++) {
+        cerr_init();    /* エラーの初期化 */
         printf("%d: %s", i, testline[i]);
         testcl = linetok(testline[i]);
         if(testcl == NULL) {

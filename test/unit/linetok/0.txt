@@ -1,19 +1,20 @@
-0: IOTEST START
-cl->label: IOTEST
-cl->cmd: START
-cl->opdc: 0
-
-1: 	OUT OBUF1,OLEN1
+0: 	OUT OBUF1,OLEN1
 cl->cmd: OUT
 cl->opdc: 2
 cl->opdv[0]: OBUF1
 cl->opdv[1]: OLEN1
 
-2: 	OUT OBUF2,OLEN2	;comment
+1: 	OUT OBUF2,OLEN2	;comment
 cl->cmd: OUT
 cl->opdc: 2
 cl->opdv[0]: OBUF2
 cl->opdv[1]: OLEN2
+
+2: 	OUT OBUF1,OLEN1 
+cl->cmd: OUT
+cl->opdc: 2
+cl->opdv[0]: OBUF1
+cl->opdv[1]: OLEN1
 
 3: 	OUT OBUF1,OLEN1 
 cl->cmd: OUT
@@ -21,36 +22,31 @@ cl->opdc: 2
 cl->opdv[0]: OBUF1
 cl->opdv[1]: OLEN1
 
-4: 	OUT OBUF1,OLEN1 
-cl->cmd: OUT
-cl->opdc: 2
-cl->opdv[0]: OBUF1
-cl->opdv[1]: OLEN1
-
-5: 	OUT OBUF2,OLEN2	
+4: 	OUT OBUF2,OLEN2	
 cl->cmd: OUT
 cl->opdc: 2
 cl->opdv[0]: OBUF2
 cl->opdv[1]: OLEN2
 
-6: 	OUT OBUF1, OLEN1 
+5: 	OUT OBUF1, OLEN1 
 cl->cmd: OUT
 cl->opdc: 1
 cl->opdv[0]: OBUF1
 	error - 121: cannot get operand token
 
-7: BEGIN	LD	GR1, A
+6: BEGIN	LD	GR1, A
 cl->label: BEGIN
 cl->cmd: LD
 cl->opdc: 1
 cl->opdv[0]: GR1
 	error - 121: cannot get operand token
 
-8: 
+7: 
 cl is NULL
-	error - 121: cannot get operand token
+
+8: ;comment
+cl is NULL
 
 9: 	;comment
 cl is NULL
-	error - 121: cannot get operand token
 

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "struct.h"
 #include "cerr.h"
+#include "exec.h"
 
 int main(){
     int i;
