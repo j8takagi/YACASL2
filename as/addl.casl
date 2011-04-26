@@ -1,10 +1,12 @@
 ;;; ADDL r,adr
 MAIN    START
+        PUSH    0,GR1
         LD      GR1,A
         ADDL    GR1,B
         ST      GR1,C
+        POP     GR1
         RET
 A       DC      3
-B       DC      1
+B       DC      2
 C       DS      1
         END
