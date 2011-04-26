@@ -14,12 +14,15 @@ all: ../casl2 ../comet2 ../dumpword
 
 ../casl2: casl2.o $(subst .c,.o,$(COMMONSRC) $(CASL2SRC) $(ASSRC) $(EXECSRC))
 	$(CC) $(CFLAGS) -o $@ $^
+	@rm -f *.d
 
 ../comet2: comet2.o $(subst .c,.o,$(COMMONSRC) $(CASL2SRC) $(EXECSRC))
 	$(CC) $(CFLAGS) -o $@ $^
+	@rm -f *.d
 
 ../dumpword: dumpword.o $(subst .c,.o,$(COMMONSRC))
 	$(CC) $(CFLAGS) -o $@ $^
+	@rm -f *.d
 
 %.o: %.c
 	$(CC) -c $(CFLAGS) $<
