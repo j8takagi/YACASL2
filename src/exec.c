@@ -263,7 +263,6 @@ void lad()
 /**
  * ADDA命令のテンプレート\n
  * 汎用レジスタrに値valを算術加算
- * \relates exec
  */
 void adda(WORD r, WORD val)
 {
@@ -337,7 +336,6 @@ void suba_r1_r2()
 /**
  * ADDL命令のテンプレート\n
  * 汎用レジスタrに値valを論理加算
- * \relates exec
  */
 void addl(WORD r, WORD val)
 {
@@ -563,8 +561,8 @@ void cpl_r1_r2()
 
 /**
  * SLA命令 - オペランドr,adr,x。語長2\n
- * \relates exec
  * 算術演算なので、第15ビットは送り出されない
+ * \relates exec
  */
 void sla()
 {
