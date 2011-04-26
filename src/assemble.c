@@ -118,7 +118,7 @@ WORD getadr(const char *prog, const char *str, PASS pass)
 }
 
 /**
- * 汎用レジスタを表す文字列「GR[0-7]」から、レジスタ番号[0-7]をWORD値で返す
+ * 汎用レジスタを表す文字列 "GR[0-7]" から、レジスタ番号 [0-7] をWORD値で返す
  * 文字列が汎用レジスタを表さない場合は、0xFFFFを返す
  * is_xがtrueの場合は指標レジスタ。GR0が指定された場合は、COMET IIの仕様によりエラー発生
  */
@@ -229,7 +229,7 @@ void writedc(const char *str, PASS pass)
 }
 
 /**
- * アセンブル命令STARTの処理
+ * アセンブラ命令STARTの処理
  */
 void assemble_start(const CMDLINE *cmdl, PASS pass)
 {
@@ -252,7 +252,7 @@ void assemble_start(const CMDLINE *cmdl, PASS pass)
 }
 
 /**
- * アセンブル命令ENDの処理
+ * アセンブラ命令ENDの処理
  */
 void assemble_end(const CMDLINE *cmdl, PASS pass)
 {
@@ -272,7 +272,7 @@ void assemble_end(const CMDLINE *cmdl, PASS pass)
 }
 
 /**
- * アセンブル命令DSの処理
+ * アセンブラ命令DSの処理
  */
 void assemble_ds(const CMDLINE *cmdl, PASS pass)
 {
@@ -290,7 +290,7 @@ void assemble_ds(const CMDLINE *cmdl, PASS pass)
 }
 
 /**
- * アセンブル命令DCの処理
+ * アセンブラ命令DCの処理
  */
 void assemble_dc(const CMDLINE *cmdl, PASS pass)
 {
@@ -417,7 +417,7 @@ void assemble_rpush(const CMDLINE *cmdl, PASS pass)
 }
 
 /**
- * マクロ命令「RPOP」をメモリに書き込む
+ * マクロ命令 "RPOP" をメモリに書き込む
  *      POP GR7
  *      POP GR6
  *      POP GR5
