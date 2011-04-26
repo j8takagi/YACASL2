@@ -1,6 +1,7 @@
 #ifndef YACASL2_CASL2_INCLUDED
 #define YACASL2_CASL2_INCLUDED
 
+#include <time.h>
 #include "word.h"
 
 /**
@@ -39,7 +40,7 @@ typedef struct {
     CPU *cpu;        /**<CPU */
     WORD *memory;    /**<メモリ */
     int memsize;     /**<メモリサイズ */
-    unsigned clocks;      /**<クロック周波数 */
+    clock_t clocks;  /**<クロック周波数 */
 } SYSTEM;
 
 extern SYSTEM *sys;
