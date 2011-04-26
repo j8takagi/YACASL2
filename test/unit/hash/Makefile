@@ -13,4 +13,8 @@ TESTTARGET_FILES := $(TARGETDIR)/hash.c $(TARGETDIR)/cmem.c $(TARGETDIR)/cerr.c 
 
 $(CMD_FILE): $(CMDSRC_FILE) $(TESTTARGET_FILES)
 	$(CC) $(CFLAGS) -I $(INCLUDEDIR) -o $@ $^
-	@rm -rf cmd.dSYM
+
+clean_cmd:
+	@rm -rf cmd.dSYM cmd
+
+clean: clean_cmd

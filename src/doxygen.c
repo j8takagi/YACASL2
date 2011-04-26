@@ -8,7 +8,6 @@
  * \section そのほかのソースファイル
  * - src/assemble.c
  * - src/cerr.c
- * - src/cmd.c
  * - src/cmem.c
  * - src/dump.c
  * - src/exec.c

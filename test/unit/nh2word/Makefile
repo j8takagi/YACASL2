@@ -13,3 +13,8 @@ TESTTARGET_FILES := cmd.c $(TARGETDIR)/cmem.c $(TARGETDIR)/cerr.c $(TARGETDIR)/w
 
 $(CMD_FILE): $(CMDSRC_FILE) $(TESTTARGET_FILES)
 	$(CC) $(CFLAGS) -I $(INCLUDEDIR) -o $@ $^
+
+clean_cmd:
+	@rm -rf cmd.dSYM cmd
+
+clean: clean_cmd
