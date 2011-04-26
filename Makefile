@@ -23,6 +23,7 @@ gtags:
 
 htags: doc_inner gtags
 	@$(HTAGS) $(HTAGSFLAG) $</
+	@$(MV) $</HTML $</htags
 
 doc_inner:
 	@$(MKDIR) $@
