@@ -22,6 +22,7 @@ gtags:
 	@$(GTAGS)
 
 htags: doc_inner gtags
+	@rm -rf $</htags
 	@$(HTAGS) $(HTAGSFLAG) $</
 	@$(MV) $</HTML $</htags
 
