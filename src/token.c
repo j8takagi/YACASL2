@@ -144,6 +144,7 @@ CMDLINE *linetok(const char *line)
             if(cmdl->label != '\0') {         /* ラベルが定義されていて命令がない場合はエラー */
                 setcerr(105, "");    /* no command in the line */
             }
+            FREE(cmdl->label);
             FREE(cmdl);
         } else {
             /* 命令の取得 */
