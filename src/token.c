@@ -122,7 +122,7 @@ CMDLINE *linetok(const char *line)
     if(*tokens != '\n' && *tokens != '\0') {
         p = tokens;
         cmdl = malloc_chk(sizeof(CMDLINE), "cmdl");
-        cmdl->label = malloc_chk(sizeof(LABELSIZE + 1), "cmdl.label");
+        cmdl->label = malloc_chk(LABELSIZE + 1, "cmdl.label");
         /* ラベルの取得。行の先頭が空白またはタブの場合、ラベルは空 */
         if((sepp = p + strcspn(p, " \t\n")) == p){
             cmdl->label = '\0';
