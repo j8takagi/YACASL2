@@ -128,8 +128,8 @@ WORD getadr(const char *prog, const char *str, PASS pass)
     } else if(isdigit(*str) || *str == '-' || *str == '#') {
         adr = nh2word(str);
     } else {
-        if(pass == SECOND && (adr = getlabel(prog, str)) == 0xFFFF) {
-            if(prog != NULL) {
+        if(pass == SECOND) {
+            if((adr = getlabel(prog, str)) == 0xFFFF) {
                 setcerr(103, str);    /* label not found */
             }
         }
@@ -263,7 +263,7 @@ void assemble_start(const CMDLINE *cmdl, PASS pass)
         return;
     }
     /* プログラム名の設定 */
-    asptr->prog = strdup_chk(cmdl->label, "asptr.prog");
+    strcpy(asptr->prog, cmdl->label);
     /* オペランドがある場合、実行開始アドレスを設定 */
     if(pass == SECOND && cmdl->opd->opdv[0] != NULL) {
         if((execptr->start = getlabel(asptr->prog, cmdl->opd->opdv[0])) == 0xFFFF) {
@@ -290,7 +290,7 @@ void assemble_end(const CMDLINE *cmdl, PASS pass)
     else if(pass == SECOND) {
         execptr->end = asptr->lptr;
     }
-    FREE(asptr->prog);
+    *(asptr->prog) = '\0';
 }
 
 /**
@@ -558,7 +558,7 @@ bool assemble_comet2cmd(const CMDLINE *cmdl, PASS pass)
         /* CALL以外の命令の場合と、プログラムの入口名を取得できない場合は、 */
         /* 同一プログラム内のラベルを取得 */
         if(pass == SECOND && cmd == 0x8000) {        /* CALL命令 */
-            adr = getlabel(NULL, cmdl->opd->opdv[0]);
+            adr = getlabel("", cmdl->opd->opdv[0]);
         }
         if(cmd != 0x8000 || (pass == SECOND && adr == 0xFFFF)) {
             adr = getadr(asptr->prog, cmdl->opd->opdv[0], pass);

@@ -37,7 +37,7 @@ unsigned labelhash(const char *prog, const char *label)
     int i = 0, j;
     unsigned h;
 
-    if(prog != NULL) {
+    if(*prog != '\0') {
         keys[i] = malloc_chk(sizeof(HKEY), "labelhash.key");
         keys[i]->type = CHARS;
         keys[i]->val.s = strdup_chk(prog, "labelhash.key.val");
@@ -63,7 +63,7 @@ WORD getlabel(const char *prog, const char *label)
     LABELTAB *p;
 
     for(p = labels[labelhash(prog, label)]; p != NULL; p = p->next) {
-        if((prog == NULL || (p->prog != NULL && strcmp(prog, p->prog) == 0)) &&
+        if((*prog == '\0' || (strcmp(prog, p->prog) == 0)) &&
            strcmp(label, p->label) == 0)
         {
             return p->adr;
@@ -89,11 +89,7 @@ bool addlabel(const char *prog, const char *label, WORD adr)
     /* メモリを確保 */
     p = malloc_chk(sizeof(LABELTAB), "labels.next");
     /* プログラム名を設定 */
-    if(prog == NULL) {
-        p->prog = NULL;
-    } else {
-        p->prog = strdup_chk(prog, "labels.prog");
-    }
+    p->prog = strdup_chk(prog, "labels.prog");
     /* ラベルを設定 */
     p->label = strdup_chk(label, "labels.label");
     /* アドレスを設定 */
@@ -129,18 +125,14 @@ void printlabel()
         for(p = labels[i]; p != NULL; p = p->next) {
             assert(p->label != NULL);
             l[s] = malloc_chk(sizeof(LABELARRAY), "lables");
-            if(p->prog == NULL) {
-                l[s]->prog = NULL;
-            } else {
-                l[s]->prog = strdup_chk(p->prog, "labels.prog");
-            }
+            l[s]->prog = strdup_chk(p->prog, "labels.prog");
             l[s]->label = strdup_chk(p->label, "labels.label");
             l[s++]->adr = p->adr;
         }
     }
     qsort(l, s, sizeof(*l), compare_adr);
     for(i = 0; i < s; i++) {
-        if(l[i]->prog != NULL) {
+        if(*(l[i]->prog) != '\0') {
             fprintf(stdout, "%s.", l[i]->prog);
         }
         fprintf(stdout, "%s ---> #%04X\n", l[i]->label, l[i]->adr);

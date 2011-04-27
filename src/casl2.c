@@ -65,6 +65,7 @@ void assemble(int filec, char *filev[])
 
     create_cmdtype_code();                         /* 命令の名前とタイプがキーのハッシュ表を作成 */
     asptr = malloc_chk(sizeof(ASPTR), "asptr");    /* アセンブル時のプロパティ用の領域確保 */
+    asptr->prog = malloc_chk(sizeof(LABELSIZE + 1), "asptr.prog");
     asptr->ptr = 0;
     /* アセンブル。ラベル表作成のため、2回行う */
     for(pass = FIRST; pass <= SECOND; pass++) {
@@ -96,7 +97,8 @@ void assemble(int filec, char *filev[])
 asfin:
     freelabel();                                  /* ラベルハッシュ表を解放 */
     free_cmdtype_code();                          /* 命令の名前とタイプがキーのハッシュ表を解放 */
-    FREE(asptr);                                  /* アセンブル時のプロパティを解放 */
+    FREE(asptr->prog);                            /* アセンブル時のプロパティを解放 */
+    FREE(asptr);
 }
 
 /**
