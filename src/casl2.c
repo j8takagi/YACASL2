@@ -169,7 +169,7 @@ int main(int argc, char *argv[])
     }
     /* ソースファイルが指定されていない場合は終了 */
     if(argv[optind] == NULL) {
-        setcerr(126, NULL);    /* no source file */
+        setcerr(126, "");    /* no source file */
         fprintf(stderr, "CASL2 error - %d: %s\n", cerr->num, cerr->msg);
         exit(1);
     }

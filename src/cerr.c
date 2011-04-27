@@ -71,7 +71,7 @@ void setcerr(int num, const char *str)
     cerr->num = num;
     /* 現在のエラーメッセージを設定 */
     cerr->msg = malloc_chk(CERRMSGSIZE + 1, "cerr.msg");
-    if(str != NULL && strlen(str) <= CERRSTRSIZE) {
+    if(0 < strlen(str) && strlen(str) <= CERRSTRSIZE) {
         sprintf(cerr->msg, "%s: %s", str, getcerrmsg(cerr->num));
     } else {
         strcpy(cerr->msg, getcerrmsg(cerr->num));

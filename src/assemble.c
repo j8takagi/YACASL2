@@ -144,7 +144,6 @@ WORD getadr(const char *prog, const char *str, PASS pass)
  */
 WORD getgr(const char *str, bool is_x)
 {
-    assert(str != NULL);
     WORD r;
 
     /*  "GR[0-7]" 以外の文字列では、0xFFFFを返して終了 */
@@ -156,7 +155,7 @@ WORD getgr(const char *str, bool is_x)
     r = (WORD)(*(str+2) - '0');
     /* GR0は指標レジスタとして用いることができない */
     if(is_x == true && r == 0x0) {
-        setcerr(120, NULL);    /* GR0 in operand x */
+        setcerr(120, "");    /* GR0 in operand x */
         return 0x0;
     }
     return r;
@@ -255,11 +254,11 @@ void writedc(const char *str, PASS pass)
 void assemble_start(const CMDLINE *cmdl, PASS pass)
 {
     if(cmdl->opd->opdc > 1) {
-        setcerr(106, NULL);    /* operand count mismatch */
+        setcerr(106, "");    /* operand count mismatch */
         return;
     }
     if(cmdl->label == NULL) {
-        setcerr(107, NULL);    /* no label in START */
+        setcerr(107, "");    /* no label in START */
         return;
     }
     /* プログラム名の設定 */
@@ -279,7 +278,7 @@ void assemble_start(const CMDLINE *cmdl, PASS pass)
 void assemble_end(const CMDLINE *cmdl, PASS pass)
 {
     if(cmdl->opd->opdc > 0) {
-        setcerr(106, NULL);    /* operand count mismatch */
+        setcerr(106, "");    /* operand count mismatch */
         return;
     }
     /* 1回目のアセンブルの場合は、リテラル領域開始アドレスを設定 */
@@ -301,7 +300,7 @@ void assemble_ds(const CMDLINE *cmdl, PASS pass)
 {
     int i;
     if(cmdl->opd->opdc != 1) {
-        setcerr(106, NULL);    /* operand count mismatch */
+        setcerr(106, "");    /* operand count mismatch */
         return;
     }
     for(i = 0; i < atoi(cmdl->opd->opdv[0]); i++) {
@@ -320,7 +319,7 @@ void assemble_dc(const CMDLINE *cmdl, PASS pass)
 {
     int i;
     if(cmdl->opd->opdc == 0 || cmdl->opd->opdc >= OPDSIZE) {
-        setcerr(106, NULL);    /* operand count mismatch */
+        setcerr(106, "");    /* operand count mismatch */
         return;
     }
     for(i = 0; i < cmdl->opd->opdc; i++) {
@@ -348,7 +347,7 @@ void assemble_in(const CMDLINE *cmdl, PASS pass)
 {
     char *line = malloc_chk(LINESIZE + 1, "assemble_in.line");
     if(cmdl->opd->opdc == 0 || cmdl->opd->opdc > 2) {
-        setcerr(106, NULL);    /* operand count mismatch */
+        setcerr(106, "");    /* operand count mismatch */
         return;
     }
     assembleline("    PUSH 0,GR1", pass);
@@ -383,7 +382,7 @@ void assemble_out(const CMDLINE *cmdl, PASS pass)
 {
     char *line = malloc_chk(LINESIZE + 1, "assemble_out.line");
     if(cmdl->opd->opdc == 0 || cmdl->opd->opdc > 2) {
-        setcerr(106, NULL);    /* operand count mismatch */
+        setcerr(106, "");    /* operand count mismatch */
         return;
     }
     assembleline("    PUSH 0,GR1", pass);
@@ -419,7 +418,7 @@ void assemble_rpush(const CMDLINE *cmdl, PASS pass)
     int i;
     char *line = malloc_chk(LINESIZE + 1, "assemble_rpush.line");
     if(cmdl->opd->opdc > 0) {
-        setcerr(106, NULL);    /* operand count mismatch */
+        setcerr(106, "");    /* operand count mismatch */
         return;
     }
     for(i = 1; i <= GRSIZE-1; i++) {
@@ -448,7 +447,7 @@ void assemble_rpop(const CMDLINE *cmdl, PASS pass)
     int i;
     char *line = malloc_chk(LINESIZE + 1, "assemble_rpop.line");
     if(cmdl->opd->opdc > 0) {
-        setcerr(106, NULL);    /* operand count mismatch */
+        setcerr(106, "");    /* operand count mismatch */
         return;
     }
     for(i = GRSIZE-1; i >= 1; i--) {

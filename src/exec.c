@@ -100,7 +100,7 @@ void svcin()
             break;
         }
         if(sys->cpu->gr[1] + i > execptr->end) {
-            setcerr(208, NULL);    /* SVC input - memory overflow */
+            setcerr(208, "");    /* SVC input - memory overflow */
             break;
         }
         sys->memory[sys->cpu->gr[1]+i] = *(buffer + i);
@@ -119,7 +119,7 @@ void svcout()
 
     for(i = 0; i < sys->memory[sys->cpu->gr[2]]; i++) {
         if(sys->cpu->gr[1] + i > execptr->end) {
-            setcerr(209, NULL);    /* SVC output - memory overflow */
+            setcerr(209, "");    /* SVC output - memory overflow */
             return;
         }
         /* 「文字の組」の符号表に記載された文字と、改行（CR）／タブを表示 */

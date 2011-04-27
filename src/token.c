@@ -50,7 +50,7 @@ OPD *opdtok(const char *str)
     do {
         /* オペランド数が多すぎる場合はエラー */
         if(opd->opdc >= OPDSIZE) {
-            setcerr(117, NULL);    /* operand is too many */
+            setcerr(117, "");    /* operand is too many */
             break;
         }
         /* 先頭が等号（=）の場合 */
@@ -80,11 +80,11 @@ OPD *opdtok(const char *str)
             sepc = *sepp;
             *sepp = '\0';
             if(*q == '\0') {
-                setcerr(121, NULL);    /* cannot get operand token */
+                setcerr(121, "");    /* cannot get operand token */
                 break;
             }
             if(strlen(q) - rcnt > OPDSIZE) {
-                setcerr(118, NULL);    /* operand length is too long */
+                setcerr(118, "");    /* operand length is too long */
                 break;
             }
             opd->opdv[(++opd->opdc)-1] = strdup_chk(q, "opd.opdv[]");
@@ -141,7 +141,7 @@ CMDLINE *linetok(const char *line)
         /* 命令とオペランドの取得 */
         if(*p == '\n' || *p == '\0') {        /* 命令がない場合は、終了 */
             if(cmdl->label != NULL) {         /* ラベルが定義されていて命令がない場合はエラー */
-                setcerr(105, NULL);    /* no command in the line */
+                setcerr(105, "");    /* no command in the line */
             }
             FREE(cmdl);
         } else {
