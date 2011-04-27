@@ -122,16 +122,17 @@ CMDLINE *linetok(const char *line)
     if(*tokens != '\n' && *tokens != '\0') {
         p = tokens;
         cmdl = malloc_chk(sizeof(CMDLINE), "cmdl");
+        cmdl->label = malloc_chk(sizeof(LABELSIZE + 1), "cmdl.label");
         /* ラベルの取得。行の先頭が空白またはタブの場合、ラベルは空 */
         if((sepp = p + strcspn(p, " \t\n")) == p){
-            cmdl->label = NULL;
+            cmdl->label = '\0';
         } else {        /* ラベルを取得 */
             *sepp = '\0';
             /* 文字列が長すぎる場合はエラー */
             if(strlen(p) > LABELSIZE) {
                 setcerr(104, p);    /* label length is too long */
             }
-            cmdl->label = strdup_chk(p, "cmdl.label");
+            strcpy(cmdl->label, p);
             p = sepp + 1;
         }
         /* ラベルと命令の間の空白をスキップ */
@@ -140,7 +141,7 @@ CMDLINE *linetok(const char *line)
         }
         /* 命令とオペランドの取得 */
         if(*p == '\n' || *p == '\0') {        /* 命令がない場合は、終了 */
-            if(cmdl->label != NULL) {         /* ラベルが定義されていて命令がない場合はエラー */
+            if(cmdl->label != '\0') {         /* ラベルが定義されていて命令がない場合はエラー */
                 setcerr(105, "");    /* no command in the line */
             }
             FREE(cmdl);

@@ -59,7 +59,7 @@ unsigned labelhash(const char *prog, const char *label)
  */
 WORD getlabel(const char *prog, const char *label)
 {
-    assert(label != NULL);
+    assert(prog != NULL && label != NULL);
     LABELTAB *p;
 
     for(p = labels[labelhash(prog, label)]; p != NULL; p = p->next) {
