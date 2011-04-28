@@ -257,7 +257,7 @@ void assemble_start(const CMDLINE *cmdl, PASS pass)
         setcerr(106, "");    /* operand count mismatch */
         return;
     }
-    if(cmdl->label == '\0') {
+    if(*(cmdl->label) == '\0') {
         setcerr(107, "");    /* no label in START */
         return;
     }
@@ -604,7 +604,7 @@ bool assembleline(const char *line, PASS pass)
     stat = (cerr->num == 0) ? true : false;
     if(cmdl != NULL) {
         if(stat == true) {
-            if(pass == FIRST && cmdl->label != '\0') {
+            if(pass == FIRST && *(cmdl->label) != '\0') {
                 stat = addlabel(asptr->prog, cmdl->label, asptr->ptr);
             }
         }
