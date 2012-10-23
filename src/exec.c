@@ -523,8 +523,6 @@ void cpa_r1_r2()
  */
 void cpl(WORD r, WORD val)
 {
-    WORD w[1];
-    w[0] = sys->memory[sys->cpu->pr];
     sys->cpu->fr = 0x0;
     if(sys->cpu->gr[r] < val) {
         sys->cpu->fr = SF;
