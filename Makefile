@@ -21,7 +21,7 @@ doxygen: doc_inner
 	@$(DOXYGEN)
 
 gtags: clean_gtags
-	@$(GTAGS)
+	@if test `which $(GTAGS)`; then $(GTAGS); fi
 
 htags: doc_inner
 	@$(MAKE) clean_htags
