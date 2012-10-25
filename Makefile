@@ -3,6 +3,7 @@
 GTAGS ?= gtags
 RMF ?= rm -f
 WHICH ?= which
+ECHO ?= echo
 
 all: build doc doc_inner
 
@@ -10,7 +11,7 @@ build:
 	$(MAKE) -C src
 
 gtags:
-	($(WHICH) $(GTAGS) && $(GTAGS)) >/dev/null
+	$(WHICH) $(GTAGS) && $(GTAGS) >/dev/null || $(ECHO) "$(GTAGS): not found"
 
 check:
 	$(MAKE) -C test/system
