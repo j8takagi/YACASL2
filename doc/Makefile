@@ -8,7 +8,7 @@ DVI2PDF = dvipdfmx
 MAKEINFO = makeinfo
 MV = mv
 
-.PHONY: all htmlnosplit pdf clean
+.PHONY: doc info htmlnosplit html pdf clean
 
 .INTERMEDIATE: $(DOCNAME).dvi
 

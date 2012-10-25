@@ -1,64 +1,39 @@
-.PHONY: build check doc doxygen clean gtags htags clean_htags
-MKDIR = mkdir -p
-MV = mv
-DOXYGEN = doxygen
-GTAGS = gtags
-HTAGS = htags
-HTAGSFLAG = -anosx
-
-all: build gtags
+.PHONY: all build gtags check doc doc_inner clean clean_cmd clean_gtags clean_src clean_test clean_doc clean_doc_inner
+GTAGS ?= gtags
+RMF ?= rm -f
+all: build gtags doc
 
 build:
 	$(MAKE) -C src
+
+gtags:
+	@(which $(GTAGS) && $(GTAGS)) >/dev/null
 
 check:
 	@$(MAKE) -sC test/system
 
 doc:
-	@$(MAKE) -sC doc
-
-doxygen: doc_inner
-	@$(DOXYGEN)
-
-gtags: clean_gtags
-	@if test `which $(GTAGS)`; then $(GTAGS); fi
-
-htags: doc_inner
-	@$(MAKE) clean_htags
-	@$(MAKE) gtags
-	@$(HTAGS) $(HTAGSFLAG) $<
-	@$(MV) $</HTML $</htags
+	@$(MAKE) -sC $@
 
 doc_inner:
-	@$(MKDIR) $@
+	@$(MAKE) -sC $@
 
-clean: clean_cmd clean_src clean_gtags clean_systemtest clean_unittest clean_doc clean_doc_inner
+clean: clean_cmd clean_gtags clean_src clean_test clean_doc clean_doc_inner
 
 clean_cmd:
-	@rm -f casl2 comet2 dumpword
+	@$(RMF) casl2 comet2 dumpword
+
+clean_gtags:
+	@$(RMF) GPATH GRTAGS GSYMS GTAGS
 
 clean_src:
 	@$(MAKE) -sC src clean
 
-clean_gtags:
-	@rm -f GPATH GRTAGS GSYMS GTAGS
-
-clean_systemtest:
-	@$(MAKE) -sC test/system/casl2 clean
-	@$(MAKE) -sC test/system/comet2 clean
-	@$(MAKE) -sC test/system/dumpword clean
-
-clean_unittest:
-	@$(MAKE) -sC test/unit clean
+clean_test:
+	@$(MAKE) -sC test clean
 
 clean_doc:
 	@$(MAKE) -sC doc clean
 
 clean_doc_inner:
-	@rm -rf doc_inner
-
-clean_htags:
-	@rm -rf doc_inner/htags
-
-clean_doxygen:
-	@rm -rf doc_inner/doxygen
+	@$(MAKE) -sC doc_inner clean
