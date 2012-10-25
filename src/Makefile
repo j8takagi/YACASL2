@@ -1,7 +1,11 @@
+CC ?= gcc
+CFLAGS ?= -g -Wall -Wextra -I $(INCLUDE)
+RMF ?= rm -f
+WHICH ?= which
+CTAGS ?= ctags
+ETAGS ?= etags
+
 INCLUDE := ../include
-CC := gcc
-CFLAGS := -g -Wall -Wextra -I $(INCLUDE)
-RM := rm -f
 
 COMMONSRC := word.c cmem.c cerr.c
 CASL2SRC := struct.c hash.c
@@ -10,19 +14,19 @@ EXECSRC := exec.c dump.c
 
 .PHONY: all clean
 
-all: ../casl2 ../comet2 ../dumpword
+all: ../casl2 ../comet2 ../dumpword ctags etags
 
 ../casl2: casl2.o $(subst .c,.o,$(COMMONSRC) $(CASL2SRC) $(ASSRC) $(EXECSRC))
 	$(CC) $(CFLAGS) -o $@ $^
-	@rm -f *.d
+	@$(RMF) *.d
 
 ../comet2: comet2.o $(subst .c,.o,$(COMMONSRC) $(CASL2SRC) $(EXECSRC))
 	$(CC) $(CFLAGS) -o $@ $^
-	@rm -f *.d
+	@$(RMF) *.d
 
 ../dumpword: dumpword.o $(subst .c,.o,$(COMMONSRC))
 	$(CC) $(CFLAGS) -o $@ $^
-	@rm -f *.d
+	@$(RMF) *.d
 
 %.o: %.c
 	$(CC) -c $(CFLAGS) $<
@@ -32,9 +36,19 @@ all: ../casl2 ../comet2 ../dumpword
 
 -include $(subst .c,.d,casl2.c comet2.c dumpword.c $(COMMONSRC) $(CASL2SRC) $(ASSRC) $(EXECSRC))
 
-TAGS: $(INCLUDE)/*.h *.c
-	@if test `which etags`; then etags $^; fi
+ctags: $(INCLUDE)/*.h *.c
+	@($(WHICH) $(CTAGS) && $(CTAGS) $^) >/dev/null
 
-clean:
-	@rm -f ../casl2 ../comet2 ../dumpword
-	@rm -f *.o *.d
+etags: $(INCLUDE)/*.h *.c
+	@($(WHICH) $(ETAGS) && $(ETAGS) $^) >/dev/null
+
+clean: clean_cmd clean_build clean_tags
+
+clean_cmd:
+	@$(RMF) ../casl2 ../comet2 ../dumpword
+
+clean_build:
+	@$(RMF) *.o *.d
+
+clean_tags:
+	@$(RMF) TAGS tags

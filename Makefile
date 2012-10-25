@@ -1,33 +1,33 @@
-.PHONY: all build gtags check doc doc_inner clean clean_cmd clean_gtags clean_src clean_test clean_doc clean_doc_inner
+.PHONY: all build gtags check doc doc_inner clean clean_src clean_gtags clean_test clean_doc clean_doc_inner
+
 GTAGS ?= gtags
 RMF ?= rm -f
-all: build gtags doc
+WHICH ?= which
+
+all: build doc doc_inner
 
 build:
 	$(MAKE) -C src
 
 gtags:
-	@(which $(GTAGS) && $(GTAGS)) >/dev/null
+	($(WHICH) $(GTAGS) && $(GTAGS)) >/dev/null
 
 check:
-	@$(MAKE) -sC test/system
+	$(MAKE) -C test/system
 
 doc:
-	@$(MAKE) -sC $@
+	$(MAKE) -C $@
 
 doc_inner:
-	@$(MAKE) -sC $@
+	$(MAKE) -C $@
 
-clean: clean_cmd clean_gtags clean_src clean_test clean_doc clean_doc_inner
-
-clean_cmd:
-	@$(RMF) casl2 comet2 dumpword
-
-clean_gtags:
-	@$(RMF) GPATH GRTAGS GSYMS GTAGS
+clean: clean_src clean_gtags clean_test clean_doc clean_doc_inner
 
 clean_src:
 	@$(MAKE) -sC src clean
+
+clean_gtags:
+	@$(RMF) GPATH GRTAGS GSYMS GTAGS
 
 clean_test:
 	@$(MAKE) -sC test clean

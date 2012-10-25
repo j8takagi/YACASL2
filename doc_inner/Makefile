@@ -17,13 +17,13 @@ all: $(DOXYGEN_DIR) $(GNU_GLOBAL_DIR)
 # ../Doxyfileで設定された以下のディレクトリーの下のhtmlディレクトリー
 #   OUTPUT_DIRECTORY = doc_inner
 $(DOXYGEN_DIR): ../Doxyfile
-	@($(WHICH) $(DOXYGEN) && $(CD) .. && $(DOXYGEN) && $(CD) - && $(MV) html $@) >/dev/null
+	($(WHICH) $(DOXYGEN) && $(CD) .. && $(DOXYGEN) && $(CD) - && $(MV) html $@) >/dev/null
 
 # htagsのHTMLドキュメント作成先は、
 # 引数DIRで指定されたディレクトリーの下のHTMLディレクトリー
 $(GNU_GLOBAL_DIR):
-	@$(MAKE) -sC .. gtags
-	@($(WHICH) $(HTAGS) && $(CD) .. && $(HTAGS) -anosx doc_inner && $(CD) - && $(MV) HTML $@) >/dev/null
+	$(MAKE) -C .. gtags
+	($(WHICH) $(HTAGS) && $(CD) .. && $(HTAGS) -anosx doc_inner && $(CD) - && $(MV) HTML $@) >/dev/null
 
 clean: clean_doxygen clean_gnu_global
 
