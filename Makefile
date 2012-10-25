@@ -14,7 +14,7 @@ gtags:
 	$(WHICH) $(GTAGS) && $(GTAGS) >/dev/null || $(ECHO) "$(GTAGS): not found"
 
 check:
-	$(MAKE) -C test/system
+	$(MAKE) -sC test/system
 
 doc:
 	$(MAKE) -C $@
