@@ -171,6 +171,10 @@ Next:&nbsp;<a rel="next" accesskey="n" href="#About">About</a>
 <ul>
 <li><a href="#Download">2.1 YACASL2ファイルのダウンロード</a>
 <li><a href="#Verify">2.2 YACASL2ファイルの検証</a>
+<ul>
+<li><a href="#Verify">2.2.1 GnuPG分離署名での検証</a>
+<li><a href="#Verify">2.2.2 MD5ハッシュ値での検証</a>
+</li></ul>
 <li><a href="#Expand">2.3 YACASL2ファイルの展開</a>
 <li><a href="#Build">2.4 <kbd>casl2</kbd> <kbd>comet2</kbd> <kbd>dumpword</kbd>のビルド</a>
 <li><a href="#Simple-Test">2.5 <kbd>casl2</kbd>の実行テスト</a>
@@ -288,14 +292,14 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Top">Top</a>
  <p>YACASL2は、UNIX／Linuxのコマンドラインインターフェイスで動作するオープンソースのCASL II処理システムです。CASL IIは情報処理試験で用いられるアセンブラ言語で、次の資料により仕様が公開されています。
 
  <blockquote>
-<a href="http://www.jitec.ipa.go.jp/1_00topic/topic_20081027_hani_yougo.pdf">試験で使用する情報処理用語・プログラム言語など（2008年10月版）</a>［PDFファイル］
+<a href="http://www.jitec.jp/1_04hanni_sukiru/_index_hanni_skill.html">「試験で使用する情報技術に関する用語・プログラム言語など」Ver2.2（2012年5月版）</a>［PDFファイル］
 別紙 1 アセンブラ言語の仕様
 </blockquote>
 
  <p>YACASL2は、CASL IIアセンブラ言語で記述されたファイルをアセンブルし、仮想マシンCOMET II上で実行します。アセンブルと実行は、連続で行うことも別々に行うことも可能です。
 YACASL2の動作はCASL IIの仕様に準拠しているため、情報処理試験の問題をはじめ各種参考書やサイトに記載されたCASL IIのプログラムをそのままアセンブルして実行できます。また、本パッケージ中にCASL IIのサンプルプログラムが多数収録されています。
 
- <p>YACASL2は、「ふつうの処理系」として動作します。ほかの多くのCASL IIエミュレータと違い、デバッガとして動作したり、コンピュータ内部の模式図を表示したりすることはありません。そのかわり、YACASL2は、次のような動作内容をすべてテキストで出力します。
+ <p>YACASL2は、「ふつうの処理系」として動作します。ほかの多くのCASL IIエミュレータと違い、デバッガとして動作したり、コンピュータ内部の模式図を直接表示したりすることはありません。そのかわり、YACASL2は、次のような動作内容をすべてテキストで出力します。
 
      <ul>
 <li>ラベルとアドレスの対応
@@ -313,17 +317,9 @@ YACASL2の動作はCASL IIの仕様に準拠しているため、情報処理試
 
 <h3 class="unnumberedsec">要件</h3>
 
- <p>YACASL2は、LinuxやMac OS Xなど、UNIX系のOS上で動作します。現在動作を確認しているのは、次の環境です。
+ <p>YACASL2は、LinuxやMac OS Xなど、UNIX系のOS上で動作します。
 
-     <ul>
-<li>Ubuntu Linux 10.04
-
-     <li>Vine Linux 5.2
-
-     <li>Mac OS X 10.6.5
-</ul>
-
- <p>インストール時に、<kbd>tar</kbd> <kbd>gcc</kbd> <kbd>make</kbd>が必要です。Linuxでは多くの場合、標準でインストールされています。Mac OS Xの場合、<code>Xcode</code>をインストールするといっしょにインストールされます。
+ <p>インストール時に、<kbd>tar</kbd> <kbd>gcc</kbd> <kbd>make</kbd>（<kbd>gmake</kbd>）が必要です。Linuxでは多くの場合、標準でインストールされています。Mac OS Xの場合、<code>Xcode</code>のcommand line toolsをインストールすれば使えるようになります。
 
 <div class="node">
 <a name="Install"></a>
@@ -359,7 +355,7 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Install">Install</a>
 
 <h3 class="section">2.1 YACASL2ファイルのダウンロード</h3>
 
- <p><a href="http://www.j8takagi.net/yacasl2/">YACASL2のサイト</a>または<a href="http://github.com/j8takagi/YACASL2/downloads/">githubのダウンロードページ</a>から最新版の<samp><span class="file">tar.gz</span></samp>ファイルをダウンロードします。
+ <p><a href="http://www.j8takagi.net/yacasl2/">YACASL2のサイト</a>から、<samp><span class="file">tar.gz</span></samp>または<samp><span class="file">tar.xz</span></samp>ファイルと、対応する検証用ファイルをダウンロードします。<a href="http://github.com/j8takagi/YACASL2/downloads/">githubのダウンロードページ</a>から<samp><span class="file">tar.gz</span></samp>などのファイルをダウンロードすることもできます。
 
 <div class="node">
 <a name="Verify"></a>
@@ -372,7 +368,59 @@ Up:&nbsp;<a rel="up" accesskey="u" href="#Install">Install</a>
 
 <h3 class="section">2.2 YACASL2ファイルの検証</h3>
 
- <p>ダウンロードが完了したら、<kbd>md5sum</kbd>と<kbd>diff</kbd>で正しくファイルがダウンロードができているかを検証します。
+ <p>ダウンロードが完了したら、圧縮ファイルが改竄されていないか検証します。検証にはGnuPG分離署名か、MD5ハッシュ値を使います。
+
+<h4 class="subsection">2.2.1 GnuPG分離署名での検証</h4>
+
+ <p>GnuPGの<kbd>gpg</kbd>で圧縮ファイルを検証します。この検証を行うには、GnuPGがインストールされ、自分の秘密鍵と公開鍵のペアが作成されている必要があります。
+
+<pre class="example">$ <kbd>gpg --verify yacasl2.tar.xz.asc</kbd>
+gpg: Signature made Sat Oct 27 02:17:16 2012 JST using RSA key ID 25B62DD1
+gpg: Can't check signature: public key not found
+$ <kbd>gpg --recv-keys 25B62DD1</kbd>
+gpg: requesting key 25B62DD1 from hkp server keys.gnupg.net
+gpg: key 25B62DD1: public key "j8takagi &lt;j8takagi@nifty.com&gt;" imported
+gpg: Total number processed: 1
+gpg:               imported: 1  (RSA: 1)
+
+$ <kbd>gpg --lsign-key 25B62DD1</kbd>
+
+pub  2048R/25B62DD1  created: 2012-09-29  expires: never       usage: SC
+                     trust: unknown       validity: full
+sub  2048R/92E25C29  created: 2012-09-29  expires: never       usage: E
+[  full  ] (1). j8takagi &lt;j8takagi@nifty.com&gt;
+
+
+pub  2048R/25B62DD1  created: 2012-09-29  expires: never       usage: SC
+                     trust: unknown       validity: full
+ Primary key fingerprint: 653A 5D2E 49C3 2ADE 2FE3  87BB AB68 4DDB 25B6 2DD1
+
+     j8takagi &lt;j8takagi@nifty.com&gt;
+
+Are you sure that you want to sign this key with your
+key ".* &lt;.*@.*&gt;"
+
+The signature will be marked as non-exportable.
+
+Really sign? (y/N) y
+
+You need a passphrase to unlock the secret key for
+user: ".* &lt;.*@.*&gt;"
+2048-bit RSA key, ID ........, created 20..-..-..
+
+&lt;input password&gt;
+
+$ <kbd>gpg --verify yacasl2.tar.xz.asc</kbd>
+gpg: Signature made Sat Oct 27 02:17:16 2012 JST using RSA key ID 25B62DD1
+gpg: checking the trustdb
+gpg: 3 marginal(s) needed, 1 complete(s) needed, PGP trust model
+gpg: depth: 0  valid:   1  signed:   4  trust: 0-, 0q, 0n, 0m, 0f, 1u
+gpg: depth: 1  valid:   4  signed:   0  trust: 4-, 0q, 0n, 0m, 0f, 0u
+gpg: Good signature from "j8takagi &lt;j8takagi@nifty.com&gt;"
+</pre>
+ <h4 class="subsection">2.2.2 MD5ハッシュ値での検証</h4>
+
+ <p><kbd>md5sum</kbd>と<kbd>diff</kbd>で圧縮ファイルを検証します。
 
 <pre class="example">$ <kbd>openssl md5sum yacasl2.tar.gz | diff -s yacasl2.tar.gz.md5sum -</kbd>
 Files yacasl2.tar.gz.md5sum and - are identical

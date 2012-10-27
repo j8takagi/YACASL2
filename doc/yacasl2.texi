@@ -24,7 +24,7 @@ Copyright @copyright{} 2010-2011 j8takagi
 
 @titlepage
 @title YACASL2
-@subtitle UNIX／Linuxのコマンドラインインターフェイスで動作するCASL II処理システム
+@subtitle UNIX系OSのコマンドラインで動作するオープンソースのCASL II処理システム
 @author j8takagi
 @insertcopying
 @end titlepage
@@ -127,7 +127,7 @@ YACASL2は、UNIX／Linuxのコマンドラインインターフェイスで動�
 @cartouche
 @end iftex
 @quotation
-@uref{http://www.jitec.ipa.go.jp/1_00topic/topic_20081027_hani_yougo.pdf, 試験で使用する情報処理用語・プログラム言語など（2008年10月版）}［PDFファイル］
+@uref{http://www.jitec.jp/1_04hanni_sukiru/_index_hanni_skill.html, 「試験で使用する情報技術に関する用語・プログラム言語など」Ver2.2（2012年5月版）}［PDFファイル］
 別紙 1 アセンブラ言語の仕様
 @end quotation
 @iftex
@@ -137,7 +137,7 @@ YACASL2は、UNIX／Linuxのコマンドラインインターフェイスで動�
 YACASL2は、CASL IIアセンブラ言語で記述されたファイルをアセンブルし、仮想マシンCOMET II上で実行します。アセンブルと実行は、連続で行うことも別々に行うことも可能です。
 YACASL2の動作はCASL IIの仕様に準拠しているため、情報処理試験の問題をはじめ各種参考書やサイトに記載されたCASL IIのプログラムをそのままアセンブルして実行できます。また、本パッケージ中にCASL IIのサンプルプログラムが多数収録されています。
 
-YACASL2は、「ふつうの処理系」として動作します。ほかの多くのCASL IIエミュレータと違い、デバッガとして動作したり、コンピュータ内部の模式図を表示したりすることはありません。そのかわり、YACASL2は、次のような動作内容をすべてテキストで出力します。
+YACASL2は、「ふつうの処理系」として動作します。ほかの多くのCASL IIエミュレータと違い、デバッガとして動作したり、コンピュータ内部の模式図を直接表示したりすることはありません。そのかわり、YACASL2は、次のような動作内容をすべてテキストで出力します。
 
 @itemize @bullet
 
@@ -159,21 +159,9 @@ YACASL2は、「ふつうの処理系」として動作します。ほかの多�
 YACASL2の操作は、端末を開いてコマンドを入力・実行することで行います。
 
 @unnumberedsec 要件
-YACASL2は、LinuxやMac OS Xなど、UNIX系のOS上で動作します。現在動作を確認しているのは、次の環境です。
+YACASL2は、LinuxやMac OS Xなど、UNIX系のOS上で動作します。
 
-@itemize @bullet
-
-@item
-Ubuntu Linux 10.04
-
-@item
-Vine Linux 5.2
-
-@item
-Mac OS X 10.6.5
-@end itemize
-
-インストール時に、@kbd{tar} @kbd{gcc} @kbd{make}が必要です。Linuxでは多くの場合、標準でインストールされています。Mac OS Xの場合、@code{Xcode}をインストールするといっしょにインストールされます。
+インストール時に、@kbd{tar} @kbd{gcc} @kbd{make}（@kbd{gmake}）が必要です。Linuxでは多くの場合、標準でインストールされています。Mac OS Xの場合、@code{Xcode}のcommand line toolsをインストールすれば使えるようになります。
 
 @node Install, Usage, About, Top
 @chapter YACASL2のインストール
@@ -192,12 +180,66 @@ YACASL2をインストールするには、Linux上で次の作業をします�
 @node Download, Verify, Install, Install
 @section YACASL2ファイルのダウンロード
 
-@uref{http://www.j8takagi.net/yacasl2/, YACASL2のサイト}または@uref{http://github.com/j8takagi/YACASL2/downloads/, githubのダウンロードページ}から最新版の@file{tar.gz}ファイルをダウンロードします。
+@uref{http://www.j8takagi.net/yacasl2/, YACASL2のサイト}から、@file{tar.gz}または@file{tar.xz}ファイルと、対応する検証用ファイルをダウンロードします。@uref{http://github.com/j8takagi/YACASL2/downloads/, githubのダウンロードページ}から@file{tar.gz}などのファイルをダウンロードすることもできます。
 
 @node Verify, Expand, Download, Install
 @section YACASL2ファイルの検証
 
-ダウンロードが完了したら、@kbd{md5sum}と@kbd{diff}で正しくファイルがダウンロードができているかを検証します。
+ダウンロードが完了したら、圧縮ファイルが改竄されていないか検証します。検証にはGnuPG分離署名か、MD5ハッシュ値を使います。
+
+@subsection GnuPG分離署名での検証
+
+GnuPGの@kbd{gpg}で圧縮ファイルを検証します。この検証を行うには、GnuPGがインストールされ、自分の秘密鍵と公開鍵のペアが作成されている必要があります。
+
+@example
+$ @kbd{gpg --verify yacasl2.tar.xz.asc}
+gpg: Signature made Sat Oct 27 02:17:16 2012 JST using RSA key ID 25B62DD1
+gpg: Can't check signature: public key not found
+$ @kbd{gpg --recv-keys 25B62DD1}
+gpg: requesting key 25B62DD1 from hkp server keys.gnupg.net
+gpg: key 25B62DD1: public key "j8takagi <j8takagi@@nifty.com>" imported
+gpg: Total number processed: 1
+gpg:               imported: 1  (RSA: 1)
+
+$ @kbd{gpg --lsign-key 25B62DD1}
+
+pub  2048R/25B62DD1  created: 2012-09-29  expires: never       usage: SC  
+                     trust: unknown       validity: full
+sub  2048R/92E25C29  created: 2012-09-29  expires: never       usage: E   
+[  full  ] (1). j8takagi <j8takagi@@nifty.com>
+
+
+pub  2048R/25B62DD1  created: 2012-09-29  expires: never       usage: SC  
+                     trust: unknown       validity: full
+ Primary key fingerprint: 653A 5D2E 49C3 2ADE 2FE3  87BB AB68 4DDB 25B6 2DD1
+
+     j8takagi <j8takagi@@nifty.com>
+
+Are you sure that you want to sign this key with your
+key ".* <.*@@.*>"
+
+The signature will be marked as non-exportable.
+
+Really sign? (y/N) y
+
+You need a passphrase to unlock the secret key for
+user: ".* <.*@@.*>"
+2048-bit RSA key, ID ........, created 20..-..-..
+
+<input password>
+
+$ @kbd{gpg --verify yacasl2.tar.xz.asc}
+gpg: Signature made Sat Oct 27 02:17:16 2012 JST using RSA key ID 25B62DD1
+gpg: checking the trustdb
+gpg: 3 marginal(s) needed, 1 complete(s) needed, PGP trust model
+gpg: depth: 0  valid:   1  signed:   4  trust: 0-, 0q, 0n, 0m, 0f, 1u
+gpg: depth: 1  valid:   4  signed:   0  trust: 4-, 0q, 0n, 0m, 0f, 0u
+gpg: Good signature from "j8takagi <j8takagi@@nifty.com>"
+@end example
+
+@subsection MD5ハッシュ値での検証
+
+@kbd{md5sum}と@kbd{diff}で圧縮ファイルを検証します。
 
 @example
 $ @kbd{openssl md5sum yacasl2.tar.gz | diff -s yacasl2.tar.gz.md5sum -}

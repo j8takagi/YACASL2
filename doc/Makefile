@@ -19,8 +19,10 @@ doc: info htmlnosplit html pdf
 
 info: $(DOCNAME).info
 
-htmlnosplit: $(DOCNAME).html
-	$(MV) $< index.html
+htmlnosplit: index.html
+
+index.html: $(SRC) $(CSS)
+	$(MAKEINFO) -o $@ --no-split --html --css-include=$(CSS) $(SRC)
 
 html: $(SRC) $(CSS)
 	if test ! -e $@; then $(MKDIR) $@; fi;
@@ -28,9 +30,6 @@ html: $(SRC) $(CSS)
 	$(MAKEINFO) -o $@ --html --css-ref=$(CSS) $(SRC)
 
 pdf: $(DOCNAME).pdf
-
-$(DOCNAME).html: $(SRC) $(CSS)
-	$(MAKEINFO) -o $@ --no-split --html --css-include=$(CSS) $(SRC)
 
 $(DOCNAME).pdf: $(DOCNAME).dvi
 	$(DVI2PDF) $^
