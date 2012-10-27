@@ -127,7 +127,7 @@ YACASL2は、UNIX／Linuxのコマンドラインインターフェイスで動�
 @cartouche
 @end iftex
 @quotation
-@uref{http://www.jitec.jp/1_04hanni_sukiru/_index_hanni_skill.html, 「試験で使用する情報技術に関する用語・プログラム言語など」Ver2.2（2012年5月版）}［PDFファイル］
+@uref{http://www.jitec.jp/1_13download/shiken_yougo_ver2_2.pdf, 「試験で使用する情報技術に関する用語・プログラム言語など」Ver2.2（2012年5月版）}［PDFファイル］
 別紙 1 アセンブラ言語の仕様
 @end quotation
 @iftex
