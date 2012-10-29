@@ -1,40 +1,70 @@
-.PHONY: all build gtags check doc doc_inner clean clean_src clean_gtags clean_test clean_doc clean_doc_inner
+.PHONY: all build gtags check doc info html doc-inner install uninstall install-info uninstall-info install-casl2lib uninstall-casl2lib clean clean-src clean-gtags clean-test clean-doc clean-doc-inner
 
 GTAGS ?= gtags
 RMF ?= rm -f
 WHICH ?= which
 ECHO ?= echo
+INSTALL ?= install
 
-all: build doc doc_inner
+prefix ?= ~
+bindir ?= $(prefix)/bin
+casl2libdir ?= $(prefix)/yacasl2/casl2lib
+
+all: build info html gtags
 
 build:
-	$(MAKE) -C src
+	$(MAKE) -C src all
 
 gtags:
-	$(WHICH) $(GTAGS) && $(GTAGS) >/dev/null || $(ECHO) "$(GTAGS): not found"
+	@$(WHICH) $(GTAGS) >/dev/null && $(GTAGS) || $(ECHO) "$(GTAGS): not found"
+
+docall: doc
+	$(MAKE) -C doc all
+
+info:
+	$(MAKE) -C doc info
+
+html:
+	$(MAKE) -C doc html
+
+doc-inner:
+	$(MAKE) -C doc_inner all
 
 check:
 	$(MAKE) -sC test/system
 
-doc:
-	$(MAKE) -C $@
+install: casl2 comet2 dumpword install-info install-casl2lib
+	$(INSTALL) -d $(bindir)
+	$(INSTALL) casl2 comet2 dumpword $(bindir)/
 
-doc_inner:
-	$(MAKE) -C $@
+uninstall: uninstall-info uninstall-casl2lib
+	$(RMF) $(bindir)/casl2 $(bindir)/comet2 $(bindir)/dumpword
 
-clean: clean_src clean_gtags clean_test clean_doc clean_doc_inner
+install-info:
+	$(MAKE) -C doc install-info
 
-clean_src:
+uninstall-info:
+	@$(MAKE) -C doc uninstall-info
+
+install-casl2lib:
+	$(MAKE) -C as/casl2lib install-casl2lib
+
+uninstall-casl2lib:
+	@$(MAKE) -C as/casl2lib uninstall-casl2lib
+
+clean: clean-src clean-gtags clean-doc clean-doc-inner
+
+clean-src:
 	@$(MAKE) -sC src clean
 
-clean_gtags:
+clean-gtags:
 	@$(RMF) GPATH GRTAGS GSYMS GTAGS
 
-clean_test:
-	@$(MAKE) -sC test clean
-
-clean_doc:
+clean-doc:
 	@$(MAKE) -sC doc clean
 
-clean_doc_inner:
+clean-doc-inner:
 	@$(MAKE) -sC doc_inner clean
+
+clean-test:
+	@$(MAKE) -sC test clean

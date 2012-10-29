@@ -1,47 +1,63 @@
 DOCNAME = yacasl2
 SRC = $(DOCNAME).texi
 CSS = style.css
+HTMLDIR = html
 
-MV = mv
-CP = cp
-MKDIR = mkdir
-RMRF = rm -rf
-PTEX = ptex
-TEXI2DVI = texi2dvi
-DVI2PDF = dvipdfmx
-MAKEINFO = makeinfo
+MV ?= mv
+CP ?= cp
+MKDIR ?= mkdir
+RMRF ?= rm -rf
+PTEX ?= ptex
+TEXI2DVI ?= texi2dvi
+DVI2PDF ?= dvipdfmx
+MAKEINFO ?= gmakeinfo
+INSTALL ?= install
+INSTALL-INFO ?= ginstall-info
 
-.PHONY: doc info htmlnosplit html pdf clean clean_docs clean_tex_tmp
+prefix ?= ~
+infodir ?= $(prefix)/share/info
+
+.PHONY: all info htmlnosplit html pdf install-info clean clean-docs clean-tex-tmp
 
 .INTERMEDIATE: $(DOCNAME).dvi
 
-doc: info htmlnosplit html pdf
+all: info html htmls pdf
 
 info: $(DOCNAME).info
 
-htmlnosplit: index.html
+html: $(DOCNAME).html
+	$(MV) $< index.html
 
-index.html: $(SRC) $(CSS)
-	$(MAKEINFO) -o $@ --no-split --html --css-include=$(CSS) $(SRC)
-
-html: $(SRC) $(CSS)
-	if test ! -e $@; then $(MKDIR) $@; fi;
-	$(CP) $(CSS) $@/$(CSS)
-	$(MAKEINFO) -o $@ --html --css-ref=$(CSS) $(SRC)
+htmls: $(SRC) $(CSS)
+	$(INSTALL) -d $(HTMLDIR)
+	$(INSTALL) $(CSS) $(HTMLDIR)/
+	$(MAKEINFO) -o $(HTMLDIR) --html --css-ref=$(CSS) $(SRC)
 
 pdf: $(DOCNAME).pdf
+
+$(DOCNAME).html: $(SRC) $(CSS)
+	$(MAKEINFO) -o $@ --no-split --html --css-include=$(CSS) $(SRC)
 
 $(DOCNAME).pdf: $(DOCNAME).dvi
 	$(DVI2PDF) $^
 
 $(DOCNAME).dvi: $(SRC)
 	TEX=$(PTEX) $(TEXI2DVI) -q --texinfo=@afourpaper -o $@ $<
-	@$(MAKE) clean_tex_tmp
+	@$(MAKE) clean-tex-tmp
 
-clean: clean_docs clean_tex_tmp
+install-info: $(DOCNAME).info
+	$(INSTALL) -d $(infodir)
+	$(INSTALL) $(DOCNAME).info $(infodir)/$(DOCNAME)
+	$(INSTALL-INFO) $(infodir)/$(DOCNAME) $(infodir)/dir
 
-clean_docs:
-	@$(RMRF) html $(DOCNAME).info $(DOCNAME).pdf $(DOCNAME).html
+uninstall-info: $(DOCNAME).info
+	$(INSTALL-INFO) --delete $(infodir)/$(DOCNAME) $(infodir)/dir
+	$(RM) $(infodir)/$(DOCNAME)
 
-clean_tex_tmp:
+clean: clean-docs clean-tex-tmp
+
+clean-docs:
+	@$(RMRF) html $(DOCNAME).info $(DOCNAME).pdf index.html
+
+clean-tex-tmp:
 	@$(RMRF) $(DOCNAME).aux $(DOCNAME).cp $(DOCNAME).cps $(DOCNAME).fn $(DOCNAME).ky $(DOCNAME).log $(DOCNAME).pg $(DOCNAME).pgs $(DOCNAME).tmp $(DOCNAME).toc $(DOCNAME).tp $(DOCNAME).vr
