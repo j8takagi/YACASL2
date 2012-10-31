@@ -6,6 +6,7 @@
 #include "exec.h"
 #include "cmem.h"
 #include "cerr.h"
+#include "package.h"
 
 /**
  * comet2コマンドのオプション
@@ -17,6 +18,7 @@ static struct option longopts[] = {
     {"dump", no_argument, NULL, 'd'},
     {"memorysize", required_argument, NULL, 'M'},
     {"clocks", required_argument, NULL, 'C'},
+    { "version", no_argument, NULL, 'v' },
     {"help", no_argument, NULL, 'h'},
     {0, 0, 0, 0},
 };
@@ -28,14 +30,15 @@ int main(int argc, char *argv[])
 {
     int memsize = DEFAULT_MEMSIZE, clocks = DEFAULT_CLOCKS;
     int opt, stat = 0;
-    const char *usage = "Usage: %s [-tTdh] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE\n";
+    const char *version = PACKAGE_VERSION,  *cmdversion = "comet2 of YACASL2 version %s\n";
+    const char *usage = "Usage: %s [-tTdvh] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE\n";
 
     cerr_init();
     addcerrlist_load();
     addcerrlist_exec();
 
     /* オプションの処理 */
-    while((opt = getopt_long(argc, argv, "tTdM:C:h", longopts, NULL)) != -1) {
+    while((opt = getopt_long(argc, argv, "tTdM:C:vh", longopts, NULL)) != -1) {
         switch(opt) {
         case 't':
             execmode.trace = true;
@@ -53,6 +56,9 @@ int main(int argc, char *argv[])
         case 'C':
             clocks = atoi(optarg);
             break;
+        case 'v':
+            fprintf(stdout, cmdversion, version);
+            return 0;
         case 'h':
             fprintf(stdout, usage, argv[0]);
             return 0;

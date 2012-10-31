@@ -1,18 +1,21 @@
-.PHONY: all build gtags check doc info html doc-inner install uninstall install-info uninstall-info install-casl2lib uninstall-casl2lib clean clean-src clean-gtags clean-test clean-doc clean-doc-inner
+.PHONY: all build gtags check doc info html doc-inner install uninstall install-info uninstall-info install-casl2lib uninstall-casl2lib version clean clean-src clean-gtags clean-test clean-doc clean-doc-inner
 
 GTAGS ?= gtags
 RMF ?= rm -f
 WHICH ?= which
 ECHO ?= echo
 INSTALL ?= install
+SED ?= sed
 
 prefix ?= ~
 bindir ?= $(prefix)/bin
 casl2libdir ?= $(prefix)/yacasl2/casl2lib
 
+VERSIONFILES = include/package.h test/system/casl2/opt_v/0.txt test/system/comet2/opt_v/0.txt test/system/dumpword/opt_v/0.txt
+
 all: build info html gtags
 
-build:
+build: version
 	$(MAKE) -C src all
 
 gtags:
@@ -52,7 +55,12 @@ install-casl2lib:
 uninstall-casl2lib:
 	@$(MAKE) -C as/casl2lib uninstall-casl2lib
 
-clean: clean-src clean-gtags clean-doc clean-doc-inner
+version: $(VERSIONFILES)
+
+$(VERSIONFILES):
+	for f in $(VERSIONFILES); do $(SED) -e "s/@@VERSION@@/`cat VERSION`/g" $$f.version >$$f; done
+
+clean: clean-src clean-gtags clean-doc clean-doc-inner clean-version
 
 clean-src:
 	@$(MAKE) -sC src clean
@@ -68,3 +76,6 @@ clean-doc-inner:
 
 clean-test:
 	@$(MAKE) -sC test clean
+
+clean-version:
+	@$(RMF) $(VERSIONFILES)

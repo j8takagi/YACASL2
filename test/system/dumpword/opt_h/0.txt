@@ -1,0 +1,1 @@
+Usage: ../../../../dumpword [-alh] WORD

@@ -1,22 +1,36 @@
 このファイルは、YACASL2のREADMEファイルです。
 
-■YACASL2の概要
-YACASL2は、Linux上で動作するオープンソースのCASL II処理システムです。
+YACASL2の概要
+******************
+
+YACASL2は、UNIX／Linuxのコマンドラインインターフェイスで動作する
+オープンソースのCASL II処理システムです。
 CASL IIは、情報処理試験で用いられるアセンブラ言語で、次の資料で仕様が定義されています。
 
-  試験で使用する情報処理用語・プログラム言語など（2008年10月版）
-  http://www.jitec.ipa.go.jp/1_00topic/topic_20081027_hani_yougo.pdf （PDFファイル）
+  試験で使用する情報処理用語・プログラム言語など Ver 2.2（平成24年5月22日）
+  http://www.jitec.jp/1_13download/shiken_yougo_ver2_2.pdf （PDFファイル）
       別紙 1 アセンブラ言語の仕様
 
-■ドキュメント
-YACASL2のインストール方法、使い方などはファイルdoc/index.htmlを参照してください。
 
-■Webサイト
-次のURLを参照してください。
-http://www.j8takagi.net/yacasl2/
+同梱ドキュメント
+******************
 
-■ライセンス
-Copyright 2010-2011, j8takagi.
+YACASL2のインストール方法は、INSTALLを参照してください。
+YACASL2の使い方は、doc/index.htmlを参照してください。
+
+
+Webサイト
+******************
+
+YACASL2のWebサイトは、次のURLです。
+
+  http://www.j8takagi.net/yacasl2/
+
+
+ライセンス
+******************
+
+Copyright 2010-2012, j8takagi.
 YACASL2 is licensed under the MIT license.
 
-ライセンスの詳細は、ファイルLICENSEを参照してください。
+ライセンスの詳細は、同梱のLICENSEを参照してください。

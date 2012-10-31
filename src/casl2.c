@@ -8,6 +8,7 @@
 #include "cerr.h"
 #include "assemble.h"
 #include "exec.h"
+#include "package.h"
 
 /**
  * casl2コマンドのオプション
@@ -26,6 +27,7 @@ static struct option longopts[] = {
     { "dump", no_argument, NULL, 'd' },
     { "memorysize", required_argument, NULL, 'M' },
     { "clocks", required_argument, NULL, 'C' },
+    { "version", no_argument, NULL, 'v' },
     { "help", no_argument, NULL, 'h' },
     { 0, 0, 0, 0 },
 };
@@ -107,17 +109,17 @@ asfin:
 int main(int argc, char *argv[])
 {
     int memsize = DEFAULT_MEMSIZE, clocks = DEFAULT_CLOCKS, opt, i, stat;
-    char *af[argc];
-    char *objfile = NULL;
+    char *af[argc], *objfile = NULL;
+    const char *version = PACKAGE_VERSION,  *cmdversion = "casl2 of YACASL2 version %s\n";
     const char *usage =
-        "Usage: %s [-slLaAtTdh] [-oO[<OBJECTFILE>]] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE1[ FILE2  ...]\n";
+        "Usage: %s [-slLaAtTdvh] [-oO[<OBJECTFILE>]] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE1[ FILE2  ...]\n";
 
     cerr_init();
     addcerrlist_casl2();
     addcerrlist_assemble();
     addcerrlist_exec();
     /* オプションの処理 */
-    while((opt = getopt_long(argc, argv, "tTdslLao::O::AM:C:h", longopts, NULL)) != -1) {
+    while((opt = getopt_long(argc, argv, "tTdslLao::O::AM:C:vh", longopts, NULL)) != -1) {
         switch(opt) {
         case 's':
             asmode.src = true;
@@ -159,6 +161,9 @@ int main(int argc, char *argv[])
         case 'C':
             clocks = atoi(optarg);
             break;
+        case 'v':
+            fprintf(stdout, cmdversion, version);
+            return 0;
         case 'h':
             fprintf(stdout, usage, argv[0]);
             return 0;

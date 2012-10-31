@@ -4,6 +4,7 @@ RMF ?= rm -f
 WHICH ?= which
 CTAGS ?= ctags
 ETAGS ?= etags
+SED ?= sed
 
 INCLUDE := ../include
 
@@ -32,15 +33,15 @@ all: ../casl2 ../comet2 ../dumpword ctags etags
 	$(CC) -c $(CFLAGS) $<
 
 %.d: %.c
-	@$(CC) -MM -I $(INCLUDE) $< | sed 's/\($*\.o\):/\1 $@:/g' >$@
+	@$(CC) -MM -I $(INCLUDE) $< | $(SED) 's/\($*\.o\):/\1 $@:/g' >$@
 
 -include $(subst .c,.d,casl2.c comet2.c dumpword.c $(COMMONSRC) $(CASL2SRC) $(ASSRC) $(EXECSRC))
 
 ctags: $(INCLUDE)/*.h *.c
-	@($(WHICH) $(CTAGS) && $(CTAGS) $^) >/dev/null
+	@$(WHICH) $(CTAGS) >/dev/null && $(CTAGS) $^
 
 etags: $(INCLUDE)/*.h *.c
-	@($(WHICH) $(ETAGS) && $(ETAGS) $^) >/dev/null
+	@$(WHICH) $(ETAGS) >/dev/null && $(ETAGS) $^
 
 clean: clean_cmd clean_build clean_tags
 
