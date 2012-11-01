@@ -6,7 +6,7 @@ ECHO ?= echo
 INSTALL ?= install
 
 prefix ?= ~
-casl2libdir ?= $(prefix)/yacasl2/casl2lib
+casl2libdir ?= $(prefix)/lib/yacasl2
 
 install-casl2lib: *.casl
 	$(INSTALL) -d $(casl2libdir)
