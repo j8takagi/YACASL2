@@ -142,7 +142,7 @@ void print_dumpword(WORD word, bool logicalmode)
     }
     fprintf(stdout, " = #%04X = %s", word, word2bit(word));
     /* 「文字の組」の符号表に記載された文字と、改行（CR）／タブを表示 */
-    if(word >= 0x20 && word <= 0x7E) {
+    if((word >= 0x20 && word <= 0x7E) || (word >= 0xA0 && word <= 0xFE)) {
         fprintf(stdout, " = \'%c\'", word);
     } else if(word == 0xA) {
         fprintf(stdout, " = \'\\n\'");
