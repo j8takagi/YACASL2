@@ -1,1 +1,1 @@
-Usage: ../../../../casl2 [-slLaAtTdh] [-oO[<OBJECTFILE>]] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE1[ FILE2  ...]
+Usage: ../../../../casl2 [-slLaAtTdvh] [-oO[<OBJECTFILE>]] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE1[ FILE2  ...]
