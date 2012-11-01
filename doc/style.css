@@ -121,3 +121,7 @@ pre.example strong {
 dt {
     font-weight: bold;
 }
+
+dfn {
+    font-style: normal;
+}

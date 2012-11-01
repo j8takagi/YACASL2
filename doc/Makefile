@@ -1,6 +1,7 @@
 MANUAL = manual
 INSTALLDOC = install
 MANUALSRC = $(MANUAL).texi
+MANUALINFO = yacasl2.info
 INSTALLDOCSRC = $(INSTALLDOC).texi
 CSS = style.css
 MANUALHTMLDIR = manual_html
@@ -20,19 +21,26 @@ GZIP = gzip
 prefix ?= ~
 infodir ?= $(prefix)/share/info
 
-.PHONY: all install-manual uninstall-manual clean clean-manual clean-installdoc clean-textmp
+.PHONY: all info html install-info uninstall-info clean clean-manual clean-installdoc clean-textmp
 
 .INTERMEDIATE: $(MANUAL).dvi
 
-all: $(MANUAL).info $(MANUAL).html $(MANUALHTMLDIR) $(MANUAL).pdf $(INSTALLDOC).html ../INSTALL
+all: info html $(MANUAL).pdf ../INSTALL
+
+info: $(MANUALINFO)
+
+$(MANUALINFO): $(MANUALSRC)
+	$(MAKEINFO) -o $(MANUALINFO) $(MANUALSRC)
+
+html: $(MANUAL).html $(MANUALHTMLDIR) $(INSTALLDOC).html
+
+$(MANUAL).html: $(MANUALSRC) $(CSS)
+	$(MAKEINFO) -o $@ --no-split --html --css-include=$(CSS) $<
 
 $(MANUALHTMLDIR): $(MANUALSRC) $(CSS)
 	$(INSTALL) -d $@
 	$(INSTALL) $(CSS) $@/
 	$(MAKEINFO) -o $@ --html --css-ref=$(CSS) $<
-
-$(MANUAL).html: $(MANUALSRC) $(CSS)
-	$(MAKEINFO) -o $@ --no-split --html --css-include=$(CSS) $<
 
 $(MANUAL).pdf: $(MANUAL).dvi
 	$(DVI2PDF) $<
@@ -42,15 +50,15 @@ $(MANUAL).dvi: $(MANUALSRC)
 	@$(MAKE) clean-textmp
 
 $(MANUAL).txt: $(MANUALSRC)
-	$(MAKEINFO) --no-headers -o $@ $(MANUALSRC)
+	$(MAKEINFO) --no-headers --disable-encoding -o $@ $(MANUALSRC)
 
-install-manual: $(MANUAL).info
+install-info: $(MANUAL).info
 	$(INSTALL) -d $(infodir)
-	$(INSTALL) $(MANUAL).info $(infodir)/
-	$(INSTALL-INFO) $(infodir)/$(MANUAL).info $(infodir)/dir
-	$(GZIP) $(infodir)/$(MANUAL).info
+	$(INSTALL) $(MANUALINFO) $(infodir)/
+	$(INSTALL-INFO) $(infodir)/$(MANUALINFO) $(infodir)/dir
+	$(GZIP) -f $(infodir)/$(MANUALINFO)
 
-uninstall-manual: $(MANUAL).info
+uninstall-info: $(MANUAL).info
 	$(INSTALL-INFO) --delete $(infodir)/$(MANUAL) $(infodir)/dir
 	$(RM) $(infodir)/$(MANUAL)*
 
@@ -58,7 +66,7 @@ $(INSTALLDOC).html: $(INSTALLDOCSRC) $(CSS)
 	$(MAKEINFO) -o $@ --no-split --html --css-include=$(CSS) $<
 
 ../INSTALL: $(INSTALLDOCSRC)
-	$(MAKEINFO) -o $@ --no-headers $<
+	$(MAKEINFO) -o $@ --no-headers --disable-encoding $<
 
 clean: clean-manual clean-installdoc clean-textmp
 

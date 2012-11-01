@@ -1,0 +1,341 @@
+<html lang="en">
+<head>
+<title>アセンブラ言語の仕様</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="アセンブラ言語の仕様">
+<meta name="generator" content="makeinfo 4.13">
+<link title="Top" rel="top" href="#Top">
+<link href="http://www.gnu.org/software/texinfo/" rel="generator-home" title="Texinfo Homepage">
+<!--
+Copyright (C) Information-technology Promotion Agency, Japan. All rights reserved 2012-->
+<meta http-equiv="Content-Style-Type" content="text/css">
+<style type="text/css"><!--
+  pre.display { font-family:inherit }
+  pre.format  { font-family:inherit }
+  pre.smalldisplay { font-family:inherit; font-size:smaller }
+  pre.smallformat  { font-family:inherit; font-size:smaller }
+  pre.smallexample { font-size:smaller }
+  pre.smalllisp    { font-size:smaller }
+  span.sc    { font-variant:small-caps }
+  span.roman { font-family:serif; font-weight:normal; } 
+  span.sansserif { font-family:sans-serif; font-weight:normal; } 
+body {
+    margin-left: 6em;
+    margin-right: 12em;
+    color: black;
+    background-color: #EEE;
+}
+
+h1, h2 {
+    margin-left: -2em;
+}
+
+.node{
+    margin-left: -3em;
+    color: inherit;
+    background-color: #DDF;
+}
+
+.menu, .node {
+    color: inherit;
+    background-color: #DDF;
+}
+
+h2 {
+    padding: 0.25em;
+    color: white;
+    background-color: navy;
+}
+
+.contents {
+    background-color: #DDF;
+    border: 4px double #000;
+}
+
+.contents h2 {
+    margin-left: 0;
+    color: black;
+    background-color: #DDF;
+}
+
+.shortcontents {
+    background-color: #DDF;
+    border: 4px double #000;
+ }
+
+.shortcontents h2{
+    display: none;
+}
+
+.shortcontents a {
+   margin-right: 1em;
+}
+
+h3, h4, h5 {
+    color: navy;
+    margin-left: -1em;
+}
+
+h5 {
+    font-size: 100%;
+}
+
+p {
+    line-height: 1.25em;
+    margin-top: 0;
+    margin-bottom: 0.5em;
+}
+
+a:hover {
+    color: red;
+    text-decoration: underline;
+}
+
+pre.example {
+    padding: 0.5em 1em 0.5em 1em;
+    color: #CCC;
+    background: black;
+    font-size: 90%;
+}
+
+a {
+    text-decoration: none;
+}
+
+blockquote {
+    line-height: 1.25em;
+    border: 1px solid #00F;
+}
+
+kbd {
+    font-family: monospace;
+}
+
+kbd, code, .file {
+    margin-left:0.5em;
+    margin-right: 0.5em;
+}
+
+table, th, td {
+    border: 1px solid #CCC;
+    border-collapse: collapse; /* 枠線の表示方法 */
+}
+
+table.cartouche, table.cartouche th, table.cartouche td  {
+    border: none;
+}
+
+pre.example .command, pre.example .option, pre.example kbd {
+    font-weight: bold;
+    font-family: monospace;
+    background-color: inherit;
+    color: white;
+    margin-left:0;
+    margin-right: 0;
+}
+
+pre.example strong {
+    font: inherit;
+    border: 2px solid green;
+}
+
+dt {
+    font-weight: bold;
+}
+
+dfn {
+    font-style: normal;
+}--></style>
+</head>
+<body>
+<h1 class="settitle">アセンブラ言語の仕様</h1>
+<h2 class="chapter"><a name="TOC0"></a>1 システム COMETIIの仕様</h2>
+
+<h3 class="section"><a name="TOC1"></a>1.1 ハードウェアの仕様</h3>
+
+     <ol type=1 start=1>
+<li>1語は16ビットで、そのビット構成は、次のとおりである。
+
+     <pre class="verbatim">      上位8ビット                               下位8ビット
+     | 15 | 14 | 13 | 12 | 11 | 10 |  9 |  8 |  7 |  6 |  5 |  4 |  3 |  2 |  1 |  0 |（ビット番号）
+       ↑
+     符号（負:1、非負:0）
+</pre>
+
+     <li>主記憶の容量は65536語で、そのアドレスは0～65535番地である。
+
+     <li>数値は、16ビットの2進数で表現する。負数は、2の補数で表現する。
+
+     <li>制御方式は逐次制御で、命令語は1語長又は2語長である。
+
+     <li>レジスタとして、<code>GR</code>（16ビット）、<code>SP</code>（16ビット）、<code>PR</code>（16ビット）、<code>FR</code>（3ビット）の 4 種類がある。
+
+     <p><code>GR</code>（汎用レジスタ、General Register）は、<code>GR0</code>～<code>GR7</code>の8個があり、
+算術、論理、比較、シフトなどの演算に用いる。
+このうち、<code>GR1</code>～<code>GR7</code>のレジスタは、指標レジスタ（index register）
+としてアドレスの修飾にも用いる。
+
+     <p><code>SP</code>（スタックポインタ、Stack Pointer）は、
+スタックの最上段のアドレスを保持している。
+
+     <p><code>PR</code>（プログラムレジスタ、Program Register）は、
+次に実行すべき命令語の先頭アドレスを保持している。
+
+     <p><code>FR</code>（フラグレジスタ、Flag Register）は、
+<code>OF</code>（Overflow Flag）、<code>SF</code>（Sign Flag）、<code>ZF</code>（Zero Flag）と呼ぶ
+3個のビットからなり、演算命令などの実行によって次の値が設定される。
+これらの値は、条件付き分岐命令で参照される。
+
+          <dl>
+<dt><code>OF</code><dd>算術演算命令の場合は、演算結果が-32768～32767に収まらなくなったとき1になり、
+それ以外のとき0になる。
+論理演算命令の場合は、演算結果が0～65535に収まらなくなったとき1になり、
+それ以外のとき0になる。
+
+          <br><dt><code>SF</code><dd>演算結果の符号が負（ビット番号15が1）のとき1、それ以外のとき0になる。
+
+          <br><dt><code>ZF</code><dd>演算結果が零（全部のビットが0）のとき1、それ以外のとき0になる。
+</dl>
+
+     <li>論理加算又は論理減算は、被演算データを符号のない数値とみなして、
+加算又は減算する。
+      </ol>
+
+<h3 class="section"><a name="TOC2"></a>1.2 命令</h3>
+
+ <p>命令の形式及びその機能を示す。
+ここで、一つの命令コードに対し2種類のオペランドがある場合、
+上段はレジスタ間の命令、下段はレジスタと主記憶間の命令を表す。
+
+     <ol type=1 start=1>
+<li>ロード、ストア、ロードアドレス命令
+     <p><table summary=""><tr align="left"><th valign="top" width="25%">命令 </th><th valign="top" width="10%">書き方 <br> 命令コード </th><th valign="top" width="15%">書き方 <br> オペランド </th><th valign="top" width="30%">命令の説明 </th><th valign="top" width="20%">FRの設定
+<br></th></tr><tr align="left"><td valign="top" width="25%">ロード <br> LoaD </td><td valign="top" width="10%"><code>LD</code> </td><td valign="top" width="15%"><code>r1,r2</code> <br> &mdash;&mdash; <br> <code>r,adr[,x]</code> </td><td valign="top" width="30%"><code>r1 ← (r2)</code> <br> &mdash;&mdash; <br> <code>r ← (実効アドレス)</code> </td><td valign="top" width="20%">○ <br> ただし、<code>OF</code>には<code>0</code>が設定される。
+<br></td></tr><tr align="left"><td valign="top" width="25%">ストア <br> STore </td><td valign="top" width="10%"><code>ST</code> </td><td valign="top" width="15%"><code>r,adr[,x]</code>  </td><td valign="top" width="30%"><code>実効アドレス ← (r)</code> </td><td valign="top" width="20%">&ndash;
+<br></td></tr><tr align="left"><td valign="top" width="25%">ロードアドレス <br> Load ADdress </td><td valign="top" width="10%"><code>LAD</code> </td><td valign="top" width="15%"><code>r,adr[,x]</code> </td><td valign="top" width="30%"><code>r ← 実効アドレス</code> </td><td valign="top" width="20%">&ndash;
+     <br></td></tr></table>
+
+     <li>算術、論理演算命令
+     <p><table summary=""><tr align="left"><th valign="top" width="25%">命令 </th><th valign="top" width="10%">書き方 <br> 命令コード </th><th valign="top" width="15%">書き方 <br> オペランド </th><th valign="top" width="30%">命令の説明 </th><th valign="top" width="20%">FRの設定
+<br></th></tr><tr align="left"><td valign="top" width="25%">算術加算 <br> ADD Arithmetic </td><td valign="top" width="10%"><code>ADDA</code> </td><td valign="top" width="15%"><code>r1,r2</code> <br> &mdash;&mdash; <br> <code>r,adr[,x]</code> </td><td valign="top" width="30%"><code>r1 ← (r1) + (r2)</code> <br> &mdash;&mdash; <br> <code>r ← (r) + (実効アドレス)</code> </td><td valign="top" width="20%">○
+<br></td></tr><tr align="left"><td valign="top" width="25%">論理加算 <br> ADD Logical </td><td valign="top" width="10%"><code>ADDL</code> </td><td valign="top" width="15%"><code>r1,r2</code> <br> &mdash;&mdash; <br> <code>r,adr[,x]</code> </td><td valign="top" width="30%"><code>r1 ← (r1) +L (r2)</code> <br> &mdash;&mdash; <br> <code>r ← (r) +L (実効アドレス)</code> </td><td valign="top" width="20%">○
+<br></td></tr><tr align="left"><td valign="top" width="25%">算術減算 <br> SUBtract Arithmetic </td><td valign="top" width="10%"><code>SUBA</code> </td><td valign="top" width="15%"><code>r1,r2</code> <br> &mdash;&mdash; <br> <code>r,adr[,x]</code> </td><td valign="top" width="30%"><code>r1 ← (r1) - (r2)</code> <br> &mdash;&mdash; <br> <code>r ← (r) - (実効アドレス)</code> </td><td valign="top" width="20%">○
+<br></td></tr><tr align="left"><td valign="top" width="25%">論理減算 <br> SUBtract Logical </td><td valign="top" width="10%"><code>SUBL</code> </td><td valign="top" width="15%"><code>r1,r2</code> <br> &mdash;&mdash; <br> <code>r,adr[,x]</code> </td><td valign="top" width="30%"><code>r1 ← (r1) - L(r2)</code> <br> &mdash;&mdash; <br> <code>r ← (r) - L(実効アドレス)</code> </td><td valign="top" width="20%">○
+<br></td></tr><tr align="left"><td valign="top" width="25%">論理積 <br> AND </td><td valign="top" width="10%"><code>AND</code> </td><td valign="top" width="15%"><code>r1,r2</code> <br> &mdash;&mdash; <br> <code>r,adr[,x]</code> </td><td valign="top" width="30%"><code>r1 ← (r1) AND (r2)</code> <br> &mdash;&mdash; <br> <code>r ← (r) AND (実効アドレス)</code> </td><td valign="top" width="20%">○ <br> ただし、<code>OF</code>には<code>0</code>が設定される。
+<br></td></tr><tr align="left"><td valign="top" width="25%">論理和 <br> OR </td><td valign="top" width="10%"><code>OR</code> </td><td valign="top" width="15%"><code>r1,r2</code> <br> &mdash;&mdash; <br> <code>r,adr[,x]</code> </td><td valign="top" width="30%"><code>r1 ← (r1) OR (r2)</code> <br> &mdash;&mdash; <br> <code>r ← (r) OR (実効アドレス)</code> </td><td valign="top" width="20%">○ <br> ただし、<code>OF</code>には<code>0</code>が設定される。
+<br></td></tr><tr align="left"><td valign="top" width="25%">排他的論理和 <br> eXclusive OR </td><td valign="top" width="10%"><code>XOR</code> </td><td valign="top" width="15%"><code>r1,r2</code> <br> &mdash;&mdash; <br> <code>r,adr[,x]</code> </td><td valign="top" width="30%"><code>r1 ← (r1) XOR (r2)</code> <br> &mdash;&mdash; <br> <code>r ← (r) XOR (実効アドレス)</code> </td><td valign="top" width="20%">○ <br> ただし、<code>OF</code>には<code>0</code>が設定される。
+     <br></td></tr></table>
+
+     <li>比較演算命令
+     <p><table summary=""><tr align="left"><th valign="top" width="25%">命令 </th><th valign="top" width="10%">書き方 <br> 命令コード </th><th valign="top" width="15%">書き方 <br> オペランド </th><th valign="top" width="30%">命令の説明 </th><th valign="top" width="20%">FRの設定
+<br></th></tr><tr align="left"><td valign="top" width="25%">算術比較 <br> ComPare Arithmetic </td><td valign="top" width="10%"><code>CPA</code></td><td valign="top" width="15%"><code>r1,r2</code> <br> &mdash;&mdash; <br> <code>r,adr[,x]</code> </td><td valign="top" width="30%"><code>(r1)</code>と<code>(r2)</code>、又は<code>(r)</code>と<code>(実効アドレス)</code>の算術比較を行い、比較結果によって、<code>FR</code>に次の値を設定する。
+          <dl>
+<dt><dfn>比較結果</dfn><dd>FRの値
+<br><dt><code>(r1) &gt; (r2)</code><dfn> 又は </dfn><code>(r) &gt; (実効アドレス)</code><dd><code>SF:0, ZF:0</code>
+<br><dt><code>(r1) = (r2)</code><dfn> 又は </dfn><code>(r) = (実効アドレス)</code><dd><code>SF:0, ZF:1</code>
+<br><dt><code>(r1) &lt; (r2)</code><dfn> 又は </dfn><code>(r) &lt; (実効アドレス)</code><dd><code>SF:1, ZF:0</code>
+</dl>
+     </td><td valign="top" width="20%">○ <br> ただし、<code>OF</code>には<code>0</code>が設定される。
+<br></td></tr><tr align="left"><td valign="top" width="25%">論理比較 <br> ComPare Logical </td><td valign="top" width="10%"><code>CPL</code> </td><td valign="top" width="15%"><code>r1,r2</code> <br> &mdash;&mdash; <br> <code>r,adr[,x]</code> </td><td valign="top" width="30%"><code>(r1)</code>と<code>(r2)</code>、又は<code>(r)</code>と<code>(実効アドレス)</code>の論理比較を行い、比較結果によって、<code>FR</code>に次の値を設定する。
+          <dl>
+<dt><dfn>比較結果</dfn><dd>FRの値
+<br><dt><code>(r1) &gt; (r2)</code><dfn> 又は </dfn><code>(r) &gt; (実効アドレス)</code><dd><code>SF:0</code>, <code>ZF:0</code>
+<br><dt><code>(r1) = (r2)</code><dfn> 又は </dfn><code>(r) = (実効アドレス)</code><dd><code>SF:0</code>, <code>ZF:1</code>
+<br><dt><code>(r1) &lt; (r2)</code><dfn> 又は </dfn><code>(r) &lt; (実効アドレス)</code><dd><code>SF:1</code>, <code>ZF:0</code>
+</dl>
+     </td><td valign="top" width="20%">○ <br> ただし、<code>OF</code>には<code>0</code>が設定される。
+     <br></td></tr></table>
+
+     <li>シフト演算命令
+     <p><table summary=""><tr align="left"><th valign="top" width="25%">命令 </th><th valign="top" width="10%">書き方 <br> 命令コード </th><th valign="top" width="15%">書き方 <br> オペランド </th><th valign="top" width="30%">命令の説明 </th><th valign="top" width="20%">FRの設定
+<br></th></tr><tr align="left"><td valign="top" width="25%">算術左シフト <br> Shift Left Arithmetic </td><td valign="top" width="10%"><code>SLA</code> </td><td valign="top" width="15%"><code>r,adr[,x]</code> </td><td valign="top" width="30%">符号を除き<code>(r)</code>を実効アドレスで指定したビット数だけ左にシフトする。シフトの結果、空いたビット位置には、<code>0</code>が入る。 </td><td valign="top" width="20%">○ <br> ただし、<code>OF</code>にはレジスタから最後に送り出されたビットの値が設定される。
+<br></td></tr><tr align="left"><td valign="top" width="25%">算術右シフト <br> Shift Right Arithmetic </td><td valign="top" width="10%"><code>SRA</code> </td><td valign="top" width="15%"><code>r,adr[,x]</code> </td><td valign="top" width="30%">符号を除き<code>(r)</code>を実効アドレスで指定したビット数だけ右にシフトする。シフトの結果、空いたビット位置には、符号と同じものが入る。 </td><td valign="top" width="20%">○ <br> ただし、<code>OF</code>にはレジスタから最後に送り出されたビットの値が設定される。
+<br></td></tr><tr align="left"><td valign="top" width="25%">論理左シフト <br> Shift Left Logical </td><td valign="top" width="10%"><code>SLL</code> </td><td valign="top" width="15%"><code>r,adr[,x]</code> </td><td valign="top" width="30%">符号を含み<code>(r)</code>を実効アドレスで指定したビット数だけ左にシフトする。シフトの結果,空いたビット位置には<code>0</code>が入る。 </td><td valign="top" width="20%">○ <br> ただし、<code>OF</code>にはレジスタから最後に送り出されたビットの値が設定される。
+<br></td></tr><tr align="left"><td valign="top" width="25%">論理右シフト <br> Shift Right Logical </td><td valign="top" width="10%"><code>SRL</code> </td><td valign="top" width="15%"><code>r,adr[,x]</code> </td><td valign="top" width="30%">符号を含み<code>(r)</code>を実効アドレスで指定したビット数だけ右にシフトする。シフトの結果、空いたビット位置には<code>0</code>が入る。 </td><td valign="top" width="20%">○ <br> ただし、<code>OF</code>にはレジスタから最後に送り出されたビットの値が設定される。
+     <br></td></tr></table>
+
+     <li>分岐命令
+     <p><table summary=""><tr align="left"><th valign="top" width="25%">命令 </th><th valign="top" width="10%">書き方 <br> 命令コード </th><th valign="top" width="15%">書き方 <br> オペランド </th><th valign="top" width="30%">命令の説明 </th><th valign="top" width="20%">FRの設定
+<br></th></tr><tr align="left"><td valign="top" width="25%">正分岐 <br> Jump on Plus </td><td valign="top" width="10%"><code>JPL</code> </td><td valign="top" width="15%"><code>adr[,x]</code> </td><td valign="top" width="30%"><code>FR</code>の値によって、実効アドレスに分岐する。分岐しないときは、次の命令に進む。
+          <dl>
+<dt><dfn>分岐するときの</dfn><code>FR</code><dfn>の値</dfn><dd><code>SF:0, ZF:0</code>
+</dl>
+     </td><td valign="top" width="20%">&ndash;
+<br></td></tr><tr align="left"><td valign="top" width="25%">負分岐 <br> Jump on MINUS </td><td valign="top" width="10%"><code>JMI</code> </td><td valign="top" width="15%"><code>adr[,x]</code> </td><td valign="top" width="30%"><code>FR</code>の値によって、実効アドレスに分岐する。分岐しないときは、次の命令に進む。
+          <dl>
+<dt><dfn>分岐するときの</dfn><code>FR</code><dfn>の値</dfn><dd><code>SF:1</code>
+</dl>
+     </td><td valign="top" width="20%">&ndash;
+<br></td></tr><tr align="left"><td valign="top" width="25%">非零分岐 <br> Jump on Non Zero </td><td valign="top" width="10%"><code>JNZ</code> </td><td valign="top" width="15%"><code>adr[,x]</code> </td><td valign="top" width="30%"><code>FR</code>の値によって、実効アドレスに分岐する。分岐しないときは、次の命令に進む。
+          <dl>
+<dt><dfn>分岐するときの</dfn><code>FR</code><dfn>の値</dfn><dd><code>ZF:0</code>
+</dl>
+     </td><td valign="top" width="20%">&ndash;
+<br></td></tr><tr align="left"><td valign="top" width="25%">零分岐 <br> Jump on ZEro </td><td valign="top" width="10%"><code>JZE</code> </td><td valign="top" width="15%"><code>adr[,x]</code> </td><td valign="top" width="30%"><code>FR</code>の値によって、実効アドレスに分岐する。分岐しないときは、次の命令に進む。
+          <dl>
+<dt><dfn>分岐するときの</dfn><code>FR</code><dfn>の値</dfn><dd><code>ZF:1</code>
+</dl>
+     </td><td valign="top" width="20%">&ndash;
+<br></td></tr><tr align="left"><td valign="top" width="25%">オーバーフロー分岐 <br> Jump on OVerflow </td><td valign="top" width="10%"><code>JOV</code> </td><td valign="top" width="15%"><code>adr[,x]</code> </td><td valign="top" width="30%"><code>FR</code>の値によって、実効アドレスに分岐する。分岐しないときは、次の命令に進む。
+          <dl>
+<dt><dfn>分岐するときの</dfn><code>FR</code><dfn>の値</dfn><dd><code>OF:1</code>
+</dl>
+     </td><td valign="top" width="20%">&ndash;
+<br></td></tr><tr align="left"><td valign="top" width="25%">無条件分岐 <br> unconditional Jump </td><td valign="top" width="10%"><code>JUMP</code> </td><td valign="top" width="15%"><code>adr[,x]</code> </td><td valign="top" width="30%">無条件に実効アドレスに分岐する。 </td><td valign="top" width="20%">&ndash;
+     <br></td></tr></table>
+
+     <li>スタック操作命令
+     <p><table summary=""><tr align="left"><th valign="top" width="25%">命令 </th><th valign="top" width="10%">書き方 <br> 命令コード </th><th valign="top" width="15%">書き方 <br> オペランド </th><th valign="top" width="30%">命令の説明 </th><th valign="top" width="20%">FRの設定
+<br></th></tr><tr align="left"><td valign="top" width="25%">プッシュ <br> PUSH </td><td valign="top" width="10%"><code>PUSH</code> </td><td valign="top" width="15%"><code>adr[,x]</code> </td><td valign="top" width="30%"><code>SP ← (SP)-L1</code>, <br> <code>(SP)← (実効アドレス)</code> </td><td valign="top" width="20%">&ndash;
+<br></td></tr><tr align="left"><td valign="top" width="25%">ポップ <br> POP </td><td valign="top" width="10%"><code>POP</code> </td><td valign="top" width="15%"><code>r</code> </td><td valign="top" width="30%"><code>r ← ( (SP) )</code>, <br> <code>SP ← (SP) +L 1</code> </td><td valign="top" width="20%">&ndash;
+     <br></td></tr></table>
+
+     <li>コール、リターン命令
+     <p><table summary=""><tr align="left"><th valign="top" width="25%">命令 </th><th valign="top" width="10%">書き方 <br> 命令コード </th><th valign="top" width="15%">書き方 <br> オペランド </th><th valign="top" width="30%">命令の説明 </th><th valign="top" width="20%">FRの設定
+<br></th></tr><tr align="left"><td valign="top" width="25%">コール <br> CALL subroutine </td><td valign="top" width="10%"><code>CALL</code> </td><td valign="top" width="15%"><code>adr[,x]</code> </td><td valign="top" width="30%"><code>SP ← (SP)-L 1</code>, <br> <code>(SP) ← (PR)</code>, <br> <code>PR ← 実効アドレス</code> </td><td valign="top" width="20%">&ndash;
+<br></td></tr><tr align="left"><td valign="top" width="25%">リターン <br> RETrun form subroutine </td><td valign="top" width="10%"><code>RET</code> </td><td valign="top" width="15%"></td><td valign="top" width="30%"><code>PR ← ( (SP) )</code>, <br> <code>SP ← (SP) +L 1</code> </td><td valign="top" width="20%">&ndash;
+     <br></td></tr></table>
+
+     <li>その他
+     <p><table summary=""><tr align="left"><th valign="top" width="25%">命令 </th><th valign="top" width="10%">書き方 <br> 命令コード </th><th valign="top" width="15%">書き方 <br> オペランド </th><th valign="top" width="30%">命令の説明 </th><th valign="top" width="20%">FRの設定
+<br></th></tr><tr align="left"><td valign="top" width="25%">スーパーバイザコール <br> SuperVisor CALL </td><td valign="top" width="10%"><code>SVC</code> </td><td valign="top" width="15%"><code>adr[,x]</code> </td><td valign="top" width="30%">実効アドレスを引数として割出しを行う。実行後の<code>GR</code>と<code>FR</code>は不定となる。 </td><td valign="top" width="20%">&ndash;
+<br></td></tr><tr align="left"><td valign="top" width="25%">ノーオペレーション <br> No operation </td><td valign="top" width="10%"><code>NOP</code> </td><td valign="top" width="15%"></td><td valign="top" width="30%">何もしない。 </td><td valign="top" width="20%">&ndash;
+     <br></td></tr></table>
+      </ol>
+
+     <ul>
+<li>注
+          <dl>
+<dt><code>r</code><dfn>, </dfn><code>r1</code><dfn>, </dfn><code>r2</code><dd>いずれも <code>GR</code>を示す。指定できる<code>GR</code>は<code>GR0</code>～<code>GR7</code>
+
+          <br><dt><code>adr</code><dd>アドレスを示す。指定できる値の範囲は<code>0</code>～<code>65535</code>
+
+          <br><dt><code>x</code><dd>指標レジスタとして用いる<code>GR</code>を示す。指定できる<code>GR</code>は<code>GR1</code>～<code>GR7</code>
+
+          <br><dt><code>[ ]</code><dd>[ ]内の指定は省略できることを示す。
+
+          <br><dt><code>( )</code><dd>( )内のレジスタ又はアドレスに格納されている内容を示す。
+
+          <br><dt><code>実効アドレス</code><dd><code>adr</code>と<code>x</code>の内容との論理加算値又はその値が示す番地
+
+          <br><dt><code>←</code><dd>演算結果を、左辺のレジスタ又はアドレスに格納することを示す。
+
+          <br><dt><code>+L</code><dfn>, </dfn><code>-L</code><dd>論理加算、論理減算を示す。
+
+          <br><dt><code>FR</code><dfn>の設定</dfn><dd>
+               <ul>
+<li>○: 設定されることを示す。
+<li>ー: 実行前の値が保持されることを示す。
+</ul>
+          </dl>
+     </ul>
+
+</body></html>
+
+<!--
+
+Local Variables:
+coding: utf-8
+End:
+
+-->
