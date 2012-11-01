@@ -24,38 +24,40 @@ Copyright @copyright{} 2010-2012 j8takagi
 @end titlepage
 
 @node Top, Require, (dir), (dir)
+@chapter YACASL2のインストール
 
 @menu
-* Require::       要件
-* Download::      YACASL2ファイルのダウンロード
-* Verify::        YACASL2ファイルの検証
-* Expand::        YACASL2ファイルの展開
-* Build::         @file{casl2} @file{comet2} @file{dumpword}のビルド
-* Simple Test::   @file{casl2}の実行テスト
-* Detail Test::   詳細なテスト
-* Environment::   環境変数の設定
+* Require::                     要件
+* Download::                    YACASL2ファイルのダウンロード
+* Verify::                      YACASL2ファイルの検証
+* Expand::                      YACASL2ファイルの展開
+* Build::                       @file{casl2} @file{comet2} @file{dumpword}のビルド
+* Simple Test::                 @file{casl2}の実行テスト
+* Detail Test::                 詳細なテスト
+* Install::                     インストール
+* Environment::                 環境変数の設定
 @end menu
 
 @contents
 
 @node Require, Download, Top, Top
-@chapter 要件
+@unnumberedsec 要件
 
 YACASL2は、LinuxやMac OS Xなど、UNIX系のOS上で動作します。現在動作を確認しているのは、Ubuntu LinuxとVine Linux、Mac OS Xです。
 
 インストール時に、@command{tar} @command{gcc} @command{make}が必要です。Linuxでは多くの場合、標準でインストールされています。Mac OS Xの場合、Xcodeの「Command Line Tools」に含まれます。
 
 @node Download, Verify, Require, Top
-@chapter YACASL2ファイルのダウンロード
+@section YACASL2ファイルのダウンロード
 
 @uref{http://www.j8takagi.net/yacasl2/, YACASL2のサイト}から、@file{tar.gz}または@file{tar.xz}ファイルと、対応する検証用ファイルをダウンロードします。@uref{http://github.com/j8takagi/YACASL2/downloads/, githubのダウンロードページ}から@file{tar.gz}などのファイルをダウンロードすることもできます。
 
 @node Verify, Expand, Download, Top
-@chapter YACASL2ファイルの検証
+@section YACASL2ファイルの検証
 
 ダウンロードが完了したら、圧縮ファイルが改竄されていないか検証します。検証にはGnuPG分離署名か、MD5ハッシュ値を使います。
 
-@section GnuPG分離署名での検証
+@subsection GnuPG分離署名での検証
 
 GnuPGの@command{gpg}で圧縮ファイルを検証します。この検証を行うには、GnuPGがインストールされ、自分の秘密鍵と公開鍵のペアが作成されている必要があります。
 
@@ -105,7 +107,7 @@ gpg: depth: 1  valid:   4  signed:   0  trust: 4-, 0q, 0n, 0m, 0f, 0u
 gpg: Good signature from "j8takagi <j8takagi@@nifty.com>"
 @end example
 
-@section MD5ハッシュ値での検証
+@subsection MD5ハッシュ値での検証
 
 @command{openssl}と@command{diff}で圧縮ファイルを検証します。
 
@@ -115,7 +117,7 @@ Files yacasl2.tar.gz.md5sum and - are identical
 @end example
 
 @node Expand, Build, Verify, Top
-@chapter YACASL2ファイルの展開
+@section YACASL2ファイルの展開
 
 YACASL2ファイルをダウンロードしたら、@command{tar}コマンドで展開します。
 
@@ -124,7 +126,7 @@ $ @kbd{tar xvzf yacasl2.tar.gz}
 @end example
 
 @node Build, Simple Test, Expand, Top
-@chapter @file{casl2} @file{comet2} @file{dumpword}のビルド
+@section @file{casl2} @file{comet2} @file{dumpword}のビルド
 
 展開したら、@command{make}コマンドで@file{casl2} @file{comet2} @file{dumpword}をビルドします。
 
@@ -156,7 +158,7 @@ make[1]: Leaving directory ‘/home/kazubito/yacasl2/src’
 @end example
 
 @node Simple Test, Detail Test, Build, Top
-@chapter @file{casl2}の実行テスト
+@section @file{casl2}の実行テスト
 
 ビルドしたら、次のコマンドが正常に実行できるかを確認します。
 正常に実行された場合は、「Hello, World!」と表示されます。
@@ -166,10 +168,11 @@ $ @kbd{./casl2 as/hello.casl}
 Hello, World!
 @end example
 
-@node Detail Test, Environment, Simple Test, Top
-@chapter 詳細なテスト
+@node Detail Test, Install, Simple Test, Top
+@section 詳細なテスト
 
-次のコマンドを実行すると、正常にビルドできているかどうかを詳細にテストできます。
+@command{make check}コマンドを実行すると、正常にビルドできているかどうかを詳細にテストできます。
+テストには、しばらく時間がかかります。
 
 @example
 $ @kbd{make check}
@@ -184,12 +187,40 @@ All tests are succeded.
 All tests are succeded.
 @end example
 
-@node Environment,  , Detail Test, Top
-@chapter 環境変数の設定
+@node Install, Environment, Detail Test, Top
+@section インストール
+
+ビルドが成功したら、@command{make install}コマンドで必要なファイルをインストールできます。
+初期設定では、ホームディレクトリー以下にYACASL2のファイルがインストールされます。
+
+@example
+$ @kbd{make install}
+@end example
+
+コマンド実行時にオプションを指定することで、インストール先のディレクトリーを変更できます。
+例えば、@file{/usr/local}以下にファイルをインストールするには、
+次のようにコマンドを実行します。
+
+@example
+$ @kbd{sudo make install prefix=/usr/local}
+@end example
+
+オプションの詳細は次のとおりです。
+
+@multitable @columnfractions .20 .50 .30
+@headitem オプション @tab 説明 @tab 初期設定
+@item @var{prefix} @tab インストール時のルートファイル @tab @file{~}
+@item @var{bindir} @tab 実行ファイルのインストール先 @tab @file{$prefix/bin}
+@item @var{infodir} @tab infoファイルのインストール先 @tab @file{$prefix/info}
+@item @var{casl2libdir} @tab CASL II ライブラリファイルのインストール先 @tab @file{$prefix/lib/yacasl2}
+@end multitable
+
+@node Environment,  , Install, Top
+@section 環境変数の設定
 
 環境変数@code{PATH}や@code{CASL2LIB}を設定することで、YACASL2が使いやすくなります。環境変数は、使っているシェルを確認してから設定します。
 
-@section シェルの確認
+@unnumberedsubsec シェルの確認
 
 環境変数の設定方法は使っているシェルによって異なります。シェルは、次のコマンドで確認できます。
 
@@ -200,22 +231,35 @@ $ @kbd{echo $SHELL}
 
 現在もっとも多く使われているシェルは、BASHでしょう。以下、BASHでの設定方法を説明します。
 
-@section @code{PATH}にYACASL2のディレクトリを追加
+@subsection @code{PATH}の設定
 
-@code{PATH}にYACASL2実行ファイルをインストールしたディレクトリを追加すると、ディレクトリの指定を省略して@command{casl2} @command{comet2} @command{dumpword}を実行できます。例えば、実行ファイルを@file{~/bin}にインストールしたときは、次のコマンドで設定できます。
+@code{PATH}にYACASL2の実行ファイルのインストール先を追加すると、ディレクトリーの指定を省略して@command{casl2} @command{comet2} @command{dumpword}を実行できます。例えば、初期設定のまま実行ファイルを@file{~/bin}にインストールしたときは、次のコマンドで設定できます。
 
 @example
 $ @kbd{PATH=$PATH:~/bin && export PATH}
 @end example
 
-環境変数の設定は、シェルの初期設定ファイルに追加することでログインしたあと自動的に反映されるようになります。BASHではホームディレクトリにある@file{.bashrc}が初期設定ファイルです。次のコマンドで追加できます。
+環境変数の設定は、シェルの初期設定ファイルに追加することでログインしたあと自動的に反映されるようになります。BASHでは@file{~/.bashrc}が初期設定ファイルです。次のコマンドで追加できます。
 
 @example
 $ @kbd{echo ’PATH=$PATH:~/bin && export PATH’ >>~/.bashrc}
 @end example
 
+@subsection @code{INFOPATH}の設定
 
-@section @code{CASL2LIB}の設定
+@code{INFOPATH}にYACASL2のInfoファイルをインストールしたディレクトリーを追加すると、ディレクトリーの指定を省略して@command{casl2} @command{comet2} @command{dumpword}を実行できます。例えば、初期設定のままInfoファイルを@file{~/share/info}にインストールしたときは、次のコマンドで設定できます。
+
+@example
+$ @kbd{INFOPATH=$INFOPATH:~/share && export INFOPATH}
+@end example
+
+@file{~/.bashrc}には次のコマンドで追加できます。
+
+@example
+$ @kbd{echo 'INFOPATH=$INFOPATH:~/share/info && export INFOPATH' >>~/.bashrc}
+@end example
+
+@subsection @code{CASL2LIB}の設定
 
 環境変数@code{CASL2LIB}を設定しておけば、CASL IIプログラム作成時に共通ライブラリを呼び出す手間が小さくなります。例えば、CASL2LIBを@code{~/yacasl2/casl2lib}にインストールしたときは、次のコマンドで設定できます。
 
@@ -223,7 +267,7 @@ $ @kbd{echo ’PATH=$PATH:~/bin && export PATH’ >>~/.bashrc}
 $ @kbd{CASL2LIB=~/yacasl2/casl2lib && export CASL2LIB}
 @end example
 
-BASHの初期設定ファイル@file{.bashrc}には、次のコマンドで追加できます。
+@file{~/.bashrc}には次のコマンドで追加できます。
 
 @example
 $ @kbd{ echo 'CASL2LIB=~/yacasl2/casl2lib && export CASL2LIB' >>~/.bashrc}
