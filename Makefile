@@ -6,16 +6,17 @@ WHICH ?= which
 ECHO ?= echo
 INSTALL ?= install
 SED ?= sed
+CAT ?= cat
 
 prefix ?= ~
 bindir ?= $(prefix)/bin
-casl2libdir ?= $(prefix)/yacasl2/casl2lib
+casl2libdir ?= $(prefix)/lib/casl2
 
 VERSIONFILES = include/package.h test/system/casl2/opt_v/0.txt test/system/comet2/opt_v/0.txt test/system/dumpword/opt_v/0.txt
 
 all: build info html gtags
 
-build: version
+build:
 	$(MAKE) -C src all
 
 gtags:
@@ -55,10 +56,11 @@ install-casl2lib:
 uninstall-casl2lib:
 	@$(MAKE) -C as/casl2lib uninstall-casl2lib
 
-version: $(VERSIONFILES)
+version: VERSION $(VERSIONFILES)
+	@$(ECHO) "YACASL2 Version:" `$(CAT) VERSION`
 
-$(VERSIONFILES):
-	for f in $(VERSIONFILES); do $(SED) -e "s/@@VERSION@@/`cat VERSION`/g" $$f.version >$$f; done
+$(VERSIONFILES): VERSION
+	$(SED) -e "s/@@VERSION@@/`cat VERSION`/g" $@.version >$@
 
 clean: clean-src clean-gtags clean-doc clean-doc-inner clean-version
 

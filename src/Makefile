@@ -13,9 +13,12 @@ CASL2SRC := struct.c hash.c
 ASSRC := assemble.c token.c label.c
 EXECSRC := exec.c dump.c
 
-.PHONY: all clean
+.PHONY: all version clean
 
-all: ../casl2 ../comet2 ../dumpword ctags etags
+all: version ../casl2 ../comet2 ../dumpword ctags etags
+
+version:
+	$(MAKE) -C .. version
 
 ../casl2: casl2.o $(subst .c,.o,$(COMMONSRC) $(CASL2SRC) $(ASSRC) $(EXECSRC))
 	$(CC) $(CFLAGS) -o $@ $^

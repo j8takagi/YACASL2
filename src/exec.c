@@ -122,9 +122,13 @@ void svcout()
             setcerr(209, "");    /* SVC output - memory overflow */
             return;
         }
-        /* 「文字の組」の符号表に記載された文字と、改行（CR）／タブを表示 */
+        /* 「JIS X 0201ラテン文字・片仮名用8ビット符号で規定する文字の符号表」
+           に記載された文字と、改行（CR）／タブを表示 */
         /* それ以外の文字は、「.」で表す */
-        if(((w = sys->memory[sys->cpu->gr[1]+i]) >= 0x20 && w <= 0x7E) || w == 0xA || w == '\t') {
+        if(((w = sys->memory[sys->cpu->gr[1]+i]) >= 0x20 && w <= 0x7E) ||    /* JIS X 0201ラテン文字 */
+           (w >= 0xA0 && w <= 0xFE) ||                                       /* JIS X 0201片仮名用8ビット符号 */
+           w == 0xA || w == '\t')
+        {
             putchar((char)w);
         } else {
             putchar('.');
