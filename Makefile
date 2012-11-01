@@ -10,11 +10,10 @@ CAT ?= cat
 
 prefix ?= ~
 bindir ?= $(prefix)/bin
-casl2libdir ?= $(prefix)/lib/casl2
 
 VERSIONFILES = include/package.h test/system/casl2/opt_v/0.txt test/system/comet2/opt_v/0.txt test/system/dumpword/opt_v/0.txt
 
-all: build info html gtags
+all: build docall gtags
 
 build:
 	$(MAKE) -C src all
