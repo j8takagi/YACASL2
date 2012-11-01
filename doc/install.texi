@@ -1,0 +1,232 @@
+\input texinfo   @c -*-texinfo-*-
+@c %**start of header
+@ifnottex
+@documentlanguage ja_JP
+@end ifnottex
+@setfilename yacasl2_install
+@documentencoding UTF-8
+@settitle YACASL2のインストール
+@firstparagraphindent insert
+@paragraphindent 1
+@ifhtml
+@exampleindent 0
+@end ifhtml
+@c %**end of header
+
+@copying
+Copyright @copyright{} 2010-2012 j8takagi
+@end copying
+
+@titlepage
+@title YACASL2のインストール
+@author j8takagi
+@insertcopying
+@end titlepage
+
+@node Top, Require, (dir), (dir)
+
+@menu
+* Require::       要件
+* Download::      YACASL2ファイルのダウンロード
+* Verify::        YACASL2ファイルの検証
+* Expand::        YACASL2ファイルの展開
+* Build::         @file{casl2} @file{comet2} @file{dumpword}のビルド
+* Simple Test::   @file{casl2}の実行テスト
+* Detail Test::   詳細なテスト
+* Environment::   環境変数の設定
+@end menu
+
+@contents
+
+@node Require, Download, Top, Top
+@chapter 要件
+
+YACASL2は、LinuxやMac OS Xなど、UNIX系のOS上で動作します。現在動作を確認しているのは、Ubuntu LinuxとVine Linux、Mac OS Xです。
+
+インストール時に、@command{tar} @command{gcc} @command{make}が必要です。Linuxでは多くの場合、標準でインストールされています。Mac OS Xの場合、Xcodeの「Command Line Tools」に含まれます。
+
+@node Download, Verify, Require, Top
+@chapter YACASL2ファイルのダウンロード
+
+@uref{http://www.j8takagi.net/yacasl2/, YACASL2のサイト}から、@file{tar.gz}または@file{tar.xz}ファイルと、対応する検証用ファイルをダウンロードします。@uref{http://github.com/j8takagi/YACASL2/downloads/, githubのダウンロードページ}から@file{tar.gz}などのファイルをダウンロードすることもできます。
+
+@node Verify, Expand, Download, Top
+@chapter YACASL2ファイルの検証
+
+ダウンロードが完了したら、圧縮ファイルが改竄されていないか検証します。検証にはGnuPG分離署名か、MD5ハッシュ値を使います。
+
+@section GnuPG分離署名での検証
+
+GnuPGの@command{gpg}で圧縮ファイルを検証します。この検証を行うには、GnuPGがインストールされ、自分の秘密鍵と公開鍵のペアが作成されている必要があります。
+
+@example
+$ @kbd{gpg --verify yacasl2.tar.xz.asc}
+gpg: Signature made Sat Oct 27 02:17:16 2012 JST using RSA key ID 25B62DD1
+gpg: Can't check signature: public key not found
+$ @kbd{gpg --recv-keys 25B62DD1}
+gpg: requesting key 25B62DD1 from hkp server keys.gnupg.net
+gpg: key 25B62DD1: public key "j8takagi <j8takagi@@nifty.com>" imported
+gpg: Total number processed: 1
+gpg:               imported: 1  (RSA: 1)
+
+$ @kbd{gpg --lsign-key 25B62DD1}
+
+pub  2048R/25B62DD1  created: 2012-09-29  expires: never       usage: SC
+                     trust: unknown       validity: full
+sub  2048R/92E25C29  created: 2012-09-29  expires: never       usage: E
+[  full  ] (1). j8takagi <j8takagi@@nifty.com>
+
+
+pub  2048R/25B62DD1  created: 2012-09-29  expires: never       usage: SC
+                     trust: unknown       validity: full
+ Primary key fingerprint: ...
+ 
+     .* <.*@@.*>
+
+Are you sure that you want to sign this key with your
+key ".* <.*@@.*>"
+
+The signature will be marked as non-exportable.
+
+Really sign? (y/N) @kbd{y}
+
+You need a passphrase to unlock the secret key for
+user: ".* <.*@@.*>"
+2048-bit RSA key, ID ........, created 20..-..-..
+
+<input password> @kbd{password}
+
+$ @kbd{gpg --verify yacasl2.tar.xz.asc}
+gpg: Signature made Sat Oct 27 02:17:16 2012 JST using RSA key ID 25B62DD1
+gpg: checking the trustdb
+gpg: 3 marginal(s) needed, 1 complete(s) needed, PGP trust model
+gpg: depth: 0  valid:   1  signed:   4  trust: 0-, 0q, 0n, 0m, 0f, 1u
+gpg: depth: 1  valid:   4  signed:   0  trust: 4-, 0q, 0n, 0m, 0f, 0u
+gpg: Good signature from "j8takagi <j8takagi@@nifty.com>"
+@end example
+
+@section MD5ハッシュ値での検証
+
+@command{openssl}と@command{diff}で圧縮ファイルを検証します。
+
+@example
+$ @kbd{openssl md5 yacasl2.tar.gz | diff -s yacasl2.tar.gz.md5sum -}
+Files yacasl2.tar.gz.md5sum and - are identical
+@end example
+
+@node Expand, Build, Verify, Top
+@chapter YACASL2ファイルの展開
+
+YACASL2ファイルをダウンロードしたら、@command{tar}コマンドで展開します。
+
+@example
+$ @kbd{tar xvzf yacasl2.tar.gz}
+@end example
+
+@node Build, Simple Test, Expand, Top
+@chapter @file{casl2} @file{comet2} @file{dumpword}のビルド
+
+展開したら、@command{make}コマンドで@file{casl2} @file{comet2} @file{dumpword}をビルドします。
+
+@example
+$ @kbd{cd yacasl2}
+$ @kbd{make}
+make -C src
+make[1]: Entering directory ‘/home/kazubito/yacasl2/src’
+gcc -c -g -Wall -I ../include casl2.c
+gcc -c -g -Wall -I ../include word.c
+gcc -c -g -Wall -I ../include hash.c
+gcc -c -g -Wall -I ../include cerr.c
+gcc -c -g -Wall -I ../include struct.c
+gcc -c -g -Wall -I ../include cmd.c
+gcc -c -g -Wall -I ../include assemble.c
+gcc -c -g -Wall -I ../include token.c
+gcc -c -g -Wall -I ../include label.c
+gcc -c -g -Wall -I ../include macro.c
+gcc -c -g -Wall -I ../include exec.c
+gcc -c -g -Wall -I ../include dump.c
+gcc -g -Wall -I ../include -o ../casl2 casl2.o word.o hash.o cerr.o st
+ruct.o cmd.o assemble.o token.o label.o macro.o exec.o dump.o
+gcc -c -g -Wall -I ../include comet2.c
+gcc -g -Wall -I ../include -o ../comet2 comet2.o word.o hash.o cerr.o
+struct.o cmd.o exec.o dump.o
+gcc -c -g -Wall -I ../include dumpword.c
+gcc -g -Wall -I ../include -o ../dumpword dumpword.o word.o cerr.o
+make[1]: Leaving directory ‘/home/kazubito/yacasl2/src’
+@end example
+
+@node Simple Test, Detail Test, Build, Top
+@chapter @file{casl2}の実行テスト
+
+ビルドしたら、次のコマンドが正常に実行できるかを確認します。
+正常に実行された場合は、「Hello, World!」と表示されます。
+
+@example
+$ @kbd{./casl2 as/hello.casl}
+Hello, World!
+@end example
+
+@node Detail Test, Environment, Simple Test, Top
+@chapter 詳細なテスト
+
+次のコマンドを実行すると、正常にビルドできているかどうかを詳細にテストできます。
+
+@example
+$ @kbd{make check}
+195 / 195 tests passed. Details in /home/username/yacasl2/test/integra
+tion/casl2/Test.log
+All tests are succeded.
+149 / 149 tests passed. Details in /home/username/yacasl2/test/integra
+tion/comet2/Test.log
+All tests are succeded.
+4 / 4 tests passed. Details in /home/username/yacasl2/test/integration
+/dumpword/Test.log
+All tests are succeded.
+@end example
+
+@node Environment,  , Detail Test, Top
+@chapter 環境変数の設定
+
+環境変数@code{PATH}や@code{CASL2LIB}を設定することで、YACASL2が使いやすくなります。環境変数は、使っているシェルを確認してから設定します。
+
+@section シェルの確認
+
+環境変数の設定方法は使っているシェルによって異なります。シェルは、次のコマンドで確認できます。
+
+@example
+$ @kbd{echo $SHELL}
+/bin/bash
+@end example
+
+現在もっとも多く使われているシェルは、BASHでしょう。以下、BASHでの設定方法を説明します。
+
+@section @code{PATH}にYACASL2のディレクトリを追加
+
+@code{PATH}にYACASL2実行ファイルをインストールしたディレクトリを追加すると、ディレクトリの指定を省略して@command{casl2} @command{comet2} @command{dumpword}を実行できます。例えば、実行ファイルを@file{~/bin}にインストールしたときは、次のコマンドで設定できます。
+
+@example
+$ @kbd{PATH=$PATH:~/bin && export PATH}
+@end example
+
+環境変数の設定は、シェルの初期設定ファイルに追加することでログインしたあと自動的に反映されるようになります。BASHではホームディレクトリにある@file{.bashrc}が初期設定ファイルです。次のコマンドで追加できます。
+
+@example
+$ @kbd{echo ’PATH=$PATH:~/bin && export PATH’ >>~/.bashrc}
+@end example
+
+
+@section @code{CASL2LIB}の設定
+
+環境変数@code{CASL2LIB}を設定しておけば、CASL IIプログラム作成時に共通ライブラリを呼び出す手間が小さくなります。例えば、CASL2LIBを@code{~/yacasl2/casl2lib}にインストールしたときは、次のコマンドで設定できます。
+
+@example
+$ @kbd{CASL2LIB=~/yacasl2/casl2lib && export CASL2LIB}
+@end example
+
+BASHの初期設定ファイル@file{.bashrc}には、次のコマンドで追加できます。
+
+@example
+$ @kbd{ echo 'CASL2LIB=~/yacasl2/casl2lib && export CASL2LIB' >>~/.bashrc}
+@end example
+
+@bye

@@ -1,7 +1,9 @@
-DOCNAME = yacasl2
-SRC = $(DOCNAME).texi
+MANUAL = manual
+INSTALLDOC = install
+MANUALSRC = $(MANUAL).texi
+INSTALLDOCSRC = $(INSTALLDOC).texi
 CSS = style.css
-HTMLDIR = html
+MANUALHTMLDIR = manual_html
 
 MV ?= mv
 CP ?= cp
@@ -13,51 +15,58 @@ DVI2PDF ?= dvipdfmx
 MAKEINFO ?= gmakeinfo
 INSTALL ?= install
 INSTALL-INFO ?= ginstall-info
+GZIP = gzip
 
 prefix ?= ~
 infodir ?= $(prefix)/share/info
 
-.PHONY: all info htmlnosplit html pdf install-info clean clean-docs clean-tex-tmp
+.PHONY: all install-manual uninstall-manual clean clean-manual clean-installdoc clean-textmp
 
-.INTERMEDIATE: $(DOCNAME).dvi
+.INTERMEDIATE: $(MANUAL).dvi
 
-all: info html htmls pdf
+all: $(MANUAL).info $(MANUAL).html $(MANUALHTMLDIR) $(MANUAL).pdf $(INSTALLDOC).html ../INSTALL
 
-info: $(DOCNAME).info
+$(MANUALHTMLDIR): $(MANUALSRC) $(CSS)
+	$(INSTALL) -d $@
+	$(INSTALL) $(CSS) $@/
+	$(MAKEINFO) -o $@ --html --css-ref=$(CSS) $<
 
-html: $(DOCNAME).html
-	$(MV) $< index.html
+$(MANUAL).html: $(MANUALSRC) $(CSS)
+	$(MAKEINFO) -o $@ --no-split --html --css-include=$(CSS) $<
 
-htmls: $(SRC) $(CSS)
-	$(INSTALL) -d $(HTMLDIR)
-	$(INSTALL) $(CSS) $(HTMLDIR)/
-	$(MAKEINFO) -o $(HTMLDIR) --html --css-ref=$(CSS) $(SRC)
+$(MANUAL).pdf: $(MANUAL).dvi
+	$(DVI2PDF) $<
 
-pdf: $(DOCNAME).pdf
-
-$(DOCNAME).html: $(SRC) $(CSS)
-	$(MAKEINFO) -o $@ --no-split --html --css-include=$(CSS) $(SRC)
-
-$(DOCNAME).pdf: $(DOCNAME).dvi
-	$(DVI2PDF) $^
-
-$(DOCNAME).dvi: $(SRC)
+$(MANUAL).dvi: $(MANUALSRC)
 	TEX=$(PTEX) $(TEXI2DVI) -q --texinfo=@afourpaper -o $@ $<
-	@$(MAKE) clean-tex-tmp
+	@$(MAKE) clean-textmp
 
-install-info: $(DOCNAME).info
+$(MANUAL).txt: $(MANUALSRC)
+	$(MAKEINFO) --no-headers -o $@ $(MANUALSRC)
+
+install-manual: $(MANUAL).info
 	$(INSTALL) -d $(infodir)
-	$(INSTALL) $(DOCNAME).info $(infodir)/$(DOCNAME)
-	$(INSTALL-INFO) $(infodir)/$(DOCNAME) $(infodir)/dir
+	$(INSTALL) $(MANUAL).info $(infodir)/
+	$(INSTALL-INFO) $(infodir)/$(MANUAL).info $(infodir)/dir
+	$(GZIP) $(infodir)/$(MANUAL).info
 
-uninstall-info: $(DOCNAME).info
-	$(INSTALL-INFO) --delete $(infodir)/$(DOCNAME) $(infodir)/dir
-	$(RM) $(infodir)/$(DOCNAME)
+uninstall-manual: $(MANUAL).info
+	$(INSTALL-INFO) --delete $(infodir)/$(MANUAL) $(infodir)/dir
+	$(RM) $(infodir)/$(MANUAL)*
 
-clean: clean-docs clean-tex-tmp
+$(INSTALLDOC).html: $(INSTALLDOCSRC) $(CSS)
+	$(MAKEINFO) -o $@ --no-split --html --css-include=$(CSS) $<
 
-clean-docs:
-	@$(RMRF) html $(DOCNAME).info $(DOCNAME).pdf index.html
+../INSTALL: $(INSTALLDOCSRC)
+	$(MAKEINFO) -o $@ --no-headers $<
 
-clean-tex-tmp:
-	@$(RMRF) $(DOCNAME).aux $(DOCNAME).cp $(DOCNAME).cps $(DOCNAME).fn $(DOCNAME).ky $(DOCNAME).log $(DOCNAME).pg $(DOCNAME).pgs $(DOCNAME).tmp $(DOCNAME).toc $(DOCNAME).tp $(DOCNAME).vr
+clean: clean-manual clean-installdoc clean-textmp
+
+clean-manual:
+	@$(RMRF) html $(MANUALHTMLDIR) $(MANUAL).info $(MANUAL).pdf $(MANUAL).html $(MANUAL).txt 
+
+clean-textmp:
+	@$(RMRF) $(MANUAL).aux $(MANUAL).cp $(MANUAL).cps $(MANUAL).fn $(MANUAL).ky $(MANUAL).log $(MANUAL).pg $(MANUAL).pgs $(MANUAL).tmp $(MANUAL).toc $(MANUAL).tp $(MANUAL).vr
+
+clean-installdoc:
+	@$(RMRF) install.html ../INSTALL

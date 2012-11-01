@@ -1,0 +1,1125 @@
+\input texinfo   @c -*-texinfo-*-
+@c %**start of header
+@ifnottex
+@documentlanguage ja_JP
+@end ifnottex
+@setfilename yacasl2
+@documentencoding UTF-8
+@settitle YACASL2 - CASL II 処理システム
+@firstparagraphindent insert
+@paragraphindent 1
+@ifhtml
+@exampleindent 0
+@end ifhtml
+@c %**end of header
+
+@copying
+Copyright @copyright{} 2010-2012 j8takagi
+@end copying
+
+@dircategory Programming
+@direntry
+* YACASL2: (yacasl2).                     CASL II 処理システム
+* casl2: (yacasl2)casl2 invocation.       casl2の呼び出し
+* comet2: (yacasl2)comet2 invocation.     comet2の呼び出し
+* dumpword: (yacasl2)dumpword invocation. dumpwordの呼び出し
+@end direntry
+
+@titlepage
+@title YACASL2
+@subtitle コマンドラインインターフェイスで動作するオープンソースのCASL II処理システム
+@author j8takagi
+@insertcopying
+@end titlepage
+
+@node Top, Overview, (dir), (dir)
+
+@menu
+* Overview::                    YACASL2の概要
+* Sample usage::               YACASL2の使用例
+* casl2 invocation::            casl2の呼び出し
+* comet2 invocation::           comet2の呼び出し
+* dumpword invocation::         dumpwordの呼び出し
+* CASL2LIB Manual::             CASL2LIBマニュアル
+@end menu
+
+@contents
+
+@node Overview, Sample usage, Top, Top
+@chapter YACASL2の概要
+
+YACASL2は、UNIXやLinuxのコマンドラインインターフェイスで
+動作するオープンソースのCASL II処理システムです。
+CASL IIは情報処理試験で用いられるアセンブラ言語で、
+次の資料により仕様が公開されています。
+
+@iftex
+@cartouche
+@end iftex
+@quotation
+@uref{http://www.jitec.jp/1_13download/shiken_yougo_ver2_2.pdf, 試験で使用する情報処理用語・プログラム言語など Ver 2.2（平成24年5月22日）}［PDFファイル］
+別紙 1 アセンブラ言語の仕様
+@end quotation
+@iftex
+@end cartouche
+@end iftex
+
+YACASL2は、CASL IIアセンブラ言語で記述されたファイルをアセンブルし、
+仮想マシンCOMET II上で実行します。
+アセンブルと実行は、連続で行うこともできますし、
+アセンブル結果をファイルに保存してあらから実行することもできます。
+YACASL2の動作はCASL IIの仕様に準拠しているため、情報処理試験の問題を
+はじめ各種参考書やサイトに記載されたCASL IIのプログラムを
+そのままアセンブルして実行できます。
+また、本パッケージ中にCASL IIのサンプルプログラムが多数収録されています。
+
+YACASL2は、「ふつうの処理系」として動作します。
+ほかの多くのCASL IIエミュレータと違い、デバッガとして動作したり、
+コンピュータ内部の模式図を表示したりすることはありません。
+そのかわり、YACASL2は、次のような動作内容をすべてテキストで出力します。
+
+@itemize @bullet
+
+@item
+ラベルとアドレスの対応
+
+@item
+アセンブル結果
+
+@item
+実行時のレジスタの内容
+
+@item
+実行時のメモリの内容
+@end itemize
+
+出力された動作内容は、GNU/Linuxのさまざまなツール、
+たとえば、@command{cat} @command{less} @command{grep} @command{wc}などを使って解析できます。
+
+YACASL2の操作は、端末上のコマンドラインインターフェイスで行います。
+
+@node Sample usage, casl2 invocation, Overview, Top
+@chapter YACASL2の使用例
+YACASL2 は、テキストファイルに記述されたCASLプログラムを処理します。
+以下の例で用いられるCASLプログラムのファイルは、
+テキストエディタなどで作成するか、インストールしたディレクトリの
+中にある@file{as}ディレクトリからコピーしてください。
+
+@menu
+* Simple output::               実行結果の出力だけを表示
+* Assemble result::             アセンブル結果の確認
+* Register and memory::         実行時のレジスタとメモリを表示
+* Only assemble::               アセンブルと実行を別に行う
+* Analyze word::                1語の解析
+* Use CASL2LIB::                CASL2ライブラリの使用
+@end menu
+
+@node Simple output, Assemble result, Sample usage, Sample usage
+@section 実行結果の出力だけを表示
+
+インストール時にコマンド実行の確認に使った@file{hello.casl}は、次のような内容です。
+CASL IIのマクロ命令OUTは、文字列を出力します。
+
+@example
+$ @kbd{cat hello.casl}
+MAIN     START
+         OUT     OBUF,LEN
+         RET
+OBUF     DC      'Hello, World!'
+LEN      DC      13
+         END
+@end example
+
+次のコマンドを実行すると、CASL II のアセンブルと仮想マシン COMET II 上での実行が連続で行われ、文字列が出力されます。
+
+@example
+$ @kbd{casl2 hello.casl}
+Hello, World!
+@end example
+
+@file{addl.casl}は、3と1の和を求めます。
+
+@example
+$ @kbd{cat addl.casl}
+;;; ADDL r,adr
+MAIN     START
+         LD      GR1,A
+         ADDL    GR1,B
+         RET
+A        DC      3
+B        DC      1
+         END
+@end example
+
+このプログラムには出力命令がないため、オプションなしで実行した場合には結果が出力されません。
+
+@example
+$ @kbd{casl2 addl.casl}
+$
+@end example
+
+実行内容を確認するには、後述のようにCPU 内にあるレジスタやメモリの内容を表示するか、結果を出力するための処理を追加する必要があります。
+
+@node Assemble result, Register and memory, Simple output, Sample usage
+@section アセンブル結果の確認
+
+casl2の処理途中で行われるアセンブルの結果を表示するには、オプション@option{-a}を指定します。
+また、ラベルとアドレスの対応表を表示するには、オプション@option{-l}を指定します。
+
+次のコマンドでは@file{hello.casl}の、ラベルとアドレスの対応表と、アセンブル結果と、実行結果が表示されます。
+OUTはアセンブラ命令で複数の機械語命令で構成されているため、命令行1行に対して、複数行のコードが生成されます。
+
+@example
+$ @kbd{casl2 -a -l hello.casl}
+
+Assemble hello.casl (0)
+
+Label::::
+MAIN.LEN ---> #0020
+MAIN ---> #0000
+MAIN.OBUF ---> #0013
+
+Assemble hello.casl (1)
+hello.casl:    1:MAIN    START
+hello.casl:    2:        OUT     OBUF,LEN
+    #0000   #7001
+    #0001   #0000
+    #0002   #7002
+    #0003   #0000
+    #0004   #1210
+    #0005   #0013
+    #0006   #1220
+    #0007   #0020
+    #0008   #F000
+    #0009   #0002
+    #000A   #1210
+    #000B   #0021
+    #0021   #000A
+    #000C   #1220
+    #000D   #0022
+    #0022   #0001
+    #000E   #F000
+    #000F   #0002
+    #0010   #7120
+    #0011   #7110
+hello.casl:    3:        RET
+    #0012   #8100
+hello.casl:    4:OBUF    DC      'Hello, World!'
+    #0013   #0048
+    #0014   #0065
+    #0015   #006C
+    #0016   #006C
+    #0017   #006F
+    #0018   #002C
+    #0019   #0020
+    #001A   #0057
+    #001B   #006F
+    #001C   #0072
+    #001D   #006C
+    #001E   #0064
+    #001F   #0021
+hello.casl:    5:LEN     DC      13
+    #0020   #000D
+hello.casl:    6:        END
+Hello, World!
+@end example
+
+@file{addl.casl}の、ラベルとアドレスの対応表と、アセンブル結果は、次のようになります。
+
+@example
+$ @kbd{casl2 -a -l addl.casl}
+
+Assemble addl.casl (0)
+
+Label::::
+MAIN.A ---> #0005
+MAIN.B ---> #0006
+MAIN ---> #0000
+
+Assemble addl.casl (1)
+addl.casl:    1:;;; ADDL r,adr
+addl.casl:    2:MAIN    START
+addl.casl:    3:        LD      GR1,A
+    #0000   #1010
+    #0001   #0005
+addl.casl:    4:        ADDL    GR1,B
+    #0002   #2210
+    #0003   #0006
+addl.casl:    5:        RET
+    #0004   #8100
+addl.casl:    6:A       DC      3
+    #0005   #0003
+addl.casl:    7:B       DC      1
+    #0006   #0001
+addl.casl:    8:        END
+@end example
+
+なお、オプション@option{-A}を指定すると、アセンブル結果が表示される時点で処理が終了します。
+仮想マシンCOMET II での実行は行われません。
+
+@node Register and memory, Only assemble, Assemble result, Sample usage
+@section 実行時のレジスタとメモリを表示
+
+YACASL2では実行中のCPUのレジスタとメモリの内容をそれぞれ、@option{-t}と@option{-d}を指定することで表示できます。
+
+また、@option{-M}で、仮想マシンCOMET II のメモリ容量を語(16 ビット)単位で指定できます。
+小さいプログラムを実行するときは、メモリ容量を小さくすれば結果が見やすくなります。
+
+@menu
+* Register specify::            特定のレジスタを表示
+* End value::
+* Step count::                  プログラムのステップ数を表示
+@end menu
+
+@file{addl.casl}に必要なメモリ容量は8語のため、次のようにCPUのレジスタとメモリの内容を表示できます。
+
+@example
+$ @kbd{casl2 -t -d -M8 addl.casl | less}
+
+Assemble addl.casl (0)
+
+Assemble addl.casl (1)
+
+Executing machine codes
+#0000: Register::::
+#0000: GR0:      0 = #0000 = 0000000000000000
+#0000: GR1:      0 = #0000 = 0000000000000000
+#0000: GR2:      0 = #0000 = 0000000000000000
+#0000: GR3:      0 = #0000 = 0000000000000000
+#0000: GR4:      0 = #0000 = 0000000000000000
+#0000: GR5:      0 = #0000 = 0000000000000000
+#0000: GR6:      0 = #0000 = 0000000000000000
+#0000: GR7:      0 = #0000 = 0000000000000000
+#0000: SP:       8 = #0008 = 0000000000001000
+#0000: PR:       0 = #0000 = 0000000000000000
+#0000: FR (OF SF ZF): 000
+#0000: Memory::::
+#0000: adr : 0000 0001 0002 0003 0004 0005 0006 0007
+#0000: 0000: 1010 0005 2210 0006 8100 0003 0001 0000 
+#0002: Register::::
+#0002: GR0:      0 = #0000 = 0000000000000000
+#0002: GR1:      3 = #0003 = 0000000000000011
+#0002: GR2:      0 = #0000 = 0000000000000000
+#0002: GR3:      0 = #0000 = 0000000000000000
+#0002: GR4:      0 = #0000 = 0000000000000000
+#0002: GR5:      0 = #0000 = 0000000000000000
+#0002: GR6:      0 = #0000 = 0000000000000000
+#0002: GR7:      0 = #0000 = 0000000000000000
+#0002: SP:       8 = #0008 = 0000000000001000
+#0002: PR:       2 = #0002 = 0000000000000010
+#0002: FR (OF SF ZF): 000
+#0002: Memory::::
+#0002: adr : 0000 0001 0002 0003 0004 0005 0006 0007
+#0002: 0000: 1010 0005 2210 0006 8100 0003 0001 0000 
+#0004: Register::::
+#0004: GR0:      0 = #0000 = 0000000000000000
+#0004: GR1:      4 = #0004 = 0000000000000100
+#0004: GR2:      0 = #0000 = 0000000000000000
+#0004: GR3:      0 = #0000 = 0000000000000000
+#0004: GR4:      0 = #0000 = 0000000000000000
+#0004: GR5:      0 = #0000 = 0000000000000000
+#0004: GR6:      0 = #0000 = 0000000000000000
+#0004: GR7:      0 = #0000 = 0000000000000000
+#0004: SP:       8 = #0008 = 0000000000001000
+#0004: PR:       4 = #0004 = 0000000000000100
+#0004: FR (OF SF ZF): 000
+#0004: Memory::::
+#0004: adr : 0000 0001 0002 0003 0004 0005 0006 0007
+#0004: 0000: 1010 0005 2210 0006 8100 0003 0001 0000 
+@end example
+
+@node Register specify, End value, Register and memory, Register and memory
+@subsection 特定のレジスタを表示
+
+@file{addl.casl}のレジスタやメモリの中で、実行中に値が変化しているのはGR1だけです。
+こうした場合は、@command{grep}を使って表示される内容を絞り込むことで動作を検証しやすくなります。
+
+@example
+$ @kbd{casl2 -t addl.casl | grep 'GR1:'}
+#0000: GR1:      0 = #0000 = 0000000000000000
+#0002: GR1:      3 = #0003 = 0000000000000011
+#0004: GR1:      4 = #0004 = 0000000000000100
+@end example
+
+この内容を、先に出力したアセンブル結果と引き比べてください。
+次の表のように、PRとGR1、命令行が対応していることがわかります。
+
+@multitable @columnfractions .3 .3 .4
+@item PR @tab GR1 @tab 命令行
+@item #0000
+@tab #0000
+@item #0002
+@tab #0003
+@tab @code{LD GR1,A}
+@item #0004
+@tab #0004
+@tab @code{ADDL GR1,B}
+@end multitable
+
+@node End value, Step count, Register specify, Register and memory
+@subsection プログラム終了時の値を表示
+
+@command{grep}と@command{tail}を組み合わせれば、プログラム終了時の値を表示できます。
+
+@file{addl.casl}でプログラム終了時の値を確認するには、次のようにします。
+
+@example
+$ @kbd{casl2 -t addl.casl | grep 'GR1:' | tail -1}
+#0004: GR1:      4 = #0004 = 0000000000000100
+@end example
+
+@file{sum_10.casl}は、1から10までの整数の和を求めます。
+
+@example
+$ @kbd{cat sum_10.casl}
+;;; sum_10.casl
+;;; 出力 GR0: 1から10までの整数をすべて加算した値
+MAIN    START
+        PUSH    0,GR1
+        LAD     GR0,0           ; GR0を初期化
+        LD      GR1,FST         ; GR1に初項を転送
+LOOP    ADDL    GR0,GR1         ; ループ先頭
+        ADDL    GR1,STEP        ; GR1 <- GR1 + 公差
+        CPL     GR1,LST         ; GR1が末項より大きい場合は終了
+        JPL     FIN             ; ↓
+        JUMP    LOOP            ; ループ終端
+FIN     POP     GR1
+        RET
+FST     DC      1               ; 初項
+LST     DC      10              ; 末項
+STEP    DC      1               ; 公差
+        END
+@end example
+
+@file{sum_10.casl}でファイル終了時の値を確認するには、次のようにします。
+
+@example
+$ @kbd{casl2 -t sum_10.casl | grep 'GR0:' | tail -1}
+#0010: GR0:     55 = #0037 = 0000000000110111 = '7'
+@end example
+
+@node Step count,  , End value, Register and memory
+@subsection プログラムのステップ数を表示
+
+@command{grep}と@command{wc}を組み合わせれば、プログラムのステップ数を表示できます。
+
+@example
+$ @kbd{casl2 -t hello.casl | grep 'GR1:' | wc -l}
+11
+@end example
+
+@example
+$ @kbd{casl2 -t addl.casl | grep 'GR1:' | wc -l}
+3
+@end example
+
+@file{sum_10.casl}はプログラム内にループがあるため、ステップ数が大きくなります。
+
+@example
+$ @kbd{casl2 -t sum_10.casl | grep 'GR0:' | wc -l}
+54
+@end example
+
+@node Only assemble, Analyze word, Register and memory, Sample usage
+@section アセンブルと実行を別に行う
+
+@command{casl2}に@option{-O}@file{ファイル名}を指定すると、オブジェクトファイルを作成できます。
+
+@example
+$ @kbd{casl2 -Ohello.o hello.casl}
+@end example
+
+作成されたオブジェクトファイルの内容は、@command{od}を使って確認できます。
+テキストファイルではないため、@command{cat}などでは確認できません。
+
+@example
+$ @kbd{od -t x2 hello.o}
+0000000 7001 0000 7002 0000 1210 0013 1220 0020
+0000020 f000 0002 1210 0021 1220 0022 f000 0002
+0000040 7120 7110 8100 0048 0065 006c 006c 006f
+0000060 002c 0020 0057 006f 0072 006c 0064 0021
+0000100 000d 000a 0001
+0000106
+@end example
+
+オブジェクトファイルの実行には、@command{casl2}を使います。
+
+@example
+$ @kbd{comet2 hello.o}
+Hello, World!
+@end example
+
+@node Analyze word, Use CASL2LIB, Only assemble, Sample usage
+@section 1語の解析
+
+CASL IIでは、1語（1 word、16ビット）を単位としてデータが処理されます。
+@command{dumpword}は、指定した1語を10進数、16進数、2進数で表示します。
+
+@example
+$ @kbd{dumpword 72}
+    72:     72 = #0048 = 0000000001001000 = 'H'
+@end example
+
+@node Use CASL2LIB,  , Analyze word, Sample usage
+@section CASL2ライブラリの使用
+
+YACASL2の@file{as/casl2lib}ディレクトリには、CASL IIで記述されたライブラリファイルが格納されています。
+
+このフォルダには、たとえば次のようなプログラムが含まれています。
+
+@table @option
+@item OUTL
+@file{outl.casl}。
+GR1に格納された値を、0以上65535以下の整数として出力します。
+
+@item OUTA
+@file{outa.casl}。
+GR1に格納された値を、-32767以上32767以下の整数として出力します。
+
+@item MULL
+@file{mull.casl}。
+GR1とGR2に格納された値を0以上65535以下の整数と見なし、積をGR3に格納します。
+
+@item DIVL
+@file{divl.casl}。
+GR1とGR2に格納された値を0以上65535以下の整数と見なし、商をGR3、剰余をGR0に格納します。
+@end table
+
+@subsection 数値を出力する
+
+3と1の和を求める@file{addl.casl}で演算結果を出力するには、まず@file{addl.casl}を編集します。
+CASL IIの@command{CALL}命令で@command{OUTL}を副プログラムとして呼び出します。
+
+@example
+$ @kbd{cat addl_outl.casl}
+MAIN    START
+        LD      GR1,A
+        ADDL    GR1,B
+        @emph{CALL    OUTL}
+        RET
+A       DC      3
+B       DC      1
+        END
+@end example
+
+変更したら@command{casl2}を、複数のファイルを指定して実行します。
+
+@example
+$ @kbd{casl2 addl_outl.casl ~/yacasl2/as/casl2lib/outl.casl}
+4
+@end example
+
+@node casl2 invocation, comet2 invocation, Sample usage, Top
+@chapter @command{casl2}の呼び出し
+
+@pindex casl2
+@cindex casl2
+@cindex invoking
+@cindex options
+@cindex usage
+@cindex help
+
+@command{casl2}は、引数として指定されたCASLファイルをアセンブルし、仮想マシンCOMET II上で実行します。
+CASLファイルは、アセンブラ言語CASL IIで記述されたテキストファイルです。
+引数が指定されない場合は、エラーメッセージを表示して終了します。
+
+@example
+$ @kbd{casl2 hello.casl}
+@end example
+
+複数のCASLファイルを指定することで、副プログラムを呼び出すこともできます。
+
+@example
+$ @kbd{casl2 addl_outl.casl ~/yacasl2/as/casl2lib/outl.casl}
+@end example
+
+@unnumberedsubsec オプション
+
+@command{casl2}は、次のオプションを指定できます。
+
+@table @option
+@item -s
+@itemx --source
+CASLファイルの内容を表示します。
+
+@item -l
+@itemx --label
+ラベルの一覧を次の形式で表示します。
+表示後、ほかの作業を続行します。
+
+@example
+<プログラム名>.<ラベル名> ---> <アドレスの16進数表現>
+@end example
+
+@item -L
+@itemx --labelonly
+@option{-l}と同じ形式でラベルの一覧を表示します。
+表示後、ほかの作業は続行せず、終了します。
+
+@item -a
+@itemx --assembledetail
+アセンブル詳細結果を表示し、ほかの作業を続行します。
+
+@item -A
+@itemx --assembledetailonly
+アセンブル詳細結果を表示して終了します。
+
+@item -o<OBJECTFILE>
+@itemx --assembleout<OBJECTFILE>
+アセンブル結果をオブジェクトファイル@file{<OBJECTFILE>}に出力し、ほかの作業を続行します。
+出力されたオブジェクトファイルは、@command{comet2}で実行できます。
+オブジェクトファイルを指定しない場合、出力先は@file{a.o}です。
+オブジェクトファイルは1つだけ指定できます。
+
+@item -O[<OBJECTFILE>]
+@itemx --assembleoutonly[<OBJECTFILE>]
+アセンブル結果をオブジェクトファイル@file{<OBJECTFILE>}に出力し、終了します。
+出力されたオブジェクトファイルは、@command{comet2}で実行できます。
+オブジェクトファイルを指定しない場合、出力先は@file{a.o}です。
+オブジェクトファイルは1つだけ指定できます。
+
+@item -t
+@itemx --trace
+@itemx --tracearithmetic
+プログラム実行中のレジスタの値を次の形式で表示します。
+
+@example
+<PR値の16進数表現>: <レジスタ>: <値の10進数表現> =
+<値の16進数表現> = <値の2進数表現>[ ='文字']
+@end example
+
+@itemize
+@item
+@code{<PR値の16進数表現>}と@code{<レジスタ>}、@code{<値の16進数表現>}は、4けたの16進数で表されます。
+@code{<PR値の16進数表現>}と@code{<値の16進数表現>}には、先頭に@code{#}が付きます。
+範囲は@code{#0000}から@code{#FFFF}です
+
+@item
+@code{<値の10進数表現>}は符号の付いた10進数です。
+範囲は-32768から32767です。
+
+@item
+@code{<値の2進数表現>}は、16けたの2進数で表されます。
+範囲は、@code{0000000000000000}から@code{1111111111111111}です
+
+@item
+@code{[ ='文字']}は、レジストリの値が「文字の組」の範囲に含まれる場合に表示されます。
+@end itemize
+
+表示されるレジスタには、次の種類があります。
+
+@table @code
+@item GR0 GR1 GR2 GR3 GR4 GR5 GR6 GR7
+汎用レジスタ
+
+@item SP
+スタックポインタ
+
+@item PR
+プログラムレジスタ
+
+@item FR
+フラグレジスタ
+@end table
+
+例えば、次のように表示されます。
+
+@example
+#0002: GR1:      3 = #0003 = 0000000000000011
+@end example
+
+@item -T
+@itemx --tracelogical
+@option{-t}と同じように、プログラム実行中のレジスタの値を表示します。
+ただし@option{-t}と異なり、@code{<値の10進数表現>}は符号の付かない10進数です。
+値の範囲は0から65535です。
+
+@item -d
+@itemx --dump
+メモリの内容をすべて表示します。
+
+@item -M <MEMORYSIZE>
+@itemx --memorysize <MEMORYSIZE>
+アセンブルおよび実行時のメモリサイズ@option{<MEMORYSIZE>}を0から65535の範囲で指定します。
+指定しない場合、512です。
+
+@item -C <CLOCKS>
+@itemx --clocks <CLOCKS>
+実行時のクロック周波数@option{<CLOCKS>}を0より大きい整数で指定します。
+指定しない場合、クロック周波数は5000000です。
+
+@item -v
+@itemx --version
+@command{casl2}のバージョンを表示して終了します。
+
+@item -h
+@itemx --help
+@command{casl2}の使用方法を表示して終了します。
+@end table
+
+@node comet2 invocation, dumpword invocation, casl2 invocation, Top
+@chapter @command{comet2}の呼び出し
+
+@pindex comet2
+@cindex comet2
+@cindex invoking
+@cindex options
+@cindex usage
+@cindex help
+
+@command{comet2}は、引数として指定されたオブジェクトファイルを仮想マシンCOMET II上で実行します。
+オブジェクトファイルは、@command{casl}に@option{-o}または@option{-O}を指定して出力します。
+
+@example
+$ @kbd{comet2 hello.o}
+@end example
+
+引数で指定できるオブジェクトファイルは1つだけです。
+引数が指定されない場合は、エラーメッセージを表示して終了します。
+複数の引数を指定した場合、2番目以降の引数は無視されます。
+
+@unnumberedsubsec オプション
+
+@command{comet2}は、次のオプションを指定できます。
+
+@table @option
+
+@item -t
+@itemx --trace
+@itemx --tracearithmetic
+プログラム実行中のレジスタの値を次の形式で表示します。
+@code{<値の10進数表現>}は符号の付いた10進数です。
+範囲は-32768から32767です。
+
+@example
+<PR値の16進数表現>: <レジスタ>: <値の10進数表現> = <値の16進数表現> = <値の2進数表現>[ ='文字']
+@end example
+
+@itemize
+@item
+@code{<PR値の16進数表現>}と@code{<値の16進数表現>}は、先頭に@code{#}が付いた4けたの16進数で表されます。
+範囲は、@code{#0000}から@code{#FFFF}です
+
+@item
+@code{<値の2進数表現>}は、16けたの2進数で表されます。
+範囲は、@code{0000000000000000}から@code{1111111111111111}です
+
+@item
+@code{[ ='文字']}は、レジストリの値が「文字の組」の範囲に含まれる場合に表示されます。
+@end itemize
+
+例えば、次のように表示されます。
+
+@example
+#0002: GR1:      3 = #0003 = 0000000000000011
+@end example
+
+表示されるレジスタには、次の種類があります。
+
+@table @code
+@item GR0 GR1 GR2 GR3 GR4 GR5 GR6 GR7
+汎用レジスタ
+
+@item SP
+スタックポインタ
+
+@item PR
+プログラムレジスタ
+
+@item FR
+フラグレジスタ
+@end table
+
+@item -T
+@itemx --tracelogical
+@option{-t}と同じように、プログラム実行中のレジスタの値を表示します。
+ただし、@option{-t}と異なり、@code{<値の10進数表現>}は符号の付かない10進数です。
+値の範囲は0から65535です。
+
+@item -d
+@itemx --dump
+メモリの内容をすべて表示します。
+
+@item -M <MEMORYSIZE>
+@itemx --memorysize <MEMORYSIZE>
+実行時のメモリサイズ@option{<MEMORYSIZE>}を0から65535の範囲で指定します。
+指定しない場合、512です。
+
+@item -C <CLOCKS>
+@itemx --clocks <CLOCKS>
+実行時のクロック周波数@option{<CLOCKS>}を0より大きい整数で指定します。
+指定しない場合、5000000です。
+
+@item -v
+@itemx --version
+@command{comet2}のバージョンを表示して終了します。
+
+@item -h
+@itemx --help
+@command{comet2}の使用方法を表示して終了します。
+@end table
+
+@node dumpword invocation, CASL2LIB Manual, comet2 invocation, Top
+@chapter @command{dumpword}の呼び出し
+
+@pindex dumpword
+@cindex dumpword
+@cindex invoking
+@cindex options
+@cindex usage
+@cindex help
+
+@command{dumpword}は引数として指定された数値を、整数、#0000から#FFFFまでの範囲の16進数、2進数で表示します。
+文字の組に該当する場合は、「 = 」のうしろに文字が表示されます。
+引数は、10進数または先頭に「#」の付いた16進数で指定します。
+表示される整数は、オプションにより符号付きか符号なしかを指定します。
+オプションなしの場合は符号付きです。
+整数の範囲は、符号付きの場合は-32768以上32767以下、符号なしの場合は0以上65535以下です。
+
+@example
+$ @kbd{dumpword 10}
+    10:     10 = #000A = 0000000000001010 = '\n'
+@end example
+
+引数が指定されない場合は、使い方を表示して終了します。
+複数の引数を指定した場合、1つ目の引数だけが表示され、2つ目以降の引数は無視されます。
+
+@unnumberedsubsec 注意
+
+マイナスの数や16進数はシェルの仕様により、そのままでは指定できません。
+
+マイナスの数を指定するときは、次のように@option{--}を付けます。
+
+@example
+$ @kbd{dumpword -- -72}
+   -72:    -72 = #FFB8 = 1111111110111000
+@end example
+
+先頭に「#」を付けて16進数を指定するときは、次のように「'」で囲みます。
+
+@example
+$ @kbd{dumpword '#0048'}
+ #0048:     72 = #0048 = 0000000001001000 = 'H'
+@end example
+
+@unnumberedsubsec オプション
+
+@command{dumpword}は、次のオプションを指定できます。
+
+@table @option
+
+@item -a
+@itemx --arithmetic
+出力される整数の範囲を-32,768以上32,767以下にします。
+オプションなしの場合と同じです。
+
+@item -l
+@itemx --logical
+出力される整数の範囲を0以上65,535以下にします。
+
+@item -v
+@itemx --version
+@command{dumpword}のバージョンを表示して終了します。
+
+@item -h
+@itemx --help
+@command{dumpword}の使用方法を表示して終了します。
+@end table
+
+@node CASL2LIB Manual,  , dumpword invocation, Top
+@chapter CASL2LIBマニュアル
+
+@menu
+* ABS::                         @kbd{ABS} - @file{abs.casl}
+* DIVA::                        @kbd{DIVA} - @file{diva.casl}
+* DIVL::                        @kbd{DIVL} - @file{divl.casl}
+* INL::                         @kbd{INL} - @file{inl.casl}
+* L2STR::                       @kbd{L2STR} - @file{l2str.casl}
+* MAX::                         @kbd{MAX} - @file{max.casl}
+* MINIM::                       @kbd{MINIM} - @file{minim.casl}
+* MULA::                        @kbd{MULA} - @file{mula.casl}
+* MULL::                        @kbd{MULL} - @file{mull.casl}
+* OUTA::                        @kbd{OUTA} - @file{outa.casl}
+* OUTB::                        @kbd{OUTB} - @file{outb.casl}
+* OUTD_Q15::                    @kbd{OUTD_Q15} - @file{outd_q15.casl}
+* OUTL::                        @kbd{OUTL} - @file{outl.casl}
+* REV::                         @kbd{REV} - @file{rev.casl}
+* STR2L::                       @kbd{STR2L} - @file{str2l.casl}
+@end menu
+
+@node ABS, DIVA, CASL2LIB Manual, CASL2LIB Manual
+@section @kbd{ABS} - @file{abs.casl}
+GR1を符号付き整数とみなし、絶対値に変換
+
+@unnumberedsubsec 入力
+@table @code
+@item GR1
+符号付き整数
+@end table
+
+@unnumberedsubsec 出力
+@table @code
+@item GR1
+入力された値の絶対値
+
+@item OF
+入力された値が-32768の場合、1
+
+@item SF
+入力された値が負数（-32767から-1）の場合、1
+@end table
+
+@unnumberedsubsec 依存する副プログラム
+なし
+
+@unnumberedsubsec 使用例
+@example
+@verbatiminclude casl2lib/abs/call_abs.casl
+@end example
+
+@example
+$ @kbd{casl2 call_abs.casl $CASL2LIB/abs.casl $CASL2LIB/outa.casl \
+  $CASL2LIB/divl.casl $CASL2LIB/rev.casl}
+1
+@end example
+
+@node DIVA, DIVL, ABS, CASL2LIB Manual
+@section @kbd{DIVA} - @file{diva.casl}
+符号付き整数の割算を筆算方式で行う
+
+@unnumberedsubsec 入力
+@table @code
+@item GR1
+被除数
+
+@item GR2
+除数
+@end table
+
+@unnumberedsubsec 出力
+@table @code
+@item GR0
+商
+
+@item GR3
+剰余
+
+@item OF
+次の場合、1
+@itemize
+@item
+GR2が0
+
+@item
+GR1が-32768
+
+@item
+GR2が-32768
+@end itemize
+
+@item SF
+商が負数(-32767から-1)の場合、1
+
+@item ZF
+商が0の場合、1
+@end table
+
+@unnumberedsubsec 依存する副プログラム
+@itemize
+@item @code{DIVL}
+@end itemize
+
+@unnumberedsubsec 使用例
+@example
+@verbatiminclude casl2lib/diva/call_diva.casl
+@end example
+
+@example
+$ @kbd{casl2 call_diva.casl $CASL2LIB/diva.casl $CASL2LIB/divl.casl \
+  $CASL2LIB/outa.casl $CASL2LIB/abs.casl $CASL2LIB/rev.casl}
+-128
+-127
+@end example
+
+@node DIVL, INL, DIVA, CASL2LIB Manual
+@section @kbd{DIVL} - @file{divl.casl}
+符号なし整数の割算を筆算方式で行う
+
+@unnumberedsubsec 入力
+@table @code
+@item GR1
+被除数
+
+@item GR2
+除数
+@end table
+
+@unnumberedsubsec 出力
+@table @code
+@item GR0
+商
+
+@item GR3
+剰余
+
+@item OF
+GR2が0の場合、1
+
+@item SF
+商が32768から65535の場合、1
+
+@item ZF
+商が0の場合、1
+@end table
+
+@unnumberedsubsec 依存する副プログラム
+なし
+
+@unnumberedsubsec 使用例
+@example
+@verbatiminclude casl2lib/divl/call_divl.casl
+@end example
+
+@example
+$ @kbd{casl2 call_divl.casl $CASL2LIB/divl.casl $CASL2LIB/outl.casl \
+  $CASL2LIB/rev.casl}
+256
+254
+@end example
+
+@node INL, L2STR, DIVL, CASL2LIB Manual
+@section @kbd{INL} - @file{inl.casl}
+
+符号なし整数の入力を受け付ける
+
+@unnumberedsubsec 入力
+@table @code
+@item 標準入力
+符号なし整数
+@end table
+
+@unnumberedsubsec 出力
+@table @code
+@item GR1
+入力された符号なし整数
+
+@item GR0
+文字列の長さ。
+数字以外が入力された場合は@code{#FFFF}
+@end table
+
+@unnumberedsubsec 依存する副プログラム
+@itemize
+@item
+@code{STR2L}
+@end itemize
+
+@unnumberedsubsec 使用例
+次のコマンドを実行すると、数値の入力が受け付けられ、入力された数値が表示される。
+
+@example
+@verbatiminclude casl2lib/inl/call_inl.casl
+@end example
+
+@example
+$ @kbd{casl2 -M1024 call_inl.casl $CASL2LIB/inl.casl $CASL2LIB/str2l.casl $CASL2LIB/mull.casl \
+  $CASL2LIB/outl.casl $CASL2LIB/divl.casl $CASL2LIB/rev.casl}
+@end example
+
+@node L2STR, MAX, INL, CASL2LIB Manual
+@section @kbd{L2STR} - @file{l2str.casl}
+
+符号なし整数を文字列に変換する
+
+@unnumberedsubsec 入力
+@table @code
+@item GR1
+符号なし整数
+
+@item GR2
+変換した文字列を格納するアドレス
+@end table
+
+@unnumberedsubsec 出力
+@table @code
+@item GR0
+文字列の長さ
+@end table
+
+@unnumberedsubsec 依存する副プログラム
+@itemize
+@item
+@code{DIVL}
+@end itemize
+
+@node MAX, MINIM, L2STR, CASL2LIB Manual
+@section @kbd{MAX} - @file{max.casl}
+
+連続した複数のWORDを符号付き整数とみなして最大値を返す
+
+@unnumberedsubsec 入力
+@table @code
+@item GR1
+WORD値を格納したアドレス
+
+@item GR2
+値の個数
+@end table
+
+@unnumberedsubsec 出力
+@table @code
+@item GR0
+最大値
+@end table
+
+@unnumberedsubsec 依存する副プログラム
+なし
+
+@node MINIM, MULA, MAX, CASL2LIB Manual
+@section @kbd{MINIM} - @file{minim.casl}
+
+連続した複数のWORDを符号付き整数とみなして最小値を返す
+
+@unnumberedsubsec 入力
+@table @code
+@item GR1
+WORD値を格納したアドレス
+
+@item GR2
+値の個数
+@end table
+
+@unnumberedsubsec 出力
+@table @code
+@item GR0
+最小値
+@end table
+
+@unnumberedsubsec 依存する副プログラム
+なし
+
+@node MULA, MULL, MINIM, CASL2LIB Manual
+@section @kbd{MULA} - @file{mula.casl}
+
+@node MULL, OUTA, MULA, CASL2LIB Manual
+@section @kbd{MULL} - @file{mull.casl}
+
+@node OUTA, OUTB, MULL, CASL2LIB Manual
+@section @kbd{OUTA} - @file{outa.casl}
+
+@node OUTB, OUTD_Q15, OUTA, CASL2LIB Manual
+@section @kbd{OUTB} - @file{outb.casl}
+
+@node OUTD_Q15, OUTL, OUTB, CASL2LIB Manual
+@section @kbd{OUTD_Q15} - @file{outd_q15.casl}
+
+@node OUTL, REV, OUTD_Q15, CASL2LIB Manual
+@section @kbd{OUTL} - @file{outl.casl}
+
+@node REV, STR2L, OUTL, CASL2LIB Manual
+@section @kbd{REV} - @file{rev.casl}
+
+@node STR2L,  , REV, CASL2LIB Manual
+@section @kbd{STR2L} - @file{str2l.casl}
+
+@bye
