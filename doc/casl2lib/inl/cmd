@@ -1,0 +1,3 @@
+PATH=../../..:$PATH
+CASL2LIBDIR=../../../as/casl2lib
+casl2 -M 720 call_inl.casl $CASL2LIBDIR/inl.casl $CASL2LIBDIR/outl.casl $CASL2LIBDIR/str2l.casl $CASL2LIBDIR/divl.casl $CASL2LIBDIR/rev.casl $CASL2LIBDIR/mull.casl <in.txt

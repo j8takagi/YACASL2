@@ -1,0 +1,14 @@
+0
+1
+2
+10
+12
+32767
+32768
+65535
+Over 65535
+Over 65535
+Not integer
+Not integer
+12345
+Str too long. Stop
