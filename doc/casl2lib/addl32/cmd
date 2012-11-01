@@ -1,3 +1,0 @@
-PATH=../../..:$PATH
-CASL2LIBDIR=../../../as/casl2lib
-cat call_addl32.casl && casl2 call_addl32.casl $CASL2LIBDIR/addl32.casl $CASL2LIBDIR/divl.casl $CASL2LIBDIR/rev.casl $CASL2LIBDIR/outl.casl
