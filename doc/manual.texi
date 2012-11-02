@@ -3,7 +3,7 @@
 @ifnottex
 @documentlanguage ja_JP
 @end ifnottex
-@setfilename manual
+@setfilename yacasl2.info
 @documentencoding UTF-8
 @settitle YACASL2 - CASL II 処理システム
 @firstparagraphindent insert

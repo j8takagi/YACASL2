@@ -16,7 +16,6 @@ MAKEINFO ?= gmakeinfo
 INSTALL ?= install
 INSTALL-INFO ?= ginstall-info
 GZIP = gzip
-SED = sed
 
 prefix ?= ~
 infodir ?= $(prefix)/share/info
@@ -37,9 +36,8 @@ htmls: $(MANUAL)_html
 
 pdf: $(INSTALLDOC).pdf $(MANUAL).pdf
 
-$(MANUAL_SYSINFO): $(MANUAL).info
-	$(CP) $< $@
-	$(SED) -i -e "s/@setfilename manual/@setfilename $(MANUAL_SYSINFO)/" $@
+$(MANUAL_SYSINFO): $(MANUAL).texi
+	$(MAKEINFO) $<
 
 %.html: %.texi $(CSS)
 	$(MAKEINFO) -o $@ --no-split --html --css-include=$(CSS) $<
