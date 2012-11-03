@@ -1,12 +1,12 @@
 .PHONY: all build gtags check doc info html doc-inner install uninstall install-info uninstall-info install-casl2lib uninstall-casl2lib version clean clean-src clean-gtags clean-test clean-doc clean-doc-inner
 
-GTAGS ?= gtags
-RMF ?= rm -f
-WHICH ?= which
-ECHO ?= echo
-INSTALL ?= install
-SED ?= sed
-CAT ?= cat
+GTAGS := gtags
+RMF := rm -f
+WHICH := which
+ECHO := echo
+INSTALL := install
+SED := sed
+CAT := cat
 
 prefix ?= ~
 bindir ?= $(prefix)/bin
