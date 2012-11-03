@@ -1,5 +1,0 @@
-;; outd.caslを呼び出し、数値を表示する
-MAIN    START
-        LAD	GR1,#8000
-        CALL    OUTD
-FIN     RET

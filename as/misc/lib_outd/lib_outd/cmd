@@ -1,1 +1,0 @@
-../../../../casl2 -M1024 outd.casl ../../../../as/casl2lib/outd_q15.casl ../../../../as/casl2lib/abs.casl

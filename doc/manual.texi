@@ -93,8 +93,8 @@ YACASL2は、「ふつうの処理系」として動作します。
 実行時のメモリの内容
 @end itemize
 
-出力された動作内容は、GNU/Linuxのさまざまなツール、
-たとえば、@command{cat} @command{less} @command{grep} @command{wc}などを使って解析できます。
+出力された動作内容は、GNU/Linuxのさまざまなコマンド、
+たとえば、@command{cat}、@command{less}、@command{grep}、@command{wc}などを使って解析できます。
 
 YACASL2の操作は、端末上のコマンドラインインターフェイスで行います。
 
