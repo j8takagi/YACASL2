@@ -1,4 +1,4 @@
-.PHONY: all build gtags check doc info html doc-inner install uninstall install-info uninstall-info install-casl2lib uninstall-casl2lib version clean clean-src clean-gtags clean-test clean-doc clean-doc-inner
+.PHONY: all build gtags check doc info html doc-inner install uninstall install-info uninstall-info install-casl2lib uninstall-casl2lib version gittag clean clean-src clean-gtags clean-test clean-doc clean-doc-inner
 
 GTAGS := gtags
 RMF := rm -f
@@ -7,6 +7,8 @@ ECHO := echo
 INSTALL := install
 SED := sed
 CAT := cat
+XARGS := xargs
+GITTAG := git tag
 
 prefix ?= ~
 bindir ?= $(prefix)/bin
@@ -60,6 +62,9 @@ version: VERSION $(VERSIONFILES)
 
 $(VERSIONFILES): VERSION
 	$(SED) -e "s/@@VERSION@@/`cat VERSION`/g" $@.version >$@
+
+gittag: VERSION
+	$(CAT) $@ | $(XARGS) $(GITTAG)
 
 clean: clean-src clean-gtags clean-doc clean-doc-inner clean-version
 
