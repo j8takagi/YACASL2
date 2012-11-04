@@ -36,7 +36,7 @@ Copyright @copyright{} 2010-2012 j8takagi
 
 @menu
 * Overview::                    YACASL2の概要
-* Sample usage::               YACASL2の使用例
+* Sample usage::                YACASL2の使用例
 * casl2 invocation::            casl2の呼び出し
 * comet2 invocation::           comet2の呼び出し
 * dumpword invocation::         dumpwordの呼び出し

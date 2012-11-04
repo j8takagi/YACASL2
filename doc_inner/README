@@ -7,7 +7,9 @@ YACASL2の内部仕様書は、DoxygenとGNU GLOBALの2種類があり、
 DoxygenやGNU GLOBALがインストールされていないシステムでは、
 makeを実行しても内部仕様書は生成されません。
 
-■Doxygen
+Doxygen
+==========
+
 Doxygenについては、下記URLを参照してください。
 http://www.doxygen.jp/
 
@@ -17,7 +19,9 @@ doc_inner/doxygenディレクトリーに、GNU Globalのdoxygenコマンドで
 YACASL2でのDoxygenの設定ファイルは、YACASL2の
 ルートディレクトリーにある「../Doxyfile」です。
 
-■GNU GLOBAL
+GNU GLOBAL
+============
+
 GNU GLOBALについては、下記URLを参照してください。
 http://www.gnu.org/software/global/
 
@@ -27,14 +31,22 @@ htagsコマンドで生成されるHTMLドキュメントが格納されます�
 GNU Globalのgtagsコマンドで生成されるGTAGS、GRTAGS、GRPATHは、
 YACASL2のルートディレクトリー（..）に生成されます。
 
-■内部仕様書の生成方法
-▼DoxygenとGNU Globalの両方を生成
+内部仕様書の生成方法
+====================
+
+DoxygenとGNU Global両方の内部仕様書を生成
+********************************************
+
 次のどちらか
 $ make
 $ make all
 
-▼Doxygen
+Doxygen内部仕様書を生成
+*************************
+
 $ make doxygen
 
-▼GNU Global
+GNU Global内部仕様書を生成
+***************************
+
 $ make gnu_global
