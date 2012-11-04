@@ -13,6 +13,7 @@ GITTAG := git tag
 prefix ?= ~
 bindir ?= $(prefix)/bin
 
+VERSION = $(shell $(CAT) VERSION)
 VERSIONFILES = include/package.h test/system/casl2/opt_v/0.txt test/system/comet2/opt_v/0.txt test/system/dumpword/opt_v/0.txt
 
 all: build docall gtags
@@ -49,22 +50,22 @@ install-info:
 	$(MAKE) -C doc install-info
 
 uninstall-info:
-	@$(MAKE) -C doc uninstall-info
+	$(MAKE) -C doc uninstall-info
 
 install-casl2lib:
 	$(MAKE) -C as/casl2lib install-casl2lib
 
 uninstall-casl2lib:
-	@$(MAKE) -C as/casl2lib uninstall-casl2lib
+	$(MAKE) -C as/casl2lib uninstall-casl2lib
 
-version: VERSION $(VERSIONFILES)
-	@$(ECHO) "YACASL2 Version:" `$(CAT) VERSION`
+version: $(VERSIONFILES)
+	@$(ECHO) "YACASL2 Version: $(VERSION)"
 
 $(VERSIONFILES): VERSION
-	$(SED) -e "s/@@VERSION@@/`cat VERSION`/g" $@.version >$@
+	$(SED) -e "s/@@VERSION@@/$(VERSION)/g" $@.version >$@
 
 gittag: VERSION
-	$(CAT) $@ | $(XARGS) $(GITTAG)
+	$(GITTAG) $(VERSION)
 
 clean: clean-src clean-gtags clean-doc clean-doc-inner clean-version
 
