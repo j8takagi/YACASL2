@@ -1,0 +1,5 @@
+        MAIN    START
+        RPUSH
+        LD      GR1,ORG
+        LAD     GR2,RES
+ORG     DC      #FC,#FC,#FC,#70,#70,#70,#FC,#FC,#FC,

@@ -1,0 +1,31 @@
+;;; PBM16
+;;; GR1で指定されたアドレス以降のメモリを 16×16 の
+;;; 白黒ビットマップ画像データ（白:0 黒:1）とみなし、
+;;; PBM画像ファイルとして出力
+;;; 入力: GR1 画像データの先頭アドレス
+;;; 依存副プログラム: outl.casl
+PBM16   START
+        PUSH    0,GR1
+        PUSH    0,GR2
+        ST      GR1,BEG
+        OUT     L1,L1LEN
+        OUT     L2,L2LEN
+        XOR     GR2,GR2
+LOOP    CPL     GR2,HEIGHT
+        JZE     FIN
+        LD      GR1,BEG
+        ADDL    GR1,GR2
+        LD      GR1,0,GR1
+        CALL    OUTB
+        LAD     GR2,1,GR2
+        JUMP    LOOP
+FIN     POP     GR2
+        POP     GR1
+        RET
+L1      DC      'P1'
+L1LEN   DC      2
+L2      DC      '16 16'
+L2LEN   DC      5
+HEIGHT  DC      16
+BEG     DS      1
+        END

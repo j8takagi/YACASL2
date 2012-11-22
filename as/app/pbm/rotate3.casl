@@ -1,0 +1,50 @@
+;; 副プログラム ROTATE
+;; 16 × 16 ドットの図形のうち 左上の n × n ドットの部分だけを時計回りに90度回転する
+;; 1ドットを1ビットで表し，白は0，黒は1が格納されている。
+;; 値 n （ 1 <= n <= 16 ）は GR3 に設定されて主プログラムから渡される。
+;;  1. 図形を表す 16 語の先頭アドレスは GR1 に設定されて，主プログラムから渡される。
+;;  2. 回転した結果の図形を格納する領域の先頭アドレスは GR2 に設定されて， 主プログラムから渡される。
+;;  3. 元の図形と回転した図形は，異なる領域に格納される。
+;;  4. 副プログラムから戻るとき，汎用レジスタ GR1 ～ GR7 の内容は元に戻す。
+ROTATE  START
+        RPUSH
+        ST     GR3,N          ; nを保存
+        LD     GR4,GR3        ; GR4 ← n
+        LD     GR5,GR1        ; GR5 ← 元の図形のアドレス
+        LD     GR6,GR2        ; GR6 ← 結果の領域のアドレス
+        LD     GR7,=16
+        SUBA   GR7,GR3        ; GR7 ← 16-n
+SHIFT   LD     GR0,0,GR5      ; GR0 ← 元の図形の1語の内容
+        SLL    GR0,0,GR3
+        ST     GR0,0,GR6      ; 結果の領域 ← GR0
+        LAD    GR5,1,GR5      ; 元の図形の1語のアドレス更新
+        LAD    GR6,1,GR6      ; 結果の領域の1語のアドレス更新
+        SUBA   GR4,=1         ; n語処理済み？
+        JNZ    SHIFT
+COPY    SUBA   GR7,=1         ; 残りの語の内容を結果の領域に複写
+        JMI    LOOP1
+        LD     GR0,0,GR5
+        ST     GR0,0,GR6
+        LAD    GR5,1,GR5
+        LAD    GR6,1,GR6
+        JUMP   COPY
+N       DS     1
+LOOP1   LD     GR4,N
+        LD     GR5,GR2         ; GR5 ← 結果の領域のアドレス
+        LD     GR6,0,GR1       ; GR6 ← 元の図形の先頭語の内容
+LOOP2   LD     GR7,0,GR5       ; GR7 ← 結果の領域の1語の内容
+        SRL    GR7,1
+        SRL    GR6,1
+        JOV    ON
+        JUMP   CONT
+ON      OR     GR7,=#8000
+CONT    ST     GR7,0,GR5       ; 処理した1語を結果の領域に格納
+        LAD    GR5,1,GR5
+        SUBA   GR4,=1
+        JNZ    LOOP2
+        LAD    GR1,1,GR1
+        SUBA   GR3,=1
+        JNZ    LOOP1
+        RPOP
+        RET
+        END

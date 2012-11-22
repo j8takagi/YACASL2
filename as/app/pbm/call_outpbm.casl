@@ -1,0 +1,5 @@
+MAIN    START
+        LAD     GR2,16
+        LAD     GR3,16
+        CALL    OUTPBM
+        END

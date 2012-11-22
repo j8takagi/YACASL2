@@ -1,0 +1,21 @@
+MAIN    START
+        LAD     GR1,GRAPH
+        CALL    PBM16
+        RET
+GRAPH   DC      #FFFC
+        DC      #FFFC
+        DC      #FFFC
+        DC      #0700
+        DC      #0700
+        DC      #0700
+        DC      #FFFC
+        DC      #FFFC
+        DC      #FFFC
+        DC      #071C
+        DC      #071C
+        DC      #071C
+        DC      #FFFF
+        DC      #FFFF
+        DC      #FFFF
+        DC      #0000
+        END

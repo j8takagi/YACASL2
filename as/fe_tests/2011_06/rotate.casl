@@ -1,0 +1,22 @@
+        ROTATE  START
+        RPUSH
+        LD     GR3,=16
+LOOP1   LD     GR4,=16
+        LD     GR5,GR2         ; GR5 ← 結果の領域のアドレス
+        LD     GR6,0,GR1       ; GR6 ← 元の図形の先頭語の内容
+LOOP2   LD     GR7,0,GR5       ; GR7 ← 結果の領域の1語の内容
+        SRL    GR7,1
+        SLL    GR6,1
+        JOV    ON
+        JUMP   CONT
+ON      OR     GR7,=#8000
+CONT    ST     GR7,0,GR5       ; 処理した1語を結果の領域に格納
+        LAD    GR5,1,GR5
+        SUBA   GR4,=1
+        JNZ    LOOP2
+        LAD    GR1,1,GR1
+        SUBA   GR3,=1
+        JNZ    LOOP1
+        RPOP
+        RET
+        END

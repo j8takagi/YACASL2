@@ -1,0 +1,32 @@
+;;; casl2 call_rotate.casl ../../casl2lib/outb_w.casl ../../casl2lib/divl.casl ../../casl2lib/rev.casl rotate.casl | cat 16_16.pbm - >five_rot.pbm
+MAIN    START
+        LAD     GR1,ORG
+        LAD     GR2,RES
+        CALL    ROTATE
+        LAD     GR2,0
+LOOP    LD      GR1,RES,GR2
+        CALL    OUTB
+        LAD     GR2,1,GR2
+        CPA     GR2,HEIGHT
+        JZE     FIN
+        JUMP    LOOP
+FIN     RET
+ORG     DC      #FFFC
+        DC      #FFFC
+        DC      #FFFC
+        DC      #0700
+        DC      #0700
+        DC      #0700
+        DC      #FFFC
+        DC      #FFFC
+        DC      #FFFC
+        DC      #071C
+        DC      #071C
+        DC      #071C
+        DC      #FFFF
+        DC      #FFFF
+        DC      #FFFF
+        DC      #0000
+HEIGHT  DC      16
+RES     DS      16
+        END
