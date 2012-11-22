@@ -3,6 +3,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <assert.h>
+#include <errno.h>
 
 #include "assemble.h"
 #include "cerr.h"
@@ -635,6 +636,7 @@ bool assemblefile(const char *file, PASS pass)
     FILE *fp;
 
     if((fp = fopen(file, "r")) == NULL) {
+        cerr->num = errno;
         perror(file);
         return false;
     }
