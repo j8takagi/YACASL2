@@ -1,0 +1,11 @@
+MAIN    START
+        LD      GR1,VAL
+        LAD     GR2,ADR
+        CALL    L2STR
+        ST      GR3,LEN
+        OUT     ADR,LEN
+        RET
+VAL     DC      11
+ADR     DS      6
+LEN     DS      1
+        END
