@@ -19,10 +19,10 @@ Copyright @copyright{} 2010-2012 j8takagi
 
 @dircategory Programming
 @direntry
-* YACASL2: (yacasl2).                     CASL II 処理システム
-* casl2: (yacasl2)casl2 invocation.       casl2の呼び出し
-* comet2: (yacasl2)comet2 invocation.     comet2の呼び出し
-* dumpword: (yacasl2)dumpword invocation. dumpwordの呼び出し
+* YACASL2: (yacasl2.info).                     CASL II 処理システム
+* casl2: (yacasl2.info)casl2 invocation.       casl2の呼び出し
+* comet2: (yacasl2.info)comet2 invocation.     comet2の呼び出し
+* dumpword: (yacasl2.info)dumpword invocation. dumpwordの呼び出し
 @end direntry
 
 @titlepage
