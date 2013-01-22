@@ -1,80 +1,68 @@
-MANUAL = manual
-INSTALLDOC = install
-CASL2SPEC = casl2_spec
-MANUAL_SYSINFO = yacasl2.info
-CSS = style.css
+DOCS := install manual
 
-MV ?= mv
-CP ?= cp
-MKDIR ?= mkdir
-RMF = rm -f
-RMRF ?= rm -rf
-PTEX ?= ptex
-TEXI2DVI ?= texi2dvi
-DVI2PDF ?= dvipdfmx
-MAKEINFO ?= gmakeinfo
-INSTALL ?= install
-INSTALL-INFO ?= ginstall-info
-GZIP = gzip
+CSS := style.css
+
+CP := cp
+DVIPDFMX := dvipdfmx
+GZIP := gzip
+INSTALL := install
+INSTALL-INFO := install-info
+MKDIR := mkdir
+RMR := rm -rf
+TEX := ptex
+TEXI2DVI := TEX=ptex texi2dvi
+TEX2DVI_FLAGS = -q --texinfo=@afourpaper
 
 prefix ?= ~
 infodir ?= $(prefix)/share/info
 
-.PHONY: all info html htmls pdf install-info uninstall-info clean clean-textmp
+.PHONY: base all info html htmls pdf install-info uninstall-info clean clean-textmp
 
 .INTERMEDIATE: *.dvi
 
-base: ../INSTALL $(MANUAL_SYSINFO) $(MANUAL).html
+base: install.txt info html
 
-all: info html htmls pdf ../INSTALL $(MANUAL_SYSINFO)
+all: base htmls pdf
 
-info: $(MANUAL_SYSINFO) $(INSTALLDOC).info
+info: yacasl2.info
 
-html: $(MANUAL).html $(INSTALLDOC).html
+html: $(addsuffix .html,$(DOCS))
 
-htmls: $(MANUAL)_html
+htmls: $(addsuffix _html,$(DOCS))
 
-pdf: $(INSTALLDOC).pdf $(MANUAL).pdf
+pdf: $(addsuffix .pdf,$(DOCS))
 
-$(MANUAL_SYSINFO): $(MANUAL).texi
-	$(MAKEINFO) $<
+yacasl2.info: manual.texi
+	$(MAKEINFO) $(MAKEINFO_FLAGS) $<
 
-%.html: %.texi $(CSS)
+$(addsuffix .html,$(DOCS)) $(addsuffix _html,$(DOCS)): $(CSS)
+
+%.html: %.texi
 	$(MAKEINFO) -o $@ --no-split --html --css-include=$(CSS) $<
 
-%_html: %.texi $(CSS)
-	$(INSTALL) -d $@
-	$(INSTALL) $(CSS) $@/
+%_html: %.texi
+	if test ! -e $@; then $(MKDIR) $@; fi
+	$(CP) $(CSS) $@/
 	$(MAKEINFO) -o $@ --html --css-ref=$(CSS) $<
 
 %.pdf: %.dvi
-	$(DVI2PDF) $<
-
-%.dvi: %.texi
-	TEX=$(PTEX) $(TEXI2DVI) -q --texinfo=@afourpaper -o $@ $<
-	@$(MAKE) clean-textmp
+	$(DVIPDFMX) $<
 
 %.txt: %.texi
 	$(MAKEINFO) --no-headers --disable-encoding -o $@ $<
 
-install-info: $(MANUAL_SYSINFO)
+install-info: yacasl2.info
 	$(INSTALL) -d $(infodir)
-	$(INSTALL) $(MANUAL_SYSINFO) $(infodir)/
-	$(INSTALL-INFO) $(infodir)/$(MANUAL_SYSINFO) $(infodir)/dir
-	$(GZIP) -f $(infodir)/$(MANUAL_SYSINFO)
+	$(INSTALL) $< $(infodir)/
+	$(INSTALL-INFO) $(infodir)/$< $(infodir)/dir
+	$(GZIP) -f $(infodir)/$<
 
-uninstall-info: $(MANUAL).info
-	$(INSTALL-INFO) --delete $(infodir)/$(MANUAL_SYSINFO) $(infodir)/dir
-	$(RMF) $(infodir)/$(MANUAL_SYSINFO)*
-
-$(INSTALLDOC).html: $(INSTALLDOC).texi $(CSS)
-	$(MAKEINFO) -o $@ --no-split --html --css-include=$(CSS) $<
-
-../INSTALL: $(INSTALLDOC).txt
-	$(CP) $< $@
+uninstall-info:
+	$(INSTALL-INFO) --delete $(infodir)/yacasl2.info $(infodir)/dir
+	$(RM) $(infodir)/yacasl2.info
 
 clean: clean-textmp
-	@$(RMRF) *_html *.info *.html *.pdf  *.dvi *.txt
+	@$(RMR) *_html *.info *.html *.pdf  *.dvi *.txt
 
 clean-textmp:
-	@$(RMF) *.aux *.cp *.cps *.fn *.ky *.log *.pg *.pgs *.tmp *.toc *.tp *.vr
+	@$(RM) *.aux *.cp *.cps *.fn *.ky *.log *.pg *.pgs *.tmp *.toc *.tp *.vr

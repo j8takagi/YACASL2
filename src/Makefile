@@ -1,58 +1,62 @@
-CC ?= gcc
-CFLAGS ?= -g -Wall -Wextra -I $(INCLUDE)
-RMF ?= rm -f
-WHICH ?= which
-CTAGS ?= ctags
-ETAGS ?= etags
-SED ?= sed
+INCLUDEDIR := ../include
+INCLUDE = -I $(INCLUDEDIR)
 
-INCLUDE := ../include
+# コマンド
+CC := gcc
+CFLAGS := -g -Wall -Wextra $(INCLUDE)
+CTAGS := ctags
+ETAGS := etags
+SED := sed
+WHICH := which
 
-COMMONSRC := word.c cmem.c cerr.c
-CASL2SRC := struct.c hash.c
-ASSRC := assemble.c token.c label.c
-EXECSRC := exec.c dump.c
+# ソースの分類
+CMDOBJ := casl2 comet2 dumpword
+COMMONOBJ := word cmem cerr
+CASL2OBJ := struct hash
+ASOBJ := assemble token label
+EXECOBJ := exec dump
 
-.PHONY: all version clean
+.PHONY: all build tag clean
 
-all: version ../casl2 ../comet2 ../dumpword ctags etags
+all: build tag
 
-version:
-	$(MAKE) -C .. version
-
-../casl2: casl2.o $(subst .c,.o,$(COMMONSRC) $(CASL2SRC) $(ASSRC) $(EXECSRC))
-	$(CC) $(CFLAGS) -o $@ $^
-	@$(RMF) *.d
-
-../comet2: comet2.o $(subst .c,.o,$(COMMONSRC) $(CASL2SRC) $(EXECSRC))
-	$(CC) $(CFLAGS) -o $@ $^
-	@$(RMF) *.d
-
-../dumpword: dumpword.o $(subst .c,.o,$(COMMONSRC))
-	$(CC) $(CFLAGS) -o $@ $^
-	@$(RMF) *.d
-
-%.o: %.c
-	$(CC) -c $(CFLAGS) $<
-
+# ヘッダファイルの依存関係を.dファイルに出力する
 %.d: %.c
-	@$(CC) -MM -I $(INCLUDE) $< | $(SED) 's/\($*\.o\):/\1 $@:/g' >$@
+	@($(CC) -MM -I $(INCLUDEDIR) $< | $(SED) 's/\($*\.o\):/\1 $@:/g' >$@ && echo '$@ is created from $<')
 
--include $(subst .c,.d,casl2.c comet2.c dumpword.c $(COMMONSRC) $(CASL2SRC) $(ASSRC) $(EXECSRC))
+# .dファイルからヘッダファイルの依存関係を取得する
+# ターゲットに clean が含まれている場合は除く
+ifneq ($(findstring $(MAKECMDGOALS),clean),clean)
+  -include $(addsuffix .d,$(CMDOBJ) $(COMMONOBJ) $(CASL2OBJ) $(ASOBJ) $(EXECOBJ))
+endif
 
-ctags: $(INCLUDE)/*.h *.c
-	@$(WHICH) $(CTAGS) >/dev/null && $(CTAGS) $^
+# casl2、comet2、dumpwordのビルド
+build: $(CMDOBJ)
 
-etags: $(INCLUDE)/*.h *.c
-	@$(WHICH) $(ETAGS) >/dev/null && $(ETAGS) $^
+casl2: casl2.o $(addsuffix .o,$(COMMONOBJ) $(CASL2OBJ) $(ASOBJ) $(EXECOBJ))
 
-clean: clean_cmd clean_build clean_tags
+comet2: comet2.o $(addsuffix .o,$(COMMONOBJ) $(CASL2OBJ) $(EXECOBJ))
 
-clean_cmd:
-	@$(RMF) ../casl2 ../comet2 ../dumpword
+dumpword: dumpword.o $(addsuffix .o,$(COMMONOBJ))
 
-clean_build:
-	@$(RMF) *.o *.d
+# tagファイル作成 - ctags & etags
+# コマンドがない場合はなにもしない
+tag: tags TAGS
 
-clean_tags:
-	@$(RMF) TAGS tags
+tags: $(INCLUDEDIR)/*.h *.c
+	$(if $(strip $(shell $(WHICH) $(CTAGS))),$(CTAGS) $^,@$(ECHO) '$(CTAGS): not found')
+
+TAGS: $(INCLUDEDIR)/*.h *.c
+	$(if $(strip $(shell $(WHICH) $(ETAGS))),$(ETAGS) $^,@$(ECHO) '$(ETAGS): not found')
+
+# makeで生成したファイルの削除
+clean: clean-cmd clean-work clean-tag
+
+clean-cmd:
+	@$(RM) casl2 comet2 dumpword
+
+clean-work:
+	@$(RM) *.o *.d
+
+clean-tag:
+	@$(RM) TAGS tags

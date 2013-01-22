@@ -1,14 +1,15 @@
 .PHONY: all build gtags check doc info html doc-inner install uninstall install-info uninstall-info install-casl2lib uninstall-casl2lib version gittag clean clean-src clean-gtags clean-test clean-doc clean-doc-inner
 
-GTAGS := gtags
-RMF := rm -f
-WHICH := which
+CMD := casl2 comet2 dumpword
+
+CAT := cat
+CP := cp
 ECHO := echo
+GITTAG := git tag
+GTAGS := gtags
 INSTALL := install
 SED := sed
-CAT := cat
-XARGS := xargs
-GITTAG := git tag
+WHICH := which
 
 prefix ?= ~
 bindir ?= $(prefix)/bin
@@ -16,13 +17,21 @@ bindir ?= $(prefix)/bin
 VERSION = $(shell $(CAT) VERSION)
 VERSIONFILES = include/package.h test/system/casl2/opt_v/0.txt test/system/comet2/opt_v/0.txt test/system/dumpword/opt_v/0.txt
 
-all: build docall gtags
+all: build doc gtags
 
-build:
+build: version
 	$(MAKE) -C src all
+	$(CP) $(addprefix src/,$(CMD)) ./
 
 gtags:
-	@$(WHICH) $(GTAGS) >/dev/null && $(GTAGS) || $(ECHO) "$(GTAGS): not found"
+	$(if $(strip $(shell $(WHICH) $(GTAGS))),$(GTAGS),@$(ECHO) '$(GTAGS): not found')
+
+doc:
+	$(MAKE) -C doc base
+	$(MAKE) INSTALL
+
+INSTALL: doc/install.txt
+	$(CP) $< $@
 
 docall:
 	$(MAKE) -C doc all
@@ -41,10 +50,10 @@ check:
 
 install: casl2 comet2 dumpword install-info install-casl2lib
 	$(INSTALL) -d $(bindir)
-	$(INSTALL) casl2 comet2 dumpword $(bindir)/
+	$(INSTALL) $(CMD) $(bindir)/
 
 uninstall: uninstall-info uninstall-casl2lib
-	$(RMF) $(bindir)/casl2 $(bindir)/comet2 $(bindir)/dumpword
+	$(RM) $(prefix $(bindir)/,$(CMD))
 
 install-info:
 	$(MAKE) -C doc install-info
@@ -62,18 +71,21 @@ version: $(VERSIONFILES)
 	@$(ECHO) "YACASL2 Version: $(VERSION)"
 
 $(VERSIONFILES): VERSION
-	$(SED) -e "s/@@VERSION@@/$(VERSION)/g" $@.version >$@
+	@$(SED) -e "s/@@VERSION@@/$(VERSION)/g" $@.version >$@
 
 gittag: VERSION
 	$(GITTAG) $(VERSION)
 
-clean: clean-src clean-gtags clean-doc clean-doc-inner clean-version
+clean: clean-cmd clean-src clean-gtags clean-doc clean-doc-inner clean-version
+
+clean-cmd:
+	@$(RM) $(CMD)
 
 clean-src:
 	@$(MAKE) -sC src clean
 
 clean-gtags:
-	@$(RMF) GPATH GRTAGS GSYMS GTAGS
+	@$(RM) GPATH GRTAGS GSYMS GTAGS
 
 clean-doc:
 	@$(MAKE) -sC doc clean
@@ -81,8 +93,8 @@ clean-doc:
 clean-doc-inner:
 	@$(MAKE) -sC doc_inner clean
 
+clean-version:
+	@$(RM) $(VERSIONFILES)
+
 clean-test:
 	@$(MAKE) -sC test clean
-
-clean-version:
-	@$(RMF) $(VERSIONFILES)
