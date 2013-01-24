@@ -8,18 +8,20 @@
 # make time     : すべてのテストを実行し、実行時間をログファイルに出力
 # make create   : TESTNAMEで指定されたテストを新規に作成
 # make clean    : すべてのテストで、"make" で生成されたファイルをクリア
-# make cleantime: すべてのテストで、実行時間のログファイルをクリア
+# make time-clean: すべてのテストで、実行時間のログファイルをクリア
 
 SHELL = /bin/sh
 
 include Define.mk
+
+verbose ?= 1
 
 ######################################################################
 # テストグループのディレクトリー
 ######################################################################
 
 # グループディレクトリー
-GROUP_DIR := $(CURRDIR)
+GROUP_DIR := $(CURDIR)
 
 # グループ名。ディレクトリ名から取得
 GROUP := $(notdir $(GROUP_DIR))
@@ -50,16 +52,18 @@ TEST_LOG_FILES := $(foreach test,$(TESTS),$(test)/$(LOG_FILE))
 # 引数は、テストのリスト、グループファイル、テストファイル
 # 用例: $(call group_log,files_test_log,file_group_log)
 define group_log
+    $(if $(filter 1,$(verbose)),$(ECHO) '$(CURDIR) - $(words $1) tests')
     $(foreach target,$1,$(call group_log_each,$(target),$2))
+    $(if $(filter 1,$(verbose)),$(ECHO))
 endef
 
 # テストのログファイルをグループログファイルに出力。引数は、テスト、グループログファイル
 # 用例: $(call group_log_each,file_test_log,file_group_log)
 define group_log_each
+    $(if $(filter 1,$(verbose)),$(ECHO) -n '.')
     $(ECHO) $(dir $1) >>$2;
     if test -s $1; then $(CAT) $1 >>$2; else $(ECHO) $(dir $1)": no log" >>$2; fi
     $(ECHO) >>$2;
-
 endef
 
 # 成功したテストの数。テストグループログファイルから取得
@@ -78,29 +82,30 @@ TEST_TIME_FILES := $(foreach test,$(TESTS),$(test)/$(TIME_FILE))
 # 引数は、グループ名、グループログファイル、グループレポートファイル
 # 用例: $(call group_report,name,file_log,file_report)
 define group_report
-    $(ECHO) "$1: $(SUCCESS_TEST) / $(ALL_TEST) tests passed. Details in $(GROUP_DIR)/$2" >$3;
+    $(ECHO) '$1: $(SUCCESS_TEST) / $(ALL_TEST) tests passed. Details in $(GROUP_DIR)/$2' >$3
     if test $(FAIL_TEST) -eq 0; then $(ECHO) "$1: All tests are succeded." >>$3; fi
 endef
 
 # リストで指定したディレクトリーでmakeを実行
-# 用例: $(call make_tests,list_dir,target)
-define make_tests
-    $(foreach dir,$1,$(call make_test_each,$(dir),$2))
+# 用例: $(call make_targets,list_dir,target)
+define make_targets
+    $(if $(filter 1,$(verbose)),$(ECHO) '$(CURDIR) - $2';)
+    $(foreach dir,$1,$(call make_target_each,$(dir),$2))
 endef
 
 # 指定したディレクトリーでmakeを実行
-# 用例: $(call make_test_each,tests,target)
-define make_test_each
+# 用例: $(call make_target_each,tests,target)
+define make_target_each
     $(MAKE) $2 -sC $1;
-
 endef
 
-.PHONY: check checkall time create clean cleantime
+.PHONY: check checkall time create clean time-clean
 
 check checkall: clean $(GROUP_REPORT_FILE)
 	@$(CAT) $(GROUP_REPORT_FILE)
+	@exit $(FAIL_TEST)
 
-time: cleantime $(GROUP_TIME_FILE)
+time: time-clean $(GROUP_TIME_FILE)
 	@$(CAT) $(GROUP_TIME_FILE)
 
 create:
@@ -108,12 +113,12 @@ create:
 	@$(call create_makefile,$(TEST)/$(MAKEFILE),$(MAKEFILES))
 
 clean:
-	@$(call make_tests,$(TESTS),$@)
-	@$(RM) $(GROUP_RES_FILES)
+	@$(call make_targets,$(TESTS),$@)
+	@$(RM) $(GROUP_RES_FILES);
 
-cleantime:
-	@$(call make_tests,$(TESTS),$@)
-	@$(RM) $(GROUP_TIME_FILE)
+time-clean:
+	@$(call make_targets,$(TESTS),$@)
+	@$(RM) $(GROUP_TIME_FILE);
 
 $(GROUP_REPORT_FILE): $(GROUP_LOG_FILE)
 	@$(call group_report,$(GROUP),$^,$@)

@@ -7,9 +7,6 @@ DEFINE_INCLUDED = 1
 # 現在の日時
 DATE = $(shell date +"%F %T")
 
-# 現在のディレクトリー
-CURRDIR = $(shell pwd)
-
 # Makefile
 MAKEFILE := Makefile
 
@@ -17,39 +14,22 @@ MAKEFILE := Makefile
 # コマンド
 ######################################################################
 
-MV ?= mv
-
-CP ?= cp
-
-CAT ?= cat
-
-MKDIR ?= mkdir -p
-
-RM ?= rm -f
-
-ECHO ?= echo
-
-TIME ?= time
-
-DIFF ?= diff -c
-
-DEV_NULL ?= /dev/null
-
-CHMOD ?= chmod
-
-GREP ?= grep
-
-LINECOUNT ?= wc -l
-
-FIND ?= find
-
-TR ?= tr
-
-EXPR ?= expr
-
-LN ?= ln -s
-
-SED ?= sed
+CAT := cat
+CHMOD := chmod
+CP := cp
+DEV_NULL := /dev/null
+DIFF := diff -c
+ECHO := echo
+EXPR := expr
+FIND := find
+GREP := grep
+LINECOUNT := wc -l
+LN := ln -s
+MKDIR := mkdir -p
+MV := mv
+SED := sed
+TIME := time
+TR := tr
 
 ######################################################################
 # テストグループとテストでの共通マクロ
@@ -64,7 +44,7 @@ endef
 # chk_file_ext: 指定されたファイルが実在する場合、エラー
 # 用例: $(call chk_file_ext,file)
 define chk_file_ext
-    $(if $(wildcard $1),$(error $1 exists in $(CURRDIR)))
+    $(if $(wildcard $1),$(error $1 exists in $(CURDIR)))
 endef
 
 # 指定したディレクトリーを作成
@@ -116,7 +96,7 @@ TEST_MAKEFILE := Test.mk
 MAKEFILES := $(DEFINE_FILE) $(TEST_MAKEFILE)
 
 # すべてのMakefile群の絶対パス
-MAKEFILES_ABS := $(foreach file,$(MAKEFILES),$(CURRDIR)/$(file))
+MAKEFILES_ABS := $(foreach file,$(MAKEFILES),$(CURDIR)/$(file))
 
 ######################################################################
 # テストのディレクトリー
