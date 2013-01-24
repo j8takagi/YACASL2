@@ -1,9 +1,7 @@
 .PHONY: all build gtags \
         check \
-        doc info html doc-inner \
+        doc alldoc doc-inner \
         install uninstall \
-        install-info uninstall-info \
-        install-casl2lib uninstall-casl2lib \
         version gittag \
         clean src-clean gtags-clean \
         test-clean doc-clean doc-inner-clean
@@ -44,12 +42,6 @@ INSTALL: doc/install.txt
 alldoc:
 	$(MAKE) -C doc all
 
-info:
-	$(MAKE) -C doc info
-
-html:
-	$(MAKE) -C doc html
-
 doc-inner:
 	$(MAKE) -C doc_inner all
 
@@ -63,18 +55,6 @@ install: casl2 comet2 dumpword install-info install-casl2lib
 uninstall: uninstall-info uninstall-casl2lib
 	$(RM) $(prefix $(bindir)/,$(CMD))
 
-install-info:
-	$(MAKE) -C doc install-info
-
-uninstall-info:
-	$(MAKE) -C doc uninstall-info
-
-install-casl2lib:
-	$(MAKE) -C as/casl2lib install-casl2lib
-
-uninstall-casl2lib:
-	$(MAKE) -C as/casl2lib uninstall-casl2lib
-
 version: $(VERSIONFILES)
 	@$(ECHO) "YACASL2 Version: $(VERSION)"
 
@@ -84,25 +64,27 @@ $(VERSIONFILES): VERSION
 gittag: VERSION
 	$(GITTAG) $(VERSION)
 
-clean: cmd-clean src-clean gtags-clean doc-clean doc-inner-clean version-clean
+distclean: cmd-clean gtags-clean version-clean clean
+
+clean: src-clean doc-clean doc-inner-clean
 
 cmd-clean:
-	@$(RM) $(CMD)
+	$(RM) $(CMD)
 
 src-clean:
-	@$(MAKE) -sC src clean
+	$(MAKE) -sC src clean
 
 gtags-clean:
-	@$(RM) GPATH GRTAGS GSYMS GTAGS
+	$(RM) GPATH GRTAGS GSYMS GTAGS
 
 doc-clean:
-	@$(MAKE) -sC doc clean
+	$(MAKE) -sC doc clean
 
 doc-inner-clean:
-	@$(MAKE) -sC doc_inner clean
+	$(MAKE) -sC doc_inner clean
 
 version-clean:
-	@$(RM) $(VERSIONFILES)
+	$(RM) $(VERSIONFILES)
 
 test-clean:
-	@$(MAKE) -sC test clean
+	$(MAKE) -sC test clean

@@ -10,9 +10,9 @@ INSTALL-INFO := install-info
 install-info: yacasl2.info
 	$(INSTALL) -d $(infodir)
 	$(INSTALL) $< $(infodir)/
-	$(INSTALL-INFO) $(infodir)/$< $(infodir)/dir
-	$(GZIP) -f $(infodir)/$<
+	$(INSTALL-INFO) $(infodir)/$(notdir $<) $(infodir)/dir
+	$(GZIP) -f $(infodir)/$(notdir $<)
 
 uninstall-info:
-	$(INSTALL-INFO) --delete $(addprefix $(infodir)/,$(TARGETS)) $(infodir)/dir
-	$(RM) $(addprefix $(infodir)/,$(TARGETS))
+	$(INSTALL-INFO) --delete $(addprefix $(infodir)/,$(notdir $(TARGET))) $(infodir)/dir
+	$(RM) $(addprefix $(infodir)/,$(notdir $(TARGET)))

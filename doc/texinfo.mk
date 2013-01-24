@@ -1,6 +1,6 @@
-.PHONY: texinfo-distclean textmp-clean
+.PHONY: texinfo-distclean texinfo-clean texinfo-textmp-clean
 
-CP ?= cp
+CP := cp
 DVIPDFMX := dvipdfmx
 INSTALL-INFO := install-info
 MKDIR := mkdir
@@ -29,10 +29,10 @@ TEXI2DVI_FLAGS ?= -q --texinfo=@afourpaper
 %.txt: %.texi
 	$(MAKEINFO) --no-headers --disable-encoding -o $@ $<
 
-texinfo-distclean: textmp-clean
+texinfo-distclean: texinfo-clean
 	@$(RMR) *_html *.info *.html *.pdf  *.dvi *.txt
 
-texinfo-clean: textmp-clean
+texinfo-clean: texinfo-textmp-clean
 
-textmp-clean:
+textmp-textmp-clean:
 	@$(RM) *.aux *.cp *.cps *.fn *.ky *.log *.pg *.pgs *.tmp *.toc *.tp *.vr
