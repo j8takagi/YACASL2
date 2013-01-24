@@ -16,7 +16,7 @@ TEX2DVI_FLAGS = -q --texinfo=@afourpaper
 prefix ?= ~
 infodir ?= $(prefix)/share/info
 
-.PHONY: base all info html htmls pdf install-info uninstall-info clean clean-textmp
+.PHONY: base all info html htmls pdf install-info uninstall-info clean textmp-clean
 
 .INTERMEDIATE: *.dvi
 
@@ -61,8 +61,8 @@ uninstall-info:
 	$(INSTALL-INFO) --delete $(infodir)/yacasl2.info $(infodir)/dir
 	$(RM) $(infodir)/yacasl2.info
 
-clean: clean-textmp
+clean: textmp-clean
 	@$(RMR) *_html *.info *.html *.pdf  *.dvi *.txt
 
-clean-textmp:
+textmp-clean:
 	@$(RM) *.aux *.cp *.cps *.fn *.ky *.log *.pg *.pgs *.tmp *.toc *.tp *.vr

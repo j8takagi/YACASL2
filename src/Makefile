@@ -26,7 +26,7 @@ all: build tag
 
 # .dファイルからヘッダファイルの依存関係を取得する
 # ターゲットに clean が含まれている場合は除く
-ifneq ($(findstring $(MAKECMDGOALS),clean),clean)
+ifeq (,$(filter %clean,$(MAKECMDGOALS)))
   -include $(addsuffix .d,$(CMDOBJ) $(COMMONOBJ) $(CASL2OBJ) $(ASOBJ) $(EXECOBJ))
 endif
 
@@ -50,13 +50,13 @@ TAGS: $(INCLUDEDIR)/*.h *.c
 	$(if $(strip $(shell $(WHICH) $(ETAGS))),$(ETAGS) $^,@$(ECHO) '$(ETAGS): not found')
 
 # makeで生成したファイルの削除
-clean: clean-cmd clean-work clean-tag
+clean: cmd-clean work-clean tag-clean
 
-clean-cmd:
+cmd-clean:
 	@$(RM) casl2 comet2 dumpword
 
-clean-work:
+work-clean:
 	@$(RM) *.o *.d
 
-clean-tag:
+tag-clean:
 	@$(RM) TAGS tags

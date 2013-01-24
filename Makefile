@@ -1,4 +1,12 @@
-.PHONY: all build gtags check doc info html doc-inner install uninstall install-info uninstall-info install-casl2lib uninstall-casl2lib version gittag clean clean-src clean-gtags clean-test clean-doc clean-doc-inner
+.PHONY: all build gtags \
+        check \
+        doc info html doc-inner \
+        install uninstall \
+        install-info uninstall-info \
+        install-casl2lib uninstall-casl2lib \
+        version gittag \
+        clean src-clean gtags-clean \
+        test-clean doc-clean doc-inner-clean
 
 CMD := casl2 comet2 dumpword
 
@@ -33,7 +41,7 @@ doc:
 INSTALL: doc/install.txt
 	$(CP) $< $@
 
-docall:
+alldoc:
 	$(MAKE) -C doc all
 
 info:
@@ -76,25 +84,25 @@ $(VERSIONFILES): VERSION
 gittag: VERSION
 	$(GITTAG) $(VERSION)
 
-clean: clean-cmd clean-src clean-gtags clean-doc clean-doc-inner clean-version
+clean: cmd-clean src-clean gtags-clean doc-clean doc-inner-clean version-clean
 
-clean-cmd:
+cmd-clean:
 	@$(RM) $(CMD)
 
-clean-src:
+src-clean:
 	@$(MAKE) -sC src clean
 
-clean-gtags:
+gtags-clean:
 	@$(RM) GPATH GRTAGS GSYMS GTAGS
 
-clean-doc:
+doc-clean:
 	@$(MAKE) -sC doc clean
 
-clean-doc-inner:
+doc-inner-clean:
 	@$(MAKE) -sC doc_inner clean
 
-clean-version:
+version-clean:
 	@$(RM) $(VERSIONFILES)
 
-clean-test:
+test-clean:
 	@$(MAKE) -sC test clean

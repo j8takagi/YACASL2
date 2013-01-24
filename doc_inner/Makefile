@@ -18,13 +18,13 @@ all: $(DOXYGEN_DIR) $(GNU_GLOBAL_DIR)
 # ../Doxyfileで設定された以下のディレクトリーの下のhtmlディレクトリー
 #   OUTPUT_DIRECTORY = doc_inner
 $(DOXYGEN_DIR): ../Doxyfile
-	@($(WHICH) $(DOXYGEN) && ($(CD) .. && $(DOXYGEN) && $(CD) - && $(MV) html $@) >/dev/null || $(ECHO) "$(DOXYGEN): not found")
+	$(if $(strip $(shell $(WHICH) $(DOXYGEN))),$(CD) .. && $(DOXYGEN) && $(MV) $(CURDIR)/html $(CURDIR)/$@,$(ECHO) '$(DOXYGEN): not found')
 
 # htagsのHTMLドキュメント作成先は、
 # 引数DIRで指定されたディレクトリーの下のHTMLディレクトリー
 $(GNU_GLOBAL_DIR):
 	$(MAKE) -C .. gtags
-	$(WHICH) $(HTAGS) && ($(CD) .. && $(HTAGS) -anosx doc_inner && $(CD) - && $(MV) HTML $@)  >/dev/null || $(ECHO) "$(HTAGS): not found"
+	$(if $(strip $(shell $(WHICH) $(HTAGS))),$(CD) .. && $(HTAGS) -anosx $(CURDIR) && $(MV) $(CURDIR)/HTML $(CURDIR)/$@,@$(ECHO) '$(HTAGS): not found')
 
 clean: doxygen-clean gnu_global-clean
 

@@ -1,9 +1,11 @@
-clean: clean_systemtest clean_unittest
+.PHONY: clean systemtest-clean unittest-clean
 
-clean_systemtest:
+clean: systemtest-clean unittest-clean
+
+systemtest-clean:
 	@$(MAKE) -sC system/casl2 clean
 	@$(MAKE) -sC system/comet2 clean
 	@$(MAKE) -sC system/dumpword clean
 
-clean_unittest:
+unittest-clean:
 	@$(MAKE) -sC unit clean
