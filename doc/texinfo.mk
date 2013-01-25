@@ -29,10 +29,13 @@ TEXI2DVI_FLAGS ?= -q --texinfo=@afourpaper
 %.txt: %.texi
 	$(MAKEINFO) --no-headers --disable-encoding -o $@ $<
 
+%.xml: %.texi
+	@$(MAKEINFO) --docbook -o $@ $<
+
 texinfo-distclean: texinfo-clean
 	@$(RMR) *_html *.info *.html *.pdf  *.dvi *.txt
 
 texinfo-clean: texinfo-textmp-clean
 
-textmp-textmp-clean:
+texinfo-textmp-clean:
 	@$(RM) *.aux *.cp *.cps *.fn *.ky *.log *.pg *.pgs *.tmp *.toc *.tp *.vr
