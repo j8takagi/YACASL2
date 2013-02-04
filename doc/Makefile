@@ -1,3 +1,5 @@
+RMR := $(RM) -r
+
 DOCS := install manual
 CSS := style.css
 
@@ -21,9 +23,13 @@ pdf: $(addsuffix .pdf,$(DOCS))
 yacasl2.info: manual.texi
 	$(MAKEINFO) $(MAKEINFO_FLAGS) $<
 
-distclean: texinfo-distclean
+# makeで作成されたドキュメントはすべて削除
+distclean: clean texinfo-distclean
+	$(RM) install.txt *.info *.html *_html *.pdf
 
+# make baseで作成されたドキュメントは残す
 clean: texinfo-clean
+	$(RM) *_html *.pdf
 
 include texinfo.mk
 
