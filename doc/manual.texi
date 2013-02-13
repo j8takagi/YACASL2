@@ -442,7 +442,7 @@ $ @kbd{od -t x2 hello.o}
 0000106
 @end example
 
-オブジェクトファイルの実行には、@command{casl2}を使います。
+オブジェクトファイルの実行には、@command{comet2}を使います。
 
 @example
 $ @kbd{comet2 hello.o}
