@@ -29,7 +29,6 @@ distclean: clean texinfo-distclean
 
 # make baseで作成されたドキュメントは残す
 clean: texinfo-clean
-	$(RM) *_html *.pdf
 
 include texinfo.mk
 
