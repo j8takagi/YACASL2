@@ -3,4 +3,4 @@ MAIN    START
         POP     GR1
         RET
         END
-Execute error - 203: PR:#0001: Stack Pointer (SP) - stack underflow
+Execute error - 203: PR:#0000: Stack Pointer (SP) - stack underflow

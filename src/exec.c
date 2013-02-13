@@ -158,8 +158,11 @@ void setfr(WORD adr)
 WORD get_r_r1(WORD oprx)
 {
     WORD r;
+    char *s;
+
     if((r = ((oprx & 0x00F0) >>4)) > GRSIZE - 1) {
-        setcerr(205, pr2str(sys->cpu->pr));    /* r/r1 in word #1 - not GR */
+        setcerr(205, s = pr2str(sys->cpu->pr));    /* r/r1 in word #1 - not GR */
+        FREE(s);
         return 0x0;
     }
     return r;
@@ -171,8 +174,11 @@ WORD get_r_r1(WORD oprx)
 WORD get_x_r2(WORD oprx)
 {
     WORD x;
+    char *s;
+
     if((x = (oprx & 0x000F)) > GRSIZE - 1) {
-        setcerr(206, pr2str(sys->cpu->pr));    /* r/r1 in word #1 - not GR */
+        setcerr(206, s = pr2str(sys->cpu->pr));    /* r/r1 in word #1 - not GR */
+        FREE(s);
         return 0x0;
     }
     return x;
@@ -197,8 +203,11 @@ WORD get_adr_x(WORD adr, WORD oprx)
 WORD get_val_adr_x(WORD adr, WORD oprx)
 {
     WORD a;
+    char *s;
+
     if((a = get_adr_x(adr, oprx)) >= sys->memsize) {
-        setcerr(207, pr2str(sys->cpu->pr + 1));    /* address in word #2 - out of memory */
+        setcerr(207, s = pr2str(sys->cpu->pr + 1));    /* address in word #2 - out of memory */
+        FREE(s);
         return 0x0;
     }
     return sys->memory[a];
@@ -796,10 +805,11 @@ void jump()
  */
 void push()
 {
+    assert(sys->cpu->sp > execptr->end && sys->cpu->sp <= sys->memsize);
     WORD w[2];
+
     w[0] = sys->memory[sys->cpu->pr];
     w[1] = sys->memory[sys->cpu->pr + 1];
-    assert(sys->cpu->sp > execptr->end && sys->cpu->sp <= sys->memsize);
     sys->memory[--(sys->cpu->sp)] = get_adr_x(w[1], w[0]);
     sys->cpu->pr += 2;
 }
@@ -810,11 +820,18 @@ void push()
  */
 void pop()
 {
-    assert(sys->cpu->sp > execptr->end && sys->cpu->sp <= sys->memsize);
-    WORD w[1];
-    w[0] = sys->memory[sys->cpu->pr];
-    sys->cpu->gr[get_r_r1(w[0])] = sys->memory[(sys->cpu->sp)++];
-    sys->cpu->pr += 1;
+    assert(sys->cpu->sp > execptr->end);
+    WORD w;
+    char *s;
+
+    if(sys->cpu->sp >= sys->memsize) {
+        setcerr(203, s = pr2str(sys->cpu->pr));        /* Stack Pointer (SP) - stack underflow */
+        FREE(s);
+    } else {
+        w = sys->memory[sys->cpu->pr];
+        sys->cpu->gr[get_r_r1(w)] = sys->memory[(sys->cpu->sp)++];
+        sys->cpu->pr += 1;
+    }
 }
 
 /**
@@ -877,6 +894,7 @@ void exec()
 {
     clock_t clock_begin, clock_end;
     void (*cmdptr)();
+    char *s;
 
     create_code_type();                             /* 命令のコードとタイプがキーのハッシュ表を作成 */
     if(execmode.trace == true) {
@@ -896,21 +914,23 @@ void exec()
             }
             fprintf(stdout, "\n");
         }
-        /* プログラムレジスタとスタックポインタをチェック */
-        if(sys->cpu->pr >= sys->memsize || sys->cpu->sp > sys->memsize || sys->cpu->sp <= execptr->end) {
-            if(sys->cpu->pr >= sys->memsize) {
-                setcerr(201, pr2str(sys->cpu->pr));        /* Program Register (PR) - memory overflow */
-            } else if(sys->cpu->sp <= execptr->end) {
-                setcerr(202, pr2str(sys->cpu->pr));        /* Stack Pointer (SP) - stack overflow */
-            } else if(sys->cpu->sp > sys->memsize) {
-                setcerr(203, pr2str(sys->cpu->pr));        /* Stack Pointer (SP) - stack underflow */
-            }
+        /* プログラムレジスタをチェック */
+        if(sys->cpu->pr >= sys->memsize) {
+            setcerr(201, s = pr2str(sys->cpu->pr));        /* Program Register (PR) - memory overflow */
+            FREE(s);
+            goto execfin;
+        }
+        /* スタックポインタをチェック */
+        if(sys->cpu->sp <= execptr->end) {
+            setcerr(202, s = pr2str(sys->cpu->pr));        /* Stack Pointer (SP) - stack overflow */
+            FREE(s);
             goto execfin;
         }
         /* コードから命令を取得 */
         /* 取得できない場合はエラー終了 */
         if((cmdptr = getcmdptr(sys->memory[sys->cpu->pr] & 0xFF00)) == NULL) {
-            setcerr(204, pr2str(sys->cpu->pr));            /* OP in word #1 - not command code */
+            setcerr(204, s = pr2str(sys->cpu->pr));            /* OP in word #1 - not command code */
+            FREE(s);
             goto execfin;
         }
         /* 命令の実行 */

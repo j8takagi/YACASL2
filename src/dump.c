@@ -1,5 +1,7 @@
 #include <stdio.h>
+
 #include "exec.h"
+#include "cmem.h"
 
 /**
  * COMET IIのメモリを表示する
@@ -34,14 +36,19 @@ void dumpmemory()
 void dspregister()
 {
     int i;
+    char *sp, *pr, *fr;
     for(i = 0; i < GRSIZE; i++ ) {
         fprintf(stdout, "#%04X: GR%d: ", sys->cpu->pr, i);
         print_dumpword(sys->cpu->gr[i], (&execmode)->logical);
     }
     fprintf(stdout, "#%04X: SP:  %6d = #%04X = %s\n",
-            sys->cpu->pr, sys->cpu->sp, sys->cpu->sp, word2bit(sys->cpu->sp));
+            sys->cpu->pr, sys->cpu->sp, sys->cpu->sp, sp = word2bit(sys->cpu->sp));
     fprintf(stdout, "#%04X: PR:  %6d = #%04X = %s\n",
-            sys->cpu->pr, sys->cpu->pr, sys->cpu->pr, word2bit(sys->cpu->pr));
+            sys->cpu->pr, sys->cpu->pr, sys->cpu->pr, pr = word2bit(sys->cpu->pr));
     fprintf(stdout, "#%04X: FR (OF SF ZF): %s\n",
-            sys->cpu->pr, (word2bit(sys->cpu->fr)+13));
+            sys->cpu->pr, ((fr = word2bit(sys->cpu->fr)) + 13));
+
+    FREE(sp);
+    FREE(pr);
+    FREE(fr);
 }

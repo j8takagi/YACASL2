@@ -136,6 +136,9 @@ void printlabel()
             fprintf(stdout, "%s.", l[i]->prog);
         }
         fprintf(stdout, "%s ---> #%04X\n", l[i]->label, l[i]->adr);
+        FREE(l[i]->prog);
+        FREE(l[i]->label);
+        FREE(l[i]);
     }
     FREE(l);
 }

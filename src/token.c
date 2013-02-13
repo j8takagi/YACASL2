@@ -131,8 +131,9 @@ CMDLINE *linetok(const char *line)
             /* 文字列が長すぎる場合はエラー */
             if(strlen(p) > LABELSIZE) {
                 setcerr(104, p);    /* label length is too long */
+            } else {
+                strcpy(cmdl->label, p);
             }
-            strcpy(cmdl->label, p);
             p = sepp + 1;
         }
         /* ラベルと命令の間の空白をスキップ */

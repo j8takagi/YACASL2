@@ -184,9 +184,12 @@ WORD getliteral(const char *str, PASS pass)
  */
 void writememory(WORD word, WORD adr, PASS pass)
 {
+    char *n;
+
     /* メモリオーバーの場合、エラー発生 */
     if(adr >= sys->memsize) {
-        setcerr(119, word2n(adr));    /* out of COMET II memory */
+        setcerr(119, (n = word2n(adr)));    /* out of COMET II memory */
+        FREE(n)
         return;
     }
     (sys->memory)[adr] = word;
