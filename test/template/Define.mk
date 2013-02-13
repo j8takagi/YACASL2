@@ -30,6 +30,8 @@ MV := mv
 SED := sed
 TIME := time
 TR := tr
+VALGRIND := valgrind
+VALGRINDFLAG :=  -q --leak-check=full --log-file=valgrind.log
 
 ######################################################################
 # テストグループとテストでの共通マクロ
@@ -125,6 +127,9 @@ LOG_FILE := summary.log
 
 # 実行時間ファイル
 TIME_FILE := time.log
+
+# valgrindによるメモリーチェックファイル
+VALGRIND_FILE := valgrind.log
 
 # テスト詳細レポートファイル
 DETAIL_FILE := detail.log

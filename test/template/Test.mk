@@ -10,6 +10,7 @@
 # make reset   : CMDの標準出力をTEST0_FILEに保存。TEST0_FILEが存在する場合は上書き
 # make time    : CMDの実行にかかった時間をTIME_FILEに保存し、出力
 # make time-clean: "make time" で作成されたファイルをクリア
+# make valgrind: valgrind CMDの標準出力をVARGRIND_FILEに保存
 # make clean   : "make" で作成されたファイルをクリア
 # make all-clean: "make" と "make set" で作成されたファイルをクリア
 SHELL = /bin/bash
@@ -38,6 +39,13 @@ endef
 define time_cmd
     if test ! -x $1; then $(CHMOD) u+x $1; fi
     ($(TIME) ./$1 1>$(DEV_NULL) 2>$(DEV_NULL)) 2>&1 | $(GREP) '^real' >$2
+endef
+
+# valgrindによるメモリーチェック結果を、指定されたファイルに出力して表示
+# 引数は、テスト名、コマンドファイル、出力ファイル
+# 用例: $(call valgrind_cmd,file_cmd,file_out)
+define valgrind_cmd
+    -$(VALGRIND) $(VALGRINDFLAG) $(strip $(shell tail -1 $(CMD_FILE))) 1>/dev/null 2>&1
 endef
 
 # テスト実行コマンド。
@@ -102,7 +110,7 @@ TEST = $(notdir $(CURDIR))
 # コマンドファイルのソース
 CMDSRC_FILE ?= $(CMD_FILE)
 
-.PHONY: check set reset clean all-clean time time-clean
+.PHONY: check set reset clean all-clean time time-clean valgrind valgrind-clean
 
 check: clean $(DETAIL_FILE)
 	@$(call disp_test_log,$(LOG_FILE))
@@ -121,7 +129,7 @@ reset: all-clean $(CMD_FILE)
 	@$(CAT) $(TEST0_FILE)
 
 clean:
-	@$(RM) $(TEST_RES_FILES)
+	@$(RM) $(TEST_RES_FILES) $(TIME_FILE) $(VALGRIND_FILE)
 
 all-clean: clean
 	@$(RM) $(TEST0_FILE)
@@ -131,6 +139,12 @@ time: time-clean $(TIME_FILE)
 
 time-clean:
 	@$(RM) $(TIME_FILE)
+
+valgrind: valgrind-clean $(VALGRIND_FILE)
+	if test -s $(VALGRIND_FILE); then $(ECHO) $(CURDIR) && $(CAT) $(VALGRIND_FILE); else $(RM) $(VALGRIND_FILE); fi
+
+valgrind-clean:
+	@$(RM) $(VALGRIND_FILE)
 
 $(TEST1_FILE): $(CMD_FILE)
 	@-$(call exec_cmd,$^,$@,$(ERR_FILE))
@@ -146,3 +160,6 @@ $(DETAIL_FILE): $(LOG_FILE)
 
 $(TIME_FILE): $(CMD_FILE)
 	@$(call time_cmd,$^,$@)
+
+$(VALGRIND_FILE): $(CMD_FILE)
+	$(call valgrind_cmd,$^,$@)

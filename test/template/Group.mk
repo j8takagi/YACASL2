@@ -38,8 +38,11 @@ GROUP_REPORT_FILE := Summary.log
 # テストグループ実行時間ファイル
 GROUP_TIME_FILE := $(shell echo $(GROUP) | $(TR) '[a-z]' '[A-Z]')_time.log
 
+# テストグループvalgrindファイル
+GROUP_VALGRIND_FILE := $(shell echo $(GROUP) | $(TR) '[a-z]' '[A-Z]')_valgrind.log
+
 # グループで、テスト結果として作成されるファイル群
-GROUP_RES_FILES := $(GROUP_LOG_FILE) $(GROUP_REPORT_FILE) $(GROUP_TIME_FILE)
+GROUP_RES_FILES := $(GROUP_LOG_FILE) $(GROUP_REPORT_FILE) $(GROUP_TIME_FILE) $(GROUP_VALGRIND_FILE)
 
 # テストごとのログファイル
 TEST_LOG_FILES := $(foreach test,$(TESTS),$(test)/$(LOG_FILE))
@@ -78,6 +81,9 @@ ALL_TEST = $(shell $(EXPR) $(SUCCESS_TEST) + $(FAIL_TEST))
 # テストごとの実行時間ファイル
 TEST_TIME_FILES := $(foreach test,$(TESTS),$(test)/$(TIME_FILE))
 
+# テストごとの実行時間ファイル
+TEST_VALGRIND_FILES := $(foreach test,$(TESTS),$(test)/$(VALGRIND_FILE))
+
 # テストの結果を、グループログファイルを元にレポート。
 # 引数は、グループ名、グループログファイル、グループレポートファイル
 # 用例: $(call group_report,name,file_log,file_report)
@@ -99,7 +105,7 @@ define make_target_each
     $(MAKE) $2 -sC $1;
 endef
 
-.PHONY: check checkall time create clean time-clean
+.PHONY: check checkall time valgrind create clean time-clean valgrind-clean
 
 check checkall: clean $(GROUP_REPORT_FILE)
 	@$(CAT) $(GROUP_REPORT_FILE)
@@ -120,6 +126,14 @@ time-clean:
 	@$(call make_targets,$(TESTS),$@)
 	@$(RM) $(GROUP_TIME_FILE);
 
+valgrind:
+	@$(call make_targets,$(TESTS),$@)
+	@$(RM) $(GROUP_RES_FILES);
+
+valgrind-clean:
+	@$(call make_targets,$(TESTS),$@)
+	@$(RM) $(GROUP_VALGRIND_FILE);
+
 $(GROUP_REPORT_FILE): $(GROUP_LOG_FILE)
 	@$(call group_report,$(GROUP),$^,$@)
 
@@ -133,4 +147,10 @@ $(GROUP_TIME_FILE): $(TEST_TIME_FILES)
 	@$(call group_log,$^,$@)
 
 $(TEST_TIME_FILES):
+	@$(MAKE) time -sC $(dir $@)
+
+$(GROUP_VALGRIND_FILE): $(TEST_VALGRIND_FILES)
+	@$(call group_log,$^,$@)
+
+$(TEST_VALGRIND_FILES):
 	@$(MAKE) time -sC $(dir $@)
