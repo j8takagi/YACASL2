@@ -1,10 +1,10 @@
 .PHONY: all build gtags \
         check \
-        doc alldoc doc-inner \
+        doc alldoc doc_inner \
         install uninstall \
         version gittag \
         clean src-clean gtags-clean \
-        test-clean doc-clean doc-inner-clean
+        test-clean doc-clean doc_inner-clean
 
 CMD := casl2 comet2 dumpword
 
@@ -42,7 +42,7 @@ INSTALL: doc/install.txt
 alldoc:
 	$(MAKE) -C doc all
 
-doc-inner:
+doc_inner:
 	$(MAKE) -C doc_inner all
 
 check:
@@ -66,7 +66,7 @@ gittag: VERSION
 
 distclean: cmd-clean gtags-clean version-clean clean
 
-clean: src-clean doc-clean doc-inner-clean
+clean: src-clean doc-clean doc_inner-clean
 
 cmd-clean:
 	$(RM) $(CMD)
@@ -80,7 +80,7 @@ gtags-clean:
 doc-clean:
 	$(MAKE) -sC doc clean
 
-doc-inner-clean:
+doc_inner-clean:
 	$(MAKE) -sC doc_inner clean
 
 version-clean:
