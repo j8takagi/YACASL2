@@ -533,7 +533,7 @@ $ @kbd{casl2 hello.casl}
 $ @kbd{casl2 addl_outl.casl ~/yacasl2/as/casl2lib/outl.casl}
 @end example
 
-@unnumberedsubsec オプション
+@unnumberedsec オプション
 
 @command{casl2}は、次のオプションを指定できます。
 
@@ -678,7 +678,7 @@ $ @kbd{comet2 hello.o}
 引数が指定されない場合は、エラーメッセージを表示して終了します。
 複数の引数を指定した場合、2番目以降の引数は無視されます。
 
-@unnumberedsubsec オプション
+@unnumberedsec オプション
 
 @command{comet2}は、次のオプションを指定できます。
 
@@ -784,7 +784,7 @@ $ @kbd{dumpword 10}
 引数が指定されない場合は、使い方を表示して終了します。
 複数の引数を指定した場合、1つ目の引数だけが表示され、2つ目以降の引数は無視されます。
 
-@unnumberedsubsec 注意
+@unnumberedsec 注意
 
 マイナスの数や16進数はシェルの仕様により、そのままでは指定できません。
 
