@@ -1,11 +1,6 @@
-#include <stdio.h>
-
 #include "exec.h"
-#include "cmem.h"
 
-/**
- * COMET IIのメモリを表示する
- */
+/* exec.hに定義された関数群 */
 void dumpmemory()
 {
     const int col = 16;
@@ -30,9 +25,6 @@ void dumpmemory()
     }
 }
 
-/**
- * COMET IIのレジスタを表示する
- */
 void dspregister()
 {
     int i;

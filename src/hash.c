@@ -1,8 +1,5 @@
 #include "hash.h"
 
-/**
- * ハッシュ値を取得する
- */
 unsigned hash(int keyc, HKEY *keyv[], int tabsize)
 {
     int i;

@@ -5,7 +5,7 @@
 #include "word.h"
 
 /**
- * COMET IIの規格
+ * @brief COMET IIの規格値
  */
 enum {
     CMDSIZE = 4,              /**<命令の最大文字数 */
@@ -15,7 +15,7 @@ enum {
 };
 
 /**
- * COMET II フラグのマスク値
+ * @brief COMET II フラグのマスク値
  */
 enum {
     OF = 0x4,    /**<Overflow Flag */
@@ -24,7 +24,7 @@ enum {
 };
 
 /**
- * COMET IIのCPU
+ * @brief COMET IIのCPUを表すデータ型
  */
 typedef struct {
     WORD gr[GRSIZE]; /**<汎用レジスタ */
@@ -34,7 +34,7 @@ typedef struct {
 } CPU;
 
 /**
- * COMET IIの仮想実行マシンシステム
+ * @brief COMET IIの仮想実行マシンシステムを表すデータ型
  */
 typedef struct {
     CPU *cpu;        /**<CPU */
@@ -43,6 +43,9 @@ typedef struct {
     clock_t clocks;  /**<クロック周波数 */
 } SYSTEM;
 
+/**
+ * @brief COMET IIの仮想実行マシンシステム
+ */
 extern SYSTEM *sys;
 
 /**

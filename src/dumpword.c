@@ -7,7 +7,7 @@
 #include "package.h"
 
 /**
- * dumpwordコマンドのオプション
+ * @brief dumpwordコマンドのオプション
  */
 static struct option longopts[] = {
     { "arithmetic", no_argument, NULL, 'a' },
@@ -18,7 +18,12 @@ static struct option longopts[] = {
 };
 
 /**
- * dumpwordコマンドのメイン
+ * @brief dumpwordコマンドのメイン
+ *
+ * @return 正常終了時は0、エラー発生時は1
+ *
+ * @param argc コマンドライン引数の数
+ * @param *argv[] コマンドライン引数の配列
  */
 int main(int argc, char *argv[])
 {

@@ -4,9 +4,17 @@
 #include "cmem.h"
 #include "assemble.h"
 
+/**
+ * @brief 「,」区切りの文字列から、オペランドのトークンを取得
+ *
+ * @return オペランドのトークン
+ *
+ * @param *str 「,」区切りの文字列
+ */
+OPD *opdtok(const char *str);
 
 /**
- * 行トークン取得のエラー定義
+ * @brief 行トークン取得のエラー定義
  */
 CERR cerr_linetok[] = {
     { 104, "label length is too long" },
@@ -14,7 +22,7 @@ CERR cerr_linetok[] = {
 };
 
 /**
- * オペランドトークン取得のエラー定義
+ * @brief オペランドトークン取得のエラー定義
  */
 static CERR cerr_opdtok[] = {
     { 117, "operand too many in DC" },
@@ -23,18 +31,6 @@ static CERR cerr_opdtok[] = {
     { 123, "unclosed quote" },
 };
 
-/**
- * オペランドトークン取得のエラーを追加
- */
-void addcerrlist_tok()
-{
-    addcerrlist(ARRAYSIZE(cerr_linetok), cerr_linetok);
-    addcerrlist(ARRAYSIZE(cerr_opdtok), cerr_opdtok);
-}
-
-/**
- * 「,」区切りの文字列から、オペランドのトークンを取得
- */
 OPD *opdtok(const char *str)
 {
     OPD *opd = malloc_chk(sizeof(OPD), "opd");
@@ -96,9 +92,13 @@ OPD *opdtok(const char *str)
     return opd;
 }
 
-/**
- * 空白またはタブで区切られた1行から、トークンを取得する
- */
+/* assemble.hで定義された関数群 */
+void addcerrlist_tok()
+{
+    addcerrlist(ARRAYSIZE(cerr_linetok), cerr_linetok);
+    addcerrlist(ARRAYSIZE(cerr_opdtok), cerr_opdtok);
+}
+
 CMDLINE *linetok(const char *line)
 {
     char *tokens, *p, *sepp;

@@ -5,7 +5,7 @@
 #include "cmem.h"
 
 /**
- * エラーの構造体
+ * @brief エラーを表すデータ型
  */
 typedef struct _CERR {
     int num;        /**<エラー番号 */
@@ -13,12 +13,12 @@ typedef struct _CERR {
 } CERR;
 
 /**
- * 現在のエラー
+ * @brief 現在のエラー
  */
 extern CERR *cerr;
 
 /**
- * エラーリスト型
+ * @brief エラーリストのデータ型
  */
 typedef struct _CERRLIST {
     struct _CERRLIST *next;     /**<リスト次項目へのポインタ */
@@ -26,7 +26,7 @@ typedef struct _CERRLIST {
 } CERRLIST;
 
 /**
- * エラーリスト
+ * @brief エラーリスト
  */
 extern CERRLIST *cerrlist;
 
@@ -36,32 +36,52 @@ enum {
 };
 
 /**
- * エラーの初期化
+ * @brief エラーを初期化する
+ *
+ * @return なし
  */
 void cerr_init();
 
 /**
- * エラーリストを作成・追加する
+ * @brief エラーリストを作成・追加する
+ *
+ * @return なし
+ *
+ * @param cerrc 作成または追加するエラーの数
+ * @param cerrv 作成または追加するエラーの配列
  */
 void addcerrlist(int cerrc, CERR cerrv[]);
 
 /**
- * エラーリストを表示する
+ * @brief エラーリストを表示する
+ *
+ * @return なし
  */
 void printcerrlist();
 
 /**
- * 現在のエラーを設定する
+ * @brief 現在のエラーを設定する
+ *
+ * @return なし
+ *
+ * @param num エラー番号
+ * @param *str エラーメッセージに含まれる文字列
  */
 void setcerr(int num, const char *str);
 
 /**
- * エラーリストから、エラー番号に対応するメッセージを返す
+ * @brief エラー番号に対応するエラーメッセージを返す
+ *
+ * @return エラーメッセージ
+ *
+ * @param num エラー番号
  */
 char *getcerrmsg(int num);
 
 /**
- * エラーリストと現在のエラーを解放する
+ * @brief エラーリストと現在のエラーを解放する
+ *
+ * @return なし
  */
 void freecerr();
 #endif

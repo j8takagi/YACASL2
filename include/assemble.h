@@ -6,7 +6,7 @@
 #include "word.h"
 
 /**
- * CASL IIの仕様
+ * @brief CASL IIの仕様
  */
 enum {
     LABELSIZE = 8,         /**<ラベルの最大文字数 */
@@ -14,7 +14,7 @@ enum {
 };
 
 /**
- * YACASL2の制限
+ * @brief YACASL2の制限
  */
 enum {
     LINESIZE = 1024,       /**<行の最大文字数 */
@@ -22,7 +22,7 @@ enum {
 };
 
 /**
- * アセンブルモード
+ * @brief アセンブルモードを表すデータ型
  */
 typedef struct {
     bool src;             /**<ソースを表示する場合はtrue */
@@ -32,10 +32,13 @@ typedef struct {
     bool onlyassemble;    /**<アセンブルだけを行う場合はtrue */
 } ASMODE;
 
+/**
+ * @brief アセンブルモード: src, label, onlylabel, asdetail, onlyassemble
+ */
 extern ASMODE asmode;
 
 /**
- * アセンブル時の、現在およびリテラルのアドレスとプログラム入口名
+ * @brief アセンブル時の現在およびリテラルのアドレスとプログラム入口名を表すデータ型
  */
 typedef struct {
     WORD ptr;     /**<現在のアドレス */
@@ -43,10 +46,13 @@ typedef struct {
     char *prog;   /**<他のプログラムで参照する入口名 */
 } ASPTR;
 
+/**
+ * @brief アセンブル時の、現在およびリテラルのアドレスとプログラム入口名: ptr, lptr, prog
+ */
 extern ASPTR *asptr;
 
 /**
- * ラベル配列
+ * @brief ラベル配列を表すデータ型
  */
 typedef struct {
     char *prog;                 /**<プログラム  */
@@ -55,7 +61,7 @@ typedef struct {
 } LABELARRAY;
 
 /**
- * ラベル表
+ * @brief ラベル表を表すデータ型
  */
 typedef struct _LABELTAB {
     struct _LABELTAB *next;     /**<リスト次項目へのポインタ */
@@ -64,48 +70,65 @@ typedef struct _LABELTAB {
     WORD adr;                   /**<アドレス */
 } LABELTAB;
 
+/**
+ * ラベル表のサイズ
+ */
 enum {
-    /**
-     * ラベル表のサイズ
-     */
-    LABELTABSIZE = 251,
+    LABELTABSIZE = 251,         /**<ラベル表のサイズ */
 };
 
 /**
- * アセンブラが、1回目か2回目か
+ * @brief アセンブラが、1回目か2回目かを表す数値
  */
 typedef enum {
-    FIRST = 0,
-    SECOND = 1,
+    FIRST = 0,                  /**<アセンブラ1回目 */
+    SECOND = 1,                 /**<アセンブラ2回目 */
 } PASS;
 
 /**
- * ラベルのエラーをエラーリストに追加
+ * @brief ラベルのエラーをエラーリストに追加する
+ *
+ * @return なし
  */
 void addcerrlist_label();
 
 /**
- * プログラム名とラベルに対応するアドレスをラベル表から検索する
+ * @brief プログラム名とラベルに対応するアドレスをラベル表から検索する
+ *
+ * @return プログラム名とラベルに対応するアドレス
+ *
+ * @param *prog プログラム名
+ * @param *label ラベル
  */
 WORD getlabel(const char *prog, const char *label);
 
 /**
- * プログラム名、ラベル、アドレスをラベル表に追加する
+ * @brief プログラム名、ラベル、アドレスをラベル表に追加する
+ *
+ * @return 追加に成功した時はtrue、失敗した時はfalse
+ *
+ * @param *prog プログラム名
+ * @param *label ラベル
+ * @param adr アドレス
  */
-bool addlabel(const char *prog, const char *label, WORD word);
+bool addlabel(const char *prog, const char *label, WORD adr);
 
 /**
- * ラベル表を表示する
+ * @brief ラベル表を表示する
+ *
+ * @return なし
  */
 void printlabel();
 
 /**
- * ラベル表を解放する
+ * @brief ラベル表を解放する
+ *
+ * @return なし
  */
 void freelabel();
 
 /**
- * オペランド
+ * @brief オペランドを表すデータ型
  */
 typedef struct {
     int opdc;                   /**<オペランド数 */
@@ -113,7 +136,7 @@ typedef struct {
 } OPD;
 
 /**
- * 命令行
+ * @brief 命令行を表すデータ型
  */
 typedef struct {
     char *label;                /**<ラベル */
@@ -122,29 +145,46 @@ typedef struct {
 } CMDLINE;
 
 /**
- * トークン取得のエラーを追加
+ * @brief トークン取得のエラーを追加する
+ *
+ * @return なし
  */
 void addcerrlist_tok();
 
 /**
- * 空白またはタブで区切られた1行から、トークンを取得する
+ * @brief 行から、ラベル・コマンド・オペランドを取得する
+ *
+ * @return ラベル・コマンド・オペランド
+ *
+ * @param *line 行
  */
 CMDLINE *linetok(const char *line);
 
 /**
- * アセンブルエラーをエラーリストに追加
+ * @brief アセンブルエラーをエラーリストに追加する
+ *
+ * @return なし
  */
 void addcerrlist_assemble();
 
 /**
- * 指定された名前のファイルをアセンブル
+ * @brief 指定された名前のファイルをアセンブル\n
+ *
  * 1回目ではラベルを登録し、2回目ではラベルからアドレスを読み込む
- * アセンブル完了時はtrue、エラー発生時はfalseを返す
+ *
+ * @return アセンブル完了時はtrue、エラー発生時はfalseを返す
+ *
+ * @param *file ファイル名
+ * @param pass アセンブラが何回目かを表す数
  */
 bool assemblefile(const char *file, PASS pass);
 
 /**
- * 引数で指定したファイルにアセンブル結果を書込
+ * @brief ファイルにアセンブル結果を書き込む
+ *
+ * @return なし
+ *
+ * @param *file ファイル名
  */
 void outassemble(const char *file);
 

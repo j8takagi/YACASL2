@@ -5,10 +5,6 @@
 #include <stdbool.h>
 #include "cmem.h"
 
-/**
- * mallocを実行し、0で初期化\n
- * メモリを確保できない場合はエラーを出力して終了
- */
 void *malloc_chk(size_t size, char *tag)
 {
     void *p;
@@ -20,10 +16,6 @@ void *malloc_chk(size_t size, char *tag)
     return memset(p, 0, size);
 }
 
-/**
- * callocを実行\n
- * メモリを確保できない場合はエラーを出力して終了
- */
 void *calloc_chk(size_t nmemb, size_t size, char *tag)
 {
     void *p;
@@ -35,9 +27,6 @@ void *calloc_chk(size_t nmemb, size_t size, char *tag)
     return p;
 }
 
-/**
- * malloc_chkを実行してメモリを確保し、コピーした文字列を返す
- */
 char *strdup_chk(const char *s, char *tag)
 {
     assert(s != NULL);

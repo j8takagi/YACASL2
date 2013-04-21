@@ -5,50 +5,35 @@
 #include <stdbool.h>
 #include "cerr.h"
 
-/**
- * エラーの初期化
- */
 void cerr_init()
 {
     cerr = malloc_chk(sizeof(CERR), "cerr");
     cerr->num = 0;
 }
 
-/**
- * 現在のエラー
- */
 CERR *cerr;
 
-/**
- * エラーリスト
- */
 CERRLIST *cerrlist = NULL;
 
-/**
- * エラーリストを作成または追加する
- */
-void addcerrlist(int errc, CERR errv[])
+void addcerrlist(int cerrc, CERR cerrv[])
 {
     int i;
     CERRLIST *p = NULL, *q = malloc_chk(sizeof(CERRLIST), "cerrlist");
 
-    assert(errc > 0 && errv != NULL);
-    for(i = 0; i < errc; i++) {
+    assert(cerrc > 0 && cerrv != NULL);
+    for(i = 0; i < cerrc; i++) {
         if(p == NULL) {
             p = q;
         } else {
             p = p->next = malloc_chk(sizeof(CERRLIST), "cerrlist.next");
         }
-        p->cerr = &errv[i];
+        p->cerr = &cerrv[i];
         p->next = NULL;
     }
     p->next = cerrlist;
     cerrlist = q;
 }
 
-/**
- * エラーリストを表示する
- */
 void printcerrlist()
 {
     CERRLIST *p;
@@ -62,9 +47,6 @@ void printcerrlist()
     }
 }
 
-/**
- * 現在のエラーを設定する
- */
 void setcerr(int num, const char *str)
 {
     /* 現在のエラー番号を設定  */
@@ -78,9 +60,6 @@ void setcerr(int num, const char *str)
     }
 }
 
-/**
- * エラーリストから、エラー番号に対応するメッセージを返す
- */
 char *getcerrmsg(int num)
 {
     CERRLIST *p;
@@ -95,9 +74,6 @@ char *getcerrmsg(int num)
     return msg;
 }
 
-/**
- * エラーリストと現在のエラーを解放する
- */
 void freecerr()
 {
     CERRLIST *p = cerrlist, *q;

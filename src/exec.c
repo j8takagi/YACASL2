@@ -6,7 +6,77 @@
 #include "cerr.h"
 
 /**
- * 実行エラーの定義
+ * @brief プログラムレジスタ（PR）を表すWORD値を文字列に変換
+ *
+ * @return 文字列「PR:XXXX」（Xは16進数の数字）
+ *
+ * @param pr プログラムレジスタ（PR）を表すWORD値
+ */
+char *pr2str(WORD pr);
+
+/**
+ * @brief 標準入力から文字データを読込（SVC 1）
+ *
+ * @return なし
+ */
+void svcin();
+
+/**
+ * @brief 標準出力へ文字データを書出（SVC 2）
+ *
+ * @return なし
+ */
+void svcout();
+
+/**
+ * @brief ロード／論理積／論理和／排他的論理和のフラグ設定。OFは常に0
+ *
+ * @return なし
+ *
+ * @param adr アドレス
+ */
+void setfr(WORD adr);
+
+/**
+ * @brief WORD値からr/r1を取得
+ *
+ * @return r/r1を表すWORD値
+ *
+ * @param oprx オペランドを表すWORD値
+ */
+WORD get_r_r1(WORD oprx);
+
+/**
+ * @brief WORD値からx/r2を取得
+ *
+ * @return x/r2を表すWORD値
+ *
+ * @param oprx オペランドを表すWORD値
+ */
+WORD get_x_r2(WORD oprx);
+
+/**
+ * @brief 2つのWORD値からadr[,x]を取得
+ *
+ * @return adr[,x]を表すWORD値
+ *
+ * @param adr アドレスを表すWORD値
+ * @param oprx オペランドを表すWORD値
+ */
+WORD get_adr_x(WORD adr, WORD oprx);
+
+/**
+ * @brief 2つのWORD値からadr[,x]のアドレスに格納されている値を取得
+ *
+ * @return adr[,x]のアドレスに格納されている値を表すWORD値
+ *
+ * @param adr アドレスを表すWORD値
+ * @param oprx オペランドを表すWORD値
+ */
+WORD get_val_adr_x(WORD adr, WORD oprx);
+
+/**
+ * @brief 実行エラーの定義
  */
 static CERR cerr_exec[] = {
     { 201, "Program Register (PR) - memory overflow" },
@@ -21,7 +91,7 @@ static CERR cerr_exec[] = {
 };
 
 /**
- * アセンブル結果読み込みエラーの定義
+ * @brief アセンブル結果読み込みエラーの定義
  */
 static CERR cerr_load[] = {
     { 210, "load - memory overflow" },
@@ -29,62 +99,18 @@ static CERR cerr_load[] = {
 };
 
 /**
- * 実行モード: trace, logical, dump
+ * @brief 実行モード: trace, logical, dump
  */
 EXECMODE execmode = {false, false, false};
 
-/**
- * アセンブル結果読み込みエラーをエラーリストに追加
- */
-void addcerrlist_load()
+char *pr2str(WORD pr)
 {
-    addcerrlist(ARRAYSIZE(cerr_load), cerr_load);
-}
-
-/**
- * 実行エラーをエラーリストに追加
- */
-void addcerrlist_exec()
-{
-    addcerrlist(ARRAYSIZE(cerr_exec), cerr_exec);
-}
-/**
- * 指定されたファイルからアセンブル結果を読み込む
- */
-bool loadassemble(const char *file)
-{
-    FILE *fp;
-    bool stat = true;
-
-    assert(file != NULL);
-    if((fp = fopen(file, "r")) == NULL) {
-        perror(file);
-        return false;
-    }
-    execptr->end = execptr->start +
-        fread(sys->memory, sizeof(WORD), sys->memsize - execptr->start, fp);
-    if(execptr->end == sys->memsize) {
-        setcerr(210, file);    /* load - memory overflow */
-        fprintf(stderr, "Load error - %d: %s\n", cerr->num, cerr->msg);
-        stat = false;
-    }
-    fclose(fp);
-    return stat;
-}
-
-/**
- * プログラムレジスタ（PR）を表す文字列を返す
- */
-char *pr2str(WORD pr) {
     char *str = malloc_chk(CERRSTRSIZE + 1, "pr2str.pr");
 
     sprintf(str, "PR:#%04X", pr);
     return str;
 }
 
-/**
- * 標準入力から文字データを読込（SVC 1）
- */
 void svcin()
 {
     int i;
@@ -109,9 +135,6 @@ void svcin()
     FREE(buffer);
 }
 
-/**
- * 標準出力へ文字データを書出（SVC 2）
- */
 void svcout()
 {
     int i;
@@ -136,9 +159,6 @@ void svcout()
     }
 }
 
-/**
- * ロード／論理積／論理和／排他的論理和のフラグ設定。OFは常に0
- */
 void setfr(WORD adr)
 {
     sys->cpu->fr = 0x0;
@@ -152,9 +172,6 @@ void setfr(WORD adr)
     }
 }
 
-/**
- * WORD値からr/r1を取得
- */
 WORD get_r_r1(WORD oprx)
 {
     WORD r;
@@ -168,9 +185,6 @@ WORD get_r_r1(WORD oprx)
     return r;
 }
 
-/**
- * WORD値からx/r2を取得
- */
 WORD get_x_r2(WORD oprx)
 {
     WORD x;
@@ -184,9 +198,6 @@ WORD get_x_r2(WORD oprx)
     return x;
 }
 
-/**
- * 2つのWORD値からadr[,x]を取得
- */
 WORD get_adr_x(WORD adr, WORD oprx)
 {
     WORD a = adr, x;
@@ -196,10 +207,6 @@ WORD get_adr_x(WORD adr, WORD oprx)
     return a;
 }
 
-
-/**
- * 2つのWORD値からadr[,x]のアドレスに格納されている内容を取得
- */
 WORD get_val_adr_x(WORD adr, WORD oprx)
 {
     WORD a;
@@ -213,19 +220,43 @@ WORD get_val_adr_x(WORD adr, WORD oprx)
     return sys->memory[a];
 }
 
-/**
- * NOP命令。語長1（OPのみ）
- * \relates exec
- */
+/* exec.hで定義された関数群 */
+void addcerrlist_load()
+{
+    addcerrlist(ARRAYSIZE(cerr_load), cerr_load);
+}
+
+void addcerrlist_exec()
+{
+    addcerrlist(ARRAYSIZE(cerr_exec), cerr_exec);
+}
+
+bool loadassemble(const char *file)
+{
+    FILE *fp;
+    bool stat = true;
+
+    assert(file != NULL);
+    if((fp = fopen(file, "r")) == NULL) {
+        perror(file);
+        return false;
+    }
+    execptr->end = execptr->start +
+        fread(sys->memory, sizeof(WORD), sys->memsize - execptr->start, fp);
+    if(execptr->end == sys->memsize) {
+        setcerr(210, file);    /* load - memory overflow */
+        fprintf(stderr, "Load error - %d: %s\n", cerr->num, cerr->msg);
+        stat = false;
+    }
+    fclose(fp);
+    return stat;
+}
+
 void nop()
 {
     sys->cpu->pr += 1;
 }
 
-/**
- * LD命令 - オペランドr,adr,x。語長2
- * \relates exec
- */
 void ld_r_adr_x()
 {
     WORD w[2];
@@ -235,10 +266,6 @@ void ld_r_adr_x()
     sys->cpu->pr += 2;
 }
 
-/**
- * LD命令 - オペランドr1,r2。語長1
- * \relates exec
- */
 void ld_r1_r2()
 {
     WORD w[1];
@@ -247,10 +274,6 @@ void ld_r1_r2()
     sys->cpu->pr += 1;
 }
 
-/**
- * ST命令。語長2
- * \relates exec
- */
 void st()
 {
     WORD w[2];
@@ -260,10 +283,6 @@ void st()
     sys->cpu->pr += 2;
 }
 
-/**
- * LAD命令。語長2
- * \relates exec
- */
 void lad()
 {
     WORD w[2];
@@ -273,10 +292,6 @@ void lad()
     sys->cpu->pr += 2;
 }
 
-/**
- * ADDA命令のテンプレート\n
- * 汎用レジスタrに値valを算術加算
- */
 void adda(WORD r, WORD val)
 {
     long tmp;
@@ -296,10 +311,6 @@ void adda(WORD r, WORD val)
     }
 }
 
-/**
- * ADDA命令 - オペランドr,adr,x。語長2
- * \relates exec
- */
 void adda_r_adr_x()
 {
     WORD w[2];
@@ -309,10 +320,6 @@ void adda_r_adr_x()
     sys->cpu->pr += 2;
 }
 
-/**
- * ADDA命令 - オペランドr1,r2。語長1
- * \relates exec
- */
 void adda_r1_r2()
 {
     WORD w[1];
@@ -321,10 +328,6 @@ void adda_r1_r2()
     sys->cpu->pr += 1;
 }
 
-/**
- * SUBA命令 - オペランドr,adr,x。語長2
- * \relates exec
- */
 void suba_r_adr_x()
 {
     WORD w[2];
@@ -334,10 +337,6 @@ void suba_r_adr_x()
     sys->cpu->pr += 2;
 }
 
-/**
- * SUBA命令 - オペランドr1,r2。語長1
- * \relates exec
- */
 void suba_r1_r2()
 {
     WORD w[1];
@@ -346,10 +345,6 @@ void suba_r1_r2()
     sys->cpu->pr += 1;
 }
 
-/**
- * ADDL命令のテンプレート\n
- * 汎用レジスタrに値valを論理加算
- */
 void addl(WORD r, WORD val)
 {
     long tmp;
@@ -365,10 +360,6 @@ void addl(WORD r, WORD val)
     }
 }
 
-/**
- * ADDL命令 - オペランドr,adr,x。語長2
- * \relates exec
- */
 void addl_r_adr_x()
 {
     WORD w[2];
@@ -378,10 +369,6 @@ void addl_r_adr_x()
     sys->cpu->pr += 2;
 }
 
-/**
- * ADDL命令 - オペランドr1,r2。語長1
- * \relates exec
- */
 void addl_r1_r2()
 {
     WORD w[1];
@@ -390,10 +377,6 @@ void addl_r1_r2()
     sys->cpu->pr += 1;
 }
 
-/**
- * SUBL命令 - オペランドr,adr,x。語長2
- * \relates exec
- */
 void subl_r_adr_x()
 {
     WORD w[2];
@@ -403,11 +386,6 @@ void subl_r_adr_x()
     sys->cpu->pr += 2;
 }
 
-
-/**
- * SUBL命令 - オペランドr1,r2。語長1
- * \relates exec
- */
 void subl_r1_r2()
 {
     WORD w[1];
@@ -416,10 +394,6 @@ void subl_r1_r2()
     sys->cpu->pr += 1;
 }
 
-/**
- * AND命令 - オペランドr,adr,x。語長2
- * \relates exec
- */
 void and_r_adr_x()
 {
     WORD w[2];
@@ -429,10 +403,6 @@ void and_r_adr_x()
     sys->cpu->pr += 2;
 }
 
-/**
- * AND命令 - オペランドr1,r2。語長1
- * \relates exec
- */
 void and_r1_r2()
 {
     WORD w[1];
@@ -441,10 +411,6 @@ void and_r1_r2()
     sys->cpu->pr += 1;
 }
 
-/**
- * OR命令 - オペランドr,adr,x。語長2
- * \relates exec
- */
 void or_r_adr_x()
 {
     WORD w[2];
@@ -454,10 +420,6 @@ void or_r_adr_x()
     sys->cpu->pr += 2;
 }
 
-/**
- * OR命令 - オペランドr1,r2。語長1
- * \relates exec
- */
 void or_r1_r2()
 {
     WORD w[1];
@@ -466,10 +428,6 @@ void or_r1_r2()
     sys->cpu->pr += 1;
 }
 
-/**
- * XOR命令 - オペランドr,adr,x。語長2
- * \relates exec
- */
 void xor_r_adr_x()
 {
     WORD w[2];
@@ -479,10 +437,6 @@ void xor_r_adr_x()
     sys->cpu->pr += 2;
 }
 
-/**
- * XOR命令 - オペランドr1,r2。語長1
- * \relates exec
- */
 void xor_r1_r2()
 {
     WORD w[1];
@@ -491,10 +445,6 @@ void xor_r1_r2()
     sys->cpu->pr += 1;
 }
 
-/**
- * CPA命令のテンプレート\n
- * 汎用レジスタrの内容と値valを算術比較
- */
 void cpa(WORD r, WORD val)
 {
     sys->cpu->fr = 0x0;
@@ -505,10 +455,6 @@ void cpa(WORD r, WORD val)
     }
 }
 
-/**
- * CPA命令 - オペランドr,adr,x。語長2
- * \relates exec
- */
 void cpa_r_adr_x()
 {
     WORD w[2];
@@ -518,10 +464,6 @@ void cpa_r_adr_x()
     sys->cpu->pr += 2;
 }
 
-/**
- * CPA命令 - オペランドr1,r2。語長1
- * \relates exec
- */
 void cpa_r1_r2()
 {
     WORD w[1];
@@ -530,10 +472,6 @@ void cpa_r1_r2()
     sys->cpu->pr += 1;
 }
 
-/**
- * CPL命令のテンプレート\n
- * 汎用レジスタrの内容と値valを論理比較
- */
 void cpl(WORD r, WORD val)
 {
     sys->cpu->fr = 0x0;
@@ -544,11 +482,6 @@ void cpl(WORD r, WORD val)
     }
 }
 
-
-/**
- * CPL命令 - オペランドr,adr,x。語長2
- * \relates exec
- */
 void cpl_r_adr_x()
 {
     WORD w[2];
@@ -558,10 +491,6 @@ void cpl_r_adr_x()
     sys->cpu->pr += 2;
 }
 
-/**
- * CPL命令 - オペランドr1,r2。語長1
- * \relates exec
- */
 void cpl_r1_r2()
 {
     WORD w[1];
@@ -570,11 +499,6 @@ void cpl_r1_r2()
     sys->cpu->pr += 1;
 }
 
-/**
- * SLA命令 - オペランドr,adr,x。語長2\n
- * 算術演算なので、第15ビットは送り出されない
- * \relates exec
- */
 void sla()
 {
     WORD w[2], sign, last = 0x0, r;
@@ -605,12 +529,6 @@ void sla()
     sys->cpu->pr += 2;
 }
 
-/**
- * SRA命令 - オペランドr,adr,x。語長2\n
- * 算術演算なので、第15ビットは送り出されない\n
- * 空いたビット位置には符号と同じものが入る
- * \relates exec
- */
 void sra()
 {
     WORD w[2], sign, last = 0x0, r;
@@ -644,10 +562,6 @@ void sra()
     sys->cpu->pr += 2;
 }
 
-/**
- * SLL命令 - オペランドr,adr,x。語長2
- * \relates exec
- */
 void sll()
 {
     WORD w[2], last = 0x0, r;
@@ -675,10 +589,6 @@ void sll()
     sys->cpu->pr += 2;
 }
 
-/**
- * SRL命令 - オペランドr,adr,x。語長2
- * \relates exec
- */
 void srl()
 {
     WORD w[2], last = 0x0, r;
@@ -707,10 +617,6 @@ void srl()
     sys->cpu->pr += 2;
 }
 
-/**
- * JPL命令。語長2
- * \relates exec
- */
 void jpl()
 {
     WORD w[2];
@@ -723,10 +629,6 @@ void jpl()
     }
 }
 
-/**
- * JMI命令。語長2
- * \relates exec
- */
 void jmi()
 {
     WORD w[2];
@@ -739,10 +641,6 @@ void jmi()
     }
 }
 
-/**
- * JNZ命令。語長2
- * \relates exec
- */
 void jnz()
 {
     WORD w[2];
@@ -755,10 +653,6 @@ void jnz()
     }
 }
 
-/**
- * JZE命令。語長2
- * \relates exec
- */
 void jze()
 {
     WORD w[2];
@@ -771,10 +665,6 @@ void jze()
     }
 }
 
-/**
- * JOV命令。語長2
- * \relates exec
- */
 void jov()
 {
     WORD w[2];
@@ -787,10 +677,6 @@ void jov()
     }
 }
 
-/**
- * JUMP命令。語長2
- * \relates exec
- */
 void jump()
 {
     WORD w[2];
@@ -799,10 +685,6 @@ void jump()
     sys->cpu->pr = get_adr_x(w[1], w[0]);
 }
 
-/**
- * PUSH命令。語長2
- * \relates exec
- */
 void push()
 {
     assert(sys->cpu->sp > execptr->end && sys->cpu->sp <= sys->memsize);
@@ -814,10 +696,6 @@ void push()
     sys->cpu->pr += 2;
 }
 
-/**
- * POP命令。語長1
- * \relates exec
- */
 void pop()
 {
     assert(sys->cpu->sp > execptr->end);
@@ -834,10 +712,6 @@ void pop()
     }
 }
 
-/**
- * CALL命令。語長2
- * \relates exec
- */
 void call()
 {
     assert(sys->cpu->sp > execptr->end && sys->cpu->sp <= sys->memsize);
@@ -848,10 +722,6 @@ void call()
     sys->cpu->pr = get_adr_x(w[1], w[0]);
 }
 
-/**
- * RET命令。語長1（OPのみ）
- * \relates exec
- */
 void ret()
 {
     assert(sys->cpu->sp <= sys->memsize);
@@ -862,10 +732,6 @@ void ret()
     }
 }
 
-/**
- * SVC命令。語長2
- * \relates exec
- */
 void svc()
 {
     WORD w[2];
@@ -886,10 +752,6 @@ void svc()
     sys->cpu->pr += 2;
 }
 
-/**
- * 仮想マシンCOMET IIの実行
- * \class exec
- */
 void exec()
 {
     clock_t clock_begin, clock_end;

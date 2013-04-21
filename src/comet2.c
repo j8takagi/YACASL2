@@ -24,7 +24,12 @@ static struct option longopts[] = {
 };
 
 /**
- * comet2コマンドのメイン
+ * @brief comet2コマンドのメイン
+ *
+ * @return 正常終了時は0、異常終了時は1
+ *
+ * @param argc コマンドライン引数の数
+ * @param *argv[] コマンドライン引数の配列
  */
 int main(int argc, char *argv[])
 {
@@ -80,7 +85,7 @@ int main(int argc, char *argv[])
     }
     /* COMET II仮想マシンのシャットダウン */
     shutdown();
-    stat = (cerr->num == 0) ? 0 : -1;
+    stat = (cerr->num == 0) ? 0 : 1;
     /* エラーの解放 */
     freecerr();
     return stat;

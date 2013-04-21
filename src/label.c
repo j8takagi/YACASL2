@@ -8,11 +8,38 @@
 #include "hash.h"
 #include "assemble.h"
 
-static int labelcnt = 0;                /* ラベル数 */
-static LABELTAB *labels[LABELTABSIZE];  /* ラベル表 */
+/**
+ * プログラム名とラベルに対応するハッシュ値を返す
+ *
+ * @return ハッシュ値
+ *
+ * @param prog プログラム名
+ * @param label ラベル
+ */
+unsigned labelhash(const char *prog, const char *label);
 
 /**
- * ラベルのエラー定義
+ * ラベルを比較した結果を返す。qsort内で使われる関数
+ *
+ * @return ラベルが同一の場合は0、異なる場合は0以外
+ *
+ * @param *a ラベルa
+ * @param *b ラベルb
+ */
+int compare_adr(const void *a, const void *b);
+
+/**
+ * @brief ラベル数
+ */
+static int labelcnt = 0;
+
+/**
+ * @brief ラベル表
+ */
+static LABELTAB *labels[LABELTABSIZE];
+
+/**
+ * @brief ラベルのエラー
  */
 static CERR cerr_label[] = {
     { 101, "label already defined" },
@@ -20,17 +47,6 @@ static CERR cerr_label[] = {
     { 103, "label not found" },
 };
 
-/**
- * ラベルのエラーをエラーリストに追加
- */
-void addcerrlist_label()
-{
-    addcerrlist(ARRAYSIZE(cerr_label), cerr_label);
-}
-
-/**
- * プログラム名とラベルに対応するハッシュ値を返す
- */
 unsigned labelhash(const char *prog, const char *label)
 {
     HKEY *keys[2];
@@ -54,9 +70,17 @@ unsigned labelhash(const char *prog, const char *label)
     return h;
 }
 
-/**
- * プログラム名とラベルに対応するアドレスをラベル表から検索する
- */
+int compare_adr(const void *a, const void *b)
+{
+    return (**(LABELARRAY **)a).adr - (**(LABELARRAY **)b).adr;
+}
+
+/* assemble.hで定義された関数群 */
+void addcerrlist_label()
+{
+    addcerrlist(ARRAYSIZE(cerr_label), cerr_label);
+}
+
 WORD getlabel(const char *prog, const char *label)
 {
     assert(prog != NULL && label != NULL);
@@ -72,9 +96,6 @@ WORD getlabel(const char *prog, const char *label)
     return 0xFFFF;
 }
 
-/**
- * プログラム名、ラベル、アドレスをラベル表に追加する
- */
 bool addlabel(const char *prog, const char *label, WORD adr)
 {
     assert(label != NULL);
@@ -103,17 +124,6 @@ bool addlabel(const char *prog, const char *label, WORD adr)
     return true;
 }
 
-/**
- * ラベルを比較した結果を返す
- */
-int compare_adr(const void *a, const void *b)
-{
-    return (**(LABELARRAY **)a).adr - (**(LABELARRAY **)b).adr;
-}
-
-/**
- * ラベル表を表示する
- */
 void printlabel()
 {
     int i, s = 0;
@@ -143,9 +153,6 @@ void printlabel()
     FREE(l);
 }
 
-/**
- * ラベル表を解放する
- */
 void freelabel()
 {
     int i;

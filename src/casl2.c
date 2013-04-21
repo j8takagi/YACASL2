@@ -11,7 +11,33 @@
 #include "package.h"
 
 /**
- * casl2コマンドのオプション
+ * @brief CASL IIのエラーをエラーリストに追加
+ *
+ * @return なし
+ */
+void addcerrlist_casl2();
+
+/**
+ * @brief アセンブル結果を書き込むファイルの名前
+ *
+ * @return ファイル名
+ *
+ * @param *str ファイル名
+ */
+const char *objfile_name(const char *str);
+
+/**
+ * @brief 指定された1つまたは複数のファイルを2回アセンブル
+ *
+ * @return なし
+ *
+ * @param filec アセンブルするファイルの数
+ * @param filev アセンブルするファイル名の配列
+ */
+void assemble(int filec, char *filev[]);
+
+/**
+ * @brief casl2コマンドのオプション
  */
 static struct option longopts[] = {
     { "source", no_argument, NULL, 's' },
@@ -33,32 +59,23 @@ static struct option longopts[] = {
 };
 
 /**
- * casl2のエラー定義
+ * @brief casl2のエラー定義
  */
 CERR cerr_casl2[] = {
     { 126, "no source file" },
 };
 
-/**
- * CASL IIのエラーをエラーリストに追加
- */
 void addcerrlist_casl2()
 {
     addcerrlist(ARRAYSIZE(cerr_casl2), cerr_casl2);
 }
 
-/**
- * アセンブル結果を書き込むファイルの名前
- */
 const char *objfile_name(const char *str)
 {
     const char *default_name = "a.o";
     return (str == NULL) ? default_name : str;
 }
 
-/**
- * 指定された1つまたは複数のファイルを2回アセンブル
- */
 void assemble(int filec, char *filev[])
 {
     int i;
@@ -104,7 +121,12 @@ asfin:
 }
 
 /**
- *  casl2コマンドのメイン
+ * @brief casl2コマンドのメイン
+ *
+ * @return 正常終了時は0、エラー発生時は1
+ *
+ * @param argc コマンドライン引数の数
+ * @param *argv[] コマンドライン引数の配列
  */
 int main(int argc, char *argv[])
 {
