@@ -7,7 +7,6 @@ DOXYGEN := doxygen
 ECHO := echo
 HTAGS := htags
 INSTALL := install
-MAKE := make
 MV := mv
 RMR := rm -rf
 SED := sed
@@ -20,10 +19,10 @@ GNU_GLOBAL_SRCDIR := ..
 CMETRICS_DIR := cmetrics
 CMETRICS_SRCDIR := ../src
 
-# chk_file_ext: 指定されたファイルが実在する場合、エラー
+# chk_file_ext: 指定されたコマンドが実在する場合にターゲットを指定。
 # 用例: $(call chk_cmd_ext,cmd,target)
 define chk_cmd_ext
-    $(if $(strip $(shell $(WHICH) $1)),$2,,@$(ECHO) '$1: not found')
+    $(if $(strip $(shell $(WHICH) $1)),$2)
 endef
 
 all: $(call chk_cmd_ext,$(DOXYGEN),$(DOXYGEN_DIR)) $(call chk_cmd_ext,$(HTAGS),$(GNU_GLOBAL_DIR)) $(call chk_cmd_ext $(CMETRICS),$(CMETRICS_DIR))
