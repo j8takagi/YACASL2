@@ -64,7 +64,7 @@ $(VERSIONFILES): VERSION
 gittag: VERSION
 	$(GITTAG) $(VERSION)
 
-distclean: cmd-clean gtags-clean version-clean clean
+distclean: cmd-clean src-distclean gtags-clean version-clean clean
 
 clean: src-clean doc-clean doc_inner-clean
 
@@ -73,6 +73,9 @@ cmd-clean:
 
 src-clean:
 	$(MAKE) -sC src clean
+
+src-distclean:
+	$(MAKE) -sC src distclean
 
 gtags-clean:
 	$(RM) GPATH GRTAGS GSYMS GTAGS
