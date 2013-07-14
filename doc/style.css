@@ -46,6 +46,14 @@ h2 {
     display: none;
 }
 
+h1.node-heading {
+    display: none;
+}
+
+h2.shortcontents-heading{
+    display: none;
+}
+
 .shortcontents a {
    margin-right: 1em;
 }
