@@ -238,7 +238,7 @@ void assemble_rpop(const CMDLINE *cmdl, PASS pass);
  *
  * @param *cmdtbl アセンブラ言語CASL IIの命令表
  * @param *cmdl 1行分のラベル・コマンド・オペランド
- * @param pass アセンブラが何回目かを表す数
+ * @param pass アセンブルが何回目か
  */
 bool casl2cmd(CMD *cmdtbl, const CMDLINE *cmdl, PASS pass);
 
@@ -248,7 +248,7 @@ bool casl2cmd(CMD *cmdtbl, const CMDLINE *cmdl, PASS pass);
  * @return アセンブル成功時はtrue、失敗時はfalseを返す
  *
  * @param *cmdl 1行分のラベル・コマンド・オペランド
- * @param pass アセンブラが何回目かを表す数
+ * @param pass アセンブルが何回目か
  */
 bool assemble_comet2cmd(const CMDLINE *cmdl, PASS pass);
 
