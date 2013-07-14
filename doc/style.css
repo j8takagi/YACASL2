@@ -20,6 +20,10 @@ h1, h2 {
     background-color: #DDF;
 }
 
+table.menu, table.menu th, table.menu td {
+    border-style: none;
+}
+
 h2 {
     padding: 0.25em;
     color: white;
