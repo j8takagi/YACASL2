@@ -58,4 +58,4 @@ tag-clean:
 
 # ヘッダファイルの依存関係を.dファイルに出力する
 %.d: %.c
-	$(CC) -MM -I $(INCLUDEDIR) $< | $(SED) 's/\($*\.o\):/\1 $@:/g' >$@
+	$(CC) -MM -I $(INCLUDEDIR) $< | $(SED) 's,$*\.o *:,$*.o $*.d:,g' >$@
