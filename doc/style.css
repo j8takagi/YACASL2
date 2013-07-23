@@ -54,6 +54,10 @@ h1.node-heading {
     display: none;
 }
 
+h2.contents-heading{
+    display: none;
+}
+
 h2.shortcontents-heading{
     display: none;
 }
