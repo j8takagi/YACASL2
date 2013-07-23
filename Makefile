@@ -25,7 +25,7 @@ VERSIONFILES = include/package.h test/system/casl2/opt_v/0.txt test/system/comet
 
 all: build doc gtags
 
-build: version
+build:
 	$(MAKE) -C src all
 	$(CP) $(addprefix src/,$(CMD)) ./
 

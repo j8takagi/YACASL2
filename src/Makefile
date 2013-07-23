@@ -1,3 +1,4 @@
+# ヘッダファイルの場所
 INCLUDEDIR := ../include
 INCLUDE = -I $(INCLUDEDIR)
 
@@ -31,8 +32,13 @@ comet2: comet2.o $(addsuffix .o,$(COMMONOBJ) $(CASL2OBJ) $(EXECOBJ))
 dumpword: dumpword.o $(addsuffix .o,$(COMMONOBJ))
 
 # .dファイルからヘッダファイルの依存関係を取得する
-# tags、check、cleanで終わるターゲットの場合は除く
-ifeq (,$(strip $(filter %tags,$(MAKECMDGOALS)) $(filter %check,$(MAKECMDGOALS))  $(filter %clean,$(MAKECMDGOALS))))
+# tags、check、clean、.d で終わるターゲットの場合は除く
+ifeq (,$(strip \
+    $(filter %tags,$(MAKECMDGOALS)) \
+    $(filter %check,$(MAKECMDGOALS)) \
+    $(filter %clean,$(MAKECMDGOALS)) \
+    $(filter %.d,$(MAKECMDGOALS))\
+))
   -include $(addsuffix .d,$(CMDOBJ) $(COMMONOBJ) $(CASL2OBJ) $(ASOBJ) $(EXECOBJ))
 endif
 
@@ -48,14 +54,17 @@ TAGS: $(INCLUDEDIR)/*.h *.c
 
 # makeで生成したファイルの削除
 distclean: clean
-	@$(RM) casl2 comet2 dumpword
+	$(RM) casl2 comet2 dumpword
 
 clean: tag-clean
-	@$(RM) *.o *.d
+	$(RM) *.o *.d
 
 tag-clean:
-	@$(RM) TAGS tags
+	$(RM) TAGS tags
 
 # ヘッダファイルの依存関係を.dファイルに出力する
-%.d: %.c
+%.d: %.c $(INCLUDEDIR)/package.h
 	$(CC) -MM -I $(INCLUDEDIR) $< | $(SED) 's,$*\.o *:,$*.o $*.d:,g' >$@
+
+$(INCLUDEDIR)/package.h: ../VERSION
+	$(MAKE) -C .. version
