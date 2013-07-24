@@ -12,6 +12,7 @@ CAT := cat
 CP := cp
 ECHO := echo
 GITTAG := git tag
+GREP := grep
 GTAGS := gtags
 INSTALL := install
 SED := sed
@@ -21,7 +22,10 @@ prefix ?= ~
 bindir ?= $(prefix)/bin
 
 VERSION = $(shell $(CAT) VERSION)
-VERSIONFILES = include/package.h test/system/casl2/opt_v/0.txt test/system/comet2/opt_v/0.txt test/system/dumpword/opt_v/0.txt
+VERSIONFILES = include/package.h \
+        test/system/casl2/opt_v/0.txt \
+        test/system/comet2/opt_v/0.txt \
+        test/system/dumpword/opt_v/0.txt
 
 all: build doc gtags
 
@@ -62,7 +66,7 @@ $(VERSIONFILES): VERSION
 	@$(SED) -e "s/@@VERSION@@/$(VERSION)/g" $@.version >$@
 
 gittag: VERSION
-	$(GITTAG) $(VERSION)
+	$(GITTAG) | $(GREP) $(VERSION) || $(GITTAG) $(VERSION)
 
 distclean: cmd-clean src-distclean gtags-clean version-clean clean
 
