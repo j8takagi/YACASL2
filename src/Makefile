@@ -33,12 +33,7 @@ dumpword: dumpword.o $(addsuffix .o,$(COMMONOBJ))
 
 # .dファイルからヘッダファイルの依存関係を取得する
 # tags、check、clean、.d で終わるターゲットの場合は除く
-ifeq (,$(strip \
-    $(filter %tags,$(MAKECMDGOALS)) \
-    $(filter %check,$(MAKECMDGOALS)) \
-    $(filter %clean,$(MAKECMDGOALS)) \
-    $(filter %.d,$(MAKECMDGOALS))\
-))
+ifeq (,$(filter %tags %check %clean %.d,$(MAKECMDGOALS)))
   -include $(addsuffix .d,$(CMDOBJ) $(COMMONOBJ) $(CASL2OBJ) $(ASOBJ) $(EXECOBJ))
 endif
 
