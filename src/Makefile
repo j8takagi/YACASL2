@@ -1,4 +1,11 @@
-# ヘッダファイルの場所
+# ソースファイル。グループに分類
+CMDOBJ := casl2 comet2 dumpword
+COMMONOBJ := word cmem cerr
+CASL2OBJ := struct hash
+ASOBJ := assemble token label
+EXECOBJ := exec dump
+
+# ヘッダファイル
 INCLUDEDIR := ../include
 INCLUDE = -I $(INCLUDEDIR)
 
@@ -11,13 +18,6 @@ ECHO := echo
 SED := sed
 WHICH := which
 
-# ソースの分類
-CMDOBJ := casl2 comet2 dumpword
-COMMONOBJ := word cmem cerr
-CASL2OBJ := struct hash
-ASOBJ := assemble token label
-EXECOBJ := exec dump
-
 .PHONY: all build tag clean
 
 all: build tag
@@ -25,15 +25,16 @@ all: build tag
 # casl2、comet2、dumpwordのビルド
 build: $(CMDOBJ)
 
-casl2: casl2.o $(addsuffix .o,$(COMMONOBJ) $(CASL2OBJ) $(ASOBJ) $(EXECOBJ))
+casl2: $(addsuffix .o,casl2 $(COMMONOBJ) $(CASL2OBJ) $(ASOBJ) $(EXECOBJ))
 
-comet2: comet2.o $(addsuffix .o,$(COMMONOBJ) $(CASL2OBJ) $(EXECOBJ))
+comet2: $(addsuffix .o,comet2 $(COMMONOBJ) $(CASL2OBJ) $(EXECOBJ))
 
-dumpword: dumpword.o $(addsuffix .o,$(COMMONOBJ))
+dumpword: $(addsuffix .o,dumpword $(COMMONOBJ))
 
 # .dファイルからヘッダファイルの依存関係を取得する
 # tags、check、clean、.d で終わるターゲットの場合は除く
-ifeq (,$(filter %tags %check %clean %.d,$(MAKECMDGOALS)))
+NODEP := %tags %check %clean %.d
+ifeq ($(filter $(NODEP),$(MAKECMDGOALS)),)
   -include $(addsuffix .d,$(CMDOBJ) $(COMMONOBJ) $(CASL2OBJ) $(ASOBJ) $(EXECOBJ))
 endif
 
@@ -51,7 +52,7 @@ TAGS: $(INCLUDEDIR)/*.h *.c
 distclean: clean
 	$(RM) casl2 comet2 dumpword
 
-clean: tag-clean
+clean:
 	$(RM) *.o *.d
 
 tag-clean:
