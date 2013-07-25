@@ -71,7 +71,7 @@ $(VERSIONFILES): VERSION
 	@$(SED) -e "s/@@VERSION@@/$(VERSION)/g" $@.version >$@
 
 gittag:
-	patch=$(PATCH); while ($(GIT) tag | $(GREP) v$(VER)p$${patch}); do $(EXPR) $${patch} + 1; done; $(ECHO) v$(VER)p$${patch} >VERSION
+	patch=$(PATCH); while ($(GIT) tag | $(GREP) v$(VER)p$${patch}); do patch=`$(EXPR) $${patch} + 1`; done; $(ECHO) v$(VER)p$${patch} >VERSION
 	if ($(GIT) status -s | $(GREP) VERSION); then $(GIT) add VERSION; $(GIT) commit --amend --no-edit; fi
 	$(CAT) VERSION | $(XARGS) $(GIT) tag
 
