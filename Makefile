@@ -10,18 +10,23 @@ CMD := casl2 comet2 dumpword
 
 CAT := cat
 CP := cp
-ECHO := echo
-GITTAG := git tag
+ECHO := /bin/echo
+GIT := git
 GREP := grep
 GTAGS := gtags
 INSTALL := install
 SED := sed
 WHICH := which
+EXPR := expr
+XARGS := xargs
 
 prefix ?= ~
 bindir ?= $(prefix)/bin
 
-VERSION = $(shell $(CAT) VERSION)
+VERSION := $(shell $(CAT) VERSION)
+VER := $(shell $(ECHO) $(VERSION) | $(SED) -e 's/^v\([0-9.]*\)p\([0-9]*\)/\1/')
+PATCH := $(shell $(ECHO) $(VERSION) | $(SED) -e 's/^v[0-9.]*p\([0-9]*\)/\1/')
+
 VERSIONFILES = include/package.h \
         test/system/casl2/opt_v/0.txt \
         test/system/comet2/opt_v/0.txt \
@@ -65,8 +70,10 @@ version: $(VERSIONFILES)
 $(VERSIONFILES): VERSION
 	@$(SED) -e "s/@@VERSION@@/$(VERSION)/g" $@.version >$@
 
-gittag: VERSION
-	$(GITTAG) | $(GREP) $(VERSION) || $(GITTAG) $(VERSION)
+gittag:
+	patch=$(PATCH); while ($(GIT) tag | $(GREP) v$(VER)p$${patch}); do $(EXPR) $${patch} + 1; done; $(ECHO) v$(VER)p$${patch} >VERSION
+	if ($(GIT) status -s | $(GREP) VERSION); then $(GIT) add VERSION; $(GIT) commit --amend --no-edit; fi
+	$(CAT) VERSION | $(XARGS) $(GIT) tag
 
 distclean: cmd-clean src-distclean gtags-clean version-clean clean
 
