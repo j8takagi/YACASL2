@@ -28,93 +28,93 @@ Copyright @copyright{} Information-technology Promotion Agency, Japan. All right
 
 @enumerate
 @item
-1語は16ビットで、そのビット構成は、次のとおりである。
+1語は16ビットで，そのビット構成は，次のとおりである。
 
 @verbatim
  上位8ビット                               下位8ビット
 | 15 | 14 | 13 | 12 | 11 | 10 |  9 |  8 |  7 |  6 |  5 |  4 |  3 |  2 |  1 |  0 |（ビット番号）
   ↑
-符号（負:1、非負:0）
+符号（負:1，非負:0）
 @end verbatim
 
 @item
-主記憶の容量は65536語で、そのアドレスは0～65535番地である。
+主記憶の容量は65536語で，そのアドレスは0～65535番地である。
 
 @item
-数値は、16ビットの2進数で表現する。負数は、2の補数で表現する。
+数値は，16ビットの2進数で表現する。負数は，2の補数で表現する。
 
 @item
-制御方式は逐次制御で、命令語は1語長又は2語長である。
+制御方式は逐次制御で，命令語は1語長又は2語長である。
 
 @item
-レジスタとして、@code{GR}（16ビット）、@code{SP}（16ビット）、@code{PR}（16ビット）、@code{FR}（3ビット）の 4 種類がある。
+レジスタとして，@code{GR}（16ビット），@code{SP}（16ビット），@code{PR}（16ビット），@code{FR}（3ビット）の 4 種類がある。
 
-@code{GR}（汎用レジスタ、General Register）は、@code{GR0}～@code{GR7}の8個があり、
-算術、論理、比較、シフトなどの演算に用いる。
-このうち、@code{GR1}～@code{GR7}のレジスタは、指標レジスタ（index register）
+@code{GR}（汎用レジスタ，General Register）は，@code{GR0}～@code{GR7}の8個があり，
+算術，論理，比較，シフトなどの演算に用いる。
+このうち，@code{GR1}～@code{GR7}のレジスタは，指標レジスタ（index register）
 としてアドレスの修飾にも用いる。
 
-@code{SP}（スタックポインタ、Stack Pointer）は、
+@code{SP}（スタックポインタ，Stack Pointer）は，
 スタックの最上段のアドレスを保持している。
 
-@code{PR}（プログラムレジスタ、Program Register）は、
+@code{PR}（プログラムレジスタ，Program Register）は，
 次に実行すべき命令語の先頭アドレスを保持している。
 
-@code{FR}（フラグレジスタ、Flag Register）は、
-@code{OF}（Overflow Flag）、@code{SF}（Sign Flag）、@code{ZF}（Zero Flag）と呼ぶ
-3個のビットからなり、演算命令などの実行によって次の値が設定される。
-これらの値は、条件付き分岐命令で参照される。
+@code{FR}（フラグレジスタ，Flag Register）は，
+@code{OF}（Overflow Flag），@code{SF}（Sign Flag），@code{ZF}（Zero Flag）と呼ぶ
+3個のビットからなり，演算命令などの実行によって次の値が設定される。
+これらの値は，条件付き分岐命令で参照される。
 
 @table @code
 @item OF
-算術演算命令の場合は、演算結果が-32768～32767に収まらなくなったとき1になり、
+算術演算命令の場合は，演算結果が-32768～32767に収まらなくなったとき1になり，
 それ以外のとき0になる。
-論理演算命令の場合は、演算結果が0～65535に収まらなくなったとき1になり、
+論理演算命令の場合は，演算結果が0～65535に収まらなくなったとき1になり，
 それ以外のとき0になる。
 
 @item SF
-演算結果の符号が負（ビット番号15が1）のとき1、それ以外のとき0になる。
+演算結果の符号が負（ビット番号15が1）のとき1，それ以外のとき0になる。
 
 @item ZF
-演算結果が零（全部のビットが0）のとき1、それ以外のとき0になる。
+演算結果が零（全部のビットが0）のとき1，それ以外のとき0になる。
 @end table
 
 @item
-論理加算又は論理減算は、被演算データを符号のない数値とみなして、
+論理加算又は論理減算は，被演算データを符号のない数値とみなして，
 加算又は減算する。
 @end enumerate
 
 @section 命令
 
 命令の形式及びその機能を示す。
-ここで、一つの命令コードに対し2種類のオペランドがある場合、
-上段はレジスタ間の命令、下段はレジスタと主記憶間の命令を表す。
+ここで，一つの命令コードに対し2種類のオペランドがある場合，
+上段はレジスタ間の命令，下段はレジスタと主記憶間の命令を表す。
 
 @enumerate
-@item ロード、ストア、ロードアドレス命令
+@item ロード，ストア，ロードアドレス命令
 @multitable @columnfractions .25 .10 .15 .30 .20
 @headitem 命令 @tab 書き方 @* 命令コード @tab 書き方 @* オペランド @tab 命令の説明 @tab FRの設定
-@item ロード @* LoaD @tab @code{LD} @tab @code{r1,r2} @* ----- @* @code{r,adr[,x]} @tab @code{r1 ← (r2)} @* ----- @* @code{r ← (実効アドレス)} @tab ○ @* ただし、@code{OF}には@code{0}が設定される。
+@item ロード @* LoaD @tab @code{LD} @tab @code{r1,r2} @* --- @* @code{r,adr[,x]} @tab @code{r1 ← (r2)} @* --- @* @code{r ← (実効アドレス)} @tab ○ @* ただし，@code{OF}には@code{0}が設定される。
 @item ストア @* STore @tab @code{ST} @tab @code{r,adr[,x]}  @tab @code{実効アドレス ← (r)} @tab --
 @item ロードアドレス @* Load ADdress @tab @code{LAD} @tab @code{r,adr[,x]} @tab @code{r ← 実効アドレス} @tab --
 @end multitable
 
-@item 算術、論理演算命令
+@item 算術，論理演算命令
 @multitable @columnfractions .25 .10 .15 .30 .20
 @headitem 命令 @tab 書き方 @* 命令コード @tab 書き方 @* オペランド @tab 命令の説明 @tab FRの設定
-@item 算術加算 @* ADD Arithmetic @tab @code{ADDA} @tab @code{r1,r2} @* ----- @* @code{r,adr[,x]} @tab @code{r1 ← (r1) + (r2)} @* ----- @* @code{r ← (r) + (実効アドレス)} @tab ○
-@item 論理加算 @* ADD Logical @tab @code{ADDL} @tab @code{r1,r2} @* ----- @* @code{r,adr[,x]} @tab @code{r1 ← (r1) +L (r2)} @* ----- @* @code{r ← (r) +L (実効アドレス)} @tab ○
-@item 算術減算 @* SUBtract Arithmetic @tab @code{SUBA} @tab @code{r1,r2} @* ----- @* @code{r,adr[,x]} @tab @code{r1 ← (r1) - (r2)} @* ----- @* @code{r ← (r) - (実効アドレス)} @tab ○
-@item 論理減算 @* SUBtract Logical @tab @code{SUBL} @tab @code{r1,r2} @* ----- @* @code{r,adr[,x]} @tab @code{r1 ← (r1) - L(r2)} @* ----- @* @code{r ← (r) - L(実効アドレス)} @tab ○
-@item 論理積 @* AND @tab @code{AND} @tab @code{r1,r2} @* ----- @* @code{r,adr[,x]} @tab @code{r1 ← (r1) AND (r2)} @* ----- @* @code{r ← (r) AND (実効アドレス)} @tab ○ @* ただし、@code{OF}には@code{0}が設定される。
-@item 論理和 @* OR @tab @code{OR} @tab @code{r1,r2} @* ----- @* @code{r,adr[,x]} @tab @code{r1 ← (r1) OR (r2)} @* ----- @* @code{r ← (r) OR (実効アドレス)} @tab ○ @* ただし、@code{OF}には@code{0}が設定される。
-@item 排他的論理和 @* eXclusive OR @tab @code{XOR} @tab @code{r1,r2} @* ----- @* @code{r,adr[,x]} @tab @code{r1 ← (r1) XOR (r2)} @* ----- @* @code{r ← (r) XOR (実効アドレス)} @tab ○ @* ただし、@code{OF}には@code{0}が設定される。
+@item 算術加算 @* ADD Arithmetic @tab @code{ADDA} @tab @code{r1,r2} @* --- @* @code{r,adr[,x]} @tab @code{r1 ← (r1) + (r2)} @* --- @* @code{r ← (r) + (実効アドレス)} @tab ○
+@item 論理加算 @* ADD Logical @tab @code{ADDL} @tab @code{r1,r2} @* --- @* @code{r,adr[,x]} @tab @code{r1 ← (r1) +L (r2)} @* --- @* @code{r ← (r) +L (実効アドレス)} @tab ○
+@item 算術減算 @* SUBtract Arithmetic @tab @code{SUBA} @tab @code{r1,r2} @* --- @* @code{r,adr[,x]} @tab @code{r1 ← (r1) - (r2)} @* --- @* @code{r ← (r) - (実効アドレス)} @tab ○
+@item 論理減算 @* SUBtract Logical @tab @code{SUBL} @tab @code{r1,r2} @* --- @* @code{r,adr[,x]} @tab @code{r1 ← (r1) - L(r2)} @* --- @* @code{r ← (r) - L(実効アドレス)} @tab ○
+@item 論理積 @* AND @tab @code{AND} @tab @code{r1,r2} @* --- @* @code{r,adr[,x]} @tab @code{r1 ← (r1) AND (r2)} @* --- @* @code{r ← (r) AND (実効アドレス)} @tab ○ @* ただし，@code{OF}には@code{0}が設定される。
+@item 論理和 @* OR @tab @code{OR} @tab @code{r1,r2} @* --- @* @code{r,adr[,x]} @tab @code{r1 ← (r1) OR (r2)} @* --- @* @code{r ← (r) OR (実効アドレス)} @tab ○ @* ただし，@code{OF}には@code{0}が設定される。
+@item 排他的論理和 @* eXclusive OR @tab @code{XOR} @tab @code{r1,r2} @* --- @* @code{r,adr[,x]} @tab @code{r1 ← (r1) XOR (r2)} @* --- @* @code{r ← (r) XOR (実効アドレス)} @tab ○ @* ただし，@code{OF}には@code{0}が設定される。
 @end multitable
 
 @item 比較演算命令
 @multitable @columnfractions .25 .10 .15 .30 .20
 @headitem 命令 @tab 書き方 @* 命令コード @tab 書き方 @* オペランド @tab 命令の説明 @tab FRの設定
-@item 算術比較 @* ComPare Arithmetic @tab @code{CPA}@tab @code{r1,r2} @* ----- @* @code{r,adr[,x]} @tab @code{(r1)}と@code{(r2)}、又は@code{(r)}と@code{(実効アドレス)}の算術比較を行い、比較結果によって、@code{FR}に次の値を設定する。
+@item 算術比較 @* ComPare Arithmetic @tab @code{CPA}@tab @code{r1,r2} @* --- @* @code{r,adr[,x]} @tab @code{(r1)}と@code{(r2)}，又は@code{(r)}と@code{(実効アドレス)}の算術比較を行い，比較結果によって，@code{FR}に次の値を設定する。
 @table @dfn
 @item 比較結果
 FRの値
@@ -125,8 +125,8 @@ FRの値
 @item @code{(r1) < (r2)} 又は @code{(r) < (実効アドレス)}
 @code{SF:1, ZF:0}
 @end table
-@tab ○ @* ただし、@code{OF}には@code{0}が設定される。
-@item 論理比較 @* ComPare Logical @tab @code{CPL} @tab @code{r1,r2} @* ----- @* @code{r,adr[,x]} @tab @code{(r1)}と@code{(r2)}、又は@code{(r)}と@code{(実効アドレス)}の論理比較を行い、比較結果によって、@code{FR}に次の値を設定する。
+@tab ○ @* ただし，@code{OF}には@code{0}が設定される。
+@item 論理比較 @* ComPare Logical @tab @code{CPL} @tab @code{r1,r2} @* --- @* @code{r,adr[,x]} @tab @code{(r1)}と@code{(r2)}，又は@code{(r)}と@code{(実効アドレス)}の論理比較を行い，比較結果によって，@code{FR}に次の値を設定する。
 @table @dfn
 @item 比較結果
 FRの値
@@ -137,46 +137,46 @@ FRの値
 @item @code{(r1) < (r2)} 又は @code{(r) < (実効アドレス)}
 @code{SF:1}, @code{ZF:0}
 @end table
-@tab ○ @* ただし、@code{OF}には@code{0}が設定される。
+@tab ○ @* ただし，@code{OF}には@code{0}が設定される。
 @end multitable
 
 @item シフト演算命令
 @multitable @columnfractions .25 .10 .15 .30 .20
 @headitem 命令 @tab 書き方 @* 命令コード @tab 書き方 @* オペランド @tab 命令の説明 @tab FRの設定
-@item 算術左シフト @* Shift Left Arithmetic @tab @code{SLA} @tab @code{r,adr[,x]} @tab 符号を除き@code{(r)}を実効アドレスで指定したビット数だけ左にシフトする。シフトの結果、空いたビット位置には、@code{0}が入る。 @tab ○ @* ただし、@code{OF}にはレジスタから最後に送り出されたビットの値が設定される。
-@item 算術右シフト @* Shift Right Arithmetic @tab @code{SRA} @tab @code{r,adr[,x]} @tab 符号を除き@code{(r)}を実効アドレスで指定したビット数だけ右にシフトする。シフトの結果、空いたビット位置には、符号と同じものが入る。 @tab ○ @* ただし、@code{OF}にはレジスタから最後に送り出されたビットの値が設定される。
-@item 論理左シフト @* Shift Left Logical @tab @code{SLL} @tab @code{r,adr[,x]} @tab 符号を含み@code{(r)}を実効アドレスで指定したビット数だけ左にシフトする。シフトの結果,空いたビット位置には@code{0}が入る。 @tab ○ @* ただし、@code{OF}にはレジスタから最後に送り出されたビットの値が設定される。
-@item 論理右シフト @* Shift Right Logical @tab @code{SRL} @tab @code{r,adr[,x]} @tab 符号を含み@code{(r)}を実効アドレスで指定したビット数だけ右にシフトする。シフトの結果、空いたビット位置には@code{0}が入る。 @tab ○ @* ただし、@code{OF}にはレジスタから最後に送り出されたビットの値が設定される。
+@item 算術左シフト @* Shift Left Arithmetic @tab @code{SLA} @tab @code{r,adr[,x]} @tab 符号を除き@code{(r)}を実効アドレスで指定したビット数だけ左にシフトする。シフトの結果，空いたビット位置には，@code{0}が入る。 @tab ○ @* ただし，@code{OF}にはレジスタから最後に送り出されたビットの値が設定される。
+@item 算術右シフト @* Shift Right Arithmetic @tab @code{SRA} @tab @code{r,adr[,x]} @tab 符号を除き@code{(r)}を実効アドレスで指定したビット数だけ右にシフトする。シフトの結果，空いたビット位置には，符号と同じものが入る。 @tab ○ @* ただし，@code{OF}にはレジスタから最後に送り出されたビットの値が設定される。
+@item 論理左シフト @* Shift Left Logical @tab @code{SLL} @tab @code{r,adr[,x]} @tab 符号を含み@code{(r)}を実効アドレスで指定したビット数だけ左にシフトする。シフトの結果,空いたビット位置には@code{0}が入る。 @tab ○ @* ただし，@code{OF}にはレジスタから最後に送り出されたビットの値が設定される。
+@item 論理右シフト @* Shift Right Logical @tab @code{SRL} @tab @code{r,adr[,x]} @tab 符号を含み@code{(r)}を実効アドレスで指定したビット数だけ右にシフトする。シフトの結果，空いたビット位置には@code{0}が入る。 @tab ○ @* ただし，@code{OF}にはレジスタから最後に送り出されたビットの値が設定される。
 @end multitable
 
 @item 分岐命令
 @multitable @columnfractions .25 .10 .15 .30 .20
 @headitem 命令 @tab 書き方 @* 命令コード @tab 書き方 @* オペランド @tab 命令の説明 @tab FRの設定
-@item 正分岐 @* Jump on Plus @tab @code{JPL} @tab @code{adr[,x]} @tab @code{FR}の値によって、実効アドレスに分岐する。分岐しないときは、次の命令に進む。
+@item 正分岐 @* Jump on Plus @tab @code{JPL} @tab @code{adr[,x]} @tab @code{FR}の値によって，実効アドレスに分岐する。分岐しないときは，次の命令に進む。
 @table @dfn
 @item 分岐するときの@code{FR}の値
 @code{SF:0, ZF:0}
 @end table
 @tab --
-@item 負分岐 @* Jump on MINUS @tab @code{JMI} @tab @code{adr[,x]} @tab @code{FR}の値によって、実効アドレスに分岐する。分岐しないときは、次の命令に進む。
+@item 負分岐 @* Jump on MINUS @tab @code{JMI} @tab @code{adr[,x]} @tab @code{FR}の値によって，実効アドレスに分岐する。分岐しないときは，次の命令に進む。
 @table @dfn
 @item 分岐するときの@code{FR}の値
 @code{SF:1}
 @end table
 @tab --
-@item 非零分岐 @* Jump on Non Zero @tab @code{JNZ} @tab @code{adr[,x]} @tab @code{FR}の値によって、実効アドレスに分岐する。分岐しないときは、次の命令に進む。
+@item 非零分岐 @* Jump on Non Zero @tab @code{JNZ} @tab @code{adr[,x]} @tab @code{FR}の値によって，実効アドレスに分岐する。分岐しないときは，次の命令に進む。
 @table @dfn
 @item 分岐するときの@code{FR}の値
 @code{ZF:0}
 @end table
 @tab --
-@item 零分岐 @* Jump on ZEro @tab @code{JZE} @tab @code{adr[,x]} @tab @code{FR}の値によって、実効アドレスに分岐する。分岐しないときは、次の命令に進む。
+@item 零分岐 @* Jump on ZEro @tab @code{JZE} @tab @code{adr[,x]} @tab @code{FR}の値によって，実効アドレスに分岐する。分岐しないときは，次の命令に進む。
 @table @dfn
 @item 分岐するときの@code{FR}の値
 @code{ZF:1}
 @end table
 @tab --
-@item オーバーフロー分岐 @* Jump on OVerflow @tab @code{JOV} @tab @code{adr[,x]} @tab @code{FR}の値によって、実効アドレスに分岐する。分岐しないときは、次の命令に進む。
+@item オーバーフロー分岐 @* Jump on OVerflow @tab @code{JOV} @tab @code{adr[,x]} @tab @code{FR}の値によって，実効アドレスに分岐する。分岐しないときは，次の命令に進む。
 @table @dfn
 @item 分岐するときの@code{FR}の値
 @code{OF:1}
@@ -192,7 +192,7 @@ FRの値
 @item ポップ @* POP @tab @code{POP} @tab @code{r} @tab @code{r ← ( (SP) )}, @* @code{SP ← (SP) +L 1} @tab --
 @end multitable
 
-@item コール、リターン命令
+@item コール，リターン命令
 @multitable @columnfractions .25 .10 .15 .30 .20
 @headitem 命令 @tab 書き方 @* 命令コード @tab 書き方 @* オペランド @tab 命令の説明 @tab FRの設定
 @item コール @* CALL subroutine @tab @code{CALL} @tab @code{adr[,x]} @tab @code{SP ← (SP)-L 1}, @* @code{(SP) ← (PR)}, @* @code{PR ← 実効アドレス} @tab --
@@ -230,15 +230,15 @@ FRの値
 @code{adr}と@code{x}の内容との論理加算値又はその値が示す番地
 
 @item @code{←}
-演算結果を、左辺のレジスタ又はアドレスに格納することを示す。 
+演算結果を，左辺のレジスタ又はアドレスに格納することを示す。 
 
 @item @code{+L}, @code{-L}
-論理加算、論理減算を示す。
+論理加算，論理減算を示す。
 
 @item @code{FR}の設定
 @itemize
 @item ○: 設定されることを示す。
-@item ー: 実行前の値が保持されることを示す。
+@item --: 実行前の値が保持されることを示す。
 @end itemize
 @end table
 @end itemize
@@ -249,7 +249,7 @@ FRの値
 JIS X 0201 ラテン文字・片仮名用8ビット符号で規定する文字の符号表を使用する。
 
 @item
-次に符号表の一部を示す。１文字は８ビットからなり、上位4ビットを列で、下位4ビットを行で示す。 たとえば、間隔、4、H、\のビット構成は、16進表示で、ビット構成が 21～7E（及び表では省略しているA1～DF）に対応する文字を図形文字という。 図形文字は、表示（印刷）装置で、文字として表示（印字）できる。
+次に符号表の一部を示す。１文字は８ビットからなり，上位4ビットを列で，下位4ビットを行で示す。 たとえば，間隔，4，H，\のビット構成は，16進表示で，ビット構成が 21～7E（及び表では省略しているA1～DF）に対応する文字を図形文字という。 図形文字は，表示（印刷）装置で，文字として表示（印字）できる。
 
 @multitable @columnfractions .22 .13 .13 .13 .13 .13 .13
 @headitem 行＼列 @tab  02 @tab  03 @tab  04 @tab  05 @tab 06 @tab 07
@@ -272,7 +272,7 @@ JIS X 0201 ラテン文字・片仮名用8ビット符号で規定する文字�
 @end multitable
 
 @item
-この表にない文字とそのビット構成が必要な場合は、問題中で与える。
+この表にない文字とそのビット構成が必要な場合は，問題中で与える。
 @end enumerate
 
 @chapter アセンブラ言語CASL IIの仕様
@@ -281,16 +281,16 @@ JIS X 0201 ラテン文字・片仮名用8ビット符号で規定する文字�
 
 @enumerate
 @item
-CASL IIは、COMET IIのためのアセンブラ言語である。
+CASL IIは，COMET IIのためのアセンブラ言語である。
 
 @item
-プログラムは、命令行および注釈行からなる。
+プログラムは，命令行および注釈行からなる。
 
 @item
-1命令は1命令行で記述し、次の行へ継続できない。
+1命令は1命令行で記述し，次の行へ継続できない。
 
 @item
-命令行および注釈行は、次に示す記述の形式で、行の1文字目から記述する。
+命令行および注釈行は，次に示す記述の形式で，行の1文字目から記述する。
 @multitable @columnfractions .15 .15 .70
 @headitem 行の種類 @tab @tab 記述の形式
 @item 命令行 @tab オペランドあり @tab ［ラベル］｛空白｝｛命令コード｝｛空白｝｛オペランド｝［｛空白｝［｛；｝［コメント］］
@@ -308,7 +308,7 @@ CASL IIは、COMET IIのためのアセンブラ言語である。
 ｛ ｝内の指定が必須であることを示す。
 
 @item ラベル
-その命令の（先頭の語の）アドレスを他の命令やプログラムから参照するための名前である。 長さは1～8文字で、先頭の文字は英大文字でなければならない。 以降の文字は、英大文字又は数字のいずれでもよい。 なお、予約語であるＧＲ0～ＧＲ7は、使用できない。
+その命令の（先頭の語の）アドレスを他の命令やプログラムから参照するための名前である。 長さは1～8文字で，先頭の文字は英大文字でなければならない。 以降の文字は，英大文字又は数字のいずれでもよい。 なお，予約語であるGR0～GR7は，使用できない。
 
 @item 空白
 １文字以上の間隔文字の列である。
@@ -320,7 +320,7 @@ CASL IIは、COMET IIのためのアセンブラ言語である。
 命令ごとに記述の形式が定義されている。
 
 @item コメント
-覚え書きなどの任意の情報であり、処理系で許す任意の文字を書くことができる。
+覚え書きなどの任意の情報であり，処理系で許す任意の文字を書くことができる。
 @end table
 @end itemize
 @end enumerate
@@ -328,80 +328,492 @@ CASL IIは、COMET IIのためのアセンブラ言語である。
 
 @section 命令の種類
 
-　命令は、4種類のアセンブラ命令（ＳＴＡＲＴ，ＥＮＤ，ＤＳ，ＤＣ）、 ４種類のマクロ命令（ＩＮ，ＯＵＴ）および機械語命令（ＣＯＭＥＴⅡの命令）からなる。 その仕様を次に示す。
-命令の種類	ラベル	命令コード	オペランド	機能
-アセンブラ命令	ラベル	ＳＴＡＲＴ	［実行開始番地］	プログラムの先頭を定義
-プログラムの実行開始番地を定義
-他のプログラムで参照する入口名を定義
+命令は，4種類のアセンブラ命令（START，END，DS，DC）， ４種類のマクロ命令（IN，OUT）および機械語命令（COMET IIの命令）からなる。 その仕様を次に示す。
 
-ＥＮＤ	
-プログラムの終わりを明示
-［ラベル］	ＤＳ	語数	領域を確保
-［ラベル］	ＤＣ	定数［，定数］・・・	定数を定義
-マクロ命令	［ラベル］	ＩＮ	入力領域，入力文字長領域	入力装置から文字データを入力
-［ラベル］	ＯＵＴ	出力領域，出力文字長領域	出力装置へ文字データを出力
-［ラベル］	ＲＰＵＳＨ	
-ＧＲの内容をスタックに格納
-［ラベル］	ＲＰＯＰ	
-スタックの内容をＧＲに格納
-機械語命令	［ラベル］	（「１．２ 命令」を参照）
-２．３ アセンブラ命令
+@multitable @columnfractions .20 .10 .10 .30 .30
+@headitem 命令の種類 @tab ラベル @tab 命令コード @tab オペランド @tab 機能
+@item アセンブラ命令 @tab ラベル @tab START @tab ［実行開始番地］ @tab プログラムの先頭を定義 @* プログラムの実行開始番地を定義 @* 他のプログラムで参照する入口名を定義
+@item @tab @tab END @tab @tab プログラムの終わりを明示
+@item @tab ［ラベル］ @tab DS @tab 語数 @tab 領域を確保
+@item @tab ［ラベル］ @tab DC @tab 定数［,定数］・・・ @tab 定数を定義
+@item マクロ命令 @tab ［ラベル］ @tab IN @tab 入力領域，入力文字長領域 @tab 入力装置から文字データを入力
+@item @tab ［ラベル］ @tab OUT @tab 出力領域，出力文字長領域 @tab 出力装置へ文字データを出力
+@item @tab ［ラベル］ @tab RPUSH @tab @tab GRの内容をスタックに格納
+@item @tab ［ラベル］ @tab RPOP @tab @tab スタックの内容をＧＲに格納
+@item 機械語命令 @tab ［ラベル］ @tab （「1.2 命令」を参照）
+@end multitable
 
-　アセンブラ命令は、アセンブラの制御などを行う。
-（１）	
-ＳＴＡＲＴ	［実行開始番地］
-　ＳＴＡＲＴ命令は、プログラムの先頭を定義する。
-　実行開始番地は、そのプログラム内で定義されたラベルでしていする。 指定がある場合はその番地から、省略した場合はＳＴＡＲＴ命令の次の命令から、実行を開始する。
-　また、この命令につけられたラベルは、他のプログラムから入口名として参照できる。
-（２）	
-ＥＮＤ	
-　ＥＮＤ命令は、プログラムの終わりを定義する。
-（３）	
-ＤＳ	語数
-　ＤＳ命令は、指定した語数の領域を確保する。
-　語数は、１０進定数（≧０）で指定する。語数を０とした場合、領域は確保しないが、ラベルは有効である。
-（４）	
-ＤＣ	定数［，定数］・・・
-　ＤＣ命令は、定数で指定したデータを（連続する）語に格納する。
-　定数には、１０進定数、１６進定数、文字定数、アドレス定数の４種類がある。
-定数の種類	書き方	命令の説明
-１０進定数	ｎ	ｎで指定した１０進数値を、１語の２進数データとして格納する。 ただし、ｎが－３２７６８～３２７６７の範囲にないときは、その下位１６ビットを格納する。
-１６進定数	＃ｈ	ｈは４桁の１６進数（１６進数字は０～９，Ａ～Ｆ）とする。 ｈで指定した１６進数値を１語の２進数データとして格納する（００００≦ｈ≦ＦＦＦＦ）。
-文字定数	’文字列’	文字列の文字数（＞０）分の連続する領域を確保し、最初の文字は第１語の下位８ビットに、 ２番目の文字は第２語の下位８ビットに、・・・と順次文字データとして格納する。 各語の上位８ビットには０のビットが入る。
-文字列には、間隔および任意の図形文字を書くことができる。 ただし、アポストロフィ（’）は２個続けて書く。
-アドレス定数	ラベル	ラベルに対応するアドレスを１語の２進数データとして格納する。
-２．４ マクロ命令
+@section アセンブラ命令
 
-　マクロ命令は、あらかじめ定義された命令群とオペランドの情報によって、 目的の機能を果たす命令群を生成する（語数は不定）。
-（１）	
-ＩＮ	入力領域，入力文字長領域
-　ＩＮ命令は、あらかじめ割り当てた入力装置から、１レコードの文字データを読み込む。
-　入力領域は、２５６語長の作業域のラベルであり、この領域の先頭から、 １文字を１語に対応させて順次入力される。レコードの区切り符号（キーボ－ド入力の復帰符号など）は、 格納しない。格納の形式は、ＤＣ命令の文字定数と同じである。入力データが２５６文字に満たない場合、 入力領域の残りの部分は実行前のデータを保持する。入力データが２５６文字を超える場合、 以降の文字は無視される。
-　入力文字長領域は、１語長の領域のラベルであり、入力された文字の長さ（≧０）が２進数で格納される。 ファイルの終わり（ｅｎｄ　ｏｆ　ｆｉｌｅ）を検出した場合は、－１が格納される。
-　ＩＮ命令を実行すると、ＧＲの内容は保存されるが、ＦＲの内容は不定となる。
-（２）	
-ＯＵＴ	出力領域，出力文字長領域
-　ＯＵＴ命令は、あらかじめ割り当てた出力装置に、文字データを、１レコードとして書き出す。
-　出力領域は、出力しようとするデータが１文字１語で格納されている領域のラベルである。 格納の形式は、ＤＣ命令の文字定数と同じであるが、 上位８ビットは、ＯＳが無視するので０でなくてもよい。
-　出力文字長領域は、１語長の領域のラベルであり、 出力しようとする文字の長さ（≧０）を２進数で格納しておく。
-　ＯＵＴ命令を実行すると、ＧＲの内容は保存されるが、ＦＲの内容は不定となる。
-（３）	
-ＲＰＵＳＨ	
-　ＲＰＵＳＨ命令は、ＧＲの内容を、ＧＲ１、ＧＲ２、・・・、ＧＲ７の順でスタックに格納する。
-（４）	
-ＲＰＯＰ	
-　ＲＰＯＰ命令は、スタックの内容を順次取り出し、ＧＲ７、ＧＲ６、・・・、ＧＲ１の順でＧＲに格納する。
-２．５ 機械語命令
+アセンブラ命令は，アセンブラの制御などを行う。
 
-　機械語命令のオペランドは、次の形式で記述する。
-ｒ，ｒ１，ｒ２	ＧＲは、記号ＧＲ０～ＧＲ７で指定する。
-ｘ	指標レジスタとして用いるＧＲは、記号ＧＲ１～ＧＲ７で指定する。
-ａｄｒ	アドレスは、１０進定数、１６進定数、アドレス定数又はリテラルで指定する。
-リテラルは、ひとつの１０進定数、１６進定数又は文字定数の前に等号（＝）を付けて 記述する。CASL IIは、等号の後の定数をオペランドとするＤＣ命令を生成し、 そのアドレスをａｄｒの値とする。
-２．６ その他
+@enumerate
 
-アセンブラによって生成される命令語や領域の相対位置は、アセンブラ言語での記述順序とする。 ただし、リテラルから生成されるＤＣ命令は、ＥＮＤ命令の直前にまとめて配置される。
-生成された命令語、領域は、主記憶上で連続した領域を占める。
+@item
+@multitable @columnfractions .20 .80
+@item START @tab ［実行開始番地］
+@end multitable
 
+START命令は，プログラムの先頭を定義する。
+
+実行開始番地は，そのプログラム内で定義されたラベルで指定する。指定がある場合はその番地から，省略した場合はSTART命令の次の命令から，実行を開始する。
+
+また，この命令につけられたラベルは，他のプログラムから入口名として参照できる。
+
+@item
+@multitable @columnfractions .20 .80
+@item END @tab
+@end multitable
+
+END命令は，プログラムの終わりを定義する。
+
+@item
+@multitable @columnfractions .20 .80
+@item DS @tab 語数
+@end multitable
+
+DS命令は，指定した語数の領域を確保する。
+
+語数は，10進定数（≧0）で指定する。語数を0とした場合，領域は確保しないが，ラベルは有効である。
+
+@item
+@multitable @columnfractions .20 .80
+@item DC @tab 定数［,定数］・・・
+@end multitable
+
+DC命令は，定数で指定したデータを（連続する）語に格納する。
+定数には，10進定数，16進定数，文字定数，アドレス定数の４種類がある。
+
+@multitable @columnfractions .20 .10 .70
+@headitem 定数の種類 @tab 書き方 @tab 命令の説明
+@item 10進定数 @tab ｎ @tab nで指定した10進数値を，1語の2進数データとして格納する。 ただし，nが-32768～32767の範囲にないときは，その下位16ビットを格納する。
+@item 16進定数 @tab #h @tab hは4桁の16進数（16進数字は0～9，A～F）とする。 ｈで指定した16進数値を1語の2進数データとして格納する（0000≦h≦FFFF）。
+@item 文字定数 @tab ’文字列’ @tab 文字列の文字数（>0）分の連続する領域を確保し，最初の文字は第１語の下位８ビットに， ２番目の文字は第２語の下位８ビットに，・・・と順次文字データとして格納する。 各語の上位8ビットには0のビットが入る。 @* 文字列には，間隔および任意の図形文字を書くことができる。 ただし，アポストロフィ（'）は2個続けて書く。
+@item アドレス定数 @tab ラベル @tab ラベルに対応するアドレスを1語の2進数データとして格納する。
+@end multitable
+@end enumerate
+
+@section マクロ命令
+
+マクロ命令は，あらかじめ定義された命令群とオペランドの情報によって， 目的の機能を果たす命令群を生成する（語数は不定）。
+
+@enumerate
+@item
+@multitable @columnfractions .20 .80
+@item IN @tab 入力領域,入力文字長領域
+@end multitable
+IN命令は，あらかじめ割り当てた入力装置から，1レコードの文字データを読み込む。
+
+入力領域は，256語長の作業域のラベルであり，この領域の先頭から，1文字を1語に対応させて順次入力される。レコードの区切り符号（キーボ－ド入力の復帰符号など）は，格納しない。格納の形式は，ＤＣ命令の文字定数と同じである。入力データが256文字に満たない場合， 入力領域の残りの部分は実行前のデータを保持する。入力データが256文字を超える場合， 以降の文字は無視される。
+
+入力文字長領域は，1語長の領域のラベルであり，入力された文字の長さ（≧0）が２進数で格納される。ファイルの終わり（end of file）を検出した場合は，-1が格納される。
+
+IN命令を実行すると，GRの内容は保存されるが，FRの内容は不定となる。
+
+@item
+@multitable @columnfractions .20 .80
+@item OUT @tab 出力領域,出力文字長領域
+@end multitable
+
+OUT命令は，あらかじめ割り当てた出力装置に，文字データを，1レコードとして書き出す。
+
+出力領域は，出力しようとするデータが1文字1語で格納されている領域のラベルである。 格納の形式は，DC命令の文字定数と同じであるが， 上位8ビットは，OSが無視するので0でなくてもよい。
+
+出力文字長領域は，1語長の領域のラベルであり， 出力しようとする文字の長さ（≧0）を2進数で格納しておく。
+
+OUT命令を実行すると，GRの内容は保存されるが，FRの内容は不定となる。
+
+@item
+@multitable @columnfractions .20 .80
+@item RPUSH @tab
+@end multitable
+
+RPUSH命令は，GRの内容を，GR1，GR2，・・・，GR7の順でスタックに格納する。
+
+@item
+@multitable @columnfractions .20 .80
+@item RPOP @tab
+@end multitable
+
+RPOP命令は，スタックの内容を順次取り出し，GR7，GR6，・・・，GR1の順でGRに格納する。
+@end enumerate
+
+@section 機械語命令
+
+機械語命令のオペランドは，次の形式で記述する。
+
+@table @code
+
+@item r, r1 , r
+GRは，記号GR0～GR7で指定する。
+
+@item x
+指標レジスタとして用いるGRは，記号GR1～GR7で指定する。
+
+@item adr
+アドレスは，10進定数，16進定数，アドレス定数又はリテラルで指定する。
+リテラルは，ひとつの10進定数，16進定数又は文字定数の前に等号（=）を付けて 記述する。CASL IIは，等号の後の定数をオペランドとするDC命令を生成し， そのアドレスをadrの値とする。
+@end table
+
+@section その他
+
+@enumerate
+@item
+アセンブラによって生成される命令語や領域の相対位置は，アセンブラ言語での記述順序とする。ただし，リテラルから生成されるDC命令は，END命令の直前にまとめて配置される。
+
+@item
+生成された命令語，領域は，主記憶上で連続した領域を占める。
+@end enumerate
+
+@chapter プログラム実行の手引
+@section OS
+
+プログラムの実行に関して,次の取決めがある。
+
+@enumerate
+@item
+アセンブラは，未定義ラベル（オペランド欄に記述されたラベルのうち，そのプログラム内で定義されていないラベル）を，他のプログラムの入口名（START命令のラベル）と解釈する。この場合，アセンブラはアドレスの決定を保留し，その決定をOSに任せる。OSは，実行に先立って他のプログラムの入口名との連係処理を行いアドレスを決定する（プログラムの連係）。
+
+@item
+プログラムは，OS によって起動される。プログラムがロードされる主記憶の領域は不定とするが，プログラム中のラベルに対応するアドレス値は，OSによって実アドレスに補正されるものとする。
+
+@item
+プログラムの起動時に，OS はプログラム用に十分な容量のスタック領域を確保し，その最後のアドレスに1を加算した値をSPに設定する。
+
+@item
+OSは，CALL 命令でプログラムに制御を渡す。プログラムを終了し OSに制御を戻すときは，RET 命令を使用する。
+
+@item
+IN命令に対応する入力装置，OUT命令に対応する出力装置の割当ては，プログラムの
+実行に先立って利用者が行う。
+
+@item
+OSは，入出力装置や媒体による入出力手続の違いを吸収し，システムでの標準の形式及び手続（異常処理を含む）で入出力を行う。したがって，IN，OUT 命令では，入出力装置の違いを意識する必要はない。
+@end enumerate
+
+@section 未定義事項
+
+プログラムの実行等に関し，この仕様で定義しない事項は，処理系によるものとする。
+
+@unnumbered 参考資料
+参考資料は，COMET IIの理解を助けるため又は COMET IIの処理系作成者に対する便宜のための資料である。したがって，COMET II，CASL IIの仕様に影響を与えるものではない。
+
+@section 命令語の構成
+
+命令語の構成は定義しないが，次のような構成を想定する。ここで，OPの数値は16進表示で示す。
+
+@multitable @columnfractions .1 .1 .1 .1 .1 .1 .2 .2
+@headitem 定数の種類 @tab 書き方 @tab 命令の説明
+@item 10進定数 @tab ｎ @tab nで指定した10進数値を，1語の2進数データとして格納する。 ただし，nが-32768～32767の範囲にないとき
+@end multitable
+15	11	7	3	0 15
+第1語			第2語	命令語長	
+
+OP
+r/r1 x/r2 
+主OP副OP
+0
+0
+-
+-
+1
+0
+1
+2
+4
+2
+0
+1
+2
+3
+4
+5
+6
+7
+3
+0
+1
+2
+4
+5
+6
+4
+0
+1
+4
+5
+5
+0
+1
+2
+3
+6
+1
+-
+2
+-
+3
+-
+4
+-
+5
+-
+6
+-
+7
+0
+-
+1
+-
+8
+0
+-
+1
+-
+-
+9
+~
+E
+F
+0
+-
+0
+
+adr 
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+ビット番号
+命令語とアセンブラとの対応
+
+1
+2
+2
+2
+1
+2
+2
+2
+2
+1
+1
+1
+1
+2
+2
+2
+1
+1
+1
+2
+2
+1
+1
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+2
+1
+2
+1
+機械語命令
+NOP 
+LD 
+ST 
+LAD 
+LD 
+ADDA 
+SUBA 
+ADDL 
+SUBL 
+ADDA 
+SUBA 
+ADDL 
+SUBL 
+AND 
+OR 
+XOR 
+AND 
+OR 
+XOR 
+CPA 
+CPL 
+CPA 
+CPL 
+SLA 
+SRA 
+SLL 
+SRL 
+JMI 
+JNZ 
+JZE 
+JUMP 
+JPL 
+JOV 
+PUSH 
+POP 
+CALL 
+RET 
+ 
+r，adr，x 
+r，adr，x 
+r，adr，x 
+r1，r2 
+r，adr，x 
+r，adr，x 
+r，adr，x 
+r，adr，x 
+r1，r2 
+r1，r2 
+r1，r2 
+r1，r2 
+r，adr，x 
+r，adr，x 
+r，adr，x 
+r1，r2 
+r1，r2 
+r1，r2 
+r，adr，x 
+r，adr，x 
+r1，r2 
+r1，r2 
+r，adr，x 
+r，adr，x 
+r，adr，x 
+r，adr，x 
+adr，x 
+adr，x 
+adr，x 
+adr，x 
+adr，x 
+adr，x 
+adr，x 
+r 
+adr，x 
+意味
+no operation
+load
+store
+load address
+load
+add arithmetic
+subtract arithmetic
+add logical
+subtract logical
+add arithmetic
+subtract arithmetic
+add logical
+subtract logical
+and
+or
+exclusive or
+and
+or
+exclusive or
+compare arithmetic
+compare logical
+compare arithmetic
+compare logical
+shift left arithmetic
+shift right arithmetic
+shift left logical
+shift right logical
+jump on minus
+jump on non zero
+jump on zero
+unconditional jump
+jump on plus
+jump on overflow
+push
+pop
+call subroutine
+return from subroutine
+その他の命令
+2
+SVC 
+adr，x 
+supervisor call
+- 9 -
+Copyright（c） Information-technology Promotion Agency， Japan. All rights reserved 2012
+
+@section マクロ命令
+
+マクロ命令が生成する命令群は定義しない（語数不定）が，次の例のような命令群を生成することを想定する。
+
+〔例〕IN 命令
+@verbatim
+LABEL  IN IBUF,LEN
+@end verbatim
+
+マクロ生成
+
+@verbatim
+LABEL PUSH 0,GR1
+      PUSH 0,GR2
+      LAD GR1,IBUF
+      LAD GR2,LEN
+      SVC 1
+      POP GR2
+      POP GR1
+@end verbatim
+
+@section シフト演算命令におけるビットの動き
+
+シフト演算命令において，例えば，1 ビットのシフトをしたときの動き及び OF の変化は，次のとおりである。
+
+@enumerate
+
+@item
+算術左シフトでは，ビット番号14の値が設定される。
+
+@item
+算術右シフトでは，ビット番号 0 の値が設定される。
+
+@item
+論理左シフトでは，ビット番号 15 の値が設定される。
+
+@item
+論理右シフトでは，ビット番号 0 の値が設定される。
+@end enumerate
+
+@section プログラムの例
+
+@verbatim
+COUNT1  START                    ;
+;       入力    ; GR1:検索する語
+;       処理    ; GR1 中の'1'のビットの個数を求める
+;       出力    ; GR0:GR1 中の'1'のビットの個数
+        PUSH    0,GR1            ;
+        PUSH    0,GR2            ; Count = 0
+        SUBA    GR2,GR2          ; 全部のビットが'0'?
+        AND     GR1,GR1          ; 全部のビットが'0'なら終了
+        JZE     RETURN           ; Count = Count + 1
+MORE    LAD     GR2,1,GR2        ; 最下位の'1'のビット 1 個を
+        LAD     GR0,-1,GR1       ; '0'に変える
+        AND     GR1,GR0          ; '1'のビットが残っていれば繰返し
+        JNZ     MORE             ; GR0 = Count
+RETURN  LD      GR0,GR2          ;
+        POP     GR2              ;
+        POP     GR1              ;
+        RET                      ; 呼出しプログラムへ戻る
+        END
+;
+@end verbatim
 @bye
-
