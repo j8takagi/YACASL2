@@ -106,14 +106,20 @@ kbd {
     font-family: monospace;
 }
 
+em {
+    font-weight: bold;
+    font-style: normal;
+}
+
 kbd, code, .file {
     margin-left:0.5em;
     margin-right: 0.5em;
 }
 
 table, th, td {
-    border: 1px solid #CCC;
+    border: 1px solid #888;
     border-collapse: collapse; /* 枠線の表示方法 */
+    margin-bottom: 1em;
 }
 
 table.cartouche, table.cartouche th, table.cartouche td  {
