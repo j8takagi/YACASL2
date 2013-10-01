@@ -81,7 +81,7 @@ ALL_TEST = $(shell $(EXPR) $(SUCCESS_TEST) + $(FAIL_TEST))
 # テストごとの実行時間ファイル
 TEST_TIME_FILES := $(foreach test,$(TESTS),$(test)/$(TIME_FILE))
 
-# テストごとの実行時間ファイル
+# テストごとのvalgrindファイル
 TEST_VALGRIND_FILES := $(foreach test,$(TESTS),$(test)/$(VALGRIND_FILE))
 
 # テストの結果を、グループログファイルを元にレポート。
