@@ -86,10 +86,8 @@ a:hover {
     text-decoration: underline;
 }
 
-pre.example {
+pre.example, pre.verbatim {
     padding: 0.5em 1em 0.5em 1em;
-    color: #CCC;
-    background: black;
     font-size: 90%;
 }
 
@@ -102,22 +100,16 @@ blockquote {
     border: 1px solid #00F;
 }
 
-kbd {
-    font-family: monospace;
-}
-
-em {
-    font-weight: bold;
+kbd, code, .file, var {
     font-style: normal;
-}
-
-kbd, code, .file {
+    font-family: monospace;
+    font-size: 90%;
     margin-left:0.5em;
     margin-right: 0.5em;
 }
 
 table, th, td {
-    border: 1px solid #888;
+    border: 1px solid #CCC;
     border-collapse: collapse; /* 枠線の表示方法 */
     margin-bottom: 1em;
 }
@@ -131,6 +123,7 @@ pre.example .command, pre.example .option, pre.example kbd {
     font-family: monospace;
     background-color: inherit;
     color: white;
+    font-style: normal;
     margin-left:0;
     margin-right: 0;
 }
@@ -146,4 +139,8 @@ dt {
 
 dfn {
     font-style: normal;
+}
+
+.header, .menu {
+    display: none;
 }
