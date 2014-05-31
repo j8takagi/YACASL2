@@ -16,10 +16,10 @@ all: base htmls pdf
 info: yacasl2.info
 
 html: $(addsuffix .html,$(DOCS))
-	for f in $^; do $(SED) -i '' -e 's!dir\.html#Top!\.\./!g' $$f; done
+	for f in $^; do $(SED) -i .bak -e 's!dir\.html#Top!\.\./!g' $$f && $(RM) $$f.bak; done
 
 htmls: $(addsuffix _html,$(DOCS))
-	for d in $^; do $(SED) -i '' -e 's!\.\./dir/index\.html!\.\./\.\./!g' $$d/index.html; done
+	for d in $^; do $(SED) -i .bak -e 's!\.\./dir/index\.html!\.\./\.\./!g' $$d/index.html && $(RM) $$d/index.html.bak; done
 
 pdf: $(addsuffix .pdf,$(DOCS))
 
