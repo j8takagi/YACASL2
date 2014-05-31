@@ -198,7 +198,7 @@ bool create_code_type()
 const void (*getcmdptr(WORD code))
 {
     CMDTAB *t;
-    const void (*ptr);
+    const void *ptr = NULL;
 
     for(t = code_type[hash_code(code)]; t != NULL; t = t->next) {
         if(code == t->cmd->code) {
