@@ -16,10 +16,10 @@ all: base htmls pdf
 info: yacasl2.info
 
 html: $(addsuffix .html,$(DOCS))
-	for f in $^; do $(SED) -i -e 's!dir\.html#Top!\.\./!g' $$f; done
+	for f in $^; do $(SED) -i '' -e 's!dir\.html#Top!\.\./!g' $$f; done
 
 htmls: $(addsuffix _html,$(DOCS))
-	for d in $^; do $(SED) -i -e 's!\.\./dir/index\.html!\.\./\.\./!g' $$d/index.html; done
+	for d in $^; do $(SED) -i '' -e 's!\.\./dir/index\.html!\.\./\.\./!g' $$d/index.html; done
 
 pdf: $(addsuffix .pdf,$(DOCS))
 
@@ -32,6 +32,7 @@ distclean: clean texinfo-distclean
 
 # make baseで作成されたドキュメントは残す
 clean: texinfo-clean
+	$(RM) *.bak
 
 include texinfo.mk
 
