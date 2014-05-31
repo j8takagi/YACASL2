@@ -4,6 +4,12 @@
 ifndef DEFINE_INCLUDED
 DEFINE_INCLUDED = 1
 
+# シェルコマンドをデバッグするときは、DEBUGSH変数を設定してmakeを実行する
+# 例: DEBUGSH=1 make
+ifdef DEBUGSH
+  SHELL := /bin/sh -x
+endif
+
 # 現在の日時
 DATE = $(shell date +"%F %T")
 

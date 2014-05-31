@@ -9,6 +9,8 @@
 # make create   : TESTNAMEで指定されたテストを新規に作成
 # make clean    : すべてのテストで、"make" で生成されたファイルをクリア
 # make time-clean: すべてのテストで、実行時間のログファイルをクリア
+# make valgrind: すべてのテストで、valgrindによるメモリリークチェックを実行する
+# make valgrind-clean: すべてのテストで、valgrindのログファイルをクリア
 
 SHELL = /bin/sh
 
@@ -27,7 +29,7 @@ GROUP_DIR := $(CURDIR)
 GROUP := $(notdir $(GROUP_DIR))
 
 # テスト名。カレントディレクトリー内の、名前が大文字または.以外で始まるディレクトリー
-TESTS = $(notdir $(shell $(FIND) -maxdepth 1 -name "[^A-Z.]*" -type d))
+TESTS := $(notdir $(shell $(FIND) -maxdepth 1 -name "[^A-Z.]*" -type d))
 
 # テストグループログファイル
 GROUP_LOG_FILE := $(shell $(ECHO) $(GROUP) | $(TR) '[a-z]' '[A-Z]').log
@@ -57,13 +59,11 @@ TEST_LOG_FILES := $(foreach test,$(TESTS),$(test)/$(LOG_FILE))
 define group_log
     $(if $(filter 1,$(verbose)),$(ECHO) '$(CURDIR) - $(words $1) tests')
     $(foreach target,$1,$(call group_log_each,$(target),$2))
-    $(if $(filter 1,$(verbose)),$(ECHO))
 endef
 
 # テストのログファイルをグループログファイルに出力。引数は、テスト、グループログファイル
 # 用例: $(call group_log_each,file_test_log,file_group_log)
 define group_log_each
-    $(if $(filter 1,$(verbose)),$(ECHO) -n '.')
     $(ECHO) $(dir $1) >>$2;
     if test -s $1; then $(CAT) $1 >>$2; else $(ECHO) $(dir $1)": no log" >>$2; fi
     $(ECHO) >>$2;
