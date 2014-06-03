@@ -1,24 +1,21 @@
-1 YACASL2のインストール
-***********************
-
-1 YACASL2のインストール
-要件
-1.1 YACASL2ファイルのダウンロード
-1.2 YACASL2ファイルの検証
-  1.2.1 GnuPG分離署名での検証
-  1.2.2 MD5ハッシュ値での検証
-1.3 YACASL2ファイルの展開
-1.4 'casl2' 'comet2' 'dumpword'のビルド
-1.5 'casl2'の実行テスト
-1.6 詳細なテスト
-1.7 インストール
-1.8 環境変数の設定
+1 要件
+2 インストールの手順
+2.1 YACASL2ファイルのダウンロード
+2.2 YACASL2ファイルの検証
+  2.2.1 GnuPG分離署名での検証
+  2.2.2 MD5ハッシュ値での検証
+2.3 YACASL2ファイルの展開
+2.4 'casl2' 'comet2' 'dumpword'のビルド
+2.5 'casl2'の実行テスト
+2.6 詳細なテスト
+2.7 インストール
+2.8 環境変数の設定
   シェルの確認
-  1.8.1 'PATH'の設定
-  1.8.2 'INFOPATH'の設定
-  1.8.3 'CASL2LIB'の設定
-要件
-====
+  2.8.1 'PATH'の設定
+  2.8.2 'INFOPATH'の設定
+  2.8.3 'CASL2LIB'の設定
+1 要件
+******
 
  YACASL2は、LinuxやMac OS Xなど、UNIX系のOS上で動作します。現在動作を確
 認しているのは、Ubuntu LinuxとVine Linux、Mac OS Xです。
@@ -27,7 +24,10 @@
 準でインストールされています。Mac OS Xの場合、Xcodeの「Command Line
 Tools」に含まれます。
 
-1.1 YACASL2ファイルのダウンロード
+2 インストールの手順
+********************
+
+2.1 YACASL2ファイルのダウンロード
 =================================
 
  YACASL2のサイト (http://www.j8takagi.net/yacasl2/)から、'tar.gz'または
@@ -35,13 +35,13 @@ Tools」に含まれます。
 ダウンロードページ (http://github.com/j8takagi/YACASL2/downloads/)から
 'tar.gz'などのファイルをダウンロードすることもできます。
 
-1.2 YACASL2ファイルの検証
+2.2 YACASL2ファイルの検証
 =========================
 
  ダウンロードが完了したら、圧縮ファイルが改竄されていないか検証します。
 検証にはGnuPG分離署名か、MD5ハッシュ値を使います。
 
-1.2.1 GnuPG分離署名での検証
+2.2.1 GnuPG分離署名での検証
 ---------------------------
 
  GnuPGの'gpg'で圧縮ファイルを検証します。この検証を行うには、GnuPGがイン
@@ -91,7 +91,7 @@ Tools」に含まれます。
      gpg: depth: 1  valid:   4  signed:   0  trust: 4-, 0q, 0n, 0m, 0f, 0u
      gpg: Good signature from "j8takagi <j8takagi@nifty.com>"
 
-1.2.2 MD5ハッシュ値での検証
+2.2.2 MD5ハッシュ値での検証
 ---------------------------
 
  'openssl'と'diff'で圧縮ファイルを検証します。
@@ -99,14 +99,14 @@ Tools」に含まれます。
      $ openssl md5 yacasl2.tar.gz | diff -s yacasl2.tar.gz.md5sum -
      Files yacasl2.tar.gz.md5sum and - are identical
 
-1.3 YACASL2ファイルの展開
+2.3 YACASL2ファイルの展開
 =========================
 
  YACASL2ファイルをダウンロードしたら、'tar'コマンドで展開します。
 
      $ tar xvzf yacasl2.tar.gz
 
-1.4 'casl2' 'comet2' 'dumpword'のビルド
+2.4 'casl2' 'comet2' 'dumpword'のビルド
 =======================================
 
  展開したら、'make'コマンドで'casl2' 'comet2' 'dumpword'をビルドします。
@@ -136,7 +136,7 @@ Tools」に含まれます。
      gcc -g -Wall -I ../include -o ../dumpword dumpword.o word.o cerr.o
      make[1]: Leaving directory ‘/home/kazubito/yacasl2/src’
 
-1.5 'casl2'の実行テスト
+2.5 'casl2'の実行テスト
 =======================
 
  ビルドしたら、次のコマンドが正常に実行できるかを確認します。 正常に実行
@@ -145,7 +145,7 @@ Tools」に含まれます。
      $ ./casl2 as/hello.casl
      Hello, World!
 
-1.6 詳細なテスト
+2.6 詳細なテスト
 ================
 
  'make check'コマンドを実行すると、正常にビルドできているかどうかを詳細
@@ -162,7 +162,7 @@ Tools」に含まれます。
      /dumpword/Test.log
      All tests are succeded.
 
-1.7 インストール
+2.7 インストール
 ================
 
  ビルドが成功したら、'make install'コマンドで必要なファイルをインストー
@@ -187,7 +187,7 @@ INFODIR        infoファイルのインストール先         '$prefix/info'
 CASL2LIBDIR    CASL II ライブラリファイルのインス   '$prefix/lib/yacasl2'
                トール先
 
-1.8 環境変数の設定
+2.8 環境変数の設定
 ==================
 
  環境変数'PATH'や'CASL2LIB'を設定することで、YACASL2が使いやすくなります
@@ -202,10 +202,10 @@ CASL2LIBDIR    CASL II ライブラリファイルのインス   '$prefix/lib/ya
      $ echo $SHELL
      /bin/bash
 
- 現在もっとも多く使われているシェルは、BASHでしょう。以下、BASHでの設定
+ 現在もっとも多く使われているシェルは、Bashでしょう。以下、Bashでの設定
 方法を説明します。
 
-1.8.1 'PATH'の設定
+2.8.1 'PATH'の設定
 ------------------
 
  'PATH'にYACASL2の実行ファイルのインストール先を追加すると、ディレクトリ
@@ -216,12 +216,12 @@ CASL2LIBDIR    CASL II ライブラリファイルのインス   '$prefix/lib/ya
      $ PATH=$PATH:~/bin && export PATH
 
  環境変数の設定は、シェルの初期設定ファイルに追加することでログインした
-あと自動的に反映されるようになります。BASHでは'~/.bashrc'が初期設定ファ
+あと自動的に反映されるようになります。Bashでは'~/.bashrc'が初期設定ファ
 イルです。次のコマンドで追加できます。
 
      $ echo ’PATH=$PATH:~/bin && export PATH’ >>~/.bashrc
 
-1.8.2 'INFOPATH'の設定
+2.8.2 'INFOPATH'の設定
 ----------------------
 
  'INFOPATH'にYACASL2のInfoファイルをインストールしたディレクトリーを追加
@@ -235,7 +235,7 @@ CASL2LIBDIR    CASL II ライブラリファイルのインス   '$prefix/lib/ya
 
      $ echo 'INFOPATH=$INFOPATH:~/share/info && export INFOPATH' >>~/.bashrc
 
-1.8.3 'CASL2LIB'の設定
+2.8.3 'CASL2LIB'の設定
 ----------------------
 
  環境変数'CASL2LIB'を設定しておけば、CASL IIプログラム作成時に共通ライブ
