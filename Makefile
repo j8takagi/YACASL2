@@ -24,8 +24,10 @@ prefix ?= ~
 bindir ?= $(prefix)/bin
 
 VERSION := $(shell $(CAT) VERSION)
-VER := $(shell $(ECHO) $(VERSION) | $(SED) -e 's/^v\([0-9.]*\)p\([0-9]*\)/\1/')
-PATCH := $(shell $(ECHO) $(VERSION) | $(SED) -e 's/^v[0-9.]*p\([0-9]*\)/\1/')
+
+VERSIONGITREF := $(shell $(GIT) show-ref -s --tags $(VERSION))
+
+MASTERGITREF := $(shell $(GIT) show-ref -s refs/heads/master)
 
 VERSIONFILES = include/package.h \
         test/system/casl2/opt_v/0.txt \
@@ -71,9 +73,7 @@ $(VERSIONFILES): VERSION
 	@$(SED) -e "s/@@VERSION@@/$(VERSION)/g" $@.version >$@
 
 gittag:
-	patch=$(PATCH); while ($(GIT) tag | $(GREP) v$(VER)p$${patch}); do patch=`$(EXPR) $${patch} + 1`; done; $(ECHO) v$(VER)p$${patch} >VERSION
-	if ($(GIT) status -s | $(GREP) VERSION); then $(GIT) add VERSION; $(GIT) commit --amend --no-edit; fi
-	$(CAT) VERSION | $(XARGS) $(GIT) tag
+	if test `$(GIT) status -s | wc -l` -gt 0; then $(ECHO) "Error: commit, first."; exit 1; fi; if test "$(VERSIONGITREF)" != "$(MASTERGITREF)"; then $(GIT) tag $(VERSION); fi
 
 distclean: cmd-clean src-distclean gtags-clean version-clean clean
 
