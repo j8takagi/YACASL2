@@ -29,13 +29,13 @@
  * \section Webサイト
  * http://www.j8takagi.net/yacasl2/
  *
- * \section 外部仕様書
- * http://www.j8takagi.net/yacasl2/doc/yacasl2.html
+ * \section 外部仕様書（マニュアル）
+ * http://www.j8takagi.net/yacasl2/doc/manual.html
  *
  * \section CASLII仕様書
  *
- *   試験で使用する情報処理用語・プログラム言語など（2008年10月版）
- *   http://www.jitec.ipa.go.jp/1_00topic/topic_20081027_hani_yougo.pdf （PDFファイル）
+ *   試験で使用する情報処理用語・プログラム言語など Ver 2.2（平成24年5月22日）</a>
+ *   http://www.jitec.jp/1_13download/shiken_yougo_ver2_2.pdf （PDFファイル）
  *       別紙 1 アセンブラ言語の仕様
  *
  * \section ライセンス
