@@ -10,3 +10,5 @@ GTAGS
 core
 /Doxyfile
 .DS_Store
+*.bak
+fontconfig
