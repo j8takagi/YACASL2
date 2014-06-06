@@ -136,8 +136,10 @@ pre.example strong {
     border: 2px solid green;
 }
 
-dt {
+th, dt, em {
+    font-style: normal;
     font-weight: bold;
+    font-family: sans-serif;
 }
 
 dfn {
