@@ -11,13 +11,14 @@ CMD := casl2 comet2 dumpword
 CAT := cat
 CP := cp
 ECHO := /bin/echo
+EXPR := expr
 GIT := git
 GREP := grep
 GTAGS := gtags
 INSTALL := install
 SED := sed
+WC := wc
 WHICH := which
-EXPR := expr
 XARGS := xargs
 
 prefix ?= ~
@@ -73,7 +74,7 @@ $(VERSIONFILES): VERSION
 	@$(SED) -e "s/@@VERSION@@/$(VERSION)/g" $@.version >$@
 
 gittag:
-	if test `$(GIT) status -s | wc -l` -gt 0; then $(ECHO) "Error: commit, first."; exit 1; fi; if test "$(VERSIONGITREF)" != "$(MASTERGITREF)"; then $(GIT) tag $(VERSION); fi
+	if test `$(GIT) status -s | $(WC) -l` -gt 0; then $(ECHO) "Error: commit, first."; exit 1; fi; if test "$(VERSIONGITREF)" != "$(MASTERGITREF)"; then $(GIT) tag $(VERSION); fi
 
 distclean: cmd-clean src-distclean gtags-clean version-clean clean
 
