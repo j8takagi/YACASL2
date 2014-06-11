@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="750" height="275">
+  <g transform="translate(10,10)">
+    <g  stroke="black" stroke-width="1" fill="none">
+      <path d="M0,0 L661,0" />
+    </g>
+
+    <g transform="translate(0,0)">
+      <g font-size="10pt" font-family="monospace">
+        <text x="5" y="15" font-family="sans-serif">正分岐</text>
+        <text x="5" y="35">Jump on Plus</text>
+        <text x="205" y="25">JPL</text>
+        <text x="255" y="25">adr[,x]</text>
+      </g>
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M0,40 L350,40" />
+        <path d="M0,0 L0,40" />
+
+        <path d="M200,0 L200,40" />
+      </g>
+    </g>
+
+    <g transform="translate(0,40)">
+      <g font-size="10pt" font-family="monospace">
+        <text x="5" y="15" font-family="sans-serif">負分岐</text>
+        <text x="5" y="35">Jump on MINUS</text>
+        <text x="205" y="25">JMI</text>
+        <text x="255" y="25">adr[,x]</text>
+      </g>
+
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M0,40 L350,40" />
+        <path d="M0,0 L0,40" />
+
+        <path d="M200,0 L200,40" />
+
+      </g>
+    </g>
+
+    <g transform="translate(0,80)">
+      <g font-size="10pt" font-family="monospace">
+        <text x="5" y="15" font-family="sans-serif">非零分岐</text>
+        <text x="5" y="35">Jump on Non Zero</text>
+        <text x="205" y="25">JNZ</text>
+        <text x="255" y="25">adr[,x]</text>
+      </g>
+
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M0,40 L350,40" />
+        <path d="M0,0 L0,40" />
+
+        <path d="M200,0 L200,40" />
+
+      </g>
+    </g>
+
+    <g transform="translate(0,120)">
+      <g font-size="10pt" font-family="monospace">
+        <text x="5" y="15" font-family="sans-serif">零分岐</text>
+        <text x="5" y="35">Jump on ZEro</text>
+        <text x="205" y="25">JZE</text>
+        <text x="255" y="25">adr[,x]</text>
+      </g>
+
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M0,40 L350,40" />
+        <path d="M0,0 L0,40" />
+
+        <path d="M200,0 L200,40" />
+
+      </g>
+    </g>
+
+    <g transform="translate(0,160)">
+      <g font-size="10pt" font-family="monospace">
+        <text x="5" y="15" font-family="sans-serif">オーバーフロー分岐</text>
+        <text x="5" y="35">Jump on OVerflow</text>
+        <text x="205" y="25">JOV</text>
+        <text x="255" y="25">adr[,x]</text>
+      </g>
+
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M0,40 L350,40" />
+        <path d="M0,0 L0,40" />
+
+        <path d="M200,0 L200,40" />
+
+      </g>
+    </g>
+
+    <g transform="translate(0,200)">
+      <g font-size="10pt" font-family="monospace">
+        <text x="5" y="15" font-family="sans-serif">無条件分岐</text>
+        <text x="5" y="35">unconditional Jump</text>
+        <text x="205" y="25">JUMP</text>
+        <text x="255" y="25">adr[,x]</text>
+      </g>
+
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M0,40 L350,40" />
+        <path d="M0,0 L0,40" />
+
+        <path d="M200,0 L200,40" />
+      </g>
+    </g>
+
+    <g>
+      <g font-size="10pt" font-family="monospace">
+        <text x="355" y="15">FRの値によって，実効アドレスに分岐する。</text>
+        <text x="355" y="30">分岐しないときは，次の命令に進む。</text>
+      </g>
+      <g  transform="translate(360,35)">
+        <g stroke="black" stroke-width="1" fill="none">
+          <rect x="0" y="0" width="140" height="155" />
+
+          <line x1="50" y1="0"  x2="50" y2="155" />
+          <line x1="80" y1="35"  x2="80" y2="155" />
+          <line x1="110" y1="35"  x2="110" y2="155" />
+
+          <line x1="50" y1="35"  x2="140" y2="35" />
+          <line x1="0" y1="55"  x2="140" y2="55" />
+          <line x1="0" y1="75"  x2="140" y2="75" />
+          <line x1="0" y1="95"  x2="140" y2="95" />
+          <line x1="0" y1="115"  x2="140" y2="115" />
+          <line x1="0" y1="135"  x2="140" y2="135" />
+        </g>
+        <g font-size="10pt" font-family="monospace">
+          <text x="10" y="35">命令</text>
+          <text x="55" y="15">分岐するとき</text>
+          <text x="55" y="30">のFRの値</text>
+          <text x="55" y="50">OF</text>
+          <text x="85" y="50">SF</text>
+          <text x="115" y="50">ZF</text>
+
+          <text x="10" y="70">JPL</text>
+          <text x="10" y="90">JMI</text>
+          <text x="10" y="110">JNZ</text>
+          <text x="10" y="130">JZE</text>
+          <text x="10" y="150">JOV</text>
+
+          <text x="90" y="70">0</text>
+          <text x="120" y="70">0</text>
+          <text x="90" y="90">1</text>
+          <text x="120" y="110">0</text>
+          <text x="120" y="130">1</text>
+          <text x="60" y="150">1</text>
+        </g>
+
+      </g>
+      <g font-size="10pt" font-family="monospace">
+        <text x="355" y="220">無条件に実効アドレスに分岐する。</text>
+      </g>
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M350,0 L350,240" />
+        <path d="M350,200 L610,200" />
+      </g>
+    </g>
+    <g>
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M610,0 L610,241" />
+        <path d="M660,0 L660,240" />
+        <path d="M610,200 L610,200" />
+        <path d="M350,240 L660,240" />
+      </g>
+      <g font-size="10pt" font-family="monospace">
+        <text x="620" y="130">&#x2014;</text>
+      </g>
+    </g>
+  </g>
+</svg>

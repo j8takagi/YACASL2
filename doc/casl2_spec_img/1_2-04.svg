@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="750" height="200">
+  <g transform="translate(10,10)">
+    <g  stroke="black" stroke-width="1" fill="none">
+      <path d="M0,0 L661,0" />
+    </g>
+
+    <g transform="translate(0,0)">
+      <g font-size="10pt" font-family="monospace">
+        <text x="5" y="15" font-family="sans-serif">算術左シフト</text>
+        <text x="5" y="35">Shift Left Arithmetic</text>
+        <text x="205" y="25">SLA</text>
+        <text x="255" y="25">r,adr[,x]</text>
+      </g>
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M0,40 L350,40" />
+        <path d="M0,0 L0,40" />
+
+        <path d="M200,0 L200,40" />
+      </g>
+    </g>
+
+    <g transform="translate(0,40)">
+      <g font-size="10pt" font-family="monospace">
+        <text x="5" y="15" font-family="sans-serif">算術右シフト</text>
+        <text x="5" y="35">Shift Right Arithmetic</text>
+        <text x="205" y="25">SRA</text>
+        <text x="255" y="25">r,adr[,x]</text>
+      </g>
+
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M0,40 L350,40" />
+        <path d="M0,0 L0,40" />
+
+        <path d="M200,0 L200,40" />
+
+      </g>
+    </g>
+
+    <g transform="translate(0,80)">
+      <g font-size="10pt" font-family="monospace">
+        <text x="5" y="15" font-family="sans-serif">論理左シフト</text>
+        <text x="5" y="35">Shift Left Logical</text>
+        <text x="205" y="25">SLL</text>
+        <text x="255" y="25">r,adr[,x]</text>
+      </g>
+
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M0,40 L350,40" />
+        <path d="M0,0 L0,40" />
+
+        <path d="M200,0 L200,40" />
+
+      </g>
+    </g>
+
+    <g transform="translate(0,120)">
+      <g font-size="10pt" font-family="monospace">
+        <text x="5" y="15" font-family="sans-serif">論理右シフト</text>
+        <text x="5" y="35">Shift Right Logical</text>
+        <text x="205" y="25">SRL</text>
+        <text x="255" y="25">r,adr[,x]</text>
+      </g>
+
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M0,40 L350,40" />
+        <path d="M0,0 L0,40" />
+
+        <path d="M200,0 L200,40" />
+
+      </g>
+    </g>
+
+
+    <g>
+      <g font-size="10pt" font-family="monospace">
+        <text x="365" y="15">符号を除き(r)を実効アドレスで指定した</text>
+        <text x="355" y="30">ビット数だけ左又は右にシフトする。</text>
+        <text x="365" y="45">シフトの結果，空いたビット位置には，</text>
+        <text x="355" y="60">左シフトのときは0，右シフトのときは</text>
+        <text x="355" y="75">符号と同じものが入る。</text>
+      </g>
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M350,0 L350,80" />
+        <path d="M350,80 L610,80" />
+      </g>
+    </g>
+    <g transform="translate(0,80)">
+      <g font-size="10pt" font-family="monospace">
+        <text x="365" y="15">符号を含み(r)を実効アドレスで指定した</text>
+        <text x="355" y="30">ビット数だけ左又は右にシフトする。</text>
+        <text x="365" y="45">シフトの結果，空いたビット位置には，</text>
+        <text x="355" y="60">0が入る。</text>
+      </g>
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M350,0 L350,80" />
+        <path d="M350,80 L610,80" />
+      </g>
+    </g>
+    <g>
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M610,0 L610,161" />
+        <path d="M660,0 L660,160" />
+        <path d="M610,160 L660,160" />
+      </g>
+      <g font-size="10pt" font-family="monospace">
+        <text x="620" y="85">&#x25EF;*2</text>
+      </g>
+    </g>
+  </g>
+</svg>

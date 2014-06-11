@@ -1,0 +1,10 @@
+rect, path, line {
+    stroke: black;
+    stroke-width: 1;
+    fill: none;
+}
+
+text {
+    font-size: 10pt;
+    font-family: sans-serif;
+}

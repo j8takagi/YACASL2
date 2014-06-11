@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="750" height="125">
+  <g transform="translate(10,10)">
+    <g  stroke="black" stroke-width="1" fill="none">
+      <path d="M0,0 L661,0" />
+    </g>
+
+    <g transform="translate(0,0)">
+      <g font-size="10pt" font-family="monospace">
+        <text x="5" y="15" font-family="sans-serif">コール</text>
+        <text x="5" y="35">CALL subroutine</text>
+        <text x="205" y="25">CALL</text>
+        <text x="255" y="25">adr[,x]</text>
+      </g>
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M0,40 L350,40" />
+        <path d="M0,0 L0,40" />
+        <path d="M0,50 L350,50" />
+
+        <path d="M200,0 L200,40" />
+
+      </g>
+    </g>
+
+    <g transform="translate(0,50)">
+      <g font-size="10pt" font-family="monospace">
+        <text x="5" y="15" font-family="sans-serif">リターン</text>
+        <text x="5" y="35">RETrun form subroutine</text>
+        <text x="205" y="25">RET</text>
+        <text x="255" y="25"></text>
+      </g>
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M0,40 L350,40" />
+        <path d="M0,0 L0,40" />
+
+        <path d="M200,0 L200,40" />
+      </g>
+    </g>
+
+    <g>
+      <g font-size="10pt" font-family="monospace" transform="translate(355,0)">
+        <text x="0" y="15">SP</text><text x="25" y="15">←</text><text x="45" y="15">(SP) -L 1,</text>
+        <text x="0" y="30">(SP)</text><text x="30" y="30">←</text><text x="45" y="30">(PR),</text>
+        <text x="0" y="45">PR</text><text x="25" y="45">←</text><text x="45" y="45">実効アドレス</text>
+
+        <text x="0" y="65">PR</text><text x="25" y="65">←</text><text x="45" y="65">( (SP) ),</text>
+        <text x="0" y="80">SP</text><text x="25" y="80">←</text><text x="45" y="80">(SP) +L 1</text>
+      </g>
+
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M350,0 L350,90" />
+        <path d="M350,50 L610,50" />
+      </g>
+    </g>
+    <g>
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M610,0 L610,91" />
+        <path d="M660,0 L660,90" />
+        <path d="M610,200 L610,200" />
+        <path d="M350,90 L660,90" />
+      </g>
+      <g font-size="10pt" font-family="monospace">
+        <text x="620" y="45">&#x2014;</text>
+      </g>
+    </g>
+  </g>
+</svg>

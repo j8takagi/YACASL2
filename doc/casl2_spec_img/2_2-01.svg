@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="750" height="300">
+
+  <g transform="translate(10,10)">
+    <g stroke="black" stroke-width="1" fill="none">
+      <rect x="0" y="0" width="670" height="260" />
+      <path d="M0,40 L671,40" />
+      <path d="M100,0 L100,260" />
+    </g>
+
+    <g transform="translate(0,40)">
+      <g font-size="10pt" font-family="sans-serif">
+        <text x="5" y="65">アセンブラ命令</text>
+      </g>
+
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M0,120 L100,120" />
+      </g>
+    </g>
+
+    <g transform="translate(0,160)">
+      <g font-size="10pt" font-family="sans-serif">
+        <text x="5" y="45">マクロ命令</text>
+      </g>
+
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M0,80 L100,80" />
+      </g>
+    </g>
+
+    <g transform="translate(0,240)">
+      <g font-size="10pt" font-family="sans-serif">
+        <text x="5" y="15">機械語命令</text>
+      </g>
+
+      <g stroke="black" stroke-width="1" fill="none">
+      </g>
+    </g>
+    <g>
+      <g font-size="10pt" font-family="sans-serif">
+        <text x="50" y="25" text-anchor="middle">命令の種類</text>
+        <text x="135" y="25" text-anchor="middle">ラベル</text>
+        <text x="210" y="15" text-anchor="middle">命令</text><text x="210" y="30" text-anchor="middle">コード</text>
+        <text x="325" y="25" text-anchor="middle">オペランド</text>
+        <text x="525" y="25" text-anchor="middle">機能</text>
+      </g>
+
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M170,0 L170,40" />
+        <path d="M250,0 L250,40" />
+        <path d="M420,0 L420,40" />
+      </g>
+    </g>
+
+    <g transform="translate(0,40)">
+      <g font-size="10pt" font-family="sans-serif">
+        <text x="105" y="35">ラベル</text>
+        <text x="175" y="35" font-family="monospace">START</text>
+        <text x="255" y="35" font-family="monospace">[実行開始番地]</text>
+        <text x="425" y="15">プログラムの先頭を定義</text>
+        <text x="425" y="35">プログラムの実行開始番地を定義</text>
+        <text x="425" y="55">他のプログラムで参照する入口名を定義</text>
+      </g>
+
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M100,60 L670,60" />
+        <path d="M170,0 L170,60" />
+        <path d="M250,0 L250,60" />
+        <path d="M420,0 L420,60" />
+      </g>
+    </g>
+
+    <g transform="translate(0,100)">
+      <g font-size="10pt" font-family="sans-serif">
+        <text x="175" y="15" font-family="monospace">END</text>
+        <text x="425" y="15">プログラムの終わりを明示</text>
+      </g>
+
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M100,20 L670,20" />
+        <path d="M170,0 L170,20" />
+        <path d="M250,0 L250,20" />
+        <path d="M420,0 L420,20" />
+      </g>
+    </g>
+
+    <g transform="translate(0,120)">
+      <g font-size="10pt" font-family="sans-serif">
+        <text x="105" y="15">[ラベル]</text>
+        <text x="175" y="15" font-family="monospace">DS</text>
+        <text x="255" y="15" font-family="monospace">語数</text>
+        <text x="425" y="15">領域を確保</text>
+      </g>
+
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M100,20 L670,20" />
+        <path d="M170,0 L170,20" />
+        <path d="M250,0 L250,20" />
+        <path d="M420,0 L420,20" />
+      </g>
+    </g>
+
+    <g transform="translate(0,140)">
+      <g font-size="10pt" font-family="sans-serif">
+        <text x="105" y="15">[ラベル]</text>
+        <text x="175" y="15" font-family="monospace">DC</text>
+        <text x="255" y="15" font-family="monospace">定数[,定数]&#x22EF;</text>
+        <text x="425" y="15">定数を定義</text>
+      </g>
+
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M100,20 L670,20" />
+        <path d="M170,0 L170,20" />
+        <path d="M250,0 L250,20" />
+        <path d="M420,0 L420,20" />
+      </g>
+    </g>
+
+    <g transform="translate(0,160)">
+      <g font-size="10pt" font-family="sans-serif">
+        <text x="105" y="15">[ラベル]</text>
+        <text x="175" y="15" font-family="monospace">IN</text>
+        <text x="255" y="15" font-family="monospace">入力領域,入力文字長領域</text>
+        <text x="425" y="15">入力装置から文字データを入力</text>
+      </g>
+
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M100,20 L670,20" />
+        <path d="M170,0 L170,20" />
+        <path d="M250,0 L250,20" />
+        <path d="M420,0 L420,20" />
+      </g>
+    </g>
+
+    <g transform="translate(0,180)">
+      <g font-size="10pt" font-family="sans-serif">
+        <text x="105" y="15">[ラベル]</text>
+        <text x="175" y="15" font-family="monospace">OUT</text>
+        <text x="255" y="15" font-family="monospace">出力領域,出力文字長領域</text>
+        <text x="425" y="15">出力装置へ文字データを出力</text>
+      </g>
+
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M100,20 L670,20" />
+        <path d="M170,0 L170,20" />
+        <path d="M250,0 L250,20" />
+        <path d="M420,0 L420,20" />
+      </g>
+    </g>
+
+    <g transform="translate(0,200)">
+      <g font-size="10pt" font-family="sans-serif">
+        <text x="105" y="15">[ラベル]</text>
+        <text x="175" y="15" font-family="monospace">RPUSH</text>
+        <text x="425" y="15">GRの内容をスタックに格納</text>
+      </g>
+
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M100,20 L670,20" />
+        <path d="M170,0 L170,20" />
+        <path d="M250,0 L250,20" />
+        <path d="M420,0 L420,20" />
+      </g>
+    </g>
+
+    <g transform="translate(0,220)">
+      <g font-size="10pt" font-family="sans-serif">
+        <text x="105" y="15">[ラベル]</text>
+        <text x="175" y="15" font-family="monospace">RPOP</text>
+        <text x="425" y="15">スタックの内容をGRに格納</text>
+      </g>
+
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M100,20 L670,20" />
+        <path d="M170,0 L170,20" />
+        <path d="M250,0 L250,20" />
+        <path d="M420,0 L420,20" />
+      </g>
+    </g>
+
+    <g transform="translate(0,240)">
+      <g font-size="10pt" font-family="sans-serif">
+        <text x="105" y="15">[ラベル]</text>
+        <text x="420" y="15" font-family="sans-serif" text-anchor="middle">（「1.2 命令」を参照）</text>
+      </g>
+
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M170,0 L170,21" />
+      </g>
+    </g>
+  </g>
+</svg>

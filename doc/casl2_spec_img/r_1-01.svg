@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="750" height="1000">
+  <g fill="black">
+    <g font-family="monospace" font-size="10pt">
+      <text x="10" y="35">15</text>
+      <text x="50" y="35">11</text>
+      <text x="90" y="35">7</text>
+      <text x="130" y="35">3</text>
+      <text x="160" y="35">0</text>
+      <text x="170" y="35">15</text>
+      <text x="320" y="35">0</text>
+    </g>
+    <text x="400" y="35" font-family="sans-serif" font-size="10pt">ビット番号</text>
+  </g>
+  <g stroke="black" stroke-width="1" fill="none">
+    <path d="M330,30 L390,30" />
+    <path d="M340,25 L330,30 L340,35" />
+  </g>
+  <rect x="10" y="40" width="720" height="880"  fill="none" stroke="black" stroke-width="1" />
+  <g stroke="black" stroke-width="1" fill="none">
+    <path d="M10,60 L330,60" />
+    <path d="M10,80 L90,80" />
+    <path d="M10,100 L730,100" />
+    <path d="M370,60 L730,60" />
+
+    <path d="M50,80 L50,920" />
+    <path d="M90,60 L90,920" />
+    <path d="M130,60 L130,920" />
+    <path d="M170,40 L170,920" />
+    <path d="M330,40 L330,920" />
+    <path d="M370,40 L370,920" />
+    <path d="M550,60 L550,920" />
+
+    <path d="M10,120 L730,120" />
+    <path d="M10,200 L730,200" />
+    <path d="M10,360 L730,360" />
+    <path d="M10,480 L730,480" />
+    <path d="M10,560 L730,560" />
+    <path d="M10,640 L730,640" />
+    <path d="M10,760 L730,760" />
+    <path d="M10,800 L730,800" />
+    <path d="M10,840 L730,840" />
+    <path d="M10,900 L730,900" />
+  </g>
+  <g font-size="15px" font-family="sans-serif" fill="black">
+    <text x="80" y="55">第1語</text>
+    <text x="240" y="55">第2語</text>
+    <text x="25" y="75">OP</text>
+    <text x="15" y="95" font-size="10pt">主OP</text>
+    <text x="55" y="95" font-size="10pt">副OP</text>
+    <text x="95" y="85" font-size="10pt" font-family="monospace">r/r1</text>
+    <text x="135" y="85" font-size="10pt" font-family="monospace">x/r2</text>
+    <text x="240" y="85" font-family="monospace">adr</text>
+    <text x="335" y="65">命令</text>
+    <text x="335" y="85">語長</text>
+    <text x="455" y="55">命令語とアセンブラとの対応</text>
+    <text x="415" y="85">機械語命令</text>
+    <text x="625" y="85">意味</text>
+  </g>
+
+  <g font-size="15px" fill="black">
+    <text x="25" y="115">0</text><text x="65" y="115">0</text><text x="100" y="115">&#x2014;</text><text x="140" y="115">&#x2014;</text><text x="245" y="115">&#x2014;</text><text x="345" y="115">1</text><text x="380" y="115" font-family="monospace">NOP</text><text x="555" y="115">no operation</text>
+    <text x="25" y="135">1</text><text x="65" y="135">0</text><text x="345" y="135">2</text><text x="380" y="135" font-family="monospace">LD</text><text x="440" y="135" font-family="monospace">r,adr,x</text><text x="555" y="135">load</text>
+    <text x="65" y="155">1</text><text x="345" y="155">2</text><text x="380" y="155" font-family="monospace">ST</text><text x="440" y="155" font-family="monospace">r,adr,x</text><text x="555" y="155">store</text>
+    <text x="65" y="175">2</text><text x="345" y="175">2</text><text x="380" y="175" font-family="monospace">LAD</text><text x="440" y="175" font-family="monospace">r,adr,x</text><text x="555" y="175">load address</text>
+    <text x="65" y="195">4</text><text x="245" y="195">&#x2014;</text><text x="345" y="195">1</text><text x="380" y="195" font-family="monospace">LD</text><text x="440" y="195" font-family="monospace">r1,r2</text><text x="555" y="195">load</text>
+    <text x="25" y="215">2</text><text x="65" y="215">0</text><text x="345" y="215">2</text><text x="380" y="215" font-family="monospace">ADDA</text><text x="440" y="215" font-family="monospace">r,adr,x</text><text x="555" y="215">add arithmetic</text>
+    <text x="65" y="235">1</text><text x="345" y="235">2</text><text x="380" y="235" font-family="monospace">SUBA</text><text x="440" y="235" font-family="monospace">r,adr,x</text><text x="555" y="235">subtract arithmetic</text>
+    <text x="65" y="255">2</text><text x="345" y="255">2</text><text x="380" y="255" font-family="monospace">ADDL</text><text x="440" y="255" font-family="monospace">r,adr,x</text><text x="555" y="255">add logical</text>
+    <text x="65" y="275">3</text><text x="345" y="275">2</text><text x="380" y="275" font-family="monospace">SUBL</text><text x="440" y="275" font-family="monospace">r,adr,x</text><text x="555" y="275">subtract logical</text>
+    <text x="65" y="295">4</text><text x="245" y="295">&#x2014;</text><text x="345" y="295">1</text><text x="380" y="295" font-family="monospace">ADDA</text><text x="440" y="295" font-family="monospace">r1,r2</text><text x="555" y="295">add arithmetic</text>
+    <text x="65" y="315">5</text><text x="245" y="315">&#x2014;</text><text x="345" y="315">1</text><text x="380" y="315" font-family="monospace">SUBA</text><text x="440" y="315" font-family="monospace">r1,r2</text><text x="555" y="315">subtract arithmetic</text>
+    <text x="65" y="335">6</text><text x="245" y="335">&#x2014;</text><text x="345" y="335">1</text><text x="380" y="335" font-family="monospace">ADDL</text><text x="440" y="335" font-family="monospace">r1,r2</text><text x="555" y="335">add logical</text>
+    <text x="65" y="355">7</text><text x="245" y="355">&#x2014;</text><text x="345" y="355">1</text><text x="380" y="355" font-family="monospace">SUBL</text><text x="440" y="355" font-family="monospace">r1,r2</text><text x="555" y="355">subtract logical</text>
+    <text x="25" y="375">3</text><text x="65" y="375">0</text><text x="345" y="375">2</text><text x="380" y="375" font-family="monospace">AND</text><text x="440" y="375" font-family="monospace">r,adr,x</text><text x="555" y="375">and</text>
+    <text x="65" y="395">1</text><text x="345" y="395">2</text><text x="380" y="395" font-family="monospace">OR</text><text x="440" y="395" font-family="monospace">r,adr,x</text><text x="555" y="395">or</text>
+    <text x="65" y="415">2</text><text x="345" y="415">2</text><text x="380" y="415" font-family="monospace">XOR</text><text x="440" y="415" font-family="monospace">r,adr,x</text><text x="555" y="415">exclusive or</text>
+    <text x="65" y="435">4</text><text x="245" y="435">&#x2014;</text><text x="345" y="435">1</text><text x="380" y="435" font-family="monospace">AND</text><text x="440" y="435" font-family="monospace">r1,r2</text><text x="555" y="435">and</text>
+    <text x="65" y="455">5</text><text x="245" y="455">&#x2014;</text><text x="345" y="455">1</text><text x="380" y="455" font-family="monospace">OR</text><text x="440" y="455" font-family="monospace">r1,r2</text><text x="555" y="455">or</text>
+    <text x="65" y="475">6</text><text x="245" y="475">&#x2014;</text><text x="345" y="475">1</text><text x="380" y="475" font-family="monospace">XOR</text><text x="440" y="475" font-family="monospace">r1,r2</text><text x="555" y="475">exclusive or</text>
+    <text x="25" y="495">4</text><text x="65" y="495">0</text><text x="345" y="495">2</text><text x="380" y="495" font-family="monospace">CPA</text><text x="440" y="495" font-family="monospace">r,adr,x</text><text x="555" y="495">compare arithmetic</text>
+    <text x="65" y="515">1</text><text x="345" y="515">2</text><text x="380" y="515" font-family="monospace">CPL</text><text x="440" y="515" font-family="monospace">r,adr,x</text><text x="555" y="515">compare logical</text>
+    <text x="65" y="535">4</text><text x="245" y="535">&#x2014;</text><text x="345" y="535">2</text><text x="380" y="535" font-family="monospace">CPA</text><text x="440" y="535" font-family="monospace">r1,r2</text><text x="555" y="535">compare arithmetic</text>
+    <text x="65" y="555">5</text><text x="245" y="555">&#x2014;</text><text x="345" y="555">2</text><text x="380" y="555" font-family="monospace">CPL</text><text x="440" y="555" font-family="monospace">r1,r2</text><text x="555" y="555">compare logical</text>
+    <text x="25" y="575">5</text><text x="65" y="575">0</text><text x="345" y="575">2</text><text x="380" y="575" font-family="monospace">SLA</text><text x="440" y="575" font-family="monospace">r,adr,x</text><text x="555" y="575">shift left arithmetic</text>
+    <text x="65" y="595">1</text><text x="345" y="595">2</text><text x="380" y="595" font-family="monospace">SRA</text><text x="440" y="595" font-family="monospace">r,adr,x</text><text x="555" y="595">shift right arithmetic</text>
+    <text x="65" y="615">2</text><text x="345" y="615">2</text><text x="380" y="615" font-family="monospace">SLL</text><text x="440" y="615" font-family="monospace">r,adr,x</text><text x="555" y="615">shift left logical</text>
+    <text x="65" y="635">3</text><text x="345" y="635">2</text><text x="380" y="635" font-family="monospace">SRL</text><text x="440" y="635" font-family="monospace">r,adr,x</text><text x="555" y="635">shift right logical</text>
+    <text x="25" y="655">6</text><text x="65" y="655">1</text><text x="100" y="655">&#x2014;</text><text x="345" y="655">2</text><text x="380" y="655" font-family="monospace">JMI</text><text x="440" y="655" font-family="monospace">adr,x</text><text x="555" y="655">jump on minus</text>
+    <text x="65" y="675">2</text><text x="100" y="675">&#x2014;</text><text x="345" y="675">2</text><text x="380" y="675" font-family="monospace">JNZ</text><text x="440" y="675" font-family="monospace">adr,x</text><text x="555" y="675">jump on non zero</text>
+    <text x="65" y="695">3</text><text x="100" y="695">&#x2014;</text><text x="345" y="695">2</text><text x="380" y="695" font-family="monospace">JZE</text><text x="440" y="695" font-family="monospace">adr,x</text><text x="555" y="695">jump on zero</text>
+    <text x="65" y="715">4</text><text x="100" y="715">&#x2014;</text><text x="345" y="715">2</text><text x="380" y="715" font-family="monospace">JUMP</text><text x="440" y="715" font-family="monospace">adr,x</text><text x="555" y="715">unconditional jump</text>
+    <text x="65" y="735">5</text><text x="100" y="735">&#x2014;</text><text x="345" y="735">2</text><text x="380" y="735" font-family="monospace">JPL</text><text x="440" y="735" font-family="monospace">adr,x</text><text x="555" y="735">jump on plus</text>
+    <text x="65" y="755">6</text><text x="100" y="755">&#x2014;</text><text x="345" y="755">2</text><text x="380" y="755" font-family="monospace">JOV</text><text x="440" y="755" font-family="monospace">adr,x</text><text x="555" y="755">jump on overflow</text>
+    <text x="25" y="775">7</text><text x="65" y="775">0</text><text x="100" y="775">&#x2014;</text><text x="345" y="775">2</text><text x="380" y="775" font-family="monospace">PUSH</text><text x="440" y="775" font-family="monospace">adr,x</text><text x="555" y="775">push</text>
+    <text x="65" y="795">1</text><text x="140" y="795">&#x2014;</text><text x="245" y="795">&#x2014;</text><text x="345" y="795">1</text><text x="380" y="795" font-family="monospace">POP</text><text x="440" y="795" font-family="monospace">r</text><text x="555" y="795">pop</text>
+    <text x="25" y="815">8</text><text x="65" y="815">0</text><text x="100" y="815">&#x2014;</text><text x="345" y="815">2</text><text x="380" y="815" font-family="monospace">CALL</text><text x="440" y="815" font-family="monospace">adr,x</text><text x="555" y="815">call subroutine</text>
+    <text x="65" y="835">1</text><text x="100" y="835">&#x2014;</text><text x="140" y="835">&#x2014;</text><text x="245" y="835">&#x2014;</text><text x="345" y="835">1</text><text x="380" y="835" font-family="monospace">RET</text><text x="555" y="835">return from subroutine</text>
+    <text x="25" y="855">9</text><text x="380" y="875">その他の命令</text>
+    <text x="25" y="875">&#x301C;</text>
+    <text x="25" y="895">E</text>
+    <text x="25" y="915">F</text><text x="65" y="915">0</text><text x="100" y="915">&#x2014;</text><text x="345" y="915">2</text><text x="380" y="915" font-family="monospace">SVC</text><text x="440" y="915" font-family="monospace">adr,x</text><text x="555" y="915">supervisor call</text>
+  </g>
+</svg>

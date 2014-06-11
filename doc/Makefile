@@ -1,7 +1,7 @@
 RMR := $(RM) -r
 SED := sed
 
-DOCS := install manual
+DOCS := install manual casl2_spec
 CSS := style.css
 
 prefix ?= ~
@@ -11,15 +11,13 @@ infodir ?= $(prefix)/share/info
 
 base: install.txt info html
 
-all: base htmls pdf
+all: base html pdf
 
 info: yacasl2.info
 
 html: $(addsuffix .html,$(DOCS))
-	for f in $^; do $(SED) -i.bak -e 's!dir\.html#Top!\.\./!g' $$f && $(RM) $$f.bak; done
 
 htmls: $(addsuffix _html,$(DOCS))
-	for d in $^; do $(SED) -i.bak -e 's!\.\./dir/index\.html!\.\./\.\./!g' $$d/index.html && $(RM) $$d/index.html.bak; done
 
 pdf: $(addsuffix .pdf,$(DOCS))
 
