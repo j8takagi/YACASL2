@@ -80,7 +80,7 @@ OPD *opdtok(const char *str)
                 break;
             }
             if(strlen(q) - rcnt > OPDSIZE) {
-                setcerr(118, "");    /* operand length is too long */
+                setcerr(118, "");    /* operand length too long */
                 break;
             }
             opd->opdv[(++opd->opdc)-1] = strdup_chk(q, "opd.opdv[]");
