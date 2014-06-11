@@ -17,11 +17,13 @@ TEXI2DVI_FLAGS ?= -q --texinfo=@afourpaper
 
 %.html: %.texi $(CSS)
 	$(MAKEINFO) -o $@ --no-split --html --css-include=$(CSS) $<
+	$(SED) -i.bak -e 's!dir\.html#Top!\.\./!g'  -e 's!src="\(.*\)\.png"!src="\1.svg"!g' $@ && $(RM) $@.bak
 
 %_html: %.texi $(CSS)
 	if test ! -e $@; then $(MKDIR) $@; fi
 	$(CP) $(CSS) $@/
 	$(MAKEINFO) -o $@ --html --css-ref=$(CSS) $<
+	$(SED) -i.bak -e 's!\.\./dir/index\.html!\.\./\.\./!g' -e 's!src="\(.*\)\.png"!src="\1.svg"!g' $@/*.html && $(RM) $@/*.html.bak
 
 %.pdf: %.dvi
 	$(DVIPDFMX) $(DVIPDFMXFLAGS) $<

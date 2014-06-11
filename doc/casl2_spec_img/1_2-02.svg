@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="750" height="300">
+  <g transform="translate(10,10)">
+    <g  stroke="black" stroke-width="1" fill="none">
+      <path d="M0,0 L661,0" />
+    </g>
+
+    <g transform="translate(0,0)">
+      <g font-size="10pt" font-family="monospace">
+        <text x="5" y="15" font-family="sans-serif">算術加算</text>
+        <text x="5" y="35">ADD Arithmetic</text>
+        <text x="205" y="25">ADDA</text>
+        <text x="255" y="15">r1,r2</text>
+        <text x="255" y="35">r,adr[,x]</text>
+      </g>
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M0,40 L350,40" />
+        <path d="M0,0 L0,40" />
+
+        <path d="M200,0 L200,40" />
+        <path d="M250,20 L350,20" />
+        <path d="M350,0 L350,40" />
+      </g>
+    </g>
+
+    <g transform="translate(0,40)">
+      <g font-size="10pt" font-family="monospace">
+        <text x="5" y="15" font-family="sans-serif">論理加算</text>
+        <text x="5" y="35">ADD Logical</text>
+        <text x="205" y="25">ADDL</text>
+        <text x="255" y="15">r1,r2</text>
+        <text x="255" y="35">r,adr[,x]</text>
+      </g>
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M0,40 L350,40" />
+        <path d="M0,0 L0,40" />
+
+        <path d="M200,0 L200,40" />
+        <path d="M350,0 L350,40" />
+
+        <path d="M250,20 L350,20" />
+      </g>
+    </g>
+
+    <g transform="translate(0,80)">
+      <g font-size="10pt" font-family="monospace">
+        <text x="5" y="15" font-family="sans-serif">算術減算</text>
+        <text x="5" y="35">SUBtract Arithmetic</text>
+        <text x="205" y="25">SUBA</text>
+        <text x="255" y="15">r1,r2</text>
+        <text x="255" y="35">r,adr[,x]</text>
+      </g>
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M0,40 L350,40" />
+        <path d="M0,0 L0,40" />
+
+        <path d="M200,0 L200,40" />
+        <path d="M350,0 L350,40" />
+
+        <path d="M250,20 L350,20" />
+      </g>
+    </g>
+
+    <g transform="translate(0,120)">
+      <g font-size="10pt" font-family="monospace">
+        <text x="5" y="15" font-family="sans-serif">論理減算</text>
+        <text x="5" y="35">SUBtract Logical</text>
+        <text x="205" y="25">SUBL</text>
+        <text x="255" y="15">r1,r2</text>
+        <text x="255" y="35">r,adr[,x]</text>
+      </g>
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M0,40 L350,40" />
+        <path d="M0,0 L0,40" />
+
+        <path d="M200,0 L200,40" />
+        <path d="M350,0 L350,40" />
+
+        <path d="M250,20 L350,20" />
+      </g>
+    </g>
+
+    <g transform="translate(0,160)">
+      <g font-size="10pt" font-family="monospace">
+        <text x="5" y="15" font-family="sans-serif">論理積</text>
+        <text x="5" y="35">AND</text>
+        <text x="205" y="25">AND</text>
+        <text x="255" y="15">r1,r2</text>
+        <text x="255" y="35">r,adr[,x]</text>
+      </g>
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M0,40 L350,40" />
+        <path d="M0,0 L0,40" />
+
+        <path d="M200,0 L200,40" />
+        <path d="M350,0 L350,40" />
+
+        <path d="M250,20 L350,20" />
+      </g>
+    </g>
+
+    <g transform="translate(0,200)">
+      <g font-size="10pt" font-family="monospace">
+        <text x="5" y="15" font-family="sans-serif">論理和</text>
+        <text x="5" y="35">OR</text>
+        <text x="205" y="25">OR</text>
+        <text x="255" y="15">r1,r2</text>
+        <text x="255" y="35">r,adr[,x]</text>
+      </g>
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M0,40 L350,40" />
+        <path d="M0,0 L0,40" />
+
+        <path d="M200,0 L200,40" />
+        <path d="M350,0 L350,40" />
+
+        <path d="M250,20 L350,20" />
+      </g>
+    </g>
+
+    <g transform="translate(0,240)">
+      <g font-size="10pt" font-family="monospace">
+        <text x="5" y="15" font-family="sans-serif">排他的論理和</text>
+        <text x="5" y="35">eXclusive OR</text>
+        <text x="205" y="25">XOR</text>
+        <text x="255" y="15">r1,r2</text>
+        <text x="255" y="35">r,adr[,x]</text>
+      </g>
+
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M0,40 L350,40" />
+        <path d="M0,0 L0,40" />
+
+        <path d="M200,0 L200,40" />
+        <path d="M350,0 L350,40" />
+
+        <path d="M250,20 L350,20" />
+      </g>
+    </g>
+
+    <g transform="translate(350,0)">
+      <g font-size="10pt" font-family="monospace" transform="translate(5,15)">
+        <text x="0" y="0">r1</text><text x="25" y="0">←</text><text x="45" y="0">(r1)</text><text x="80" y="0">+</text><text x="110" y="0">(r2)</text>
+        <text x="0" y="20">r</text><text x="25" y="20">←</text><text x="45" y="20">(r)</text><text x="80" y="20">+</text><text x="110" y="20">(実効アドレス)</text>
+        <text x="0" y="40">r1</text><text x="25" y="40">←</text><text x="45" y="40">(r1)</text><text x="80" y="40">+L</text><text x="110" y="40">(r2)</text>
+        <text x="0" y="60">r</text><text x="25" y="60">←</text><text x="45" y="60">(r)</text><text x="80" y="60">+L</text><text x="110" y="60">(実効アドレス)</text>
+        <text x="0" y="80">r1</text><text x="25" y="80">←</text><text x="45" y="80">(r1)</text><text x="80" y="80">-</text><text x="110" y="80">(r2)</text>
+        <text x="0" y="100">r</text><text x="25" y="100">←</text><text x="45" y="100">(r)</text><text x="80" y="100">-</text><text x="110" y="100">(実効アドレス)</text>
+        <text x="0" y="120">r1</text><text x="25" y="120">←</text><text x="45" y="120">(r1)</text><text x="80" y="120">-L</text><text x="110" y="120">(r2)</text>
+        <text x="0" y="140">r</text><text x="25" y="140">←</text><text x="45" y="140">(r)</text><text x="80" y="140">-L</text><text x="110" y="140">(実効アドレス)</text>
+        <text x="0" y="160">r1</text><text x="25" y="160">←</text><text x="45" y="160">(r1)</text><text x="80" y="160">AND</text><text x="110" y="160">(r2)</text>
+        <text x="0" y="180">r</text><text x="25" y="180">←</text><text x="45" y="180">(r)</text><text x="80" y="180">AND</text><text x="110" y="180">(実効アドレス)</text>
+        <text x="0" y="200">r1</text><text x="25" y="200">←</text><text x="45" y="200">(r1)</text><text x="80" y="200">OR</text><text x="110" y="200">(r2)</text>
+        <text x="0" y="220">r</text><text x="25" y="220">←</text><text x="45" y="220">(r)</text><text x="80" y="220">OR</text><text x="110" y="220">(実効アドレス)</text>
+        <text x="0" y="240">r1</text><text x="25" y="240">←</text><text x="45" y="240">(r1)</text><text x="80" y="240">XOR</text><text x="110" y="240">(r2)</text>
+        <text x="0" y="260">r</text><text x="25" y="260">←</text><text x="45" y="260">(r)</text><text x="80" y="260">XOR</text><text x="110" y="260">(実効アドレス)</text>
+      </g>
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M0,20 L260,20" />
+        <path d="M0,40 L260,40" />
+        <path d="M0,60 L260,60" />
+        <path d="M0,80 L260,80" />
+        <path d="M0,100 L260,100" />
+        <path d="M0,120 L260,120" />
+        <path d="M0,140 L260,140" />
+        <path d="M0,160 L260,160" />
+        <path d="M0,180 L260,180" />
+        <path d="M0,200 L260,200" />
+        <path d="M0,220 L260,220" />
+        <path d="M0,240 L260,240" />
+        <path d="M0,260 L260,260" />
+        <path d="M0,280 L260,280" />
+
+        <path d="M260,0 L260,281" />
+      </g>
+    </g>
+    <g>
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M610,160 L660,160" />
+        <path d="M610,280 L660,280" />
+        <path d="M660,0 L660,281" />
+      </g>
+      <g font-size="10pt" font-family="monospace">
+        <text x="620" y="85">&#x25EF;</text>
+        <text x="620" y="225">&#x25EF;*1</text>
+      </g>
+    </g>
+  </g>
+</svg>

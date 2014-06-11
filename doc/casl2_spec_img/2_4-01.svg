@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="750" height="50">
+
+  <g transform="translate(10,10)">
+    <g stroke="black" stroke-width="1" fill="none">
+      <rect x="0" y="0" width="250" height="20" />
+      <path d="M80,0 L80,20" />
+    </g>
+    <g font-size="10pt" font-family="monospace">
+      <text x="5" y="15">IN</text>
+      <text x="85" y="15">入力領域,入力文字長領域</text>
+    </g>
+  </g>
+</svg>

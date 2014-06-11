@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="750" height="75">
+  <g transform="translate(10,10)">
+  <g stroke="black" stroke-width="1" fill="none">
+    <path d="M0,0 L661,0" />
+    <path d="M0,60 L660,60" />
+    <path d="M200,30 L350,30" />
+    <path d="M0,0 L0,61" />
+    <path d="M200,0 L200,60" />
+    <path d="M350,0 L350,60" />
+    <path d="M610,0 L610,60" />
+    <path d="M660,0 L660,60" />
+  </g>
+  <g font-size="10pt" font-family="sans-serif">
+    <text x="90" y="35">命令</text><text x="250" y="20">書き方</text><text x="445" y="35">命令の説明</text><text x="620" y="25">FRの<tspan x="620" dy="15">設定</tspan></text>
+    <text x="205" y="50">命令コード</text><text x="280" y="50">オペランド</text>
+  </g>
+  </g>
+</svg>

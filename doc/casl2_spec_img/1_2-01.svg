@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="750" height="150">
+  <g transform="translate(10,10)">
+    <g stroke="black" stroke-width="1" fill="none">
+      <path d="M-1,0 L661,0" />
+    </g>
+    <g transform="translate(0,0)">
+      <g font-size="10pt" font-family="monospace">
+        <text x="5" y="15" font-family="sans-serif">ロード</text>
+        <text x="5" y="35">LoaD</text>
+        <text x="205" y="25">LD</text>
+        <text x="255" y="15">r1,r2</text>
+        <text x="255" y="35">r,adr[,x]</text>
+      </g>
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M0,40 L350,40" />
+        <path d="M0,0 L0,40" />
+
+        <path d="M200,0 L200,40" />
+        <path d="M350,0 L350,40" />
+
+        <path d="M250,20 L350,20" />
+      </g>
+    </g>
+
+    <g transform="translate(0,40)">
+      <g font-size="10pt" font-family="monospace">
+        <text x="5" y="15" font-family="sans-serif">ストア</text>
+        <text x="5" y="35">STore</text>
+        <text x="205" y="25">ST</text>
+        <text x="255" y="25">r,adr[,x]</text>
+      </g>
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M0,40 L350,40" />
+        <path d="M0,0 L0,40" />
+
+        <path d="M200,0 L200,40" />
+        <path d="M350,0 L350,40" />
+      </g>
+    </g>
+
+    <g transform="translate(0,80)">
+      <g font-size="10pt" font-family="monospace">
+        <text x="5" y="15" font-family="sans-serif">ロードアドレス</text>
+        <text x="5" y="35">Load ADdress</text>
+        <text x="205" y="25">LAD</text>
+        <text x="255" y="25">r,adr[,x]</text>
+      </g>
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M0,40 L350,40" />
+        <path d="M0,0 L0,40" />
+
+        <path d="M200,0 L200,40" />
+        <path d="M350,0 L350,40" />
+      </g>
+    </g>
+
+    <g transform="translate(350,0)">
+      <g font-size="10pt" font-family="monospace" transform="translate(5,15)">
+        <text x="0" y="0">r1</text><text x="25" y="0">←</text><text x="45" y="0">(r2)</text>
+        <text x="0" y="20">r</text><text x="25" y="20">←</text><text x="45" y="20">(実効アドレス)</text>
+        <text x="0" y="50">実効アドレス ← (r)</text>
+        <text x="0" y="90">r</text><text x="25" y="90">←</text><text x="45" y="90">実効アドレス</text>
+      </g>
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M0,20 L260,20" />
+        <path d="M0,40 L260,40" />
+        <path d="M0,80 L260,80" />
+        <path d="M0,120 L260,120" />
+
+        <path d="M260,0 L260,120" />
+      </g>
+    </g>
+    <g>
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M610,40 L660,40" />
+        <path d="M610,120 L660,120" />
+        <path d="M660,0 L660,121" />
+      </g>
+      <g font-size="10pt" font-family="monospace">
+        <text x="620" y="25" >&#x25EF;*1</text>
+        <text x="620" y="85">&#x2014;</text>
+      </g>
+    </g>
+  </g>
+</svg>

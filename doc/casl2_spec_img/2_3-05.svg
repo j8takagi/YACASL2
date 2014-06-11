@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="750" height="300">
+
+  <g transform="translate(10,10)">
+    <rect x="0" y="0" width="700" height="220" stroke="black" stroke-width="1" fill="none" />
+
+    <g transform="translate(0,0)">
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M100,0 L100,20" />
+        <path d="M180,0 L180,20" />
+      </g>
+
+      <g font-size="10pt" font-family="sans-serif">
+        <text x="50" y="15" text-anchor="middle">定数の種類</text>
+        <text x="140" y="15" text-anchor="middle">書き方</text>
+        <text x="425" y="15" text-anchor="middle">命令の説明</text>
+      </g>
+    </g>
+
+    <g transform="translate(0,20)">
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M0,0 L700,0" />
+
+        <path d="M100,0 L100,40" />
+        <path d="M180,0 L180,40" />
+      </g>
+
+      <g font-size="10pt" font-family="monospace">
+        <text x="5" y="25">10進定数</text>
+        <text x="140" y="25" font-family="monospace" text-anchor="middle">n</text>
+        <text x="185" y="15">
+          <tspan font-family="monospace">n</tspan>で指定した10進数値を，1語の2進数データとして格納する。ただし，<tspan font-family="monospace">n</tspan>が
+          <tspan x="185" dy="20">-32768～32767の範囲にないときは，その下位16ビットを格納する。</tspan>
+        </text>
+      </g>
+    </g>
+
+    <g transform="translate(0,60)">
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M0,0 L700,0" />
+
+        <path d="M100,0 L100,40" />
+        <path d="M180,0 L180,40" />
+      </g>
+
+      <g font-size="10pt" font-family="monospace">
+        <text x="5" y="25">16進定数</text>
+        <text x="140" y="25" font-family="monospace" text-anchor="middle">#h</text>
+        <text x="185" y="15">
+          <tspan font-family="monospace">h</tspan>は4桁の16進数（16進数字は0～9，A～F）とする。<tspan font-family="monospace">h</tspan>で指定した16進数値を
+          <tspan x="185" dy="20">1語の2進数データとして格納する（0000 ≤ <tspan font-family="monospace">h</tspan> ≤ FFFF）。</tspan>
+        </text>
+      </g>
+    </g>
+    <g transform="translate(0,100)">
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M0,0 L700,0" />
+
+        <path d="M100,0 L100,100" />
+        <path d="M180,0 L180,100" />
+      </g>
+
+      <g font-size="10pt" font-family="monospace">
+        <text x="5" y="55">文字定数</text>
+        <text x="140" y="55" font-family="monospace" text-anchor="middle">'文字列'</text>
+        <text x="185" y="15">
+          文字列の文字数（>0）分の連続する領域を確保し，最初の文字は第1語の下位8ビット
+          <tspan x="185" dy="20">に，2番目の文字は第2語の下位8ビットに，&#x22EF;と順次文字データとして格納する。</tspan>
+          <tspan x="185" dy="20">各語の上位8ビットには0のビットが入る。</tspan>
+          <tspan x="185" dy="20">文字列には，間隔および任意の図形文字を書くことができる。</tspan>
+          <tspan x="185" dy="20">ただし，アポストロフィ（’）は2個続けて書く。</tspan>
+          </text>
+      </g>
+    </g>
+
+    <g transform="translate(0,200)">
+      <g stroke="black" stroke-width="1" fill="none">
+        <path d="M0,0 L700,0" />
+
+        <path d="M100,0 L100,20" />
+        <path d="M180,0 L180,20" />
+      </g>
+
+      <g font-size="10pt" font-family="monospace">
+        <text x="5" y="15">アドレス定数</text>
+        <text x="140" y="15" font-family="monospace" text-anchor="middle">ラベル</text>
+        <text x="185" y="15">ラベルに対応するアドレスを1語の2進数データとして格納する。</text>
+      </g>
+    </g>
+  </g>
+</svg>

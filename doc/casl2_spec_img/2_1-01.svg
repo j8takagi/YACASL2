@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="750" height="150">
+
+  <g transform="translate(10,10)">
+    <g stroke="black" stroke-width="1" fill="none">
+      <rect x="0" y="0" width="600" height="120" />
+
+      <path d="M0,30 L600,30" />
+      <path d="M0,90 L150,90" />
+
+      <path d="M150,0 L150,120" />
+
+      <path d="M50,30 L50,90" />
+      <path d="M50,60 L150,60" />
+
+      <path d="M150,60 L600,60" />
+      <path d="M150,90 L600,90" />
+    </g>
+
+    <g font-size="10pt" font-family="sans-serif">
+      <text x="50" y="20" text-anchor="middle">行の種類</text><text x="375" y="20" text-anchor="middle">記述の形式</text>
+      <text x="5" y="65">命令行</text>
+      <text x="55" y="50">オペランドあり</text>
+      <text x="55" y="80">オペランドなし</text>
+      <text x="5" y="110">注釈行</text>
+      <text x="155" y="50" font-family="monospace">[ラベル]{空白}{命令コード}{空白}{オペランド}[{空白}[コメント]]</text>
+      <text x="155" y="80" font-family="monospace">[ラベル][空白][命令コード][{空白}[{;}[コメント]]]</text>
+      <text x="155" y="110" font-family="monospace">[空白]{;}[コメント]</text>
+    </g>
+  </g>
+</svg>
