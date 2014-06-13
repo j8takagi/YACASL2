@@ -7,12 +7,12 @@ INSTALL-INFO := install-info
 
 .PHONY: install-info uninstall-info
 
-install-info: yacasl2.info
+install-info: $(INSTALL-INFO-TARGETS)
 	$(INSTALL) -d $(infodir)
 	$(INSTALL) $< $(infodir)/
 	$(INSTALL-INFO) $(infodir)/$(notdir $<) $(infodir)/dir
 	$(GZIP) -f $(infodir)/$(notdir $<)
 
 uninstall-info:
-	$(INSTALL-INFO) --delete $(addprefix $(infodir)/,$(notdir $(TARGET))) $(infodir)/dir
-	$(RM) $(addprefix $(infodir)/,$(notdir $(TARGET)))
+	$(INSTALL-INFO) --delete $(addprefix $(infodir)/,$(notdir $(INSTALL-INFO-TARGETS))) $(infodir)/dir
+	$(RM) $(addprefix $(infodir)/,$(notdir $(INSTALL-INFO-TARGETS)))
