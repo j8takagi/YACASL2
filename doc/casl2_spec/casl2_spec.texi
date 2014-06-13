@@ -30,7 +30,7 @@ Copyright @copyright{} Information-technology Promotion Agency, Japan. All right
 @item
 1語は16ビットで，そのビット構成は，次のとおりである。
 
-@image{casl2_spec_img/1_1-01,15cm}
+@image{img/1_1-01,15cm}
 
 @item
 主記憶の容量は65536語で，そのアドレスは0～65535番地である。
@@ -92,39 +92,39 @@ Copyright @copyright{} Information-technology Promotion Agency, Japan. All right
 ここで，一つの命令コードに対し2種類のオペランドがある場合，
 上段はレジスタ間の命令，下段はレジスタと主記憶間の命令を表す。
 
-@image{casl2_spec_img/1_2-00,15cm}
+@image{img/1_2-00,15cm}
 
 @subsection ロード，ストア，ロードアドレス命令
 
-@image{casl2_spec_img/1_2-01,15cm}
+@image{img/1_2-01,15cm}
 
 @subsection 算術，論理演算命令
 
-@image{casl2_spec_img/1_2-02,15cm}
+@image{img/1_2-02,15cm}
 
 @subsection 比較演算命令
 
-@image{casl2_spec_img/1_2-03,15cm}
+@image{img/1_2-03,15cm}
 
 @subsection シフト演算命令
 
-@image{casl2_spec_img/1_2-04,15cm}
+@image{img/1_2-04,15cm}
 
 @subsection 分岐命令
 
-@image{casl2_spec_img/1_2-05,15cm}
+@image{img/1_2-05,15cm}
 
 @subsection スタック操作命令
 
-@image{casl2_spec_img/1_2-06,15cm}
+@image{img/1_2-06,15cm}
 
 @subsection コール，リターン命令
 
-@image{casl2_spec_img/1_2-07,15cm}
+@image{img/1_2-07,15cm}
 
 @subsection その他
 
-@image{casl2_spec_img/1_2-08,15cm}
+@image{img/1_2-08,15cm}
 
 @unnumberedsubsec 注
 
@@ -170,7 +170,7 @@ JIS X 0201 ラテン文字・片仮名用8ビット符号で規定する文字�
 @item
 次に符号表の一部を示す。 @*
 
-@image{casl2_spec_img/1_3-01,5cm}
+@image{img/1_3-01,5cm}
 
 1文字は８ビットからなり，上位4ビットを列で，下位4ビットを行で示す。 例えば，@code{間隔}，@code{4}，@code{H}，@code{@backslashchar{}}のビット構成は，16進表示で，それぞれ20，34，48，5Cである。ビット構成が21～7E（及び表では省略しているA1～DF）に対応する文字を図形文字という。 図形文字は，表示（印刷）装置で，文字として表示（印字）できる。
 
@@ -195,7 +195,7 @@ CASL IIは，COMET IIのためのアセンブラ言語である。
 @item
 命令行および注釈行は，次に示す記述の形式で，行の1文字目から記述する。 @*
 
-@image{casl2_spec_img/2_1-01,15cm}
+@image{img/2_1-01,15cm}
 @end enumerate
 
 @unnumberedsubsec 注
@@ -227,7 +227,7 @@ CASL IIは，COMET IIのためのアセンブラ言語である。
 
 命令は，4種類のアセンブラ命令（@code{START}，@code{END}，@code{DS}，@code{DC}）， ４種類のマクロ命令（@code{IN}，@code{OUT}）および機械語命令（COMET IIの命令）からなる。 その仕様を次に示す。
 
-@image{casl2_spec_img/2_2-01,15cm}
+@image{img/2_2-01,15cm}
 
 @section アセンブラ命令
 
@@ -235,7 +235,7 @@ CASL IIは，COMET IIのためのアセンブラ言語である。
 
 @enumerate
 
-@item @* @image{casl2_spec_img/2_3-01,5cm} @*
+@item @* @image{img/2_3-01,5cm} @*
 
 @code{START}命令は，プログラムの先頭を定義する。
 
@@ -243,22 +243,22 @@ CASL IIは，COMET IIのためのアセンブラ言語である。
 
 また，この命令につけられたラベルは，他のプログラムから入口名として参照できる。
 
-@item @* @image{casl2_spec_img/2_3-02,5cm} @*
+@item @* @image{img/2_3-02,5cm} @*
 
 @code{END}命令は，プログラムの終わりを定義する。
 
-@item @* @image{casl2_spec_img/2_3-03,5cm} @*
+@item @* @image{img/2_3-03,5cm} @*
 
 @code{DS}命令は，指定した語数の領域を確保する。
 
 語数は，10進定数（@geq{} 0）で指定する。語数を0とした場合，領域は確保しないが，ラベルは有効である。
 
-@item @* @image{casl2_spec_img/2_3-04,5cm} @*
+@item @* @image{img/2_3-04,5cm} @*
 
 @code{DC}命令は，定数で指定したデータを（連続する）語に格納する。
 定数には，10進定数，16進定数，文字定数，アドレス定数の４種類がある。 @*
 
-@image{casl2_spec_img/2_3-05,15cm}
+@image{img/2_3-05,15cm}
 @end enumerate
 
 @section マクロ命令
@@ -267,7 +267,7 @@ CASL IIは，COMET IIのためのアセンブラ言語である。
 
 @enumerate
 
-@item @* @image{casl2_spec_img/2_4-01,5cm} @*
+@item @* @image{img/2_4-01,5cm} @*
 
 @code{IN}命令は，あらかじめ割り当てた入力装置から，1レコードの文字データを読み込む。
 
@@ -277,7 +277,7 @@ CASL IIは，COMET IIのためのアセンブラ言語である。
 
 @code{IN}命令を実行すると，@code{GR}の内容は保存されるが，@code{FR}の内容は不定となる。
 
-@item @* @image{casl2_spec_img/2_4-02,5cm} @*
+@item @* @image{img/2_4-02,5cm} @*
 
 @code{OUT}命令は，あらかじめ割り当てた出力装置に，文字データを，1レコードとして書き出す。
 
@@ -287,11 +287,11 @@ CASL IIは，COMET IIのためのアセンブラ言語である。
 
 @code{OUT}命令を実行すると，@code{GR}の内容は保存されるが，@code{FR}の内容は不定となる。
 
-@item @* @image{casl2_spec_img/2_4-03,5cm} @*
+@item @* @image{img/2_4-03,5cm} @*
 
 @code{RPUSH}命令は，@code{GR}の内容を，@code{GR1}，@code{GR2}，…，@code{GR7}の順でスタックに格納する。
 
-@item @* @image{casl2_spec_img/2_4-04,5cm} @*
+@item @* @image{img/2_4-04,5cm} @*
 
 @code{RPOP}命令は，スタックの内容を順次取り出し，@code{GR7}，@code{GR6}，…，@code{GR1}の順で@code{GR}に格納する。`
 @end enumerate
@@ -359,7 +359,7 @@ OSは，入出力装置や媒体による入出力手続の違いを吸収し，
 
 命令語の構成は定義しないが，次のような構成を想定する。ここで，@code{OP}の数値は16進表示で示す。
 
-@image{casl2_spec_img/r_1-01,15cm}
+@image{img/r_1-01,15cm}
 
 @section マクロ命令
 
@@ -390,19 +390,19 @@ LABEL PUSH 0,GR1
 
 @item 算術左シフトでは，ビット番号14の値が設定される。 @*
 
-@image{casl2_spec_img/r_1-02,15cm}
+@image{img/r_1-02,15cm}
 
 @item 算術右シフトでは，ビット番号0の値が設定される。 @*
 
-@image{casl2_spec_img/r_1-03,15cm}
+@image{img/r_1-03,15cm}
 
 @item 論理左シフトでは，ビット番号15の値が設定される。 @*
 
-@image{casl2_spec_img/r_1-04,15cm}
+@image{img/r_1-04,15cm}
 
 @item 論理右シフトでは，ビット番号0の値が設定される。 @*
 
-@image{casl2_spec_img/r_1-05,15cm}
+@image{img/r_1-05,15cm}
 @end enumerate
 
 @section プログラムの例

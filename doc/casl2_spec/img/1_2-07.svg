@@ -25,7 +25,7 @@
     <g transform="translate(0,50)">
       <g font-size="10pt" font-family="monospace">
         <text x="5" y="15" font-family="sans-serif">リターン</text>
-        <text x="5" y="35">RETrun form subroutine</text>
+        <text x="5" y="35">RETurn form subroutine</text>
         <text x="205" y="25">RET</text>
         <text x="255" y="25"></text>
       </g>
