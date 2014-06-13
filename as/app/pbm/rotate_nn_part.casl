@@ -34,7 +34,7 @@ LOOP1   LD     GR4,N
         LD     GR6,0,GR1       ; GR6 ← 元の図形の先頭語の内容
 LOOP2   LD     GR7,0,GR5       ; GR7 ← 結果の領域の1語の内容
         SRL    GR7,1
-        SRL    GR6,1
+        SLL    GR6,1
         JOV    ON
         JUMP   CONT
 ON      OR     GR7,=#8000

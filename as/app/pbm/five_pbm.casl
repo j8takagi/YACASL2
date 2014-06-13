@@ -1,14 +1,11 @@
-;;; casl2 outl_call.casl outl.casl
+;;; 「五」を表す16 x 16のpbm画像を出力する
+;;; 呼び出し方:
+;;;   casl2 five_pbm.casl $CASL2LIB/pbm16.casl $CASL2LIB/outb_w.casl $CASL2LIB/divl.casl $CASL2LIB/rev.casl >five.pbm
 MAIN    START
-        LAD     GR2,0
-LOOP    LD      GR1,VAL,GR2
-        CALL    OUTB
-        LAD     GR2,1,GR2
-        CPA     GR2,HEIGHT
-        JZE     FIN
-        JUMP    LOOP
-FIN     RET
-VAL     DC      #FFFC
+        LAD     GR1,GRAPH
+        CALL    PBM16
+        RET
+GRAPH   DC      #FFFC
         DC      #FFFC
         DC      #FFFC
         DC      #0700
@@ -24,5 +21,4 @@ VAL     DC      #FFFC
         DC      #FFFF
         DC      #FFFF
         DC      #0000
-HEIGHT  DC      16
         END

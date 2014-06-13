@@ -1,17 +1,16 @@
-;;; casl2 call_rotate.casl ../../casl2lib/outb_w.casl ../../casl2lib/divl.casl ../../casl2lib/rev.casl rotate.casl | cat 16_16.pbm - >five_rot.pbm
+;;; 「五」を表す画像を時計方向へ90度回転させた結果をPBMファイルとして出力する
+;;; 呼び出し方:
+;;;   casl2 -M 1024 five_cw90_pbm.casl $CASL2LIB/pbm16.casl $CASL2LIB/outb_w.casl $CASL2LIB/divl.casl $CASL2LIB/rev.casl rotate_cw90.casl >five_cw90.pbm
 MAIN    START
-        LAD     GR1,ORG
+        RPUSH
+        LAD     GR1,GRAPH
         LAD     GR2,RES
         CALL    ROTATE
-        LAD     GR2,0
-LOOP    LD      GR1,RES,GR2
-        CALL    OUTB
-        LAD     GR2,1,GR2
-        CPA     GR2,HEIGHT
-        JZE     FIN
-        JUMP    LOOP
+        LAD     GR1,RES
+        CALL    PBM16
+        RPOP
 FIN     RET
-ORG     DC      #FFFC
+GRAPH   DC      #FFFC
         DC      #FFFC
         DC      #FFFC
         DC      #0700
@@ -27,6 +26,5 @@ ORG     DC      #FFFC
         DC      #FFFF
         DC      #FFFF
         DC      #0000
-HEIGHT  DC      16
 RES     DS      16
         END
