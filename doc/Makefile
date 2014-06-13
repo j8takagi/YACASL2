@@ -13,7 +13,7 @@ INSTALL-INFO-TARGETS := yacasl2.info
 
 base: install.txt info html
 
-all: base html pdf casl2_spec
+all: base htmls pdf casl2_spec
 
 info: yacasl2.info
 
