@@ -7,6 +7,8 @@ CSS := style.css
 prefix ?= ~
 infodir ?= $(prefix)/share/info
 
+TEXITARGETS := install.html manual.html
+
 INSTALL-INFO-TARGETS := yacasl2.info
 
 .PHONY: base all info html htmls pdf casl2_spec distclean clean
