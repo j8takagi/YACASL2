@@ -1,7 +1,6 @@
 VPATH := img
 
 RMR := $(RM) -r
-SED := sed
 
 CSS := style.css
 
@@ -18,8 +17,6 @@ clean: texinfo-clean
 distclean: clean texinfo-distclean
 	$(RM) *.d *.html *.pdf
 	$(MAKE) -C img distclean
-
-#include casl2_spec.dep
 
 include texinfo.mk
 
