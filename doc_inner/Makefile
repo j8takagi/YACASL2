@@ -50,6 +50,8 @@ $(CMETRICS_DIR):
 
 clean: doxygen-clean gnu_global-clean cmetrics-clean
 
+distclean: clean
+
 doxygen-clean:
 	$(RMR) $(DOXYGEN_DIR)
 	$(RM) ../Doxyfile
