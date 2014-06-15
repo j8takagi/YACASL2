@@ -23,6 +23,7 @@ XARGS := xargs
 
 prefix ?= ~
 bindir ?= $(prefix)/bin
+libdir ?= $(prefix)/share
 
 VERSION := $(shell $(CAT) VERSION)
 
@@ -63,6 +64,12 @@ check:
 install: casl2 comet2 dumpword install-info install-casl2lib
 	$(INSTALL) -d $(bindir)
 	$(INSTALL) $(CMD) $(bindir)/
+
+install-info:
+	$(MAKE) -C doc install-info
+
+install-casl2lib:
+	$(MAKE) -C as/casl2lib install-casl2lib
 
 uninstall: uninstall-info uninstall-casl2lib
 	$(RM) $(prefix $(bindir)/,$(CMD))
