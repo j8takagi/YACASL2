@@ -6,12 +6,12 @@ ECHO ?= echo
 INSTALL ?= install
 
 prefix ?= ~
-casl2libdir ?= $(prefix)/lib/yacasl2
+sharedir ?= $(prefix)/share
 
 install-casl2lib: *.casl
-	$(INSTALL) -d $(casl2libdir)
-	$(INSTALL) $^ $(casl2libdir)/
+	$(INSTALL) -d $(sharedir)/casl2lib
+	$(INSTALL) $^ $(sharedir)/casl2lib/
 
 uninstall-casl2lib:
-	@$(RMF) $(casl2libdir)/*.casl
-	@$(RMDIR) $(casl2libdir) || if test -e $(casl2libdir); then $(ECHO) "$(casl2libdir): files may be added by others."; fi
+	@$(RMF) $(sharedir)/casl2lib/*.casl
+	@$(RMDIR) $(sharedir)/casl2lib || if test -e $(sharedir)/casl2lib; then $(ECHO) "$(sharedir)/casl2lib: files may be added by others."; fi
