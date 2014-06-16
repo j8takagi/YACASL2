@@ -6,12 +6,12 @@ ECHO ?= echo
 INSTALL ?= install
 
 prefix ?= ~
-sharedir ?= $(prefix)/share
+casl2libdir ?= $(prefix)/share/casl2lib
 
 install-casl2lib: *.casl
-	$(INSTALL) -d $(sharedir)/casl2lib
-	$(INSTALL) $^ $(sharedir)/casl2lib/
+	$(INSTALL) -d $(casl2libdir)
+	$(INSTALL) $^ $(casl2libdir)/
 
 uninstall-casl2lib:
-	@$(RMF) $(sharedir)/casl2lib/*.casl
-	@$(RMDIR) $(sharedir)/casl2lib || if test -e $(sharedir)/casl2lib; then $(ECHO) "$(sharedir)/casl2lib: files may be added by others."; fi
+	@$(RMF) $(casl2libdir)/*.casl
+	@$(RMDIR) $(casl2libdir) || if test -e $(casl2libdir); then $(ECHO) "$(casl2libdir): files may be added by others."; fi
