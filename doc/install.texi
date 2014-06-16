@@ -218,7 +218,7 @@ $ @kbd{sudo make install prefix=/usr/local}
 @item @var{prefix} @tab インストール時のルートファイル @tab @file{~}
 @item @var{bindir} @tab 実行ファイルのインストール先 @tab @file{$prefix/bin}
 @item @var{infodir} @tab infoファイルのインストール先 @tab @file{$prefix/info}
-@item @var{casl2libdir} @tab CASL II ライブラリファイルのインストール先 @tab @file{$prefix/lib/yacasl2}
+@item @var{casl2libdir} @tab CASL II ライブラリファイルのインストール先 @tab @file{$prefix/share/casl2lib}
 @end multitable
 
 @node Environment,  , Install, install
@@ -267,16 +267,16 @@ $ @kbd{echo 'INFOPATH=$INFOPATH:~/share/info && export INFOPATH' >>~/.bashrc}
 
 @subsection @code{CASL2LIB}の設定
 
-環境変数@code{CASL2LIB}を設定しておけば、CASL IIプログラム作成時に共通ライブラリを呼び出す手間が小さくなります。例えば、CASL2LIBを@code{~/yacasl2/casl2lib}にインストールしたときは、次のコマンドで設定できます。
+環境変数@code{CASL2LIB}を設定しておけば、CASL IIプログラム作成時に共通ライブラリを呼び出す手間が小さくなります。例えば、CASL2LIBを@code{~/share/casl2lib}にインストールしたときは、次のコマンドで設定できます。
 
 @example
-$ @kbd{CASL2LIB=~/yacasl2/casl2lib && export CASL2LIB}
+$ @kbd{CASL2LIB=~/share/casl2lib && export CASL2LIB}
 @end example
 
 @file{~/.bashrc}には次のコマンドで追加できます。
 
 @example
-$ @kbd{ echo 'CASL2LIB=~/yacasl2/casl2lib && export CASL2LIB' >>~/.bashrc}
+$ @kbd{ echo 'CASL2LIB=~/share/casl2lib && export CASL2LIB' >>~/.bashrc}
 @end example
 
 @bye
