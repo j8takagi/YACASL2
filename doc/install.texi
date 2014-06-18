@@ -217,7 +217,7 @@ $ @kbd{sudo make install prefix=/usr/local}
 @headitem オプション @tab 説明 @tab 初期設定
 @item @var{prefix} @tab インストール時のルートファイル @tab @file{~}
 @item @var{bindir} @tab 実行ファイルのインストール先 @tab @file{$prefix/bin}
-@item @var{infodir} @tab infoファイルのインストール先 @tab @file{$prefix/info}
+@item @var{infodir} @tab infoファイルのインストール先 @tab @file{$prefix/share/info}
 @item @var{casl2libdir} @tab CASL II ライブラリファイルのインストール先 @tab @file{$prefix/share/casl2lib}
 @end multitable
 
@@ -256,7 +256,7 @@ $ @kbd{echo ’PATH=$PATH:~/bin && export PATH’ >>~/.bashrc}
 @code{INFOPATH}にYACASL2のInfoファイルをインストールしたディレクトリーを追加すると、ディレクトリーの指定を省略して@command{casl2} @command{comet2} @command{dumpword}を実行できます。例えば、初期設定のままInfoファイルを@file{~/share/info}にインストールしたときは、次のコマンドで設定できます。
 
 @example
-$ @kbd{INFOPATH=$INFOPATH:~/share && export INFOPATH}
+$ @kbd{INFOPATH=$INFOPATH:~/share/info && export INFOPATH}
 @end example
 
 @file{~/.bashrc}には次のコマンドで追加できます。

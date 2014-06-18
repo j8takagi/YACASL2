@@ -184,7 +184,7 @@ Tools」に含まれます。
 PREFIX         インストール時のルートファイル       '~'
 BINDIR         実行ファイルのインストール先         '$prefix/bin'
 INFODIR        infoファイルのインストール先         '$prefix/info'
-CASL2LIBDIR    CASL II ライブラリファイルのインス   '$prefix/lib/yacasl2'
+CASL2LIBDIR    CASL II ライブラリファイルのインス   '$prefix/share/casl2lib'
                トール先
 
 2.8 環境変数の設定
@@ -240,12 +240,11 @@ CASL2LIBDIR    CASL II ライブラリファイルのインス   '$prefix/lib/ya
 
  環境変数'CASL2LIB'を設定しておけば、CASL IIプログラム作成時に共通ライブ
 ラリを呼び出す手間が小さくなります。例えば、CASL2LIBを
-'~/yacasl2/casl2lib'にインストールしたときは、次のコマンドで設定できます
-。
+'~/share/casl2lib'にインストールしたときは、次のコマンドで設定できます。
 
-     $ CASL2LIB=~/yacasl2/casl2lib && export CASL2LIB
+     $ CASL2LIB=~/share/casl2lib && export CASL2LIB
 
  '~/.bashrc'には次のコマンドで追加できます。
 
-     $  echo 'CASL2LIB=~/yacasl2/casl2lib && export CASL2LIB' >>~/.bashrc
+     $  echo 'CASL2LIB=~/share/casl2lib && export CASL2LIB' >>~/.bashrc
 
