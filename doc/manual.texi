@@ -14,7 +14,7 @@
 @c %**end of header
 
 @copying
-Copyright @copyright{} 2010-2013 j8takagi
+Copyright @copyright{} 2010-2014 j8takagi
 @end copying
 
 @dircategory Programming
@@ -67,7 +67,7 @@ CASL IIは情報処理試験で用いられるアセンブラ言語で、
 YACASL2は、CASL IIアセンブラ言語で記述されたファイルをアセンブルし、
 仮想マシンCOMET II上で実行します。
 アセンブルと実行は、連続で行うこともできますし、
-アセンブル結果をファイルに保存してあらから実行することもできます。
+アセンブル結果をファイルに保存してあとから実行することもできます。
 YACASL2の動作はCASL IIの仕様に準拠しているため、情報処理試験の問題を
 はじめ各種参考書やサイトに記載されたCASL IIのプログラムを
 そのままアセンブルして実行できます。
