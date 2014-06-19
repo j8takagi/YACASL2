@@ -45,8 +45,8 @@ $(GNU_GLOBAL_DIR): ../src ../include
 
 $(CMETRICS_DIR):
 	$(INSTALL) -d $(CMETRICS_DIR)
-	$(CMETRICS) $(CMETRICS_SRCDIR) | $(SED) -e '1s/ \{2,\}/\t/g' -e '2,$$s/  \{1,\}/\t/g' >$(CMETRICS_DIR)/files.tsv
-	$(CMETRICS) -f $(CMETRICS_SRCDIR) | $(SED) -e '1s/ \{2,\}/\t/g' -e '2,$$s/  \{1,\}/\t/g' >$(CMETRICS_DIR)/functions.tsv
+	$(CMETRICS) $(CMETRICS_SRCDIR) | $(SED) -e '1s/ \{2,\}/	/g' -e '2,$$s/  \{1,\}/	/g' >$(CMETRICS_DIR)/files.tsv
+	$(CMETRICS) -f $(CMETRICS_SRCDIR) | $(SED) -e '1s/ \{2,\}/	/g' -e '2,$$s/  \{1,\}/	/g' >$(CMETRICS_DIR)/functions.tsv
 
 clean: doxygen-clean gnu_global-clean cmetrics-clean
 
