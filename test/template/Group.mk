@@ -29,7 +29,7 @@ GROUP_DIR := $(CURDIR)
 GROUP := $(notdir $(GROUP_DIR))
 
 # テスト名。カレントディレクトリー内の、名前が大文字または.以外で始まるディレクトリー
-TESTS := $(notdir $(shell $(FIND) -maxdepth 1 -name "[^A-Z.]*" -type d))
+TESTS := $(notdir $(shell $(FIND) . -maxdepth 1 -name "[^A-Z.]*" -type d))
 
 # テストグループログファイル
 GROUP_LOG_FILE := $(shell $(ECHO) $(GROUP) | $(TR) '[a-z]' '[A-Z]').log
