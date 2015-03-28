@@ -12,3 +12,4 @@ core
 .DS_Store
 *.bak
 fontconfig
+as/casl2lib/test
