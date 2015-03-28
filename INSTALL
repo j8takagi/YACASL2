@@ -183,7 +183,7 @@ Tools」に含まれます。
 ---------------------------------------------------------------------------
 PREFIX         インストール時のルートファイル       '~'
 BINDIR         実行ファイルのインストール先         '$prefix/bin'
-INFODIR        infoファイルのインストール先         '$prefix/info'
+INFODIR        infoファイルのインストール先         '$prefix/share/info'
 CASL2LIBDIR    CASL II ライブラリファイルのインス   '$prefix/share/casl2lib'
                トール先
 
@@ -229,7 +229,7 @@ CASL2LIBDIR    CASL II ライブラリファイルのインス   '$prefix/share/
 できます。例えば、初期設定のままInfoファイルを'~/share/info'にインストー
 ルしたときは、次のコマンドで設定できます。
 
-     $ INFOPATH=$INFOPATH:~/share && export INFOPATH
+     $ INFOPATH=$INFOPATH:~/share/info && export INFOPATH
 
  '~/.bashrc'には次のコマンドで追加できます。
 
