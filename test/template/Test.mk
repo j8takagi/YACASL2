@@ -1,7 +1,7 @@
 # autotest.mk > test_template > Test.mk
 # 自動テスト用のMakefile
 #
-# 要: Define.mk Define_test.mk
+# 要: Define.mk
 #
 # オペレーター
 # make         : CMDの標準出力をTEST1_FILEに保存したあと、TEST0_FILEとの差分を比較し、結果をLOG_FILEに出力
@@ -13,12 +13,10 @@
 # make valgrind: valgrind CMDの標準出力をVARGRIND_FILEに保存
 # make clean   : "make" で作成されたファイルをクリア
 # make all-clean: "make" と "make set" で作成されたファイルをクリア
-SHELL = /bin/bash
 
 ######################################################################
 # マクロ
 ######################################################################
-
 # 指定されたファイルをチェックし、空の場合は削除
 # 引数は、対象ファイル
 # 用例: $(call rm_null,file_target)

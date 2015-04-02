@@ -34,6 +34,7 @@ LN := ln -s
 MKDIR := mkdir -p
 MV := mv
 SED := sed
+TEST := test
 TIME := time
 TR := tr
 VALGRIND := valgrind

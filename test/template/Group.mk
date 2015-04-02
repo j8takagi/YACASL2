@@ -12,8 +12,6 @@
 # make valgrind: すべてのテストで、valgrindによるメモリリークチェックを実行する
 # make valgrind-clean: すべてのテストで、valgrindのログファイルをクリア
 
-SHELL = /bin/sh
-
 include Define.mk
 
 verbose ?= 1
@@ -65,7 +63,7 @@ endef
 # 用例: $(call group_log_each,file_test_log,file_group_log)
 define group_log_each
     $(ECHO) $(dir $1) >>$2;
-    if test -s $1; then $(CAT) $1 >>$2; else $(ECHO) $(dir $1)": no log" >>$2; fi
+    if $(TEST) -s $1; then $(CAT) $1 >>$2; else $(ECHO) $(dir $1)": no log" >>$2; fi
     $(ECHO) >>$2;
 endef
 
@@ -89,7 +87,7 @@ TEST_VALGRIND_FILES := $(foreach test,$(TESTS),$(test)/$(VALGRIND_FILE))
 # 用例: $(call group_report,name,file_log,file_report)
 define group_report
     $(ECHO) '$1: $(SUCCESS_TEST) / $(ALL_TEST) tests passed. Details in $(GROUP_DIR)/$2' >$3
-    if test $(FAIL_TEST) -eq 0; then $(ECHO) "$1: All tests are succeded." >>$3; fi
+    if $(TEST) $(FAIL_TEST) -eq 0; then $(ECHO) "$1: All tests are succeded." >>$3; fi
 endef
 
 # リストで指定したディレクトリーでmakeを実行
@@ -109,6 +107,7 @@ endef
 
 check checkall: clean $(GROUP_REPORT_FILE)
 	@$(CAT) $(GROUP_REPORT_FILE)
+	@(if $(TEST) $(FAIL_TEST) -gt 0; then $(GREP) 'Failure' $(GROUP_LOG_FILE); fi)
 	@exit $(FAIL_TEST)
 
 time: time-clean $(GROUP_TIME_FILE)
