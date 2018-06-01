@@ -5,7 +5,7 @@ MAIN    START
         ST      GR3,LEN
         OUT     ADR,LEN
         RET
-VAL     DC      11
+VAL     DC      3245
 ADR     DS      6
 LEN     DS      1
         END
