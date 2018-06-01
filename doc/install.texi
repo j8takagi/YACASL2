@@ -14,7 +14,7 @@
 @c %**end of header
 
 @copying
-Copyright @copyright{} 2010-2015 j8takagi
+Copyright @copyright{} 2010-2018 j8takagi
 @end copying
 
 @titlepage
