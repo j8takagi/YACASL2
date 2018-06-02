@@ -1,6 +1,7 @@
-.PHONY: all install-casl2lib uninstall-casl2lib
+.PHONY: all libfiles install-casl2lib uninstall-casl2lib
 
 CAT := cat
+CASL2OUT := casl2 -M4096 -O
 RMF := rm -f
 RMDIR := rmdir
 ECHO := echo
@@ -9,10 +10,13 @@ INSTALL := install
 prefix ?= ~
 casl2libdir ?= $(prefix)/share/casl2lib
 
-all: stdlib.casl abs.casl addl32.casl diva.casl divl.casl inl.casl l2str.casl max.casl minim.casl mula.casl mull.casl outa.casl outa_q15.casl outb.casl outb_w.casl outl.casl outl_q15.casl outpbm.casl pbm16.casl str2l.casl
+all: stdlib.casl libfiles
 
 %.casl: src/%.casl
 	$(CAT) $^ >$@
+
+%.o: %.casl
+	$(CASL2OUT)$< $@
 
 include casl2lib.dep
 

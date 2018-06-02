@@ -1,3 +1,0 @@
-../../../../casl2 -O outl_q15.casl ../../../../as/casl2lib/outl_q15.casl ../../../../as/casl2lib/mull.casl
-../../../../comet2 a.o
-rm -f a.o

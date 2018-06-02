@@ -1,3 +1,0 @@
-../../../../casl2 -O -M4096 mull.casl ../../../../as/casl2lib/mull.casl ../../../../as/casl2lib/outl.casl ../../../../as/casl2lib/divl.casl ../../../../as/casl2lib/rev.casl 
-../../../../comet2 -M4096 a.o
-rm -f a.o
