@@ -1,7 +1,10 @@
 /casl2
 /comet2
 /dumpword
+/disassemble
 *.o
+!as/sample/hello.o
+!as/sample/sum_10.o
 *~
 GPATH
 GRTAGS

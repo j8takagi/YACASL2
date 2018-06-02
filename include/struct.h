@@ -157,6 +157,16 @@ bool create_code_cmdtype();
 const void (*getcmdptr(WORD code));
 
 /**
+ * 命令コードから命令のタイプを返す
+ */
+CMDTYPE getcmdtype(WORD code);
+
+/**
+ * 命令コードから命令の名前を返す
+ */
+char *getcmdname(WORD code);
+
+/**
  * コードがキーの命令ハッシュ表を解放する
  */
 void free_code_cmdtype();

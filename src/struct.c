@@ -210,9 +210,26 @@ const void (*getcmdptr(WORD code))
 }
 
 /**
+ * 命令コードから命令のタイプを返す
+ */
+CMDTYPE getcmdtype(WORD code)
+{
+    CMDTAB *t;
+    CMDTYPE type = 0;
+
+    for(t = code_cmdtype[hash_code(code)]; t != NULL; t = t->next) {
+        if(code == t->cmd->code) {
+            type = t->cmd->type;
+            break;
+        }
+    }
+    return type;
+}
+
+/**
  * 命令コードから命令の名前を返す
  */
-char (*getcmdname(WORD code))
+char *getcmdname(WORD code)
 {
     CMDTAB *t;
     char *cmd = NULL;
