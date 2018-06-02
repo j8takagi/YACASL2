@@ -149,7 +149,7 @@ void free_cmdtype_code();
 /**
  * コードがキーの命令ハッシュ表を作成する
  */
-bool create_code_type();
+bool create_code_cmdtype();
 
 /**
  * 命令コードから命令の関数ポインタを返す
@@ -159,6 +159,6 @@ const void (*getcmdptr(WORD code));
 /**
  * コードがキーの命令ハッシュ表を解放する
  */
-void free_code_type();
+void free_code_cmdtype();
 
 #endif            /* YACASL2_CASL2_INCLUDEDの終端 */

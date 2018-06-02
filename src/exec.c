@@ -758,7 +758,7 @@ void exec()
     void (*cmdptr)();
     char *s;
 
-    create_code_type();                             /* 命令のコードとタイプがキーのハッシュ表を作成 */
+    create_code_cmdtype();                          /* 命令のコードとタイプがキーのハッシュ表を作成 */
     if(execmode.trace == true) {
         fprintf(stdout, "\nExecuting machine codes\n");
     }
@@ -811,7 +811,7 @@ void exec()
         } while(clock_end - clock_begin < CLOCKS_PER_SEC / sys->clocks);
     }
 execfin:
-    free_code_type();                              /* 命令のコードとタイプがキーのハッシュ表を解放 */
+    free_code_cmdtype();                           /* 命令のコードとタイプがキーのハッシュ表を解放 */
     if(cerr->num > 0) {
         fprintf(stderr, "Execute error - %d: %s\n", cerr->num, cerr->msg);
     }

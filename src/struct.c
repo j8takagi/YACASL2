@@ -75,7 +75,7 @@ enum {
 /**
  * ハッシュ表
  */
-static CMDTAB *cmdtype_code[CMDTABSIZE], *code_type[CMDTABSIZE];
+static CMDTAB *cmdtype_code[CMDTABSIZE], *code_cmdtype[CMDTABSIZE];
 
 /**
  * 命令の名前とタイプからハッシュ値を生成する
@@ -176,7 +176,7 @@ unsigned hash_code(WORD code)
 /**
  * コードがキーの命令ハッシュ表を作成する
  */
-bool create_code_type()
+bool create_code_cmdtype()
 {
     CMDTAB *p;
     unsigned hashval;
@@ -184,10 +184,10 @@ bool create_code_type()
 
     for(i = 0; i < comet2cmdsize; i++) {
         hashval = hash_code((&comet2cmd[i])->code);    /* ハッシュ値の生成 */
-        p = malloc_chk(sizeof(CMDTAB), "code_type");
+        p = malloc_chk(sizeof(CMDTAB), "code_cmdtype");
         p->cmd = &comet2cmd[i];
-        p->next = code_type[hashval];                  /* ハッシュ表に値を追加 */
-        code_type[hashval] = p;
+        p->next = code_cmdtype[hashval];                  /* ハッシュ表に値を追加 */
+        code_cmdtype[hashval] = p;
     }
     return true;
 }
@@ -200,7 +200,7 @@ const void (*getcmdptr(WORD code))
     CMDTAB *t;
     const void *ptr = NULL;
 
-    for(t = code_type[hash_code(code)]; t != NULL; t = t->next) {
+    for(t = code_cmdtype[hash_code(code)]; t != NULL; t = t->next) {
         if(code == t->cmd->code) {
             ptr = t->cmd->ptr;
             break;
@@ -210,14 +210,31 @@ const void (*getcmdptr(WORD code))
 }
 
 /**
+ * 命令コードから命令の名前を返す
+ */
+char (*getcmdname(WORD code))
+{
+    CMDTAB *t;
+    char *cmd = NULL;
+
+    for(t = code_cmdtype[hash_code(code)]; t != NULL; t = t->next) {
+        if(code == t->cmd->code) {
+            cmd = t->cmd->name;
+            break;
+        }
+    }
+    return cmd;
+}
+
+/**
  * コードがキーの命令ハッシュ表を解放する
  */
-void free_code_type()
+void free_code_cmdtype()
 {
     int i;
     CMDTAB *p, *q;
     for(i = 0; i < CMDTABSIZE; i++) {
-        for(p = code_type[i]; p != NULL; p = q) {
+        for(p = code_cmdtype[i]; p != NULL; p = q) {
             q = p->next;
             FREE(p);
         }
