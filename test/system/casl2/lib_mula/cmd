@@ -1,1 +1,1 @@
-../../../../casl2 -M640 mula.casl ../../../../as/casl2lib/mula.casl ../../../../as/casl2lib/mull.casl ../../../../as/casl2lib/outa.casl ../../../../as/casl2lib/abs.casl ../../../../as/casl2lib/divl.casl ../../../../as/casl2lib/rev.casl
+../../../../casl2 -M640 ../../../../as/casl2lib/sample/call_mula.casl ../../../../as/casl2lib/mula.casl ../../../../as/casl2lib/mull.casl ../../../../as/casl2lib/outa.casl ../../../../as/casl2lib/abs.casl ../../../../as/casl2lib/divl.casl ../../../../as/casl2lib/rev.casl

@@ -1,1 +1,1 @@
-../../../../casl2 outb_w.casl ../../../../as/casl2lib/outb_w.casl ../../../../as/casl2lib/divl.casl ../../../../as/casl2lib/rev.casl
+../../../../casl2 ../../../../as/casl2lib/sample/call_outb_w.casl ../../../../as/casl2lib/outb_w.casl ../../../../as/casl2lib/divl.casl ../../../../as/casl2lib/rev.casl

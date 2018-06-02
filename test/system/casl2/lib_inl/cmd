@@ -1,1 +1,1 @@
-../../../../casl2 -M720 inl.casl ../../../../as/casl2lib/inl.casl ../../../../as/casl2lib/outl.casl ../../../../as/casl2lib/mull.casl ../../../../as/casl2lib/str2l.casl ../../../../as/casl2lib/divl.casl ../../../../as/casl2lib/rev.casl  <teststr.txt
+../../../../casl2 -M720 ../../../../as/casl2lib/sample/call_inl.casl ../../../../as/casl2lib/inl.casl ../../../../as/casl2lib/outl.casl ../../../../as/casl2lib/mull.casl ../../../../as/casl2lib/str2l.casl ../../../../as/casl2lib/divl.casl ../../../../as/casl2lib/rev.casl  <teststr.txt
