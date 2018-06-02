@@ -237,7 +237,7 @@ bool loadassemble(const char *file)
     bool stat = true;
 
     assert(file != NULL);
-    if((fp = fopen(file, "r")) == NULL) {
+    if((fp = fopen(file, "rb")) == NULL) {
         perror(file);
         return false;
     }
