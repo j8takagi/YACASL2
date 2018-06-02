@@ -1,0 +1,2 @@
+cat ../../../../as/sample/sum_10.casl
+../../../../casl2 -slaTo ../../../../as/sample/sum_10.casl

@@ -1,0 +1,1 @@
+../../../../casl2 -M2048 ../../../../as/casl2lib/sample/call_inl.casl ../../../../as/casl2lib/stdlib.casl <teststr.txt

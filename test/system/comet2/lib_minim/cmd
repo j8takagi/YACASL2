@@ -1,3 +1,0 @@
-../../../../casl2 -O minim.casl ../../../../as/casl2lib/minim.casl ../../../../as/casl2lib/outa.casl ../../../../as/casl2lib/divl.casl ../../../../as/casl2lib/rev.casl ../../../../as/casl2lib/abs.casl
-../../../../comet2 a.o
-rm -f a.o

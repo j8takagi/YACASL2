@@ -32,8 +32,8 @@ VERSIONGITREF := $(shell $(GIT) show-ref -s --tags $(VERSION))
 MASTERGITREF := $(shell $(GIT) show-ref -s refs/heads/master)
 
 VERSIONFILES = include/package.h \
-        test/system/casl2/opt_v/0.txt \
-        test/system/comet2/opt_v/0.txt \
+        test/system/casl2_opt/opt_v/0.txt \
+        test/system/comet2_opt/opt_v/0.txt \
         test/system/dumpword/opt_v/0.txt
 
 all: build doc gtags

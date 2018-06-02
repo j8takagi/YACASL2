@@ -1,0 +1,3 @@
+../../../../casl2 -M2048 -O ../../../../as/casl2lib/sample/call_inl.casl ../../../../as/casl2lib/stdlib.casl <teststr.txt
+../../../../comet2 -M2048 a.o <teststr.txt
+rm -f a.o

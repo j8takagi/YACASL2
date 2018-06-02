@@ -1,1 +1,0 @@
-../../../../casl2 -M640 ../../../../as/casl2lib/sample/call_divl.casl ../../../../as/casl2lib/outl.casl ../../../../as/casl2lib/divl.casl ../../../../as/casl2lib/rev.casl
