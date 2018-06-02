@@ -1,63 +1,84 @@
-;;; 10進数の整数を表す文字列を数値に変換
-;;; 数値の範囲は、0から65535
-;;; 入力 GR1: 文字列を格納するアドレス
-;;;      GR2: 文字列の長さ。最大5けた
-;;; 出力 GR0: 数値
-;;;           文字列が最大長より大きい場合や数値以外の場合は、GR0は#FFFF、OFは1
-;;; 依存プログラム: MULL
-STR2L   START
+;;; 0〜65535の範囲にある正数のかけ算（筆算方式）を行う
+;;; 入力 GR1:被乗数 GR2:乗数
+;;; 出力 GR0:積の下位WORD GR3:積の上位WORD
+;;; 積が65535より大きい場合は、オーバーフロー
+MULL    START
         PUSH    0,GR4
         PUSH    0,GR5
-        XOR     GR0,GR0         ; GR0:初期化
-        AND     GR2,GR2         ; (GR2 = 0)の場合、FINへジャンプ
+        XOR     GR0,GR0         ; 積
+        XOR     GR3,GR3         ; 上位word
+        XOR     GR5,GR5         ; 上位wordの一時値
+        AND     GR1,GR1         ; (GR1 = 0)の場合、終了
+        JZE     CHKOV           ; ↓
+        AND     GR2,GR2         ; (GR2 = 0)の場合、終了
+        JZE     CHKOV           ; ↓
+        LAD     GR4,1           ; 対象ビット
+LOOP    PUSH    0,GR4           ; ループ先頭。GR2のビット中でGR4が示すビットが0の場合、NEXTへジャンプ
+        AND     GR4,GR2         ; ↓
+        POP     GR4             ; ↓
+        JZE     NEXT1           ; ↓
+        ADDL    GR3,GR5         ; GR3 <- GR3 + GR5
+        ADDL    GR0,GR1         ; GR0 <- GR0 + GR1
+        JOV     AHB1            ; GR0がオーバーフローした場合、AHB1へジャンプ
+        JUMP    NEXT1           ; ↓
+AHB1    LAD     GR3,1,GR3       ; GR3 <- GR3 + 1
+NEXT1   SLL     GR4,1           ; GR4を1回左シフト
+        JOV     CHKOV           ; ↓
+        SLL     GR5,1           ; GR5を1回左シフト
+        CPL     GR4,GR2         ; (GR4 > GR2)の場合、CHKOVへジャンプ
+        JPL     CHKOV           ; ↓
+        SLL     GR1,1           ; GR1を1回左シフト
+        JOV     AHB2            ; GR1がオーバーフローした場合、AHBへジャンプ
+        JUMP    NEXT2           ; ↓
+AHB2    LAD     GR5,1,GR5       ; GR5 <- GR5 + 1
+NEXT2   JUMP    LOOP            ; ループ終端
+CHKOV   AND     GR3,GR3         ; GR3 = 0の場合、終了
         JZE     FIN             ; ↓
-        CPL     GR2,MAXLEN      ; (GR2 > MAXLEN)の場合、LENOVへジャンプ
-        JPL     LENOV           ; ↓
-        ST      GR1,STR         ; STR <- GR1 文字列の開始アドレス
-        ST      GR2,LEN         ; LEN <- GR2
-        LAD     GR2,10          ; GR2:10進数の「10」
-        XOR     GR4,GR4         ; GR4:値の一時格納
-        XOR     GR5,GR5         ; GR5:インデックス
-STOL    CPL     GR5,LEN         ; ループ先頭。(GR5 = LEN)の場合、ループ脱出
-        JZE     CP              ; ↓
-        LD      GR1,STR         ; GR1に、入力文字列中の次の桁を格納
-        ADDL    GR1,GR5         ; ↓
-        LD      GR1,0,GR1       ; ↓
-        CPL     GR1,ZERO        ; (GR1 < '0')の場合、NANへジャンプ
-        JMI     NAN             ; ↓
-        CPL     GR1,NINE        ; (GR1 > '9')の場合、NANへジャンプ
-        JPL     NAN             ; ↓
-        SUBL    GR1,ZERO        ; GR1の文字を、対応する数値に変換
-        ST      GR5,NLEN        ; GR5 <- LEN - NLEN - 1
-        LD      GR5,LEN         ; ↓
-        SUBA    GR5,NLEN        ; ↓
-MUL10   CPA     GR5,=1          ; ループ先頭。GR1 <- 10 ** GR5
-        JZE     NEXT            ; (GR5 = 1)の場合、ループ脱出
-        JMI     NEXT            ; ↓
-        CALL    MULL            ; MULLを呼び出し、GR0 <- GR1 * GR2
-        JOV     FIN             ; ↓ オーバーフロー時は、プログラム終端へジャンプ
-        LD      GR1,GR0         ; GR1 <- GR0
-        LAD     GR5,-1,GR5      ; GR5 <- GR5 -1
-        JUMP    MUL10           ; ループ終端へジャンプ
-NEXT    LD      GR5,NLEN        ; GR5 <- NLEN。復元
-        ADDL    GR4,GR1         ; GR4 <- GR4 + GR1
-        JOV     FIN             ; ↓
-        LAD     GR5,1,GR5       ; GR5 <- GR5 + 1
-        JUMP    STOL            ; ループ終端
-NAN     LAD     GR2,#FFFF       ; GR2 <- #FFFF
-        JUMP    FIN             ; FINへジャンプ
-CP      LD      GR1,GR4         ; GR0 <- GR4
-        LD      GR0,LEN         ; GR0 <- LEN
-        JUMP    FIN             ; プログラム終端へジャンプ
-LENOV   LAD     GR0,#FFFF       ; 文字列が最大長より大きい場合、GR0 <- #FFFF
-        SRA     GR0,1           ; ↓ オーバーフロー発生
+        LAD     GR4,#FFFF       ; GR3 <> 0の場合、オーバーフロー
+        SLL     GR4,1           ; ↓
 FIN     POP     GR5
         POP     GR4
         RET
-ZERO    DC      '0'
-NINE    DC      '9'
-MAXLEN  DC      5               ; 文字列の最大長
-STR     DS      1
-LEN     DS      1
-NLEN    DS      1
+        END
+;;; 0〜65535の範囲にある正数のかけ算（筆算方式）を行う
+;;; 入力 GR1:被乗数 GR2:乗数
+;;; 出力 GR0:積の下位WORD GR3:積の上位WORD
+;;; 積が65535より大きい場合は、オーバーフロー
+MULL    START
+        PUSH    0,GR4
+        PUSH    0,GR5
+        XOR     GR0,GR0         ; 積
+        XOR     GR3,GR3         ; 上位word
+        XOR     GR5,GR5         ; 上位wordの一時値
+        AND     GR1,GR1         ; (GR1 = 0)の場合、終了
+        JZE     CHKOV           ; ↓
+        AND     GR2,GR2         ; (GR2 = 0)の場合、終了
+        JZE     CHKOV           ; ↓
+        LAD     GR4,1           ; 対象ビット
+LOOP    PUSH    0,GR4           ; ループ先頭。GR2のビット中でGR4が示すビットが0の場合、NEXTへジャンプ
+        AND     GR4,GR2         ; ↓
+        POP     GR4             ; ↓
+        JZE     NEXT1           ; ↓
+        ADDL    GR3,GR5         ; GR3 <- GR3 + GR5
+        ADDL    GR0,GR1         ; GR0 <- GR0 + GR1
+        JOV     AHB1            ; GR0がオーバーフローした場合、AHB1へジャンプ
+        JUMP    NEXT1           ; ↓
+AHB1    LAD     GR3,1,GR3       ; GR3 <- GR3 + 1
+NEXT1   SLL     GR4,1           ; GR4を1回左シフト
+        JOV     CHKOV           ; ↓
+        SLL     GR5,1           ; GR5を1回左シフト
+        CPL     GR4,GR2         ; (GR4 > GR2)の場合、CHKOVへジャンプ
+        JPL     CHKOV           ; ↓
+        SLL     GR1,1           ; GR1を1回左シフト
+        JOV     AHB2            ; GR1がオーバーフローした場合、AHBへジャンプ
+        JUMP    NEXT2           ; ↓
+AHB2    LAD     GR5,1,GR5       ; GR5 <- GR5 + 1
+NEXT2   JUMP    LOOP            ; ループ終端
+CHKOV   AND     GR3,GR3         ; GR3 = 0の場合、終了
+        JZE     FIN             ; ↓
+        LAD     GR4,#FFFF       ; GR3 <> 0の場合、オーバーフロー
+        SLL     GR4,1           ; ↓
+FIN     POP     GR5
+        POP     GR4
+        RET
         END

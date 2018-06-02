@@ -1,0 +1,39 @@
+stdlib.casl: src/stdlib.casl src/abs.casl src/addl32.casl src/diva.casl src/divl.casl src/inl.casl src/l2str.casl src/max.casl src/minim.casl src/mula.casl src/mull.casl src/outa.casl src/outa_q15.casl src/outb.casl src/outb_w.casl src/outl.casl src/outl_q15.casl src/outpbm.casl src/pbm16.casl src/rev.casl src/str2l.casl
+
+abs.casl: src/abs.casl
+
+addl32.casl: src/addl32.casl
+
+diva.casl: src/diva.casl divl.casl
+
+divl.casl: src/divl.casl
+
+inl.casl: src/inl.casl str2l.casl
+
+l2str.casl: src/l2str.casl divl.casl rev.casl
+
+max.casl: src/max.casl
+
+minim.casl: src/minim.casl
+
+mula.casl: src/mula.casl mull.casl
+
+mull.casl: src/mull.casl
+
+outa.casl: src/outa.casl abs.casl divl.casl
+
+outa_q15.casl: src/outa_q15.casl abs.casl mull.casl
+
+outb.casl: src/outb.casl divl.casl rev.casl
+
+outb_w.casl: src/outb_w.casl divl.casl rev.casl
+
+outl.casl: src/outl.casl divl.casl rev.casl
+
+outl_q15.casl: src/outl_q15.casl mull.casl
+
+outpbm.casl: src/outpbm.casl l2str.casl
+
+pbm16.casl: src/pbm16.casl outb.casl
+
+str2l.casl: src/str2l.casl mull.casl
