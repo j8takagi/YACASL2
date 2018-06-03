@@ -1,8 +1,8 @@
-;;; SUBL r,adr オーバーフロー
+;;; SUBL r,adr 論理演算ではオーバーフローなし（算術減算ではオーバーフロー）
 MAIN    START
         LD      GR1,A
         SUBL    GR1,B
         RET
-A       DC      #8002           ; -32766
+A       DC      #8002           ; 32770
 B       DC      #7FFF           ; 32767
         END

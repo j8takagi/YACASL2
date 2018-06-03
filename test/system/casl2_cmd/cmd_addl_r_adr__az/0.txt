@@ -3,7 +3,7 @@ MAIN    START
         LD      GR1,A
         ADDL    GR1,B
         RET
-A       DC      #FFF6           ; -10
+A       DC      #FFF6           ; 65526
 B       DC      10
         END
 
@@ -20,7 +20,7 @@ Assemble ../../../../as/cmd/ADDL/addl_r_adr__az.casl (1)
 	#0003	#0006
 ../../../../as/cmd/ADDL/addl_r_adr__az.casl:    5:        RET
 	#0004	#8100
-../../../../as/cmd/ADDL/addl_r_adr__az.casl:    6:A       DC      #FFF6           ; -10
+../../../../as/cmd/ADDL/addl_r_adr__az.casl:    6:A       DC      #FFF6           ; 65526
 	#0005	#FFF6
 ../../../../as/cmd/ADDL/addl_r_adr__az.casl:    7:B       DC      10
 	#0006	#000A
@@ -68,7 +68,7 @@ Executing machine codes
 #0004: GR7:      0 = #0000 = 0000000000000000
 #0004: SP:       8 = #0008 = 0000000000001000
 #0004: PR:       4 = #0004 = 0000000000000100
-#0004: FR (OF SF ZF): 101
+#0004: FR (OF SF ZF): 100
 #0004: Memory::::
 #0004: adr : 0000 0001 0002 0003 0004 0005 0006 0007
 #0004: 0000: 1010 0005 2210 0006 8100 FFF6 000A 0000 

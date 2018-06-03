@@ -32,6 +32,7 @@ void dspregister()
     for(i = 0; i < GRSIZE; i++ ) {
         fprintf(stdout, "#%04X: GR%d: ", sys->cpu->pr, i);
         print_dumpword(sys->cpu->gr[i], (&execmode)->logical);
+        fprintf(stdout, "\n");
     }
     fprintf(stdout, "#%04X: SP:  %6d = #%04X = %s\n",
             sys->cpu->pr, sys->cpu->sp, sys->cpu->sp, sp = word2bit(sys->cpu->sp));

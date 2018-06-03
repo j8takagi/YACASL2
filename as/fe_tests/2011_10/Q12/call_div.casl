@@ -1,3 +1,8 @@
-MAIN	START
-    	RPUSH
-    
+MAIN    START
+        LAD     GR1,0
+        LAD     GR2,15
+        LAD     GR3,OP
+        CALL    DIV
+        RET
+OP      DC      0,3
+        END

@@ -3,7 +3,7 @@
 OUTL    START
         RPUSH
         LAD     GR2,10          ; GR2に10進数の「10」を格納。
-        LAD     GR0,0           ; GR0 <- 0
+        XOR     GR0,GR0         ; GR0 <- 0
         XOR     GR4,GR4         ; 整数値の長さ
         AND     GR1,GR1         ; GR1をテスト
         JZE     ZERO            ; GR1が0の場合、ZEROにジャンプ

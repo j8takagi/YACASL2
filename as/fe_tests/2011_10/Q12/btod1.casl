@@ -11,7 +11,7 @@
              LAD    GR6,1,GR6
              LD     GR1,GR4     ; 被除数の再設定
              LD     GR2,GR5
-             
+
              JUMP   LP
      FIN     RPOP
              RET

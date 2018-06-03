@@ -345,18 +345,40 @@ void suba_r1_r2()
     sys->cpu->pr += 1;
 }
 
-void addl(WORD r, WORD val)
+void addl_subl_flagset(long val)
 {
-    long tmp;
     sys->cpu->fr = 0x0;
 
-    if((tmp = sys->cpu->gr[r] + val) < 0 || tmp > 65535) {
+    if(val > 65535) {
         sys->cpu->fr += OF;
     }
-    if(((sys->cpu->gr[r] = (WORD)(tmp & 0xFFFF)) & 0x8000) == 0x8000) {
+    if(((WORD)(val) & 0x8000) == 0x8000) {
         sys->cpu->fr += SF;
-    } else if(sys->cpu->gr[r] == 0x0) {
+    } else if(val == 0x0) {
         sys->cpu->fr += ZF;
+    }
+}
+
+void addl(WORD r, WORD val)
+{
+    long s;
+
+    s = sys->cpu->gr[r] + val;
+    sys->cpu->gr[r] = (WORD)s;
+    addl_subl_flagset(s);
+}
+
+void subl(WORD r, WORD val)
+{
+    long s;
+
+    if((s = sys->cpu->gr[r] + (~val + 1)) > 0x10000) {
+        s -= 0x10000;
+    }
+    sys->cpu->gr[r] = (WORD)s;
+    addl_subl_flagset(s);
+    if(r < val) {
+        sys->cpu->fr += OF;
     }
 }
 
@@ -382,7 +404,7 @@ void subl_r_adr_x()
     WORD w[2];
     w[0] = sys->memory[sys->cpu->pr];
     w[1] = sys->memory[sys->cpu->pr + 1];
-    addl(get_r_r1(w[0]), ~(get_val_adr_x(w[1], w[0])) + 1);
+    subl(get_r_r1(w[0]), (get_val_adr_x(w[1], w[0])));
     sys->cpu->pr += 2;
 }
 
@@ -390,7 +412,7 @@ void subl_r1_r2()
 {
     WORD w[1];
     w[0] = sys->memory[sys->cpu->pr];
-    addl(get_r_r1(w[0]), ~(sys->cpu->gr[get_x_r2(w[0])]) + 1);
+    subl(get_r_r1(w[0]), (sys->cpu->gr[get_x_r2(w[0])]));
     sys->cpu->pr += 1;
 }
 

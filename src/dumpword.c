@@ -64,5 +64,6 @@ int main(int argc, char *argv[])
     }
     fprintf(stdout, "%6s: ", argv[optind]);
     print_dumpword(word, logicalmode);
+    fprintf(stdout, "\n");
     return 0;
 }

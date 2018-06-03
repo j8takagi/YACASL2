@@ -1,4 +1,4 @@
-;;; ADDL r,adr 演算結果が負数(r < adr)
+;;; ADDL r,adr
 MAIN    START
         LD      GR1,A
         ADDL    GR1,B

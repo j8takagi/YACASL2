@@ -149,6 +149,5 @@ void print_dumpword(WORD word, bool logicalmode)
     } else if(word == '\t') {
         fprintf(stdout, " = \'\\t\'");
     }
-    fprintf(stdout, "\n");
     FREE(b);
 }

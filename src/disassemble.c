@@ -19,11 +19,10 @@ char *grstr(WORD word)
 
 bool disassemble(const char *file)
 {
-    FILE *fp;
     bool stat = true;
-    int i = 0;
-    WORD w, cmd, r, x, r1, r2, adr;
-    CMDTYPE type = 0;
+    FILE *fp;
+    WORD i = 0, w, cmd, r, x, r1, r2, adr;
+    CMDTYPE cmdtype = 0;
     char *cmdname;
 
     assert(file != NULL);
@@ -35,41 +34,47 @@ bool disassemble(const char *file)
     create_code_cmdtype();                          /* 命令のコードとタイプがキーのハッシュ表を作成 */
 
     fprintf(stdout, "MAIN\tSTART\n");
-    for( ; !feof(fp); ) {
+    for(; ;) {
         fread(&w, sizeof(WORD), 1, fp);
+        if(feof(fp)) {
+            break;
+        }
         cmd = w & 0xFF00;
         cmdname = getcmdname(cmd);
+        cmdtype = getcmdtype(cmd);
         if(cmd == 0xFF00 || (w != 0 && cmd == 0x0000)) {
-            fprintf(stdout, "\tDC\t%d\t\t; #%04X", w, i++);
-        } else if((type = getcmdtype(cmd)) == R_ADR_X || type == ADR_X) {
+            fprintf(stdout, "\tDC\t%d\t\t\t\t; #%04X: #%04X :: ", w, i++, w);
+            print_dumpword(w, true);
+        } else if(cmdtype == R_ADR_X || cmdtype == ADR_X) {
             fread(&adr, sizeof(WORD), 1, fp);
             fprintf(stdout, "\t%s\t", cmdname);
-            if(type == R_ADR_X) {
-                r = (w &  0x00F0) >> 4;
+            if(cmdtype == R_ADR_X) {
+                r = (w & 0x00F0) >> 4;
                 fprintf(stdout, "%s,", grstr(r));
             }
             fprintf(stdout, "#%04X", adr);
-            if((x = w &  0x000F) != 0) {
+            if((x = w & 0x000F) != 0) {
                 fprintf(stdout, ",%s", grstr(x));
             }
-            fprintf(stdout, "\t\t; #%04X", i);
+            fprintf(stdout, "\t\t\t\t; #%04X: #%04X #%04X", i, w, adr);
             i += 2;
         } else {
             fprintf(stdout, "\t%s", cmdname);
-            if(type == R1_R2) {
-                r1 = (w &  0x00F0) >> 4;
-                r2 = w &  0x000F;
+            if(cmdtype == R1_R2) {
+                r1 = (w & 0x00F0) >> 4;
+                r2 = w & 0x000F;
                 fprintf(stdout, "\t%s,%s", grstr(r1), grstr(r2));
-            } else if(type == R_) {
+            } else if(cmdtype == R_) {
                 r = (w & 0x00F0) >> 4;
                 fprintf(stdout, "\t%s", grstr(r));
             }
-            fprintf(stdout, "\t\t; #%04X", i++);
+            fprintf(stdout, "\t\t\t\t; #%04X: #%04X", i++, w);
         }
         fprintf(stdout, "\n");
     }
     fprintf(stdout, "\tEND\n");
     free_code_cmdtype();
+    fclose(fp);
     return stat;
 }
 

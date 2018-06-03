@@ -1,26 +1,26 @@
-DIV     START                     ; 減算を用いた 32 ビット除算
-    PUSH    0,GR6
-    PUSH    0,GR7
-    LD      GR6,GR1
-    LD      GR7,GR2
-    LD      GR1,=#FFFF        ; 商の初期化
-    LD      GR2,=#FFFF
-    LP      LD      GR4,GR6
-    LD      GR5,GR7
-    ADDL    GR2,=1            ; 商のカウントアップ
-    JOV     ADJ1
-    JUMP    CONT
-    ADJ1    
-    CONT    SUBL    GR6,0,GR3
-    J0V     FIN
-    SUBL    GR7,1,GR3
-    
-    JUMP    LP
-    ADJ2    SUBL    GR6,=1
-    J0V     FIN
-    JUMP    LP
-    FIN     POP     GR7
-    POP     GR6
-    RET
-    END
- 
+DIV  START                     ; 減算を用いた32ビット除算
+     PUSH    0,GR6
+     PUSH    0,GR7
+     LD      GR6,GR1
+     LD      GR7,GR2
+     LD      GR1,=#FFFF        ; 商の初期化
+     LD      GR2,=#FFFF
+LP   LD      GR4,GR6
+     LD      GR5,GR7
+     ADDL    GR2,=1            ; 商のカウントアップ
+     JOV     ADJ1
+     JUMP    CONT
+ADJ1 ADDL    GR1,=1
+CONT SUBL    GR6,0,GR3
+     JOV     FIN
+     SUBL    GR7,1,GR3
+     JOV     ADJ2
+     JUMP    LP
+ADJ2 SUBL    GR6,=1
+     JOV     FIN
+     JUMP    LP
+FIN  POP     GR7
+     POP     GR6
+     RET
+     END
+
