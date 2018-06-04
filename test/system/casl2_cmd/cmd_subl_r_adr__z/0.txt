@@ -3,8 +3,8 @@ MAIN    START
         LD      GR1,A
         SUBL    GR1,B
         RET
-A       DC      #FFF6           ; -10
-B       DC      #FFF6           ; -10
+A       DC      #FFF6           ; 65526
+B       DC      #FFF6           ; 65526
         END
 
 Assemble ../../../../as/cmd/SUBL/subl_r_adr__z.casl (0)
@@ -20,9 +20,9 @@ Assemble ../../../../as/cmd/SUBL/subl_r_adr__z.casl (1)
 	#0003	#0006
 ../../../../as/cmd/SUBL/subl_r_adr__z.casl:    5:        RET
 	#0004	#8100
-../../../../as/cmd/SUBL/subl_r_adr__z.casl:    6:A       DC      #FFF6           ; -10
+../../../../as/cmd/SUBL/subl_r_adr__z.casl:    6:A       DC      #FFF6           ; 65526
 	#0005	#FFF6
-../../../../as/cmd/SUBL/subl_r_adr__z.casl:    7:B       DC      #FFF6           ; -10
+../../../../as/cmd/SUBL/subl_r_adr__z.casl:    7:B       DC      #FFF6           ; 65526
 	#0006	#FFF6
 ../../../../as/cmd/SUBL/subl_r_adr__z.casl:    8:        END
 

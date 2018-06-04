@@ -1,6 +1,6 @@
 MAIN    START
         LAD     GR1,0
-        LAD     GR2,15
+        LAD     GR2,17
         LAD     GR3,OP
         CALL    DIV
         RET

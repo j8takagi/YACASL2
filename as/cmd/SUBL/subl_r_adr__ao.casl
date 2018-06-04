@@ -4,5 +4,5 @@ MAIN    START
         SUBL    GR1,B
         RET
 A       DC      #7FFE           ; 32766
-B       DC      #FFF6           ; -10
+B       DC      #FFF6           ; 65526
         END

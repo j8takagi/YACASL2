@@ -1,2 +1,2 @@
 cat ../../../../as/cmd/SUBL/subl_r_adr__as0.casl
-../../../../casl2 -atd -M8 ../../../../as/cmd/SUBL/subl_r_adr__as0.casl
+../../../../casl2 -aTd -M8 ../../../../as/cmd/SUBL/subl_r_adr__as0.casl
