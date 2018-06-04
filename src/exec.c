@@ -370,14 +370,15 @@ void addl(WORD r, WORD val)
 
 void subl(WORD r, WORD val)
 {
-    long s;
+    unsigned long o, s;
 
-    if((s = sys->cpu->gr[r] + (~val + 1)) > 0x10000) {
+    o = sys->cpu->gr[r];
+    if((s = o + (~val + 1)) > 0x10000) {
         s -= 0x10000;
     }
     sys->cpu->gr[r] = (WORD)s;
     addl_subl_flagset(s);
-    if(r < val) {
+    if(o < val) {
         sys->cpu->fr += OF;
     }
 }

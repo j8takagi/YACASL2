@@ -3,6 +3,6 @@ MAIN    START
         LD      GR1,A
         ADDL    GR1,B
         RET
-A       DC      #FFEC           ; -20
+A       DC      #FFEC           ; 65516
 B       DC      #000A           ; 10
         END

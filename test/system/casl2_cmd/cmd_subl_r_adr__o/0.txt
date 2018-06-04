@@ -1,4 +1,4 @@
-;;; SUBL r,adr 算術減算ではオーバーフロー、論理演算ではオーバーフローなし
+;;; SUBL r,adr 論理演算ではオーバーフローなし（算術減算ではオーバーフロー）
 MAIN    START
         LD      GR1,A
         SUBL    GR1,B
@@ -10,7 +10,7 @@ B       DC      #7FFF           ; 32767
 Assemble ../../../../as/cmd/SUBL/subl_r_adr__o.casl (0)
 
 Assemble ../../../../as/cmd/SUBL/subl_r_adr__o.casl (1)
-../../../../as/cmd/SUBL/subl_r_adr__o.casl:    1:;;; SUBL r,adr 算術減算ではオーバーフロー、論理演算ではオーバーフローなし
+../../../../as/cmd/SUBL/subl_r_adr__o.casl:    1:;;; SUBL r,adr 論理演算ではオーバーフローなし（算術減算ではオーバーフロー）
 ../../../../as/cmd/SUBL/subl_r_adr__o.casl:    2:MAIN    START
 ../../../../as/cmd/SUBL/subl_r_adr__o.casl:    3:        LD      GR1,A
 	#0000	#1010
