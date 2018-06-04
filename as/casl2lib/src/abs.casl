@@ -1,0 +1,17 @@
+;;; GR1を符号付き整数とみなし、絶対値に変換
+;;; 入力 GR1: -32768から32767の整数
+;;; 出力 GR1: 入力された整数の絶対値
+;;;       OF: 入力されたGR1が-32768の場合、1
+;;;       SF: 入力されたGR1が負数(-32767〜-1)の場合、1
+ABS     START
+        AND     GR1,GR1         ; GR1が0以上の場合は、FINへジャンプ
+        JPL     FIN             ; ↓
+        JZE     FIN             ; ↓
+        XOR     GR1,ALLON       ; GR1のビットを反転
+        ADDA    GR1,ONE         ; GR1に1を追加
+        JOV     FIN             ; 足し算でオーバーフローの場合は、OF:1を保持してFINへジャンプ
+        CPL     GR1,ALLON       ; SF:1を設定
+FIN     RET
+ONE     DC      1
+ALLON   DC      #FFFF
+        END

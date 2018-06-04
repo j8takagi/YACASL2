@@ -1,0 +1,43 @@
+;;; GR1に格納された値を、空白付きの2進数値として表示
+OUTBW   START
+        RPUSH
+        LD      GR2,BIN         ; GR2に2進数の「2」を格納。
+        XOR     GR4,GR4         ; GR4: 2進数値の長さ
+STI     CPL     GR1,GR2         ; ループ先頭。(GR1 < GR2)の場合は、ループ脱出
+        JMI     STLST           ; ↓
+        CALL    DIVL            ; GR1とGR2の、商をGR0、剰余をGR3に格納
+        LD      GR1,GR3         ; GR1にGR3をコピー
+        LD      GR1,NCHAR,GR1   ; GR1を文字に変換
+        ST      GR1,STR,GR4     ; (STR + GR4) <- GR1
+        LAD     GR4,1,GR4       ; GR4 <- GR4 + 1
+        LD      GR1,SPC         ; GR1 <- SPC
+        ST      GR1,STR,GR4     ; (STR + GR4) <- GR1
+        LAD     GR4,1,GR4       ; GR4 <- GR4 + 1
+        LD      GR1,GR0         ; GR0をGR1にコピー
+        JUMP    STI             ; ループ終端
+STLST   LD      GR1,NCHAR,GR1   ; GR1を文字に変換
+        ST      GR1,STR,GR4     ; (STR + GR4) <- GR1
+        LAD     GR4,1,GR4       ; GR4 <- GR4 + 1
+EMLOOP  CPL     GR4,DIG         ; ループ先頭。(GR4 = DIG)の場合は、ループ脱出
+        JZE     PRT             ; ↓
+        LD      GR1,SPC         ; GR1 <- SPC
+        ST      GR1,STR,GR4     ; (STR + GR4) <- GR1
+        LAD     GR4,1,GR4       ; GR4 <- GR4 + 1
+        LD      GR1,NCHAR       ; GR1 <- NCHAR:'0'
+        ST      GR1,STR,GR4     ; (STR + GR4) <- GR1
+        LAD     GR4,1,GR4       ; GR4 <- GR4 + 1
+        JUMP    EMLOOP          ; ループ終端
+PRT     ST      GR4,LEN         ; LEN <- GR4
+        LD      GR2,LEN         ; GR2にLENの値を格納
+        LAD     GR1,STR         ; GR1に文字列のアドレスを格納
+        CALL    REV             ; 文字列を逆順に並べ替え
+        OUT     STR,LEN         ; 文字列を出力
+        RPOP
+        RET
+STR     DS      32
+LEN     DS      1
+BIN     DC      2
+NCHAR   DC      '01'
+SPC     DC      ' '
+DIG     DC      31
+        END

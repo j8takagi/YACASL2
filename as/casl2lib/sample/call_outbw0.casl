@@ -1,0 +1,13 @@
+;;; casl2 outb_call.casl outb.casl
+MAIN    START
+        LAD     GR2,0
+LOOP    LD      GR1,VAL,GR2
+        CALL    OUTB
+        LAD     GR2,1,GR2
+        CPA     GR2,CNT
+        JZE     FIN
+        JUMP    LOOP
+FIN     RET
+VAL     DC      #0001,#8000
+CNT     DC      2
+        END

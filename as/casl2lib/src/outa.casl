@@ -1,0 +1,44 @@
+;;; GR1に格納された値を、10進数の整数値（-32768〜32767）として表示
+OUTA    START
+        RPUSH
+        LAD     GR2,10          ; GR2に10進数の「10」を格納。
+        LAD     GR0,0           ; GR0 <- 0
+        LAD     GR4,0           ; 負数フラグ。GR1が負数の場合、GR4は1
+        LAD     GR5,0           ; 整数値の長さ
+        AND     GR1,GR1         ; GR1をテスト
+        JZE     ZPRT            ; GR1が0の場合、ZPRTにジャンプ
+        JPL     STI             ; GR1が正数の場合、STIにジャンプ
+        LAD     GR4,1           ; GR1が負数の場合、GR4をオン
+        CALL    ABS             ;                  GR1を正数に変換
+STI     CPL     GR1,GR2         ; ループ先頭。(GR1 < GR2)の場合は、ループ脱出
+        JMI     STLST           ; ↓
+        CALL    DIVL            ; GR1とGR2の、商をGR0、剰余をGR3に格納
+        LD      GR1,GR3         ; GR1にGR3をコピー
+        LD      GR1,NCHAR,GR1   ; GR1を文字に変換
+        ST      GR1,STR,GR5     ; (STR + GR5) <- GR1
+        LAD     GR5,1,GR5       ; GR5 <- GR5 + 1
+        LD      GR1,GR0         ; GR0をGR1にコピー
+        JUMP    STI             ; ループ終端
+STLST   LD      GR1,NCHAR,GR1   ; GR1を文字に変換
+        ST      GR1,STR,GR5     ; (STR + GR5) <- GR1
+        LAD     GR5,1,GR5       ; GR5 <- GR5 + 1
+        AND     GR4,GR4         ; 正数の場合
+        JZE     PRT             ; ↓
+        LD      GR1,='-'        ; 負数の場合、「-」をSTR領域に格納
+        ST      GR1,STR,GR5     ; (STR + GR5) <- GR1
+        LAD     GR5,1,GR5       ; GR5 <- GR5 + 1
+        JUMP    PRT             ; PRTにジャンプ
+ZPRT    LD      GR1,NCHAR       ; 「0」をSTR領域に格納
+        ST      GR1,STR,GR5     ; (STR + GR5) <- GR1
+        LAD     GR5,1,GR5       ; GR5 <- GR5 + 1
+PRT     ST      GR5,LEN         ; LEN <- GR5
+        LD      GR2,LEN         ; GR2にLENの値を格納
+        LAD     GR1,STR         ; GR1に文字列のアドレスを格納
+        CALL    REV             ; 文字列を逆順に並べ替え
+        OUT     STR,LEN         ; 文字列を出力
+        RPOP
+        RET
+STR     DS      17
+LEN     DS      1
+NCHAR   DC      '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+        END

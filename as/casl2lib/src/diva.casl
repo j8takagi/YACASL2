@@ -1,0 +1,41 @@
+;;; 符号付き整数の割算を筆算方式で行う
+;;; 入力 GR1:被除数 GR2:除数
+;;; 出力 GR0:商 GR3:剰余
+;;; 次の場合はオーバーフロー
+;;;     GR1 = -32768; GR2 = -32768; GR2 = 0
+;;;
+DIVA    START
+        PUSH    0,GR1
+        PUSH    0,GR2
+        PUSH    0,GR4
+        XOR     GR0,GR0         ; 商を初期化
+        XOR     GR4,GR4         ; マイナスフラグを初期化
+CHK1    AND     GR1,GR1         ; (GR1 > 0)の場合は、CHK2へジャンプ
+        JPL     CHK2            ; ↓
+        XOR     GR1,ALLON       ; GR1の正負を反転
+        ADDA    GR1,ONE         ; ↓
+        JOV     FIN             ; (GR1 = -32768)の場合は終了
+        XOR     GR4,ONE         ; GR4 <- 1
+CHK2    AND     GR2,GR2         ; (GR1 > 0)の場合は、DIVへジャンプ
+        JPL     DIV             ; ↓
+        XOR     GR2,ALLON       ; GR2の正負を反転
+        ADDA    GR2,ONE         ; ↓
+        JOV     FIN             ; (GR2 = -32768)の場合は終了
+        XOR     GR4,ONE         ; マイナスフラグを反転
+DIV     CALL    DIVL            ; GR0 <- GR1 / GR2; GR3 <- GR1 mod GR2
+        JOV     FIN             ; (GR2 = 0)の場合は終了
+MIN     AND     GR4,GR4         ; マイナスフラグがオフの場合、終了
+        JZE     FIN             ; ↓
+        XOR     GR0,ALLON       ; GR1の正負を反転
+        ADDA    GR0,ONE         ; ↓
+        XOR     GR3,ALLON       ; GR3の正負を反転
+        ADDA    GR3,ONE         ; ↓
+        JUMP    FIN
+OV      ADDL    GR0,=#8000
+FIN     POP	GR4
+	POP	GR2
+        POP	GR1
+        RET
+ONE     DC      1
+ALLON   DC      #FFFF
+        END
