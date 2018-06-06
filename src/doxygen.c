@@ -4,6 +4,7 @@
  * - src/casl2.c
  * - src/comet2.c
  * - src/dumpword.c
+ * - src/disassemble.c
  *
  * \section そのほかのソースファイル
  * - src/assemble.c
