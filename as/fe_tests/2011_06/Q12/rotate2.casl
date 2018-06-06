@@ -1,0 +1,42 @@
+ROTATE  START
+        RPUSH
+        ST     GR3,N
+        LD     GR4,GR3
+        LD     GR5,GR1
+        LD     GR6,GR2
+        LD     GR7,=16
+        SUBA   GR7,GR3
+SHIFT   LD     GR0,0,GR5
+        SLL    GR0,0,GR3
+        ST     GR0,0,GR6       ; 結果の領域 ← GR0
+        LAD    GR5,1,GR5       ; 元の図形の1語のアドレス更新
+        LAD    GR6,1,GR6       ; 結果の図形の1語のアドレス更新
+        SUBA   GR4,=1          ; n語処理済み？
+        JNZ    SHIFT
+COPY    SUBA   GR7,=1          ; 残りの語の内容を結果の領域に複写
+        JMI    LOOP1
+        LD     GR0,0,GR5
+        ST     GR0,0,GR6
+        LAD    GR5,0,GR5
+        LAD    GR6,0,GR6
+        JUMP   COPY
+N       DS     1
+LOOP1   LD     GR4,N
+        LD     GR5,GR2         ; GR5 ← 結果の領域のアドレス
+        LD     GR6,0,GR1       ; GR6 ← 元の図形の先頭語の内容
+LOOP2   LD     GR7,0,GR5       ; GR7 ← 結果の領域の1語の内容
+        SRL    GR7,1
+        SLL    GR6,1
+        JOV    ON
+        JUMP   CONT
+ON      OR     GR7,=#8000
+CONT    ST     GR7,0,GR5       ; 処理した1語を結果の領域に格納
+        LAD    GR5,1,GR5
+        SUBA   GR4,=1
+        JNZ    LOOP2
+        LAD    GR1,1,GR1
+        SUBA   GR3,=1
+        JNZ    LOOP1
+        RPOP
+        RET
+        END

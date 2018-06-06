@@ -1,8 +1,13 @@
+https://www.jitec.ipa.go.jp/1_04hanni_sukiru/mondai_kaitou_2011h23_1/2011h23tokubetsu_fe_pm_qs.pdf P.57 - P.60
 次のアセンブラプログラムの説明及びプログラムを読んで，設問１～３に答えよ。
 
 〔プログラム１の説明〕
 
 連続する 16 語に格納した 16 × 16 ドットの白黒の図形を，時計回りに 90 度回転する 副プログラム ROTATE である。図形の回転の実行例を図１に示す。このとき，１ドットを１ビットで 表し，白は０，黒は１が格納されている。
+
+図1.
+five.png
+five_r.png
 
 (1) 図形を表す 16 語の先頭アドレスは GR1 に設定されて，主プログラムから渡される。
 
@@ -12,3 +17,76 @@
 
 (4) 副プログラムから戻るとき，汎用レジスタ GR1 ～ GR7 の内容は元に戻す。
 
+ROTATE  START
+        RPUSH
+        LD     GR3,=16
+LOOP1   LD     GR4,=16
+        LD     GR5,GR2         ; GR5 ← 結果の領域のアドレス
+        LD     GR6,0,GR1       ; GR6 ← 元の図形の先頭語の内容
+LOOP2   LD     GR7,0,GR5       ; GR7 ← 結果の領域の1語の内容
+        SRL    GR7,1
+        SLL    GR6,1
+        JOV    ON
+        JUMP   CONT
+ON      OR     GR7,=#8000
+CONT    ST     GR7,0,GR5       ; 処理した1語を結果の領域に格納
+        　
+        SUBA   GR4,=1
+        JNZ    LOOP2
+        　
+        SUBA   GR3,=1
+        JNZ    LOOP1
+        RPOP
+        RET
+        END
+
+設問1.
+プログラム1中の　に入れる正しい答えを，解答群の中から選べ。
+
+解答群
+
+ア LAD GR1,-1,GR1    イ LAD GR1,1,GR1    ウ LAD GR2,-1,GR2
+エ LAD GR2,1,GR2     オ LAD GR5,-1,GR5   カ LAD GR5,1,GR5
+
+
+設問２.
+行番号9を次のとおりに変更し，図1の回転前を元の図形として実行した。実行結果の図形として正しい答えを，解答群の中から選べ。
+
+    SRL GR6,1
+
+設問3.
+プログラム1中の行番号3，4をプログラム2に置き換えて，16×16ドットの図形のうち左上のn×nドットの部分だけを時計回りに90度回転するプログラムとした。左上の8×8ドットの部分だけを回転した実行例を図2に示す。
+    値n(1≦n≦16)は GR3 に設定されて主プログラムから渡される。
+    置換え後のプログラムは，まず，回転の対象とならないドット(元の図形の上n語の右(16－n)ビットと下(16－n)語の全ビット)を結果の領域の適切な場所に複写する。その後，左上のn×nドットの部分を回転して結果の領域に格納する。
+プログラム2の　に入れる正しい答えを，解答群の中から選べ。
+
+ROTATE  START
+        RPUSH
+        LD     GR3,=16
+LOOP1   LD     GR4,=16
+        LD     GR5,GR2         ; GR5 ← 結果の領域のアドレス
+        LD     GR6,0,GR1       ; GR6 ← 元の図形の先頭語の内容
+LOOP2   LD     GR7,0,GR5       ; GR7 ← 結果の領域の1語の内容
+        SRL    GR7,1
+        SLL    GR6,1
+        JOV    ON
+        JUMP   CONT
+ON      OR     GR7,=#8000
+CONT    ST     GR7,0,GR5       ; 処理した1語を結果の領域に格納
+        　
+        SUBA   GR4,=1
+        JNZ    LOOP2
+        　
+        SUBA   GR3,=1
+        JNZ    LOOP1
+        RPOP
+        RET
+        END
+
+c に関する解答群
+
+ア SLL GR0,-1,GR3    イ SLL GR0,0,GR3    ウ SRL GR0,-1,GR3    エ SRL GR0,0,GR3
+
+d に関する解答群
+
+ア JMI LOOP1    イ JNZ LOOP1    ウ JPL LOOP1    エ JZE LOOP1

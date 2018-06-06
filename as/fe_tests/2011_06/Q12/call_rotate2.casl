@@ -1,9 +1,10 @@
 ;;; 「五」を90度回転させた16 x 16のpbm画像を出力する
 ;;; 呼び出し方:
-;;;   casl2 call_rotate.casl rotate.casl pbm16.casl
+;;;   casl2 call_rotate2.casl rotate2.casl pbm16.casl
 MAIN    START
         LAD     GR1,GRAPH
         LAD     GR2,RES
+        LAD     GR3,8
         CALL    ROTATE
         LAD     GR1,RES
         CALL    PBM16

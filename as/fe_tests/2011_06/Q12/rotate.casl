@@ -1,4 +1,4 @@
-        ROTATE  START
+ROTATE  START
         RPUSH
         LD     GR3,=16
 LOOP1   LD     GR4,=16

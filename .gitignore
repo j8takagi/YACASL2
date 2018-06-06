@@ -3,6 +3,7 @@
 /dumpword
 /disassemble
 *.o
+*.o.casl
 !as/sample/hello.o
 !as/sample/sum_10.o
 *~

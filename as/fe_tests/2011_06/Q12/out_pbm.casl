@@ -1,11 +1,8 @@
-;;; 「五」を90度回転させた16 x 16のpbm画像を出力する
+;;; 「五」を表す16 x 16のpbm画像を出力する
 ;;; 呼び出し方:
-;;;   casl2 call_rotate.casl rotate.casl pbm16.casl
+;;;   casl2 out_pbm.casl pbm16.casl
 MAIN    START
         LAD     GR1,GRAPH
-        LAD     GR2,RES
-        CALL    ROTATE
-        LAD     GR1,RES
         CALL    PBM16
         RET
 GRAPH   DC      #FFFC
@@ -24,5 +21,4 @@ GRAPH   DC      #FFFC
         DC      #FFFF
         DC      #FFFF
         DC      #0000
-RES     DS      16
         END
