@@ -28,6 +28,9 @@ IBUF    DS      5
 ;;;           文字列が最大長より大きい場合や数値以外の場合は、GR0は#FFFF、OFは1
 ;;; 依存プログラム: MULL
 STR2L   START
+        PUSH    0,GR1
+        PUSH    0,GR2
+        PUSH    0,GR3
         PUSH    0,GR4
         PUSH    0,GR5
         XOR     GR0,GR0         ; GR0:初期化
@@ -75,6 +78,9 @@ LENOV   LAD     GR0,#FFFF       ; 文字列が最大長より大きい場合、G
         SRA     GR0,1           ; ↓ オーバーフロー発生
 FIN     POP     GR5
         POP     GR4
+        POP     GR3
+        POP     GR2
+        POP     GR1
         RET
 ZERO    DC      '0'
 NINE    DC      '9'

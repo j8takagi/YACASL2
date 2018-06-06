@@ -34,46 +34,35 @@ WIDTH   DS      32
 SPC     DC      ' '
 HEIGHT  DS      1
 WHLEN   DS      1
-;;; GR1に格納された符号なし整数を文字列に変換する
-;;; GR2に文字列の先頭アドレス、GR3に文字列の長さを返す
+;;; 符号なし整数を文字列に変換する。
+;;; 符号なし整数を文字列に変換する。
+;;; 入力 GR1:符号なし整数 G2:変換した文字列を格納するメモリーの先頭アドレス
+;;; 出力 GR0:文字列の長さ （同上）
 ;;; 依存プログラム: DIVL, REV
 L2STR   START
         PUSH    0,GR1
         PUSH    0,GR4
         XOR     GR0,GR0         ; GR0 <- 0
         LD      GR4,GR2         ; GR4 <- GR2
-        AND     GR1,GR1         ; GR1をテスト
-        JZE     ZERO            ; GR1が0の場合、ZEROにジャンプ
-        PUSH    0,GR2
-STI     CPL     GR1,GR2         ; ループ先頭。(GR1 < GR2)の場合は、ループ脱出
-        JMI     STLST           ; ↓
-        LAD     GR2,10          ; GR2に10進数の「10」を格納。
+        PUSH    0,GR2           ; GR2の保存
+        LAD     GR2,10          ; GR2 <- 10。10進数の 10
+LOOP    LD      GR1,GR1         ; ループ先頭。GR1をテスト
+        JZE     SRT             ; GR1が0の場合、ループ終了
         CALL    DIVL            ; GR1とGR2の、商をGR0、剰余をGR3に格納
-        LD      GR1,GR3         ; GR1にGR3をコピー
-        LD      GR1,NCHAR,GR1   ; GR1を文字に変換
-        ST      GR1,0,GR4       ; (GR4) <- GR1
+        ADDL    GR3,='0'        ; GR3を文字に変換
+        ST      GR3,0,GR4       ; GR4のアドレスに、GR3を格納
         LAD     GR4,1,GR4       ; GR4 <- GR4 + 1
-        LD      GR1,GR0         ; GR0をGR1にコピー
-        JUMP    STI             ; ループ終端
-STLST   POP     GR2
-        LD      GR1,NCHAR,GR1   ; GR1を文字に変換
-        ST      GR1,0,GR4       ; (GR4) <- GR1
-        LAD     GR4,1,GR4       ; GR4 <- GR4 + 1
-        JUMP    PRT             ; PRTにジャンプ
-ZERO    LD      GR1,NCHAR       ; 「0」をSTR領域に格納
-        ST      GR1,0,GR4       ; ↓ (GR4) <- GR1
-        LAD     GR4,1,GR4       ; ↓ GR4 <- GR4 + 1
-PRT     LD      GR1,GR2         ; GR1に文字列のアドレスを格納
-        SUBL    GR4,GR2         ; GR2 <- GR4 - GR2
-        LD      GR2,GR4         ; ↓
+        LD      GR1,GR0         ; GR0の商をGR1にコピー
+        JUMP    LOOP            ; ループ終端
+SRT     POP     GR2             ; GR2の復元
+        LD      GR1,GR2         ; GR1に文字列のアドレスを格納
+        SUBL    GR4,GR2         ; GR4 <- GR4 - GR2
+        LD      GR2,GR4         ; GR2 <- GR4
         CALL    REV             ; 文字列を逆順に並べ替え
-        LD      GR3,GR2         ; GR3に文字列の長さを格納
-        LD      GR2,GR4         ; GR2に文字列のアドレスを格納
+        LD      GR0,GR2         ; GR0 <- GR4 文字列の長さを格納
         POP     GR4
         POP     GR1
         RET
-LEN     DS      1
-NCHAR   DC      '0123456789'
         END
 ;;; 0〜65535の範囲にある正数の割算（筆算方式）を行う
 ;;; 入力 GR1:被除数 GR2:除数
