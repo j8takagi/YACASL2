@@ -53,11 +53,13 @@ endif
 
 %.html: %.texi
 	$(MAKEINFO) -o $@ --no-split --html --css-include=$(CSS) $<
+	$(SED) -i '' -e 's%<img src="\([^"]*\)" alt="[^"]*">%<object type="image/svg+xml" data="\1"></object>%g' $@
 
 %_html: %.texi
 	if test ! -e $@; then $(MKDIR) $@; fi
 	$(CP) $(CSS) $@/
 	$(MAKEINFO) -o $@ --html --css-ref=$(CSS) $<
+	$(SED) -i '' -e 's%<img src="\([^"]*\)" alt="[^"]*">%<object type="image/svg+xml" data="\1"></object>%g' $@
 
 %.html %_html: $(CSS)
 

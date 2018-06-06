@@ -293,7 +293,7 @@ CASL IIは，COMET IIのためのアセンブラ言語である。
 
 @item @* @image{img/2_4-04,5cm,,,.svg} @*
 
-@code{RPOP}命令は，スタックの内容を順次取り出し，@code{GR7}，@code{GR6}，…，@code{GR1}の順で@code{GR}に格納する。`
+@code{RPOP}命令は，スタックの内容を順次取り出し，@code{GR7}，@code{GR6}，…，@code{GR1}の順で@code{GR}に格納する。
 @end enumerate
 
 @section 機械語命令
