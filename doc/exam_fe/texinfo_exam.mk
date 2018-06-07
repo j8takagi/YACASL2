@@ -54,12 +54,8 @@ endif
 %.html: %.texi
 	$(MAKEINFO) -o $@ --no-split --html --css-include=$(CSS) $<
 	$(SED) -i '' -e 's%<img src="\([^"]*\)" *[^>]*>%<object type="image/svg+xml" data="\1">&</object>%g' $@
-
-%_html: %.texi
-	if test ! -e $@; then $(MKDIR) $@; fi
-	$(CP) $(CSS) $@/
-	$(MAKEINFO) -o $@ --html --css-ref=$(CSS) $<
-	$(SED) -i '' -e 's%<img src="\([^"]*\)" *[^>]*>%<object type="image/svg+xml" data="\1">&</object>%g' $@
+	$(SED) -i '' -e 's%<!-- /@w --> \([アイウエオカキクケコ]\)%<span class="selection">\1</span>%g' $@
+	$(SED) -i '' -e 's%::ansbox:\([0-9]*\):*\([a-zA-Z]\)*::%<span class="ansbox" style="min-width:\1em">\2\&nbsp;</span>%g' $@
 
 %.html %_html: $(CSS)
 

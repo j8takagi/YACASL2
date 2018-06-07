@@ -1,0 +1,289 @@
+\input texinfo   @c -*-texinfo-*-
+@c %**start of header
+@ifnottex
+@documentlanguage ja_JP
+@end ifnottex
+@setfilename exam_fe_2018h.info
+@documentencoding UTF-8
+@settitle 基本技術情報者試験 2018年 春期 午後問題
+@firstparagraphindent insert
+@paragraphindent 0
+@ifhtml
+@exampleindent 0
+@end ifhtml
+@c %**end of header
+
+@indicateurl{https://www.jitec.ipa.go.jp/1_04hanni_sukiru/mondai_kaitou_2018h30_1/2018h30h_fe_pm_qs.pdf} P.62〜P.66より
+
+@unnumbered 問12
+次のアセンブラプログラムの説明及びプログラムを読んで，設問1～3に答えよ。
+
+@unnumberedsec 〔プログラム1の説明〕
+0～65534の整数を表す数字から成る文字列（以下，数字列という）を数値に変換する副プログラムDTOBである。
+
+(1) 文字列は，DC命令の文字定数と同じ形式で主記憶に格納される。数字列567を 格納した例を，図1に示す。
+
+@center @image{img/fig1,15cm,,,.svg}
+
+@center 図1 数字列の格納例
+
+(2) 主プログラムは，数字列が格納されている領域の先頭アドレスをGR1に，数字列の長さをGR2に設定して，DTOBを呼ぶ。DTOBは，数値に変換して得た値をGR0に格納して呼出し元に戻る。
+
+(3) 副プログラムDTOBから戻るとき，汎用レジスタGR1～GR7の内容は元に戻す。
+
+
+@unnumberedsubsec〔プログラム1〕
+
+@verbatim
+DTOB    START
+        RPUSH
+        ADDL   GR2,GR1
+        LAD    GR0,0           ; 戻り値の初期化
+LP      CPL    GR1,GR2         ; 変換終了？
+        JZE    FIN
+        LD     GR4,0,GR1       ; 数字1文字の取出し
+        SUBL   GR4,='0'        ; 1 桁を数値に変換
+        SLL    GR0,1           ; GR0を10倍してGR4を加算
+        LD     GR5,GR0
+        ::ansbox:8:a::
+        ADDL   GR0,GR5
+        ADDL   GR0,GR4
+        LAD    GR1,1,GR1
+        JUMP   LP
+FIN     RPOP
+        RET
+        END
+@end verbatim
+
+@unnumberedsec 設問1
+
+プログラム1中の::ansbox:4::に入れる正しい答えを，解答群の中から選べ。
+
+aに関する解答群
+@itemize @w{}
+
+@item
+ア @code{ADDL  GR5,GR4}
+
+@item
+イ @code{SLL   GR4,1}
+
+@item
+ウ @code{SLL   GR4,2}
+
+@item
+エ @code{SLL   GR5,1}
+
+@item
+オ @code{SLL   GR5,2}
+@end itemize
+
+@unnumberedsec 設問2
+
+文字列の先頭から数字列を探索し，順に，対応する数値を管理テーブルに格納する副プログラムGETWDを，DTOBを使用して作成した。プログラム2中の::ansbox:4::に入れる正しい答えを，解答群の中から選べ。
+
+
+@unnumberedsubsec 〔プログラム2の説明〕
+
+(1) 文字列は，一つ以上の空白文字で区切られた任意の個数の数字列を含み，最後はピリオドで終わる。最後の数字列とピリオドの間，又は文字列の先頭に一つ以上の空白文字があってもよい。文字列の例を，図2に示す。
+
+
+@center @image{img/fig2,15cm,,,.svg}
+
+@center 図2 文字列の例
+
+(2) 管理テーブルには，文字列中に数字列が現れるごとに，順に1 語から成る要素を追加し，数字列を数値に変換して得た値を格納する。数字列の探索が終了したとき，管理テーブルの最後に1 語から成る要素を追加し，数値の終わりを示す印として－1を格納する。図2の文字列をGETWDで処理して得た管理テーブルを，図3に示す。
+
+@center @image{img/fig3,15cm,,,.svg}
+
+@center 図3 GETWDで処理して得た管理テーブル
+
+(3) 主プログラムは，文字列が格納されている領域の先頭アドレスをGR1に，管理テーブルの先頭アドレスをGR2に設定して，GETWDを呼ぶ。
+
+(4) 副プログラムGETWDから戻るとき，汎用レジスタGR1～GR7の内容は元に戻す。
+
+@unnumberedsubsec 〔プログラム2〕
+
+@verbatim
+GETWD   START
+        RPUSH
+        LD     GR6,GR1
+        LD     GR7,GR2
+        LD     GR3,=-1       ; 数字列の処理状態フラグの初期化
+        LAD    GR6,-1,GR6
+LP      LAD    GR6,1,GR6
+        LD     GR4,0,GR6     ; 1文字の取出し
+        CPL    GR4,='.'
+        JZE    FIN
+        CPL    GR4,=' '
+        ::ansbox:8:b::
+        CALL   SETWD
+        JUMP   LP
+NUM     LD     GR3,GR3       ; 数字列の処理中？
+        JZE    LP
+        LD     GR3,=0        ; 次の数字列の処理開始
+        LD     GR1,GR6       ; 数字列の先頭アドレスを退避
+        JUMP   LP
+FIN     CALL   SETWD
+        LD     GR2,=-1
+        ST     GR2,0,GR7     ; 数値の終わりを示す印を格納
+        RPOP
+        RET
+SETWD   LD     GR3,GR3
+        ::ansbox:8:c::
+        LD     GR2,GR6
+        SUBL   GR2,GR1
+        CALL   DTOB          ; 数字列を数値に変換
+        ST     GR0,0,GR7
+        LD     GR3,=-1       ; 数字列の処理中状態を解除
+        ::ansbox:8:d::
+FIN2    RET
+        END
+@end verbatim
+
+
+bに関する解答群
+@itemize @w{}
+
+@item
+ア @code{JNZ    FIN}
+
+@item
+イ @code{JNZ    LP}
+
+@item
+ウ @code{JNZ    NUM}
+
+@item
+エ @code{JZE    FIN}
+
+@item
+オ @code{JZE    LP}
+
+@item
+カ @code{JZE    NUM}
+@end itemize
+
+cに関する解答群
+@itemize @w{}
+
+@item
+ア @code{JNZ    FIN}
+
+@item
+イ @code{JNZ    FIN2}
+
+@item
+ウ @code{JNZ    NUM}
+
+@item
+エ @code{JZE    FIN}
+
+@item
+オ @code{JZE    FIN2}
+
+@item
+カ @code{JZE    NUM}
+@end itemize
+
+d に関する解答群
+
+@itemize @w{}
+@item
+ア @code{LAD    GR6,1,GR1}
+
+@item
+イ @code{LAD    GR6,1,GR6}
+
+@item
+ウ @code{LAD    GR7,1,GR2}
+
+@item
+エ @code{LAD    GR7,1,GR7}
+
+@item
+オ @code{LD     GR6,GR1}
+
+@item
+カ @code{LD     GR7,GR2}
+@end itemize
+
+@unnumberedsec 設問3
+
+GETWDを使用して，二つの整数の積を求める副プログラムMULTを作成した。プログラム3中の::ansbox:4::に入れる正しい答えを，解答群の中から選べ。
+
+@unnumberedsubsec 〔プログラム3の説明〕
+
+(1) MULTは，数字列を二つだけ含む，〔プログラム2の説明〕の(1)で示した形式の文字列について，最初の数字列に対応する数値を被乗数とし，2番目の数字列に対応する数値を乗数として乗算を行う。乗算においてあふれは発生しないものとする。
+
+(2) 主プログラムは，文字列が格納されている領域の先頭アドレスをGR1に設定して，MULTを呼ぶ。MULTは，演算結果をGR0に格納して呼出し元に戻る。
+
+(3) 副プログラムMULTから戻るとき，汎用レジスタGR1～GR7の内容は元に戻す。
+
+@unnumberedsubsec 〔プログラム3〕
+
+@verbatim
+MULT   START
+       RPUSH
+       LAD     GR2,CTBL
+       CALL    GETWD
+       LD      GR4,0,GR2    ; GR4 ← 被乗数
+       LD      GR5,1,GR2    ; GR5 ← 乗数
+       LD      GR0,=0
+       LD      GR5,GR5
+LP     ::ansbox:8:e::
+       LD      GR3,GR5
+       AND     GR3,=#0001   ; 乗数の最下位ビットのチェック
+       JZE     NEXT
+       ADDL    GR0,GR4
+NEXT   SLL     GR4,1        ; 被乗数を1ビット左論理シフト
+       ::ansbox:8:f::
+       JUMP    LP
+FIN    RPOP
+       RET
+CTBL   DS      3            ; GETWD用管理テーブル
+       END
+@end verbatim
+
+eに関する解答群
+
+@itemize @w{}
+@item
+ア @code{JMI    FIN}
+
+@item
+イ @code{JMI    NEXT}
+
+@item
+ウ @code{JPL    FIN}
+
+@item
+エ @code{JPL    NEXT}
+
+@item
+オ @code{JZE    FIN}
+
+@item
+カ @code{JZE    NEXT}
+@end itemize
+
+
+fに関する解答群
+
+@itemize @w{}
+@item
+ア @code{ADDL   GR0,GR5}
+
+@item
+イ @code{ADDL   GR5,GR4}
+
+@item
+ウ @code{LD     GR5,GR4}
+
+@item
+エ @code{SLL    GR5,1}
+
+@item
+オ @code{SRL    GR5,1}
+@end itemize
+@bye

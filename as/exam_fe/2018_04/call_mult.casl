@@ -1,0 +1,12 @@
+MAIN    START
+        LAD     GR1,WD
+        CALL    MULT
+        LD      GR1,GR0
+        LAD     GR2,STR
+        CALL    L2STR
+        ST      GR0,LEN
+        OUT     STR,LEN
+        RET
+WD      DC      '12   45.'
+STR     DS      5
+LEN     DS      1
