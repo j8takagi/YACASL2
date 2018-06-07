@@ -1,0 +1,5 @@
+MAIN    START
+        LAD     GR1,32764
+        CALL    COUNT1
+        RET
+        END
