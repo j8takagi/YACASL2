@@ -11,8 +11,7 @@
 
 char *grstr(WORD word)
 {
-    char *str;
-    str = (char *)malloc(4);
+    char *str = malloc_chk(3 + 1, "grstr.str");
     sprintf(str, "GR%d", word);
     return str;
 }
@@ -23,7 +22,7 @@ bool disassemble(const char *file)
     FILE *fp;
     WORD i = 0, w, cmd, r, x, r1, r2, adr;
     CMDTYPE cmdtype = 0;
-    char *cmdname;
+    char *cmdname, *g1, *g2;
 
     assert(file != NULL);
     if((fp = fopen(file, "rb")) == NULL) {
@@ -50,11 +49,13 @@ bool disassemble(const char *file)
             fprintf(stdout, "\t%s\t", cmdname);
             if(cmdtype == R_ADR_X) {
                 r = (w & 0x00F0) >> 4;
-                fprintf(stdout, "%s,", grstr(r));
+                fprintf(stdout, "%s,", (g1 = grstr(r)));
+                FREE(g1);
             }
             fprintf(stdout, "#%04X", adr);
             if((x = w & 0x000F) != 0) {
-                fprintf(stdout, ",%s", grstr(x));
+                fprintf(stdout, ",%s", (g1 = grstr(x)));
+                FREE(g1);
             }
             fprintf(stdout, "\t\t\t\t; #%04X: #%04X #%04X", i, w, adr);
             i += 2;
@@ -63,10 +64,13 @@ bool disassemble(const char *file)
             if(cmdtype == R1_R2) {
                 r1 = (w & 0x00F0) >> 4;
                 r2 = w & 0x000F;
-                fprintf(stdout, "\t%s,%s", grstr(r1), grstr(r2));
+                fprintf(stdout, "\t%s,%s", (g1=grstr(r1)), (g2=grstr(r2)));
+                FREE(g1);
+                FREE(g2);
             } else if(cmdtype == R_) {
                 r = (w & 0x00F0) >> 4;
-                fprintf(stdout, "\t%s", grstr(r));
+                fprintf(stdout, "\t%s", (g1 = grstr(r)));
+                FREE(g1);
             }
             fprintf(stdout, "\t\t\t\t; #%04X: #%04X", i++, w);
         }
