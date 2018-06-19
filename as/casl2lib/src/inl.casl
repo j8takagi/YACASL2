@@ -1,22 +1,21 @@
 ;;; 0から65535の範囲にある整数の入力を受け付ける
 ;;; 入力 （SVC）
 ;;; 出力 GR1: 入力された数値
-;;;      GR0: 文字列の長さ。入力が数字以外の場合は、#FFFF
-;;;      65536以上の正数が入力された場合はエラー
+;;;     GR2: 文字列の長さ。
+;;;          入力が数字以外の場合は、SFフラグを設定
+;;;          65535を超える数値の場合は、OFフラグを設定
 INL     START
+        PUSH    0,GR3
         IN      IBUF,ILEN       ; 入力文字列を格納
         LAD     GR1,IBUF
         LD      GR2,ILEN
-        CPA     GR2,LENMAX
-        JPL     LENOV
         CALL    STR2L
         JOV     FIN
-        LD      GR0,GR2
-        JUMP    FIN
-LENOV   LAD     GR0,#FFFF
-        SRA     GR0,1
-FIN     RET
-ILEN    DS      1
-LENMAX  DC      5
+        JMI     FIN
+        LD      GR1,GR3
+FIN     POP     GR3
+        RET
 IBUF    DS      5
+ILEN    DS      1
+MAXLEN  DC      5
         END

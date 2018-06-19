@@ -6,9 +6,10 @@
 32767
 32768
 65535
-Over 65535
-Over 65535
-Not A Number
-Not A Number
+Not a number
+Not a number
+Not a number
+Not a number
 12345
-Str too long. Stop
+Over 65535
+1234

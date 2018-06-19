@@ -6,6 +6,7 @@ RMF := rm -f
 RMDIR := rmdir
 ECHO := echo
 INSTALL := install
+CHMOD := chmod
 
 prefix ?= ~
 casl2libdir ?= $(prefix)/share/casl2lib
@@ -13,7 +14,9 @@ casl2libdir ?= $(prefix)/share/casl2lib
 all: stdlib.casl libfiles
 
 %.casl: src/%.casl
+	$(CHMOD) +w $@
 	$(CAT) $^ >$@
+	$(CHMOD) -w $@
 
 %.o: %.casl
 	$(CASL2OUT)$< $@

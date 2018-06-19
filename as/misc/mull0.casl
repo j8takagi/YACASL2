@@ -1,14 +1,17 @@
-;GR1の値とGR2の値の積をGR0に格納
+;;; 0〜65535の範囲にある正数のかけ算（筆算方式）を行う
+;;; 入力 GR1:被乗数 GR2:乗数
+;;; 出力 GR3:積
+;;; 積が65535より大きい場合は、オーバーフロー
 MULL    START
-        RPUSH
-        LAD     GR3,0           ; インデックス
-        LAD     GR0,0           ; 積
-MLOOP   CPA     GR2,GR3         ; ループ先頭。(GR2 = GR3)の場合、ループ脱出
-        JZE     MFIN            ; ↓
-        ADDL    GR0,GR1         ; GR0 <- GR0 + GR1
-        JOV     MFIN            ; オーバーフローした場合、ループ脱出
-        LAD     GR3,1,GR3       ; GR3 <- GR3 + 1
-        JUMP    MLOOP           ; ループ終端
-MFIN    RPOP
+        PUSH    0,GR4
+        XOR     GR3,GR3         ; 積
+        XOR     GR4,GR4         ; インデックス
+LOOP    CPL     GR2,GR4         ; ループ先頭。GR2 = GR4 の場合、FINへジャンプ
+        JZE     FIN             ; ↓
+        ADDL    GR3,GR1         ; GR3 <- GR3 + GR1
+        JOV     FIN             ; オーバーフローした場合、FINへジャンプ
+        LAD     GR4,1,GR4       ; GR4 <- GR4 + 1
+        JUMP    LOOP            ; ループ終端
+FIN     POP     GR4
         RET
         END

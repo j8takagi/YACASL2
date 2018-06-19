@@ -1,69 +1,55 @@
 ;;; 10進数の整数を表す文字列を数値に変換
 ;;; 数値の範囲は、0から65535
-;;; 入力 GR1: 文字列を格納するアドレス
-;;;      GR2: 文字列の長さ。最大5けた
-;;; 出力 GR0: 数値
-;;;           文字列が最大長より大きい場合や数値以外の場合は、GR0は#FFFF、OFは1
+;;; 入力 GR1: 文字列を格納するメモリーの先頭アドレス
+;;;     GR2: 文字列の長さ。最大5けた
+;;; 出力 GR3: 数値
+;;;           文字列が最大長より大きい場合と数値以外の場合は、GR3は#FFFF、OFは1
+;;;           数値以外の場合、OFは1
 ;;; 依存プログラム: MULL
 STR2L   START
         PUSH    0,GR1
         PUSH    0,GR2
-        PUSH    0,GR3
         PUSH    0,GR4
         PUSH    0,GR5
-        XOR     GR0,GR0         ; GR0:初期化
-        AND     GR2,GR2         ; (GR2 = 0)の場合、FINへジャンプ
-        JZE     FIN             ; ↓
-        CPL     GR2,MAXLEN      ; (GR2 > MAXLEN)の場合、LENOVへジャンプ
-        JPL     LENOV           ; ↓
-        ST      GR1,STR         ; STR <- GR1 文字列の開始アドレス
-        ST      GR2,LEN         ; LEN <- GR2
-        LAD     GR2,10          ; GR2:10進数の「10」
-        XOR     GR4,GR4         ; GR4:値の一時格納
-        XOR     GR5,GR5         ; GR5:インデックス
-STOL    CPL     GR5,LEN         ; ループ先頭。(GR5 = LEN)の場合、ループ脱出
-        JZE     CP              ; ↓
-        LD      GR1,STR         ; GR1に、入力文字列中の次の桁を格納
-        ADDL    GR1,GR5         ; ↓
+        PUSH    0,GR6
+        PUSH    0,GR7
+        XOR     GR3,GR3         ; GR3の初期化
+        AND     GR2,GR2         ; GR2 = 0の場合、OVへジャンプ
+        JZE     OV              ; ↓
+        CPL     GR2,=5          ; GR2 > 5の場合、OVへジャンプ
+        JPL     OV              ; ↓
+        XOR     GR4,GR4         ; GR4: インデックスの初期化
+        LD      GR5,GR1         ; GR5 <- GR1
+        LD      GR6,GR2         ; GR6 <- GR2
+        XOR     GR1,GR1         ; GR1の初期化
+STOL    LD      GR1,GR5         ; GR1に、入力文字列中の次の桁を格納
+        ADDL    GR1,GR4         ; ↓
         LD      GR1,0,GR1       ; ↓
-        CPL     GR1,ZERO        ; (GR1 < '0')の場合、NANへジャンプ
-        JMI     NAN             ; ↓
-        CPL     GR1,NINE        ; (GR1 > '9')の場合、NANへジャンプ
-        JPL     NAN             ; ↓
+        LD      GR7,ZERO        ; GR1 < '0'の場合、FINへジャンプ
+        CPL     GR1,GR7         ; ↓
+        JMI     FIN             ; ↓
+        LD      GR7,NINE        ; GR1 > '9'の場合、FINへジャンプ
+        CPL     GR7,GR1         ; ↓
+        JMI     FIN             ; ↓
         SUBL    GR1,ZERO        ; GR1の文字を、対応する数値に変換
-        ST      GR5,NLEN        ; GR5 <- LEN - NLEN - 1
-        LD      GR5,LEN         ; ↓
-        SUBA    GR5,NLEN        ; ↓
-MUL10   CPA     GR5,=1          ; ループ先頭。GR1 <- 10 ** GR5
-        JZE     NEXT            ; (GR5 = 1)の場合、ループ脱出
-        JMI     NEXT            ; ↓
-        CALL    MULL            ; MULLを呼び出し、GR0 <- GR1 * GR2
-        JOV     FIN             ; ↓ オーバーフロー時は、プログラム終端へジャンプ
-        LD      GR1,GR0         ; GR1 <- GR0
-        LAD     GR5,-1,GR5      ; GR5 <- GR5 -1
-        JUMP    MUL10           ; ループ終端へジャンプ
-NEXT    LD      GR5,NLEN        ; GR5 <- NLEN。復元
-        ADDL    GR4,GR1         ; GR4 <- GR4 + GR1
-        JOV     FIN             ; ↓
-        LAD     GR5,1,GR5       ; GR5 <- GR5 + 1
+        ADDL    GR3,GR1
+        JOV     FIN
+        LAD     GR4,1,GR4       ; GR4 <- GR4 + 1
+        CPL     GR4,GR6         ; GR4 = GR6の場合、ループ脱出
+        JZE     FIN             ; ↓
+MUL10   LAD     GR2,10          ; GR2:10進数の 10
+        LD      GR1,GR3         ; GR1 <- GR3
+        CALL    MULL            ; MULLを呼び出し、GR3 <- GR1 * GR2
         JUMP    STOL            ; ループ終端
-NAN     LAD     GR2,#FFFF       ; GR2 <- #FFFF
-        JUMP    FIN             ; FINへジャンプ
-CP      LD      GR1,GR4         ; GR0 <- GR4
-        LD      GR0,LEN         ; GR0 <- LEN
-        JUMP    FIN             ; プログラム終端へジャンプ
-LENOV   LAD     GR0,#FFFF       ; 文字列が最大長より大きい場合、GR0 <- #FFFF
-        SRA     GR0,1           ; ↓ オーバーフロー発生
-FIN     POP     GR5
+OV      LAD     GR7,1           ; オーバーフロー発生
+        SRL     GR7,1           ; ↓
+FIN     POP     GR7
+        POP     GR6
+        POP     GR5
         POP     GR4
-        POP     GR3
         POP     GR2
         POP     GR1
         RET
 ZERO    DC      '0'
 NINE    DC      '9'
-MAXLEN  DC      5               ; 文字列の最大長
-STR     DS      1
-LEN     DS      1
-NLEN    DS      1
         END

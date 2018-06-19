@@ -12,25 +12,17 @@ LOOPY   CPA     GR5,YCNT        ; (GR5 = YCNT)の場合、ループ脱出
         LD      GR1,GR2         ; ↓
         CALL    OUTL            ; ↓
         POP     GR1             ; ↓
-        CALL    MULL            ; GR0 <- GR1 * GR2
+        CALL    MULL            ; GR3 <- GR1 * GR2
         JOV     WOV             ; オーバーフローの場合は、WOVへジャンプ
-        PUSH    0,GR1           ; GR0の数値を出力
-        LD      GR1,GR0         ; ↓
+        PUSH    0,GR1           ; GR3の数値を出力
+        LD      GR1,GR3         ; ↓
         CALL    OUTL            ; ↓
         POP     GR1             ; ↓
 YNEXT   OUT     SEP,SLEN        ; 区切り線を出力
         LAD     GR5,1,GR5       ; GR5 <- GR5 + 1
         JUMP    LOOPY           ; LOOPYへジャンプ
 WOV     OUT     YOMSG,YLEN      ; オーバーフローした場合のメッセージを表示
-        PUSH    0,GR1           ; GR0の数値を出力
-        LD      GR1,GR0         ; ↓
-        CALL    OUTL            ; ↓
-        POP     GR1             ; ↓
-        PUSH    0,GR1           ; GR3の数値を出力
-        LD      GR1,GR3         ; ↓
-        CALL    OUTL            ; ↓
-        POP     GR3             ; ↓
-        JUMP    YNEXT           ; YNEXTへジャンプ
+        OUT     SEP,SLEN        ; 区切り線を出力
 XNEXT   LAD     GR4,1,GR4       ; GR4 <- GR4 + 1
         JUMP    LOOPX           ; LOOPXへジャンプ
 FIN     RET
