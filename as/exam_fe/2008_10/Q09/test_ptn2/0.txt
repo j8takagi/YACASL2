@@ -1,2 +1,0 @@
-../../../../../casl2 testptn2.casl ../ptn2.casl ../../../../../as/casl2lib/outb.casl
-0000000000011111

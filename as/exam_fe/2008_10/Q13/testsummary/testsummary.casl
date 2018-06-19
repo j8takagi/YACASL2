@@ -1,8 +1,0 @@
-MAIN    START
-        LAD GR1,DATA
-        LD  GR0,CNT
-        CALL SUMMARY
-        RET
-DATA    DC  #9600,#F000,#A400,#FFFF,0,#2
-CNT     DC  6
-        END
