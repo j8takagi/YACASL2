@@ -1,0 +1,4 @@
+345
+not a logical integer
+not a logical integer
+over 65535

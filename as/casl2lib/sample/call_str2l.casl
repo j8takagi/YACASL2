@@ -1,0 +1,44 @@
+;;; casl2 call_str2l.casl stdlib.casl
+MAIN    START
+        XOR     GR4,GR4
+        LAD     GR6,LEN
+BLP     LAD     GR1,STR,GR4
+        LD      GR2,0,GR6
+        JZE     FIN
+        LD      GR5,GR1
+        CALL    STR2L
+        JOV     OV
+        JMI     NAN
+        LD      GR1,GR3
+        CALL    OUTL
+        LD      GR1,GR5
+        JUMP    ELP
+OV      OUT     MSGOV,LENOV
+        JUMP    ELP
+NAN     OUT     MSGNAN,LENNAN
+ELP     ADDL    GR4,GR2
+        LAD     GR6,1,GR6
+        JUMP    BLP
+FIN     RET
+STR     DC      '0'
+        DC      '1'
+        DC      '123'
+        DC      '1234'
+        DC      '65535'
+        DC      '65536'
+        DC      '123456'
+        DC      'a'
+LEN     DC      1
+        DC      1
+        DC      3
+        DC      4
+        DC      5
+        DC      5
+        DC      6
+        DC      1
+        DC      0
+MSGOV   DC      'over 65535'
+LENOV   DC      10
+MSGNAN  DC      'not a logical integer'
+LENNAN  DC      21
+        END
