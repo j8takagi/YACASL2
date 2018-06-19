@@ -38,7 +38,7 @@ TEST := test
 TIME := time
 TR := tr
 VALGRIND := valgrind
-VALGRINDFLAG :=  -q --leak-check=full --log-file=valgrind.log
+VALGRINDFLAG :=  -q --leak-check=full --show-leak-kinds=all --log-file=valgrind.log
 
 ######################################################################
 # テストグループとテストでの共通マクロ
