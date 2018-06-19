@@ -1,5 +1,7 @@
 .PHONY: texinfo-distclean texinfo-clean texinfo-textmp-clean
 
+.INTERMEDIATE: *.org
+
 CP := cp
 DVIPDFMX := dvipdfmx
 DVIPDFMX_FLAGS ?=
@@ -53,13 +55,15 @@ endif
 
 %.html: %.texi
 	$(MAKEINFO) -o $@ --no-split --html --css-include=$(CSS) $<
-	$(SED) -i '' 's%<img src="\([^"]*\)" *[^>]*>%<object type="image/svg+xml" data="\1">&</object>%g' $@
+	$(SED) -i'.org' -e 's%<img src="\([^"]*\)" *[^>]*>%<object type="image/svg+xml" data="\1">&</object>%g' $@
+	$(RM) $@.org
 
 %_html: %.texi
 	if test ! -e $@; then $(MKDIR) $@; fi
 	$(CP) $(CSS) $@/
 	$(MAKEINFO) -o $@ --html --css-ref=$(CSS) $<
-	$(SED) -i '' 's%<img src="\([^"]*\)" *[^>]*>%<object type="image/svg+xml" data="\1">&</object>%g' $@
+	$(SED) -i '.org' -e 's%<img src="\([^"]*\)" *[^>]*>%<object type="image/svg+xml" data="\1">&</object>%g' $@/*.html
+	$(RM) $@/*.html.org
 
 %.html %_html: $(CSS)
 
