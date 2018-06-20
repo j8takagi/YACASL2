@@ -35,7 +35,7 @@ Copyright @copyright{} 2010-2018 j8takagi
 @node Require, install, Top, Top
 @chapter 要件
 
-YACASL2は、LinuxやMac OS Xなど、UNIX系のOS上で動作します。現在動作を確認しているのは、Ubuntu LinuxとVine Linux、Mac OS Xです。
+YACASL2は、LinuxやMac OS Xなど、UNIX系のOS上で動作します。現在動作を確認しているのは、Ubuntu LinuxとMac OS Xです。
 
 インストール時に、@command{tar} @command{gcc} @command{make}が必要です。Linuxでは多くの場合、標準でインストールされています。Mac OS Xの場合、Xcodeの「Command Line Tools」に含まれます。
 
@@ -61,7 +61,7 @@ YACASL2は、LinuxやMac OS Xなど、UNIX系のOS上で動作します。現在
 @node Verify, Expand, Download, install
 @section YACASL2ファイルの検証
 
-ダウンロードが完了したら、圧縮ファイルが改竄されていないか検証します。検証にはGnuPG分離署名か、MD5ハッシュ値を使います。
+ダウンロードが完了したら、圧縮ファイルが改竄されていないか検証します。検証には、GnuPG分離署名か、MD5ハッシュ値を使います。
 
 @subsection GnuPG分離署名での検証
 
@@ -218,7 +218,6 @@ $ @kbd{sudo make install prefix=/usr/local}
 @item @var{prefix} @tab インストール時のルートファイル @tab @file{~}
 @item @var{bindir} @tab 実行ファイルのインストール先 @tab @file{$prefix/bin}
 @item @var{infodir} @tab infoファイルのインストール先 @tab @file{$prefix/share/info}
-@item @var{casl2libdir} @tab CASL II ライブラリファイルのインストール先 @tab @file{$prefix/share/casl2lib}
 @end multitable
 
 @node Environment,  , Install, install
@@ -263,20 +262,6 @@ $ @kbd{INFOPATH=$INFOPATH:~/share/info && export INFOPATH}
 
 @example
 $ @kbd{echo 'INFOPATH=$INFOPATH:~/share/info && export INFOPATH' >>~/.bashrc}
-@end example
-
-@subsection @code{CASL2LIB}の設定
-
-環境変数@code{CASL2LIB}を設定しておけば、CASL IIプログラム作成時に共通ライブラリを呼び出す手間が小さくなります。例えば、CASL2LIBを@code{~/share/casl2lib}にインストールしたときは、次のコマンドで設定できます。
-
-@example
-$ @kbd{CASL2LIB=~/share/casl2lib && export CASL2LIB}
-@end example
-
-@file{~/.bashrc}には次のコマンドで追加できます。
-
-@example
-$ @kbd{ echo 'CASL2LIB=~/share/casl2lib && export CASL2LIB' >>~/.bashrc}
 @end example
 
 @bye

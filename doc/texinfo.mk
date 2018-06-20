@@ -62,7 +62,7 @@ endif
 	if test ! -e $@; then $(MKDIR) $@; fi
 	$(CP) $(CSS) $@/
 	$(MAKEINFO) -o $@ --html --css-ref=$(CSS) $<
-	$(SED) -i '.org' -e 's%<img src="\([^"]*\)" *[^>]*>%<object type="image/svg+xml" data="\1">&</object>%g' $@/*.html
+	$(SED) -i'.org' -e 's%<img src="\([^"]*\)" *[^>]*>%<object type="image/svg+xml" data="\1">&</object>%g' $@/*.html
 	$(RM) $@/*.html.org
 
 %.html %_html: $(CSS)

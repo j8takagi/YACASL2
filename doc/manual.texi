@@ -778,7 +778,7 @@ $ @kbd{comet2 hello.o}
 @command{comet2}の使用方法を表示して終了します。
 @end table
 
-@node dumpword invocation, CASL2LIB Manual, comet2 invocation, Top
+@node dumpword invocation, , comet2 invocation, Top
 @chapter @command{dumpword}の呼び出し
 
 @pindex dumpword

@@ -36,7 +36,7 @@ VERSIONFILES = include/package.h \
         test/system/comet2_opt/opt_v/0.txt \
         test/system/dumpword/opt_v/0.txt
 
-all: build doc gtags
+all: build INSTALL gtags
 
 build:
 	$(MAKE) -C src all
@@ -45,12 +45,11 @@ build:
 gtags:
 	$(if $(strip $(shell $(WHICH) $(GTAGS))),$(GTAGS),@$(ECHO) '$(GTAGS): not found')
 
-doc:
-	$(MAKE) -C doc base
-	$(MAKE) INSTALL
-
 INSTALL: doc/install.txt
 	$(CP) $< $@
+
+doc/install.txt:
+	$(MAKE) -C doc base
 
 alldoc:
 	$(MAKE) -C doc all
@@ -61,17 +60,14 @@ doc_inner:
 check:
 	$(MAKE) -sC test/system
 
-install: casl2 comet2 dumpword install-info install-casl2lib
+install: casl2 comet2 dumpword install-info
 	$(INSTALL) -d $(bindir)
 	$(INSTALL) $(CMD) $(bindir)/
 
 install-info:
 	$(MAKE) -C doc install-info
 
-install-casl2lib:
-	$(MAKE) -C as/casl2lib install-casl2lib
-
-uninstall: uninstall-info uninstall-casl2lib
+uninstall: uninstall-info
 	$(RM) $(prefix $(bindir)/,$(CMD))
 
 version: $(VERSIONFILES)
