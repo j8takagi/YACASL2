@@ -1,10 +1,5 @@
-#define _GNU_SOURCE
-#include <stdio.h>
-#include <stdlib.h>
-#include <getopt.h>
-#include "word.h"
-#include "cerr.h"
 #include "package.h"
+#include "word.h"
 
 /**
  * @brief dumpwordコマンドのオプション

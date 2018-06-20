@@ -1,14 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
-
-#define _GNU_SOURCE
-#include <getopt.h>
-#include <assert.h>
-
-#include "exec.h"
-#include "cmem.h"
-#include "cerr.h"
 #include "package.h"
+#include "exec.h"
 
 char *grstr(WORD word)
 {

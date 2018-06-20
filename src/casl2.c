@@ -1,14 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
-
-#define _GNU_SOURCE
-#include <getopt.h>
-
-#include "cmem.h"
-#include "cerr.h"
+#include "package.h"
 #include "assemble.h"
 #include "exec.h"
-#include "package.h"
 
 /**
  * @brief CASL IIのエラーをエラーリストに追加
