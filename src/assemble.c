@@ -45,7 +45,7 @@ WORD getadr(const char *prog, const char *str, PASS pass);
  * @param *str 汎用レジスタを表す文字列。「GR0」「GR1」・・・「GR7」のいずれか
  * @param is_x trueの場合は指標レジスタ
  */
-WORD getgr(const char *str, bool is_x);
+WORD grword(const char *str, bool is_x);
 
 /**
  * @brief リテラルを返す
@@ -342,7 +342,7 @@ WORD getadr(const char *prog, const char *str, PASS pass)
     return adr;
 }
 
-WORD getgr(const char *str, bool is_x)
+WORD grword(const char *str, bool is_x)
 {
     WORD r;
 
@@ -602,7 +602,7 @@ bool assemble_comet2cmd(const CMDLINE *cmdl, PASS pass)
         writememory(cmd, (asptr->ptr)++, pass);
     }
     /* 第1オペランドは汎用レジスタ */
-    else if((r_r1 = getgr(cmdl->opd->opdv[0], false)) != 0xFFFF) {
+    else if((r_r1 = grword(cmdl->opd->opdv[0], false)) != 0xFFFF) {
         /* オペランド数1 */
         if(cmdl->opd->opdc == 1) {
             if((cmd = getcmdcode(cmdl->cmd, R_)) == 0xFFFF) {
@@ -613,7 +613,7 @@ bool assemble_comet2cmd(const CMDLINE *cmdl, PASS pass)
             writememory(cmd, (asptr->ptr)++, pass);
         }
         /* オペランド数2。第2オペランドは汎用レジスタ */
-        else if(cmdl->opd->opdc == 2 && (x_r2 = getgr(cmdl->opd->opdv[1], false)) != 0xFFFF) {
+        else if(cmdl->opd->opdc == 2 && (x_r2 = grword(cmdl->opd->opdv[1], false)) != 0xFFFF) {
             if((cmd = getcmdcode(cmdl->cmd, R1_R2)) == 0xFFFF) {
                 setcerr(109, cmdl->cmd);    /* not command of operand "r1,r2" */
                 return false;
@@ -631,7 +631,7 @@ bool assemble_comet2cmd(const CMDLINE *cmdl, PASS pass)
             cmd |= (r_r1 << 4);                    /* 第1オペランドは汎用レジスタ */
             /* オペランド数3の場合 */
             if(cmdl->opd->opdc == 3) {             /* 第3オペランドは指標レジスタとして用いる汎用レジスタ */
-                if((x_r2 = getgr(cmdl->opd->opdv[2], true)) == 0xFFFF) {
+                if((x_r2 = grword(cmdl->opd->opdv[2], true)) == 0xFFFF) {
                     setcerr(125, cmdl->cmd);    /* not GR in operand x */
                     return false;
                 }
@@ -654,7 +654,7 @@ bool assemble_comet2cmd(const CMDLINE *cmdl, PASS pass)
         }
         /* オペランド数2の場合 */
         if(cmdl->opd->opdc == 2) {             /* 第2オペランドは指標レジスタとして用いる汎用レジスタ */
-            x_r2 = getgr(cmdl->opd->opdv[1], true);
+            x_r2 = grword(cmdl->opd->opdv[1], true);
             if(cerr->num > 0) {
                 return false;
             }
