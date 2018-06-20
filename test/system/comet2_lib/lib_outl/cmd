@@ -1,3 +1,0 @@
-../../../../casl2 -O ../../../../as/casl2lib/sample/call_outl.casl ../../../../as/casl2lib/outl.casl
-../../../../comet2 a.o
-rm -f a.o

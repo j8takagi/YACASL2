@@ -1,3 +1,0 @@
-../../../../casl2 -M4096 -O ../../../../as/casl2lib/sample/call_mull.casl ../../../../as/casl2lib/stdlib.casl
-../../../../comet2 -M4096 a.o
-rm -f a.o

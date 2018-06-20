@@ -40,7 +40,26 @@ Copyright @copyright{} 2010-2018 j8takagi
 * casl2 invocation::            casl2の呼び出し
 * comet2 invocation::           comet2の呼び出し
 * dumpword invocation::         dumpwordの呼び出し
-* CASL2LIB Manual::             CASL2LIBマニュアル
+
+@detailmenu
+ --- The Detailed Node Listing ---
+
+YACASL2の使用例
+
+* Simple output::               実行結果の出力だけを表示
+* Assemble result::             アセンブル結果の確認
+* Register and memory::         実行時のレジスタとメモリを表示
+* Only assemble::               アセンブルと実行を別に行う
+* Analyze word::                1語の解析
+* Use CASL2LIB::                CASL2ライブラリの使用
+
+実行時のレジスタとメモリを表示
+
+* Register specify::            特定のレジスタを表示
+* End value::
+* Step count::                  プログラムのステップ数を表示
+
+@end detailmenu
 @end menu
 
 @contents
@@ -825,301 +844,5 @@ $ @kbd{dumpword '#0048'}
 @itemx --help
 @command{dumpword}の使用方法を表示して終了します。
 @end table
-
-@node CASL2LIB Manual,  , dumpword invocation, Top
-@chapter CASL2LIBマニュアル
-
-@menu
-* ABS::                         @kbd{ABS} - @file{abs.casl}
-* DIVA::                        @kbd{DIVA} - @file{diva.casl}
-* DIVL::                        @kbd{DIVL} - @file{divl.casl}
-* INL::                         @kbd{INL} - @file{inl.casl}
-* L2STR::                       @kbd{L2STR} - @file{l2str.casl}
-* MAX::                         @kbd{MAX} - @file{max.casl}
-* MINIM::                       @kbd{MINIM} - @file{minim.casl}
-* MULA::                        @kbd{MULA} - @file{mula.casl}
-* MULL::                        @kbd{MULL} - @file{mull.casl}
-* OUTA::                        @kbd{OUTA} - @file{outa.casl}
-* OUTB::                        @kbd{OUTB} - @file{outb.casl}
-* OUTD_Q15::                    @kbd{OUTD_Q15} - @file{outd_q15.casl}
-* OUTL::                        @kbd{OUTL} - @file{outl.casl}
-* REV::                         @kbd{REV} - @file{rev.casl}
-* STR2L::                       @kbd{STR2L} - @file{str2l.casl}
-@end menu
-
-@node ABS, DIVA, CASL2LIB Manual, CASL2LIB Manual
-@section @kbd{ABS} - @file{abs.casl}
-GR1を符号付き整数とみなし、絶対値に変換
-
-@unnumberedsubsec 入力
-@table @code
-@item GR1
-符号付き整数
-@end table
-
-@unnumberedsubsec 出力
-@table @code
-@item GR1
-入力された値の絶対値
-
-@item OF
-入力された値が-32768の場合、1
-
-@item SF
-入力された値が負数（-32767から-1）の場合、1
-@end table
-
-@unnumberedsubsec 依存する副プログラム
-なし
-
-@unnumberedsubsec 使用例
-@example
-@verbatiminclude casl2lib/abs/call_abs.casl
-@end example
-
-@example
-$ @kbd{casl2 call_abs.casl $CASL2LIB/abs.casl $CASL2LIB/outa.casl \
-  $CASL2LIB/divl.casl $CASL2LIB/rev.casl}
-1
-@end example
-
-@node DIVA, DIVL, ABS, CASL2LIB Manual
-@section @kbd{DIVA} - @file{diva.casl}
-符号付き整数の割算を筆算方式で行う
-
-@unnumberedsubsec 入力
-@table @code
-@item GR1
-被除数
-
-@item GR2
-除数
-@end table
-
-@unnumberedsubsec 出力
-@table @code
-@item GR0
-商
-
-@item GR3
-剰余
-
-@item OF
-次の場合、1
-@itemize
-@item
-GR2が0
-
-@item
-GR1が-32768
-
-@item
-GR2が-32768
-@end itemize
-
-@item SF
-商が負数(-32767から-1)の場合、1
-
-@item ZF
-商が0の場合、1
-@end table
-
-@unnumberedsubsec 依存する副プログラム
-@itemize
-@item @code{DIVL}
-@end itemize
-
-@unnumberedsubsec 使用例
-@example
-@verbatiminclude casl2lib/diva/call_diva.casl
-@end example
-
-@example
-$ @kbd{casl2 call_diva.casl $CASL2LIB/diva.casl $CASL2LIB/divl.casl \
-  $CASL2LIB/outa.casl $CASL2LIB/abs.casl $CASL2LIB/rev.casl}
--128
--127
-@end example
-
-@node DIVL, INL, DIVA, CASL2LIB Manual
-@section @kbd{DIVL} - @file{divl.casl}
-符号なし整数の割算を筆算方式で行う
-
-@unnumberedsubsec 入力
-@table @code
-@item GR1
-被除数
-
-@item GR2
-除数
-@end table
-
-@unnumberedsubsec 出力
-@table @code
-@item GR0
-商
-
-@item GR3
-剰余
-
-@item OF
-GR2が0の場合、1
-
-@item SF
-商が32768から65535の場合、1
-
-@item ZF
-商が0の場合、1
-@end table
-
-@unnumberedsubsec 依存する副プログラム
-なし
-
-@unnumberedsubsec 使用例
-@example
-@verbatiminclude casl2lib/divl/call_divl.casl
-@end example
-
-@example
-$ @kbd{casl2 call_divl.casl $CASL2LIB/divl.casl $CASL2LIB/outl.casl \
-  $CASL2LIB/rev.casl}
-256
-254
-@end example
-
-@node INL, L2STR, DIVL, CASL2LIB Manual
-@section @kbd{INL} - @file{inl.casl}
-
-符号なし整数の入力を受け付ける
-
-@unnumberedsubsec 入力
-@table @code
-@item 標準入力
-符号なし整数
-@end table
-
-@unnumberedsubsec 出力
-@table @code
-@item GR1
-入力された符号なし整数
-
-@item GR0
-文字列の長さ。
-数字以外が入力された場合は@code{#FFFF}
-@end table
-
-@unnumberedsubsec 依存する副プログラム
-@itemize
-@item
-@code{STR2L}
-@end itemize
-
-@unnumberedsubsec 使用例
-次のコマンドを実行すると、数値の入力が受け付けられ、入力された数値が表示される。
-
-@example
-@verbatiminclude casl2lib/inl/call_inl.casl
-@end example
-
-@example
-$ @kbd{casl2 -M1024 call_inl.casl $CASL2LIB/inl.casl $CASL2LIB/str2l.casl $CASL2LIB/mull.casl \
-  $CASL2LIB/outl.casl $CASL2LIB/divl.casl $CASL2LIB/rev.casl}
-@end example
-
-@node L2STR, MAX, INL, CASL2LIB Manual
-@section @kbd{L2STR} - @file{l2str.casl}
-
-符号なし整数を文字列に変換する
-
-@unnumberedsubsec 入力
-@table @code
-@item GR1
-符号なし整数
-
-@item GR2
-変換した文字列を格納するアドレス
-@end table
-
-@unnumberedsubsec 出力
-@table @code
-@item GR0
-文字列の長さ
-@end table
-
-@unnumberedsubsec 依存する副プログラム
-@itemize
-@item
-@code{DIVL}
-@end itemize
-
-@node MAX, MINIM, L2STR, CASL2LIB Manual
-@section @kbd{MAX} - @file{max.casl}
-
-連続した複数のWORDを符号付き整数とみなして最大値を返す
-
-@unnumberedsubsec 入力
-@table @code
-@item GR1
-WORD値を格納したアドレス
-
-@item GR2
-値の個数
-@end table
-
-@unnumberedsubsec 出力
-@table @code
-@item GR0
-最大値
-@end table
-
-@unnumberedsubsec 依存する副プログラム
-なし
-
-@node MINIM, MULA, MAX, CASL2LIB Manual
-@section @kbd{MINIM} - @file{minim.casl}
-
-連続した複数のWORDを符号付き整数とみなして最小値を返す
-
-@unnumberedsubsec 入力
-@table @code
-@item GR1
-WORD値を格納したアドレス
-
-@item GR2
-値の個数
-@end table
-
-@unnumberedsubsec 出力
-@table @code
-@item GR0
-最小値
-@end table
-
-@unnumberedsubsec 依存する副プログラム
-なし
-
-@node MULA, MULL, MINIM, CASL2LIB Manual
-@section @kbd{MULA} - @file{mula.casl}
-
-@node MULL, OUTA, MULA, CASL2LIB Manual
-@section @kbd{MULL} - @file{mull.casl}
-
-@node OUTA, OUTB, MULL, CASL2LIB Manual
-@section @kbd{OUTA} - @file{outa.casl}
-
-@node OUTB, OUTD_Q15, OUTA, CASL2LIB Manual
-@section @kbd{OUTB} - @file{outb.casl}
-
-@node OUTD_Q15, OUTL, OUTB, CASL2LIB Manual
-@section @kbd{OUTD_Q15} - @file{outd_q15.casl}
-
-@node OUTL, REV, OUTD_Q15, CASL2LIB Manual
-@section @kbd{OUTL} - @file{outl.casl}
-
-@node REV, STR2L, OUTL, CASL2LIB Manual
-@section @kbd{REV} - @file{rev.casl}
-
-@node STR2L,  , REV, CASL2LIB Manual
-@section @kbd{STR2L} - @file{str2l.casl}
 
 @bye

@@ -1,1 +1,0 @@
-../../../../casl2 -M1024 ../../../../as/casl2lib/sample/call_str2l.casl ../../../../as/casl2lib/str2l.casl ../../../../as/casl2lib/outl.casl

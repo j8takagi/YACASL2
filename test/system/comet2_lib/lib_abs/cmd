@@ -1,3 +1,0 @@
-../../../../casl2 -M2048 -O ../../../../as/casl2lib/sample/call_abs.casl  ../../../../as/casl2lib/stdlib.casl
-../../../../comet2 -M2048 a.o
-rm -f a.o
