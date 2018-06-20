@@ -41,7 +41,7 @@ $(DOXYSRCDIR)/Doxyfile:
 # 引数DIRで指定されたディレクトリーの下のHTMLディレクトリー
 $(GNU_GLOBAL_DIR): ../src ../include
 	$(MAKE) -C $(GNU_GLOBAL_SRCDIR) gtags
-	$(CD) $(GNU_GLOBAL_SRCDIR) && $(HTAGS) -anosx $(CURDIR) && $(RMR) $(CURDIR)/$@ && $(MV) $(CURDIR)/HTML $(CURDIR)/$@
+	$(CD) $(GNU_GLOBAL_SRCDIR) && $(HTAGS) -anos $(CURDIR) && $(RMR) $(CURDIR)/$@ && $(MV) $(CURDIR)/HTML $(CURDIR)/$@
 
 $(CMETRICS_DIR):
 	$(INSTALL) -d $(CMETRICS_DIR)
