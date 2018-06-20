@@ -26,6 +26,8 @@
  * - include/hash.h
  * - include/cerr.h
  * - include/cmem.h
+ * - include/package.h
+ * - include/version.h
  *
  * \section Webサイト
  * http://www.j8takagi.net/yacasl2/

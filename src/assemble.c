@@ -34,7 +34,7 @@ void printline(FILE *stream, const char *filename, int lineno, char *line);
 WORD getadr(const char *prog, const char *str, PASS pass);
 
 /**
- * @brief 汎用レジスタを表す文字列 からレジスタ番号を返す
+ * @brief 汎用レジスタを表す文字列からレジスタ番号を返す
  *
  * @brief 文字列が汎用レジスタを表さない場合は、0xFFFFを返す
  *

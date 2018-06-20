@@ -1,6 +1,24 @@
 #include "package.h"
 #include "exec.h"
 
+/**
+ * @brief 汎用レジスタの番号からレジスタを表す文字列を返す
+ *
+ * @return 汎用レジスタを表す文字列。「GR0」「GR1」・・・「GR7」のいずれか
+ *
+ * @param word レジスタ番号[0-7]を表すWORD値
+ */
+char *grstr(WORD word);
+
+/**
+ * @brief CASL IIのオブジェクトファイルを逆アセンブルし、標準出力へ出力する
+ *
+ * @return 正常終了時は0、異常終了時は0以外
+ *
+ * @param *file オブジェクトファイルのファイル名
+ */
+bool disassemble(const char *file);
+
 char *grstr(WORD word)
 {
     assert(word <= 7);
@@ -15,7 +33,7 @@ bool disassemble(const char *file)
     FILE *fp;
     WORD i = 0, w, cmd, r, x, r1, r2, adr;
     CMDTYPE cmdtype = 0;
-    char *cmdname;
+    char *cmdname, *g1, *g2;
 
     assert(file != NULL);
     if((fp = fopen(file, "rb")) == NULL) {
@@ -42,11 +60,13 @@ bool disassemble(const char *file)
             fprintf(stdout, "\t%s\t", cmdname);
             if(cmdtype == R_ADR_X) {
                 r = (w & 0x00F0) >> 4;
-                fprintf(stdout, "%s,", grstr(r));
+                fprintf(stdout, "%s,", g1 = grstr(r));
+                FREE(g1);
             }
             fprintf(stdout, "#%04X", adr);
             if((x = w & 0x000F) != 0) {
-                fprintf(stdout, ",%s", grstr(x));
+                fprintf(stdout, ",%s", g1 = grstr(x));
+                FREE(g1);
             }
             fprintf(stdout, "\t\t\t\t; #%04X: #%04X #%04X", i, w, adr);
             i += 2;
@@ -55,10 +75,13 @@ bool disassemble(const char *file)
             if(cmdtype == R1_R2) {
                 r1 = (w & 0x00F0) >> 4;
                 r2 = w & 0x000F;
-                fprintf(stdout, "\t%s,%s", grstr(r1), grstr(r2));
+                fprintf(stdout, "\t%s,%s", g1 = grstr(r1), g2 = grstr(r2));
+                FREE(g1);
+                FREE(g2);
             } else if(cmdtype == R_) {
                 r = (w & 0x00F0) >> 4;
-                fprintf(stdout, "\t%s", grstr(r));
+                fprintf(stdout, "\t%s", g1 = grstr(r));
+                FREE(g1);
             }
             fprintf(stdout, "\t\t\t\t; #%04X: #%04X", i++, w);
         }
@@ -80,7 +103,7 @@ static struct option longopts[] = {
 };
 
 /**
- * @brief disassembleコマンドのメイン
+ * @brief casl2revコマンドのメイン
  *
  * @return 正常終了時は0、異常終了時は1
  *
