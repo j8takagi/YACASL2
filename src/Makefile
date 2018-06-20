@@ -1,5 +1,5 @@
 # ソースファイル。グループに分類
-CMDOBJ := casl2 comet2 dumpword disassemble
+CMDOBJ := casl2 comet2 dumpword casl2rev
 COMMONOBJ := word cmem cerr
 CASL2OBJ := struct hash
 ASOBJ := assemble token label
@@ -31,7 +31,7 @@ comet2: $(addsuffix .o,comet2 $(COMMONOBJ) $(CASL2OBJ) $(EXECOBJ))
 
 dumpword: $(addsuffix .o,dumpword $(COMMONOBJ))
 
-disassemble:$(addsuffix .o,disassemble $(COMMONOBJ) $(CASL2OBJ) $(EXECOBJ))
+casl2rev:$(addsuffix .o,casl2rev $(COMMONOBJ) $(CASL2OBJ) $(EXECOBJ))
 
 # .dファイルからヘッダファイルの依存関係を取得する
 # tags、check、clean、.d で終わるターゲットの場合は除く

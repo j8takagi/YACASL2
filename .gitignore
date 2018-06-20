@@ -1,7 +1,7 @@
 /casl2
 /comet2
 /dumpword
-/disassemble
+/casl2rev
 *.o
 *.o.casl
 !as/sample/hello.o

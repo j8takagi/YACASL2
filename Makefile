@@ -6,7 +6,7 @@
         clean src-clean gtags-clean \
         test-clean doc-clean doc_inner-clean
 
-CMD := casl2 comet2 dumpword disassemble
+CMD := casl2 comet2 dumpword casl2rev
 
 CAT := cat
 CP := cp
