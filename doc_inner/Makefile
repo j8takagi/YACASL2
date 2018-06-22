@@ -34,7 +34,7 @@ $(DOXYGEN_DIR): $(DOXYSRCDIR)/Doxyfile ../src ../include
 	$(INSTALL) -d $(DOXYGEN_DIR)
 	$(CD) $(DOXYSRCDIR) && $(DOXYGEN)
 
-$(DOXYSRCDIR)/Doxyfile:
+$(DOXYSRCDIR)/Doxyfile: Doxyfile
 	$(CP) -f Doxyfile $(DOXYSRCDIR)/
 
 # htagsのHTMLドキュメント作成先は、
