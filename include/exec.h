@@ -11,17 +11,22 @@ enum {
     INSIZE = 256    /**<IN命令の、入力領域 */
 };
 
+enum {
+    DBINSIZE = 8    /**<デバッガーの、入力領域 */
+};
+
 /**
  * @brief 実行モードを表すデータ型
  */
 typedef struct {
-    bool trace;           /**<レジストリの内容を表示する場合はtrue */
+    bool trace;           /**<レジストリの内容をステップごとに表示する場合はtrue */
     bool logical;         /**<レジストリの内容を論理値（0から65535）で表示する場合はtrue */
-    bool dump;            /**<メモリの内容を表示する場合はtrue */
+    bool dump;            /**<メモリの内容をステップごとに表示する場合はtrue */
+    bool debugger;           /**<デバッガーモードの場合はtrue */
 } EXECMODE;
 
 /**
- * @brief 実行モード: trace, logical, dump
+ * @brief 実行モード: trace, logical, dump, debugger
  */
 extern EXECMODE execmode;
 
@@ -378,5 +383,15 @@ void dumpmemory();
  * @return なし
  */
 void dspregister();
+
+
+/**
+ * @brief CASL IIのオブジェクトファイルを逆アセンブルし、標準出力へ出力する
+ *
+ * @return 正常終了時は0、異常終了時は0以外
+ *
+ * @param *file オブジェクトファイルのファイル名
+ */
+bool disassemble_file(const char *file);
 
 #endif            /* YACASL2_EXEC_INCLUDEDの終端 */

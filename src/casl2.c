@@ -126,14 +126,14 @@ int main(int argc, char *argv[])
     char *af[argc], *objfile = NULL;
     const char *version = PACKAGE_VERSION,  *cmdversion = "casl2 of YACASL2 version %s\n";
     const char *usage =
-        "Usage: %s [-slLaAtTdvh] [-oO[<OBJECTFILE>]] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE1[ FILE2  ...]\n";
+        "Usage: %s [-slLaAtTdbvh] [-oO[<OBJECTFILE>]] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE1[ FILE2  ...]\n";
 
     cerr_init();
     addcerrlist_casl2();
     addcerrlist_assemble();
     addcerrlist_exec();
     /* オプションの処理 */
-    while((opt = getopt_long(argc, argv, "tTdslLao::O::AM:C:vh", longopts, NULL)) != -1) {
+    while((opt = getopt_long(argc, argv, "tTdslLbao::O::AM:C:vh", longopts, NULL)) != -1) {
         switch(opt) {
         case 's':
             asmode.src = true;
@@ -168,6 +168,9 @@ int main(int argc, char *argv[])
             break;
         case 'd':
             execmode.dump = true;
+            break;
+        case 'b':
+            execmode.debugger = true;
             break;
         case 'M':
             memsize = atoi(optarg);

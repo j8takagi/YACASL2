@@ -2,99 +2,7 @@
 #include "exec.h"
 
 /**
- * @brief 汎用レジスタの番号からレジスタを表す文字列を返す
- *
- * @return 汎用レジスタを表す文字列。「GR0」「GR1」・・・「GR7」のいずれか
- *
- * @param word レジスタ番号[0-7]を表すWORD値
- */
-char *grstr(WORD word);
-
-/**
- * @brief CASL IIのオブジェクトファイルを逆アセンブルし、標準出力へ出力する
- *
- * @return 正常終了時は0、異常終了時は0以外
- *
- * @param *file オブジェクトファイルのファイル名
- */
-bool disassemble(const char *file);
-
-char *grstr(WORD word)
-{
-    assert(word <= 7);
-    char *str = malloc_chk(3 + 1, "grstr.str");
-    sprintf(str, "GR%d", word);
-    return str;
-}
-
-bool disassemble(const char *file)
-{
-    bool stat = true;
-    FILE *fp;
-    WORD i = 0, w, cmd, r, x, r1, r2, adr;
-    CMDTYPE cmdtype = 0;
-    char *cmdname, *g1, *g2;
-
-    assert(file != NULL);
-    if((fp = fopen(file, "rb")) == NULL) {
-        perror(file);
-        return false;
-    }
-
-    create_code_cmdtype();                          /* 命令のコードとタイプがキーのハッシュ表を作成 */
-
-    fprintf(stdout, "MAIN\tSTART\n");
-    for(; ;) {
-        fread(&w, sizeof(WORD), 1, fp);
-        if(feof(fp)) {
-            break;
-        }
-        cmd = w & 0xFF00;
-        cmdname = getcmdname(cmd);
-        cmdtype = getcmdtype(cmd);
-        if(cmd == 0xFF00 || (w != 0 && cmd == 0x0000)) {
-            fprintf(stdout, "\tDC\t%d\t\t\t\t; #%04X: #%04X :: ", w, i++, w);
-            print_dumpword(w, true);
-        } else if(cmdtype == R_ADR_X || cmdtype == ADR_X) {
-            fread(&adr, sizeof(WORD), 1, fp);
-            fprintf(stdout, "\t%s\t", cmdname);
-            if(cmdtype == R_ADR_X) {
-                r = (w & 0x00F0) >> 4;
-                fprintf(stdout, "%s,", g1 = grstr(r));
-                FREE(g1);
-            }
-            fprintf(stdout, "#%04X", adr);
-            if((x = w & 0x000F) != 0) {
-                fprintf(stdout, ",%s", g1 = grstr(x));
-                FREE(g1);
-            }
-            fprintf(stdout, "\t\t\t\t; #%04X: #%04X #%04X", i, w, adr);
-            i += 2;
-        } else {
-            fprintf(stdout, "\t%s", cmdname);
-            if(cmdtype == R1_R2) {
-                r1 = (w & 0x00F0) >> 4;
-                r2 = w & 0x000F;
-                fprintf(stdout, "\t%s,%s", g1 = grstr(r1), g2 = grstr(r2));
-                FREE(g1);
-                FREE(g2);
-            } else if(cmdtype == R_) {
-                r = (w & 0x00F0) >> 4;
-                fprintf(stdout, "\t%s", g1 = grstr(r));
-                FREE(g1);
-            }
-            fprintf(stdout, "\t\t\t\t; #%04X: #%04X", i++, w);
-        }
-        fprintf(stdout, "\n");
-    }
-    fprintf(stdout, "\tEND\n");
-    free_code_cmdtype();
-    fclose(fp);
-    return stat;
-}
-
-/**
- * disassembleコマンドのオプション
+ * @brief casl2revコマンドのオプション
  */
 static struct option longopts[] = {
     {"version", no_argument, NULL, 'v' },
@@ -139,7 +47,7 @@ int main(int argc, char *argv[])
         fprintf(stderr, "disassemble error - %d: %s\n", cerr->num, cerr->msg);
         exit(1);
     }
-    disassemble(argv[optind]);                /* プログラム実行 */
+    disassemble_file(argv[optind]);                /* プログラム実行 */
     stat = (cerr->num == 0) ? 0 : 1;
     /* エラーの解放 */
     freecerr();

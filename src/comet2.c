@@ -9,6 +9,7 @@ static struct option longopts[] = {
     {"tracearithmetic", no_argument, NULL, 't'},
     {"tracelogical", no_argument, NULL, 'T'},
     {"dump", no_argument, NULL, 'd'},
+    {"debug", no_argument, NULL, 'b'},
     {"memorysize", required_argument, NULL, 'M'},
     {"clocks", required_argument, NULL, 'C'},
     { "version", no_argument, NULL, 'v' },
@@ -29,7 +30,7 @@ int main(int argc, char *argv[])
     int memsize = DEFAULT_MEMSIZE, clocks = DEFAULT_CLOCKS;
     int opt, stat = 0;
     const char *version = PACKAGE_VERSION,  *cmdversion = "comet2 of YACASL2 version %s\n";
-    const char *usage = "Usage: %s [-tTdvh] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE\n";
+    const char *usage = "Usage: %s [-btTdvh] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE\n";
 
     cerr_init();
     addcerrlist_load();
@@ -47,6 +48,9 @@ int main(int argc, char *argv[])
             break;
         case 'd':
             execmode.dump = true;
+            break;
+        case 'b':
+            execmode.debugger = true;
             break;
         case 'M':
             memsize = atoi(optarg);

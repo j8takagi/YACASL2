@@ -76,6 +76,16 @@ WORD get_adr_x(WORD adr, WORD oprx);
 WORD get_val_adr_x(WORD adr, WORD oprx);
 
 /**
+ * @brief 汎用レジスタの番号からレジスタを表す文字列を返す
+ *
+ * @return 汎用レジスタを表す文字列。「GR0」「GR1」・・・「GR7」のいずれか
+ *
+ * @param word レジスタ番号[0-7]を表すWORD値
+ */
+char *grstr(WORD word);
+
+
+/**
  * @brief 実行エラーの定義
  */
 static CERR cerr_exec[] = {
@@ -99,9 +109,9 @@ static CERR cerr_load[] = {
 };
 
 /**
- * @brief 実行モード: trace, logical, dump
+ * @brief 実行モード: trace, logical, dump, debugger
  */
-EXECMODE execmode = {false, false, false};
+EXECMODE execmode = {false, false, false, false};
 
 char *pr2str(WORD pr)
 {
@@ -114,14 +124,14 @@ char *pr2str(WORD pr)
 void svcin()
 {
     int i;
-    char *buffer = malloc_chk(INSIZE + 1, "svcin.buffer");
+    char *buf = malloc_chk(INSIZE + 1, "svcin.buf");
 
-    if(fgets(buffer, INSIZE, stdin) == NULL) {
+    if(fgets(buf, INSIZE, stdin) == NULL) {
         sys->memory[sys->cpu->gr[1]] = sys->memory[sys->cpu->gr[2]] = 0x0;
         return;
     }
     for(i = 0; i < INSIZE; i++) {
-        if(*(buffer + i) == '\0' || *(buffer + i) == '\n') {
+        if(*(buf + i) == '\0' || *(buf + i) == '\n') {
             --i;
             break;
         }
@@ -129,10 +139,10 @@ void svcin()
             setcerr(208, "");    /* SVC input - memory overflow */
             break;
         }
-        sys->memory[sys->cpu->gr[1]+i] = *(buffer + i);
+        sys->memory[sys->cpu->gr[1]+i] = *(buf + i);
     }
     sys->memory[sys->cpu->gr[2]] = i + 1;
-    FREE(buffer);
+    FREE(buf);
 }
 
 void svcout()
@@ -768,6 +778,40 @@ void svc()
     sys->cpu->pr += 2;
 }
 
+char *grstr(WORD word)
+{
+    assert(word <= 7);
+    char *str = malloc_chk(3 + 1, "grstr.str");
+    sprintf(str, "GR%d", word);
+    return str;
+}
+
+void debugger()
+{
+    char *buf = malloc_chk(DBINSIZE + 1, "debugger.buf");
+    for( ; ;) {
+        fprintf(stdout, "COMET II (Type ? for help) > ");
+        fgets(buf, DBINSIZE, stdin);
+        if(*buf == 'r') {
+            execmode.debugger = false;
+            break;
+        } else if(*buf == 's') {
+            break;
+        } else if(*buf == 't') {
+            fprintf(stdout, "#%04X: Register::::\n", sys->cpu->pr);
+            dspregister();
+        } else if(*buf == 'd') {
+            dumpmemory();
+        } else if(*buf == '?') {
+            fprintf(stdout, "r -- Continue running your program.\n");
+            fprintf(stdout, "s -- Continue running your program until next interaction.\n");
+            fprintf(stdout, "t -- Display CPU register.\n");
+            fprintf(stdout, "d -- Display memory dump.\n");
+            break;
+        }
+    }
+}
+
 void exec()
 {
     clock_t clock_begin, clock_end;
@@ -791,6 +835,10 @@ void exec()
                 dumpmemory();
             }
             fprintf(stdout, "\n");
+        }
+        /* デバッガーモードの場合、デバッガーを起動 */
+        if(execmode.debugger == true) {
+            debugger();
         }
         /* プログラムレジスタをチェック */
         if(sys->cpu->pr >= sys->memsize) {
@@ -831,4 +879,70 @@ execfin:
     if(cerr->num > 0) {
         fprintf(stderr, "Execute error - %d: %s\n", cerr->num, cerr->msg);
     }
+}
+
+bool disassemble_file(const char *file)
+{
+    bool stat = true;
+    FILE *fp;
+    WORD i = 0, w, cmd, x, adr;
+    CMDTYPE cmdtype = 0;
+    char *cmdname, *g, *g1, *g2;
+
+    assert(file != NULL);
+    if((fp = fopen(file, "rb")) == NULL) {
+        perror(file);
+        return false;
+    }
+
+    create_code_cmdtype();                          /* 命令のコードとタイプがキーのハッシュ表を作成 */
+
+    fprintf(stdout, "MAIN\tSTART\n");
+    for(; ;) {
+        fread(&w, sizeof(WORD), 1, fp);
+        if(feof(fp)) {
+            break;
+        }
+        cmd = w & 0xFF00;
+        cmdname = getcmdname(cmd);
+        cmdtype = getcmdtype(cmd);
+        if(cmd == 0xFF00 || (w != 0 && cmd == 0x0000)) {
+            fprintf(stdout, "\tDC\t%d\t\t\t\t; #%04X: #%04X :: ", w, i++, w);
+            print_dumpword(w, true);
+        } else if(cmdtype == R_ADR_X || cmdtype == ADR_X) {
+            fread(&adr, sizeof(WORD), 1, fp);
+            fprintf(stdout, "\t%s\t", cmdname);
+            if(cmdtype == R_ADR_X) {
+                g = grstr((w & 0x00F0) >> 4);
+                fprintf(stdout, "%s,", g);
+                FREE(g);
+            }
+            fprintf(stdout, "#%04X", adr);
+            if((x = w & 0x000F) != 0) {
+                fprintf(stdout, ",%s", g = grstr(x));
+                FREE(g);
+            }
+            fprintf(stdout, "\t\t\t\t; #%04X: #%04X #%04X", i, w, adr);
+            i += 2;
+        } else {
+            fprintf(stdout, "\t%s", cmdname);
+            if(cmdtype == R1_R2) {
+                g1 = grstr((w & 0x00F0) >> 4);
+                g2 = grstr(w & 0x000F);
+                fprintf(stdout, "\t%s,%s", g1, g2);
+                FREE(g1);
+                FREE(g2);
+            } else if(cmdtype == R_) {
+                g = grstr((w & 0x00F0) >> 4);
+                fprintf(stdout, "\t%s", g);
+                FREE(g);
+            }
+            fprintf(stdout, "\t\t\t\t; #%04X: #%04X", i++, w);
+        }
+        fprintf(stdout, "\n");
+    }
+    fprintf(stdout, "\tEND\n");
+    free_code_cmdtype();
+    fclose(fp);
+    return stat;
 }
