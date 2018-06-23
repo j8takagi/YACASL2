@@ -1,5 +1,5 @@
 .PHONY: all build gtags \
-        check \
+        check valgrind \
         doc alldoc doc_inner \
         install uninstall \
         version gittag \
@@ -59,6 +59,9 @@ doc_inner:
 
 check:
 	$(MAKE) -sC test/system
+
+valgrind:
+	$(MAKE) -sC test/system valgrind
 
 install: casl2 comet2 dumpword install-info
 	$(INSTALL) -d $(bindir)
