@@ -28,8 +28,6 @@ int main(int argc, char *argv[])
     const char *version = PACKAGE_VERSION,  *cmdversion = "dumpword of YACASL2 version %s\n";
     const char *usage = "Usage: %s [-alh] WORD\n";
 
-    cerr_init();
-    addcerrlist_word();
     while((opt = getopt_long(argc, argv, "alvh", longopts, NULL)) != -1) {
         switch(opt) {
         case 'l':
@@ -47,18 +45,25 @@ int main(int argc, char *argv[])
         }
     }
 
+    /* エラーの定義 */
+    cerr_init();
+    addcerrlist_word();
+
     if(argv[optind] == NULL) {
         fprintf(stderr, usage, argv[0]);
+        freecerr();
         exit(1);
     }
     /* WORD値に変換 */
     word = nh2word(argv[optind]);
     if(cerr->num > 0) {
         fprintf(stderr, "Dumpword Error - %d: %s\n", cerr->num, cerr->msg);
+        freecerr();
         exit(1);
     }
     fprintf(stdout, "%6s: ", argv[optind]);
     print_dumpword(word, logicalmode);
     fprintf(stdout, "\n");
+    freecerr();
     return 0;
 }

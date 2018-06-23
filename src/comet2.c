@@ -32,10 +32,6 @@ int main(int argc, char *argv[])
     const char *version = PACKAGE_VERSION,  *cmdversion = "comet2 of YACASL2 version %s\n";
     const char *usage = "Usage: %s [-btTdvh] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE\n";
 
-    cerr_init();
-    addcerrlist_load();
-    addcerrlist_exec();
-
     /* オプションの処理 */
     while((opt = getopt_long(argc, argv, "tTdM:C:vh", longopts, NULL)) != -1) {
         switch(opt) {
@@ -69,11 +65,18 @@ int main(int argc, char *argv[])
             exit(1);
         }
     }
+    /* エラーの定義 */
+    cerr_init();
+    addcerrlist_load();
+    addcerrlist_exec();
+
     if(argv[optind] == NULL) {
         setcerr(211, "");    /* object file not specified */
         fprintf(stderr, "comet2 error - %d: %s\n", cerr->num, cerr->msg);
+        freecerr();             /* エラーの解放 */
         exit(1);
     }
+
     /* COMET II仮想マシンのリセット */
     reset(memsize, clocks);
     execptr->start = 0;
@@ -83,7 +86,6 @@ int main(int argc, char *argv[])
     /* COMET II仮想マシンのシャットダウン */
     shutdown();
     stat = (cerr->num == 0) ? 0 : 1;
-    /* エラーの解放 */
-    freecerr();
+    freecerr();                 /* エラーの解放 */
     return stat;
 }

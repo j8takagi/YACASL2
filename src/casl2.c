@@ -122,16 +122,12 @@ asfin:
  */
 int main(int argc, char *argv[])
 {
-    int memsize = DEFAULT_MEMSIZE, clocks = DEFAULT_CLOCKS, opt, i, stat;
+    int memsize = DEFAULT_MEMSIZE, clocks = DEFAULT_CLOCKS, opt, i, stat = 0;
     char *af[argc], *objfile = NULL;
     const char *version = PACKAGE_VERSION,  *cmdversion = "casl2 of YACASL2 version %s\n";
     const char *usage =
         "Usage: %s [-slLaAtTdbvh] [-oO[<OBJECTFILE>]] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE1[ FILE2  ...]\n";
 
-    cerr_init();
-    addcerrlist_casl2();
-    addcerrlist_assemble();
-    addcerrlist_exec();
     /* オプションの処理 */
     while((opt = getopt_long(argc, argv, "tTdslLbao::O::AM:C:vh", longopts, NULL)) != -1) {
         switch(opt) {
@@ -189,10 +185,18 @@ int main(int argc, char *argv[])
             exit(1);
         }
     }
+
+    /* エラーの定義 */
+    cerr_init();
+    addcerrlist_casl2();
+    addcerrlist_assemble();
+    addcerrlist_exec();
+
     /* ソースファイルが指定されていない場合は終了 */
     if(argv[optind] == NULL) {
         setcerr(126, "");    /* no source file */
         fprintf(stderr, "CASL2 error - %d: %s\n", cerr->num, cerr->msg);
+        freecerr();                                    /* エラーの解放 */
         exit(1);
     }
     reset(memsize, clocks);                        /* 仮想マシンCOMET IIのリセット */
