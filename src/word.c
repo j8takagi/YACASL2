@@ -62,7 +62,7 @@ WORD h2word(const char *str)
     str++;
     if(*str == '-' || strlen(str) > 4) {
         setcerr(116, str-1);    /* out of hex range */
-        return 0;
+        return 0x0;
     }
     /* WORD値に変換 */
     w = (WORD)strtol(str, &check, 16);

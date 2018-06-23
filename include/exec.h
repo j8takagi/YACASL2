@@ -384,7 +384,6 @@ void dumpmemory();
  */
 void dspregister();
 
-
 /**
  * @brief CASL IIのオブジェクトファイルを逆アセンブルし、標準出力へ出力する
  *
@@ -393,5 +392,12 @@ void dspregister();
  * @param *file オブジェクトファイルのファイル名
  */
 bool disassemble_file(const char *file);
+
+/**
+ * @brief COMET IIデバッガーを起動する
+ *
+ * @return なし
+ */
+void debugger();
 
 #endif            /* YACASL2_EXEC_INCLUDEDの終端 */
