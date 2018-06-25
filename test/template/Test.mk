@@ -127,7 +127,7 @@ reset: all-clean $(CMD_FILE)
 	@$(CAT) $(TEST0_FILE)
 
 clean:
-	@$(RM) $(TEST_RES_FILES) $(TIME_FILE) $(VALGRIND_FILE)
+	@$(RM) $(TEST_RES_FILES) $(TIME_FILE) $(VALGRIND_FILE) core
 
 all-clean: clean
 	@$(RM) $(TEST0_FILE)
