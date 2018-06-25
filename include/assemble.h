@@ -65,7 +65,7 @@ typedef struct {
  */
 typedef struct _LABELTAB {
     struct _LABELTAB *next;     /**<リスト次項目へのポインタ */
-    LABELARRAY *label;          /**ラベル配列 */
+    LABELARRAY *label;          /**<ラベル配列 */
 } LABELTAB;
 
 /**
