@@ -6,7 +6,7 @@ void debugger()
     for( ; ;) {
         fprintf(stdout, "COMET II (Type ? for help) > ");
         fgets(buf, DBINSIZE, stdin);
-        if(*buf == '\0' || *buf == 's') {
+        if(*buf == '\n' || *buf == 's') {
             break;
         } else if(*buf == 'c') {
             execmode.debugger = false;
