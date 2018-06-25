@@ -65,9 +65,7 @@ typedef struct {
  */
 typedef struct _LABELTAB {
     struct _LABELTAB *next;     /**<リスト次項目へのポインタ */
-    char *prog;                 /**<プログラム名  */
-    char *label;                /**<ラベル名 */
-    WORD adr;                   /**<アドレス */
+    LABELARRAY *label;          /**ラベル配列 */
 } LABELTAB;
 
 /**
