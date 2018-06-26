@@ -115,7 +115,7 @@ bool addlabel(const char *prog, const char *label, WORD adr)
     assert(label != NULL);
     LABELTAB *p;
     LABELARRAY *l;
-    unsigned hashval;
+    unsigned h;
 
     /* 登録されたラベルを検索。すでに登録されている場合はエラー発生 */
     if(getlabel(prog, label) != 0xFFFF) {
@@ -134,9 +134,8 @@ bool addlabel(const char *prog, const char *label, WORD adr)
     /* ラベル数を設定 */
     labelcnt++;
     /* ハッシュ表へ追加 */
-    hashval = labelhash(prog, label);
-    p->next = labels[hashval];
-    labels[hashval] = p;
+    p->next = labels[h = labelhash(prog, label)];
+    labels[h] = p;
     return true;
 }
 

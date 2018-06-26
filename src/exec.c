@@ -4,6 +4,7 @@
 
 #include "exec.h"
 #include "cerr.h"
+#include "debugger.h"
 
 /**
  * @brief プログラムレジスタ（PR）を表すWORD値を文字列に変換
@@ -811,7 +812,7 @@ void exec()
             fprintf(stdout, "\n");
         }
         /* デバッガーモードの場合、デバッガーを起動 */
-        if(execmode.debugger == true) {
+        if(execmode.debugger == true || getbps(sys->cpu->pr) == true) {
             debugger();
         }
         /* プログラムレジスタをチェック */

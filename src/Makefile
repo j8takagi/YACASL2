@@ -7,11 +7,10 @@ EXECOBJ := exec dump debugger
 
 # ヘッダファイル
 INCLUDEDIR := ../include
-INCLUDE = -I $(INCLUDEDIR)
 
 # コマンド
 CC := gcc
-CFLAGS := -g -Wall -Wextra $(INCLUDE)
+CFLAGS := -g -Wall -Wextra -I$(INCLUDEDIR)
 CTAGS := ctags
 ETAGS := etags
 ECHO := echo
