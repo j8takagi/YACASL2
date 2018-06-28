@@ -6,8 +6,6 @@
         clean src-clean gtags-clean \
         test-clean doc-clean doc_inner-clean
 
-CMD := casl2 comet2 dumpword casl2rev
-
 CAT := cat
 CP := cp
 ECHO := /bin/echo
@@ -36,11 +34,15 @@ VERSIONFILES = include/version.h \
         test/system/comet2_opt/opt_v/0.txt \
         test/system/dumpword/opt_v/0.txt
 
-all: build INSTALL gtags
+all: casl2 comet2 dumpword casl2rev INSTALL gtags
+
+%: src/%
+	$(CP) $< $@
+
+casl2 comet2 dumpword casl2rev: build
 
 build:
 	$(MAKE) -C src all
-	$(CP) $(addprefix src/,$(CMD)) ./
 
 gtags:
 	$(if $(strip $(shell $(WHICH) $(GTAGS))),$(GTAGS),@$(ECHO) '$(GTAGS): not found')
