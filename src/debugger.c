@@ -1,30 +1,9 @@
-#include <stdio.h>
-#include <string.h>
-#include <assert.h>
 #include "debugger.h"
-#include "hash.h"
-#include "cmem.h"
-#include "cerr.h"
-#include "exec.h"
-
-/**
- * アドレスに対応するハッシュ値を返す
- *
- * @return ハッシュ値
- *
- * @param adr アドレス
- */
-unsigned adrhash(WORD adr);
-
-/**
- * @brief ブレークポイント数
- */
-static int bpscnt = 0;
 
 /**
  * @brief ブレークポイント表
  */
-static BPSTAB *bps[BPSTABSIZE];
+static BPSLIST *bps[BPSTABSIZE];
 
 /**
  * @brief ブレークポイントのエラー
@@ -33,16 +12,9 @@ static CERR cerr_bps[] = {
     { 101, "break point already defined" },
     { 102, "break point table is full" },
     { 103, "break point not found" },
+    { 104, "break point address not set" },
+    { 105, "illegal break point address" },
 };
-
-/**
- * @brief アドレスのハッシュ値を返す
- *
- * @return ハッシュ値
- *
- * @param adr アドレス
- */
-unsigned adrhash(WORD adr);
 
 /**
  * @brief ブレークポイントのエラーをエラーリストに追加する
@@ -71,7 +43,7 @@ void addcerrlist_bps()
 
 bool getbps(WORD adr)
 {
-    BPSTAB *p;
+    BPSLIST *p;
 
     for(p = bps[adrhash(adr)]; p != NULL; p = p->next) {
         if(p->adr == adr) {
@@ -83,20 +55,18 @@ bool getbps(WORD adr)
 
 bool addbps(WORD adr)
 {
-    BPSTAB *p;
+    BPSLIST *p;
     unsigned h;
 
-    /* 登録されたラベルを検索。すでに登録されている場合はエラー発生 */
+    /* 登録されたラベルを検索。すでに登録されている場合は終了 */
     if(getbps(adr) == true) {
-        setcerr(101, "");    /* breakpoint already defined */
+        fprintf(stderr, "%04X: Breakpoint is already defined.\n", adr);
         return false;
     }
     /* メモリを確保 */
-    p = malloc_chk(sizeof(BPSTAB), "bps.next");
+    p = malloc_chk(sizeof(BPSLIST), "bps.next");
     /* アドレスを設定 */
     p->adr = adr;
-    /* ブレークポイント数を設定 */
-    bpscnt++;
     /* ハッシュ表へ追加 */
     p->next = bps[h = adrhash(adr)];
     bps[h] = p;
@@ -105,50 +75,67 @@ bool addbps(WORD adr)
 
 bool delbps(WORD adr)
 {
-    BPSTAB *p, *q;
+    BPSLIST *p, *q;
     unsigned h;
+    bool res = false;
 
     p = bps[h = adrhash(adr)];
-    if(p->adr == adr && p->next != NULL) {
-        bps[h] = p->next;
-        FREE(p);
-        return true;
-    } else {
-        for(; p != NULL; p = p->next) {
-            if(p->adr == adr) {
-                q = p->next;
-                p->next = q->next;
+    if(p != NULL) {
+        if(p->adr == adr) {
+            if(p->next == NULL) {
+                FREE(bps[h]);
+            } else {
+                bps[h] = p->next;
                 FREE(p);
-                return true;
+            }
+            res = true;
+        } else {
+            for(; p->next != NULL; p = p->next) {
+                q = p->next;
+                if(q->adr == adr) {
+                    p->next = q->next;
+                    FREE(q);
+                    res = true;
+                    break;
+                }
             }
         }
     }
-    return false;
+    return res;
 }
 
-void printbps()
+void listbps()
 {
-    int i;
-    BPSTAB *p;
+    int i, cnt = 0;
+    BPSLIST *p;
 
-    fprintf(stdout, "breakpoints list\n");
+    fprintf(stdout, "List of breakpoints\n");
     for(i = 0; i < BPSTABSIZE; i++) {
         for(p = bps[i]; p != NULL; p = p->next) {
             fprintf(stdout, "#%04X\n", p->adr);
+            cnt++;
         }
+    }
+    if(cnt == 0) {
+        fprintf(stdout, "(No breakpoints.)\n");
+    }
+}
+
+void freebpslist(BPSLIST *head)
+{
+    BPSLIST *p, *q;
+    for(p = head; p != NULL; p = q) {
+        q = p->next;
+        FREE(p);
     }
 }
 
 void freebps()
 {
     int i;
-    BPSTAB *p, *q;
-
     for(i = 0; i < BPSTABSIZE; i++) {
-        for(p = bps[i]; p != NULL; p = q) {
-            q = p->next;
-            FREE(p);
-        }
+        freebpslist(bps[i]);
+        bps[i] = NULL;
     }
 }
 
@@ -170,7 +157,7 @@ DBARGS *dbargstok(const char *str)
         sepp = r + strcspn(r, " ");
         sepc = *sepp;
         *sepp = '\0';
-        args->argv[(++args->argc)-1] = strdup_chk(q, "args.argv[]");
+        args->argv[++(args->argc)-1] = strdup_chk(q, "args.argv[]");
         q = r = sepp + 1;
     } while(sepc == ' ');
     FREE(p);
@@ -179,36 +166,29 @@ DBARGS *dbargstok(const char *str)
 
 DBCMDLINE *dblinetok(const char *line)
 {
-    char *tokens, *p, *sepp;
+    char *tokens, *p;
+    long l;
     DBCMDLINE *dbcmdl = NULL;
 
-    if(*line == '\0') {
+    if(*line == '\n' || *line == '\0') {
         return NULL;
     }
-    tokens = strdup_chk(line, "tokens");
-    p = tokens;
+    p = tokens = strdup_chk(line, "tokens");
     dbcmdl = malloc_chk(sizeof(DBCMDLINE), "dbcmdl");
-    /* コマンドと引数の取得 */
-    if(*p == '\n' || *p == '\0') {        /* コマンドがない場合は、終了 */
-        dbcmdl->dbcmd = '\0';
+    /* コマンドの取得 */
+    dbcmdl->cmd = malloc_chk((l = strcspn(p, " \t\n")) + 1, "dbcmdl.cmd");
+    strncpy(dbcmdl->cmd, p, l);
+    /* コマンドと引数の間の空白をスキップ */
+    p += l;
+    while(*p == ' ' || *p == '\t') {
+        p++;
+    }
+    /* 引数として、改行までの文字列を取得 */
+    if((l = strcspn(p, "\n")) > 0) {
+        dbcmdl->args = dbargstok(p);
     } else {
-        /* コマンドの取得 */
-        sepp = p + strcspn(p, " \t\n");
-        *sepp = '\0';
-        dbcmdl->dbcmd = strdup_chk(p, "dbcmdl.dbcmd");
-        p = sepp + 1;
-        /* コマンドと引数の間の空白をスキップ */
-        while(*p == ' ' || *p == '\t') {
-            p++;
-        }
-        /* 改行までの文字列を取得 */
-        if((sepp = p + strcspn(p, "\n")) > p) {
-            *sepp = '\0';
-            dbcmdl->dbargs = dbargstok(p);
-        } else {
-            dbcmdl->dbargs = malloc_chk(sizeof(DBARGS), "dbcmdl.dbargs");
-            dbcmdl->dbargs->argc = 0;
-        }
+        dbcmdl->args = malloc_chk(sizeof(DBARGS), "dbcmdl.args");
+        dbcmdl->args->argc = 0;
     }
     FREE(tokens);
     return dbcmdl;
@@ -217,6 +197,9 @@ DBCMDLINE *dblinetok(const char *line)
 bool stracmp(char *str1, int str2c, char *str2v[])
 {
     int i;
+    if(str1 == NULL) {
+        return false;
+    }
     for(i = 0; i < str2c; i++) {
         if(strcmp(str1, str2v[i]) == 0) {
             return true;
@@ -225,56 +208,128 @@ bool stracmp(char *str1, int str2c, char *str2v[])
     return false;
 }
 
-void debugger()
+void db_break(int argc, char *argv[])
 {
-    char *buf = malloc_chk(DBINSIZE + 1, "debugger.buf"), *cmd;
-    DBCMDLINE *dbcmdl =  malloc_chk(sizeof(DBCMDLINE), "dbcmdl");
-    DBARGS *arg;
-    for( ; ;) {
-        fprintf(stdout, "COMET II (Type ? for help) > ");
-        fgets(buf, DBINSIZE, stdin);
-        dbcmdl = dblinetok(buf);
-        cmd = dbcmdl->dbcmd;
-        arg = dbcmdl->dbargs;
-        if(*buf == '\n' || stracmp(cmd, 2, (char* []){"s", "step"})) {
-            break;
-        } else if(stracmp(cmd, 2, (char* []){"c", "continue"})) {
-            execmode.debugger = false;
-            break;
-        } else if(stracmp(cmd, 2, (char* []){"t", "trace"})) {
-            if(arg->argc > 0 && stracmp(arg->argv[0], 2, (char* []){"a", "auto"})) {
-                execmode.logical = false;
-                execmode.trace = true;
-            } else if(arg->argc > 0 && stracmp(arg->argv[0], 2, (char* []){"no", "noauto"})) {
-                execmode.trace = false;
-            } else {
-                fprintf(stdout, "#%04X: Register::::\n", sys->cpu->pr);
-                dspregister();
+    WORD w;
+    if(stracmp(argv[0], 2, (char* []){"l", "list"})) {
+        listbps();
+    } else if(stracmp(argv[0], 2, (char* []){"r", "reset"})) {
+        freebps();
+        fprintf(stdout, "All breakpoints are deleted.\n");
+    } else {
+        if(argc > 1) {
+            if((w = nh2word(argv[1])) == 0x0) {
+                fprintf(stderr, "%s: address error\n", argv[1]);
             }
-        } else if(stracmp(cmd, 2, (char* []){"T", "tracelogical"})) {
-            if(arg->argc > 0 && stracmp(arg->argv[0], 2, (char* []){"a", "auto"})) {
-                execmode.logical = true;
-                execmode.trace = true;
-            } else if(arg->argc > 0 && stracmp(arg->argv[0], 2, (char* []){"no", "noauto"})) {
-                execmode.trace = false;
+        }
+        if(stracmp(argv[0], 2, (char* []){"a", "add"})) {
+            if(addbps(w) == true) {
+                fprintf(stdout, "#%04X: breakpoint added\n", w);
             } else {
-                fprintf(stdout, "#%04X: Register::::\n", sys->cpu->pr);
-                dspregister();
+                fprintf(stdout, "No breakpoint added\n");
             }
-        } else if(stracmp(cmd, 2, (char* []){"d", "dump"})) {
-            if(arg->argc > 0 && stracmp(arg->argv[0], 2, (char* []){"a", "auto"})) {
-                execmode.dump = true;
-            } else if(arg->argc > 0 && stracmp(arg->argv[0], 2, (char* []){"no", "noauto"})) {
-                execmode.dump = false;
+        } else if(stracmp(argv[0], 2, (char* []){"d", "del"})) {
+            if(delbps(w) == true) {
+                fprintf(stdout, "#%04X: breakpoint deleted\n", w);
             } else {
-                dumpmemory();
+                fprintf(stdout, "No breakpoint deleted\n");
             }
-        } else if(*buf == '?') {
-            fprintf(stdout, "s (default) -- Step by step running your program until next interaction.\n");
-            fprintf(stdout, "c -- Continue running your program.\n");
-            fprintf(stdout, "t -- Display CPU register.\n");
-            fprintf(stdout, "d -- Display memory dump.\n");
-            break;
+        } else if(stracmp(argv[0], 3, (char* []){"?", "h", "help"})) {
+            fprintf(stdout, "breakpoint manipulate:\n");
+            fprintf(stdout, "    b[reak] a[dd] <address>\n");
+            fprintf(stdout, "    b[reak] d[el] <address>\n");
+            fprintf(stdout, "    b[reak] l[ist]\n");
+            fprintf(stdout, "    b[reak] r[eset]\n");
+        } else {
+            fprintf(stderr, "%s: Not breakpoint manipulate command. see `b ?'.\n", argv[0]);
         }
     }
+}
+
+bool debuggercmd(char *cmd, DBARGS *args)
+{
+    bool next = false;
+    if(stracmp(cmd, 2, (char* []){"s", "step"})) {
+        execmode.step = true;
+        next = true;
+    } else if(stracmp(cmd, 2, (char* []){"b", "break"})) {
+        db_break(args->argc, args->argv);
+    } else if(stracmp(cmd, 2, (char* []){"c", "continue"})) {
+        execmode.step = false;
+        next = true;
+    } else if(stracmp(cmd, 2, (char* []){"t", "trace"})) {
+        if(args->argc > 0 && stracmp(args->argv[0], 2, (char* []){"a", "auto"})) {
+            execmode.logical = false;
+            execmode.trace = true;
+        } else if(args->argc > 0 && stracmp(args->argv[0], 2, (char* []){"no", "noauto"})) {
+            execmode.trace = false;
+        } else {
+            fprintf(stdout, "#%04X: Register::::\n", sys->cpu->pr);
+            dspregister();
+        }
+    } else if(stracmp(cmd, 2, (char* []){"T", "tracelogical"})) {
+        if(args->argc > 0 && stracmp(args->argv[0], 2, (char* []){"a", "auto"})) {
+            execmode.logical = true;
+            execmode.trace = true;
+        } else if(args->argc > 0 && stracmp(args->argv[0], 2, (char* []){"no", "noauto"})) {
+            execmode.trace = false;
+        } else {
+            fprintf(stdout, "#%04X: Register::::\n", sys->cpu->pr);
+            dspregister();
+        }
+    } else if(stracmp(cmd, 2, (char* []){"d", "dump"})) {
+        if(args->argc > 0 && stracmp(args->argv[0], 2, (char* []){"a", "auto"})) {
+            execmode.dump = true;
+        } else if(args->argc > 0 && stracmp(args->argv[0], 2, (char* []){"no", "noauto"})) {
+            execmode.dump = false;
+        } else {
+            dumpmemory();
+        }
+    } else if(stracmp(cmd, 3, (char* []){"?", "h", "help"})) {
+        fprintf(stdout, "b[reak] -- Manipulate Breakpoints. Details in `b ?'.\n");
+        fprintf(stdout, "s[tep] -- Step by step running your program until next interaction.\n");
+        fprintf(stdout, "c[ontinue] -- Continue running your program.\n");
+        fprintf(stdout, "t[race] -- Display CPU register. `t[race] a[uto]/n[oauto]' set auto/noauto display. \n");
+        fprintf(stdout, "d[ump] -- Display memory dump. `d[ump] a[uto]/n[oauto]' set auto/noauto display.\n");
+        fprintf(stdout, "?/h[elp] -- Display this help.\n");
+    }
+    return next;
+}
+
+void free_dbcmdline(DBCMDLINE *dbcmdl)
+{
+    int i;
+    assert(dbcmdl != NULL);
+    if(dbcmdl->args != NULL) {
+        for(i = 0;  i < dbcmdl->args->argc; i++) {
+            FREE(dbcmdl->args->argv[i]);
+        }
+        FREE(dbcmdl->args);
+    }
+    if(dbcmdl->cmd != NULL) {
+        FREE(dbcmdl->cmd);
+    }
+    if(dbcmdl != NULL) {
+        FREE(dbcmdl);
+    }
+}
+
+void debugger()
+{
+    char *buf, *p;
+    DBCMDLINE *dbcmdl;
+    bool next = false;
+    do {
+        fprintf(stdout, "COMET II (Type ? for help) > ");
+        buf = malloc_chk(DBINSIZE + 1, "debugger.buf");
+        fgets(buf, DBINSIZE, stdin);
+        if((p = strchr(buf, '\n')) != NULL) {
+            *p = '\0';
+        }
+        if((dbcmdl = dblinetok(buf)) != NULL) {
+            next = debuggercmd(dbcmdl->cmd, dbcmdl->args);
+            free_dbcmdline(dbcmdl);
+        }
+        FREE(buf);
+    } while(next == false);
 }

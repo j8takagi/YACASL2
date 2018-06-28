@@ -110,7 +110,7 @@ static CERR cerr_load[] = {
 };
 
 /**
- * @brief 実行モード: trace, logical, dump, debugger
+ * @brief 実行モード: trace, logical, dump, step
  */
 EXECMODE execmode = {false, false, false, false};
 
@@ -812,7 +812,7 @@ void exec()
             fprintf(stdout, "\n");
         }
         /* デバッガーモードの場合、デバッガーを起動 */
-        if(execmode.debugger == true || getbps(sys->cpu->pr) == true) {
+        if(execmode.step == true || getbps(sys->cpu->pr) == true) {
             debugger();
         }
         /* プログラムレジスタをチェック */
@@ -850,6 +850,7 @@ void exec()
         } while(clock_end - clock_begin < CLOCKS_PER_SEC / sys->clocks);
     }
 execfin:
+    freebps();
     free_code_cmdtype();                           /* 命令のコードとタイプがキーのハッシュ表を解放 */
     if(cerr->num > 0) {
         fprintf(stderr, "Execute error - %d: %s\n", cerr->num, cerr->msg);

@@ -18,11 +18,11 @@ typedef struct {
     bool trace;           /**<レジストリの内容をステップごとに表示する場合はtrue */
     bool logical;         /**<レジストリの内容を論理値（0から65535）で表示する場合はtrue */
     bool dump;            /**<メモリの内容をステップごとに表示する場合はtrue */
-    bool debugger;           /**<デバッガーモードの場合はtrue */
+    bool step;           /**<ステップ実行の場合はtrue */
 } EXECMODE;
 
 /**
- * @brief 実行モード: trace, logical, dump, debugger
+ * @brief 実行モード: trace, logical, dump, step
  */
 extern EXECMODE execmode;
 

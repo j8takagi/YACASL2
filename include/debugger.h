@@ -1,13 +1,20 @@
 #ifndef DEBBUGER_INCLUDE
 #define DEBBUGER_INCLUDE
 
+#include <stdio.h>
+#include <string.h>
+#include <assert.h>
+#include "hash.h"
+#include "cmem.h"
+#include "cerr.h"
+#include "exec.h"
 #include "word.h"
 
 /**
  * @brief デバッガー
  */
 enum {
-    DBARGSIZE = 2,          /**<デバッガー引数の最大数 */
+    DBARGSIZE = 3,          /**<デバッガー引数の最大数 */
 };
 
 /**
@@ -22,17 +29,17 @@ typedef struct {
  * @brief デバッガー命令行を表すデータ型
  */
 typedef struct {
-    char *dbcmd;                  /**<コマンド */
-    DBARGS *dbargs;               /**<引数 */
+    char *cmd;                  /**<コマンド */
+    DBARGS *args;               /**<引数 */
 } DBCMDLINE;
 
 /**
  * @brief ブレークポイント表を表すデータ型
  */
-typedef struct _BPSTAB {
-    struct _BPSTAB *next;        /**<リスト次項目へのポインタ */
+typedef struct _BPSLIST {
+    struct _BPSLIST *next;        /**<リスト次項目へのポインタ */
     WORD adr;                   /**<アドレス */
-} BPSTAB;
+} BPSLIST;
 
 /**
  * ブレークポイント表のサイズ
@@ -42,8 +49,17 @@ enum {
 };
 
 enum {
-    DBINSIZE = 8    /**<デバッガーの、入力領域 */
+    DBINSIZE = 40    /**<デバッガーの、入力領域 */
 };
+
+/**
+ * @brief アドレスのハッシュ値を返す
+ *
+ * @return ハッシュ値
+ *
+ * @param adr アドレス
+ */
+unsigned adrhash(WORD adr);
 
 /**
  * @brief 文字列から、デバッガーの引数を取得する
@@ -90,5 +106,23 @@ bool addbps(WORD adr);
  * @param *adr アドレス
  */
 bool delbps(WORD adr);
+
+/**
+ * @brief ブレークポイント表からすべてのアドレスを削除する
+ *
+ * @return なし
+ *
+ * @param なし
+ */
+void resetbps();
+
+/**
+ * @brief ブレークポイント表を開放する
+ *
+ * @return なし
+ *
+ * @param なし
+ */
+void freebps();
 
 #endif        /* end of DEBBUGER_INCLUDE */

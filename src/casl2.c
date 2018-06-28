@@ -166,7 +166,7 @@ int main(int argc, char *argv[])
             execmode.dump = true;
             break;
         case 'b':
-            execmode.debugger = true;
+            execmode.step = true;
             break;
         case 'M':
             memsize = atoi(optarg);
