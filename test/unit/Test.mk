@@ -1,1 +1,1 @@
-../template/Test.mk
+../Template/Test.mk

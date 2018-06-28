@@ -1,1 +1,1 @@
-../../template/Define.mk
+../../Template/Define.mk

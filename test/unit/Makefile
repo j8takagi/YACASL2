@@ -1,1 +1,1 @@
-../template/Group.mk
+../Template/Group.mk
