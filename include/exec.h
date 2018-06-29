@@ -3,9 +3,13 @@
 
 #include <stdbool.h>
 #include <stdio.h>
+#include <assert.h>
+#include <time.h>
 #include "struct.h"
 #include "word.h"
 #include "cmem.h"
+#include "cerr.h"
+#include "monitor.h"
 
 enum {
     INSIZE = 256    /**<IN命令の、入力領域 */
@@ -390,10 +394,10 @@ void dspregister();
 bool disassemble_file(const char *file);
 
 /**
- * @brief COMET IIデバッガーを起動する
+ * @brief COMET IIモニターを起動する
  *
  * @return なし
  */
-void debugger();
+void monitor();
 
 #endif            /* YACASL2_EXEC_INCLUDEDの終端 */

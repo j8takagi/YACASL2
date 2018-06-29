@@ -1,9 +1,4 @@
-#include <stdio.h>
-#include <assert.h>
-#include <string.h>
-#include "hash.h"
 #include "struct.h"
-#include "cmem.h"
 #include "exec.h"
 
 /**

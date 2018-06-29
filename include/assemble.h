@@ -1,7 +1,16 @@
 #ifndef YACASL2_ASSEMBLE_INCLUDED
 #define YACASL2_ASSEMBLE_INCLUDED
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <stdbool.h>
+#include <ctype.h>
+#include <assert.h>
+#include <errno.h>
+#include "cerr.h"
+#include "cmem.h"
+#include "hash.h"
 #include "struct.h"
 #include "word.h"
 

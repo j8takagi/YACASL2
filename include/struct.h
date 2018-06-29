@@ -1,8 +1,13 @@
 #ifndef YACASL2_CASL2_INCLUDED
 #define YACASL2_CASL2_INCLUDED
 
+#include <stdio.h>
+#include <assert.h>
+#include <string.h>
 #include <time.h>
 #include "word.h"
+#include "cmem.h"
+#include "hash.h"
 
 /**
  * @brief COMET IIの規格値

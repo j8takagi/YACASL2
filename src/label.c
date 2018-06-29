@@ -1,10 +1,3 @@
-#include <stdio.h>
-#include <string.h>
-#include <assert.h>
-
-#include "cerr.h"
-#include "cmem.h"
-#include "hash.h"
 #include "assemble.h"
 
 /**

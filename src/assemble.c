@@ -1,12 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-#include <assert.h>
-#include <errno.h>
-
 #include "assemble.h"
-#include "cerr.h"
 
 /**
  * @brief ファイルストリームの現在行を番号付きで表示する

@@ -2,6 +2,11 @@
 #define YACASL2_CERR_H_INCLUDED
 
 #include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <assert.h>
+#include <stdbool.h>
 #include "cmem.h"
 
 /**

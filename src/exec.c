@@ -1,10 +1,4 @@
-#include <stdio.h>
-#include <assert.h>
-#include <time.h>
-
 #include "exec.h"
-#include "cerr.h"
-#include "debugger.h"
 
 /**
  * @brief プログラムレジスタ（PR）を表すWORD値を文字列に変換
@@ -813,7 +807,7 @@ void exec()
         }
         /* デバッガーモードの場合、デバッガーを起動 */
         if(execmode.step == true || getbps(sys->cpu->pr) == true) {
-            debugger();
+            monitor();
         }
         /* プログラムレジスタをチェック */
         if(sys->cpu->pr >= sys->memsize) {

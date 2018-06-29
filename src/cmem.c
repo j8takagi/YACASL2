@@ -1,8 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <assert.h>
-#include <stdbool.h>
 #include "cmem.h"
 
 void *malloc_chk(size_t size, char *tag)
