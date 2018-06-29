@@ -36,12 +36,19 @@ VERSIONFILES = include/version.h \
 
 all: casl2 comet2 dumpword casl2rev INSTALL gtags
 
-%: src/%
+casl2: src/casl2
 	$(CP) $< $@
 
-casl2 comet2 dumpword casl2rev: build
+comet2: src/comet2
+	$(CP) $< $@
 
-build:
+dumpword: src/dumpword
+	$(CP) $< $@
+
+casl2rev: src/casl2rev
+	$(CP) $< $@
+
+src/casl2 src/comet2 src/dumpword src/casl2rev:
 	$(MAKE) -C src all
 
 gtags:
