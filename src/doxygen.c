@@ -14,20 +14,22 @@
  * - src/exec.c
  * - src/hash.c
  * - src/label.c
+ * - src/monitor.c
  * - src/struct.c
  * - src/token.c
  * - src/word.c
  *
  * \section ヘッダファイル
  * - include/assemble.h
- * - include/exec.h
- * - include/struct.h
- * - include/word.h
- * - include/hash.h
  * - include/cerr.h
  * - include/cmem.h
+ * - include/exec.h
+ * - include/hash.h
+ * - include/monitor.h
  * - include/package.h
+ * - include/struct.h
  * - include/version.h
+ * - include/word.h
  *
  * \section Webサイト
  * http://www.j8takagi.net/yacasl2/
