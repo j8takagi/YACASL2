@@ -3,7 +3,7 @@ CMDOBJ := casl2 comet2 dumpword casl2rev
 COMMONOBJ := word cmem cerr
 CASL2OBJ := struct hash
 ASOBJ := assemble token label
-EXECOBJ := exec dump debugger
+EXECOBJ := exec dump monitor
 
 # ヘッダファイル
 INCLUDEDIR := ../include
@@ -51,10 +51,10 @@ TAGS: $(INCLUDEDIR)/*.h *.c
 
 # makeで生成したファイルの削除
 distclean: clean
-	$(RM) casl2 comet2 dumpword
+	$(RM) casl2 comet2 dumpword casl2rev
 
 clean:
-	$(RM) *.o *.d
+	$(RM) *.o *.d core tags TAGS
 
 tag-clean:
 	$(RM) TAGS tags

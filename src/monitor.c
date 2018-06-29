@@ -1,4 +1,4 @@
-#include "debugger.h"
+#include "monitor.h"
 
 /**
  * @brief ブレークポイント表
@@ -139,9 +139,9 @@ void freebps()
     }
 }
 
-DBARGS *dbargstok(const char *str)
+MONARGS *monargstok(const char *str)
 {
-    DBARGS *args = malloc_chk(sizeof(DBARGS), "args");
+    MONARGS *args = malloc_chk(sizeof(MONARGS), "args");
     char *p, *q, *r, *sepp;     /* pは文字列全体の先頭位置、qはトークンの先頭位置、rは文字の位置 */
     int sepc = ' ';
 
@@ -164,20 +164,20 @@ DBARGS *dbargstok(const char *str)
     return args;
 }
 
-DBCMDLINE *dblinetok(const char *line)
+MONCMDLINE *monlinetok(const char *line)
 {
     char *tokens, *p;
     long l;
-    DBCMDLINE *dbcmdl = NULL;
+    MONCMDLINE *moncmdl = NULL;
 
     if(*line == '\n' || *line == '\0') {
         return NULL;
     }
     p = tokens = strdup_chk(line, "tokens");
-    dbcmdl = malloc_chk(sizeof(DBCMDLINE), "dbcmdl");
+    moncmdl = malloc_chk(sizeof(MONCMDLINE), "moncmdl");
     /* コマンドの取得 */
-    dbcmdl->cmd = malloc_chk((l = strcspn(p, " \t\n")) + 1, "dbcmdl.cmd");
-    strncpy(dbcmdl->cmd, p, l);
+    moncmdl->cmd = malloc_chk((l = strcspn(p, " \t\n")) + 1, "moncmdl.cmd");
+    strncpy(moncmdl->cmd, p, l);
     /* コマンドと引数の間の空白をスキップ */
     p += l;
     while(*p == ' ' || *p == '\t') {
@@ -185,13 +185,13 @@ DBCMDLINE *dblinetok(const char *line)
     }
     /* 引数として、改行までの文字列を取得 */
     if((l = strcspn(p, "\n")) > 0) {
-        dbcmdl->args = dbargstok(p);
+        moncmdl->args = monargstok(p);
     } else {
-        dbcmdl->args = malloc_chk(sizeof(DBARGS), "dbcmdl.args");
-        dbcmdl->args->argc = 0;
+        moncmdl->args = malloc_chk(sizeof(MONARGS), "moncmdl.args");
+        moncmdl->args->argc = 0;
     }
     FREE(tokens);
-    return dbcmdl;
+    return moncmdl;
 }
 
 bool stracmp(char *str1, int str2c, char *str2v[])
@@ -208,7 +208,7 @@ bool stracmp(char *str1, int str2c, char *str2v[])
     return false;
 }
 
-void db_break(int argc, char *argv[])
+void mon_break(int argc, char *argv[])
 {
     WORD w;
     if(stracmp(argv[0], 2, (char* []){"l", "list"})) {
@@ -246,14 +246,14 @@ void db_break(int argc, char *argv[])
     }
 }
 
-bool debuggercmd(char *cmd, DBARGS *args)
+bool monitorcmd(char *cmd, MONARGS *args)
 {
     bool next = false;
     if(stracmp(cmd, 2, (char* []){"s", "step"})) {
         execmode.step = true;
         next = true;
     } else if(stracmp(cmd, 2, (char* []){"b", "break"})) {
-        db_break(args->argc, args->argv);
+        mon_break(args->argc, args->argv);
     } else if(stracmp(cmd, 2, (char* []){"c", "continue"})) {
         execmode.step = false;
         next = true;
@@ -296,39 +296,39 @@ bool debuggercmd(char *cmd, DBARGS *args)
     return next;
 }
 
-void free_dbcmdline(DBCMDLINE *dbcmdl)
+void free_moncmdline(MONCMDLINE *moncmdl)
 {
     int i;
-    assert(dbcmdl != NULL);
-    if(dbcmdl->args != NULL) {
-        for(i = 0;  i < dbcmdl->args->argc; i++) {
-            FREE(dbcmdl->args->argv[i]);
+    assert(moncmdl != NULL);
+    if(moncmdl->args != NULL) {
+        for(i = 0;  i < moncmdl->args->argc; i++) {
+            FREE(moncmdl->args->argv[i]);
         }
-        FREE(dbcmdl->args);
+        FREE(moncmdl->args);
     }
-    if(dbcmdl->cmd != NULL) {
-        FREE(dbcmdl->cmd);
+    if(moncmdl->cmd != NULL) {
+        FREE(moncmdl->cmd);
     }
-    if(dbcmdl != NULL) {
-        FREE(dbcmdl);
+    if(moncmdl != NULL) {
+        FREE(moncmdl);
     }
 }
 
-void debugger()
+void monitor()
 {
     char *buf, *p;
-    DBCMDLINE *dbcmdl;
+    MONCMDLINE *moncmdl;
     bool next = false;
     do {
         fprintf(stdout, "COMET II (Type ? for help) > ");
-        buf = malloc_chk(DBINSIZE + 1, "debugger.buf");
-        fgets(buf, DBINSIZE, stdin);
+        buf = malloc_chk(MONINSIZE + 1, "monitor.buf");
+        fgets(buf, MONINSIZE, stdin);
         if((p = strchr(buf, '\n')) != NULL) {
             *p = '\0';
         }
-        if((dbcmdl = dblinetok(buf)) != NULL) {
-            next = debuggercmd(dbcmdl->cmd, dbcmdl->args);
-            free_dbcmdline(dbcmdl);
+        if((moncmdl = monlinetok(buf)) != NULL) {
+            next = monitorcmd(moncmdl->cmd, moncmdl->args);
+            free_moncmdline(moncmdl);
         }
         FREE(buf);
     } while(next == false);

@@ -1,5 +1,5 @@
-#ifndef DEBBUGER_INCLUDE
-#define DEBBUGER_INCLUDE
+#ifndef MONITOR_INCLUDE
+#define MONITOR_INCLUDE
 
 #include <stdio.h>
 #include <string.h>
@@ -11,27 +11,27 @@
 #include "word.h"
 
 /**
- * @brief デバッガー
+ * @brief モニター
  */
 enum {
-    DBARGSIZE = 3,          /**<デバッガー引数の最大数 */
+    MONARGSIZE = 3,          /**<モニター引数の最大数 */
 };
 
 /**
- * @brief デバッガー引数を表すデータ型
+ * @brief モニター引数を表すデータ型
  */
 typedef struct {
     int argc;                   /**<オペランド数 */
-    char *argv[DBARGSIZE];      /**<オペランド配列 */
-} DBARGS;
+    char *argv[MONARGSIZE];      /**<オペランド配列 */
+} MONARGS;
 
 /**
- * @brief デバッガー命令行を表すデータ型
+ * @brief モニター命令行を表すデータ型
  */
 typedef struct {
     char *cmd;                  /**<コマンド */
-    DBARGS *args;               /**<引数 */
-} DBCMDLINE;
+    MONARGS *args;               /**<引数 */
+} MONCMDLINE;
 
 /**
  * @brief ブレークポイント表を表すデータ型
@@ -49,7 +49,7 @@ enum {
 };
 
 enum {
-    DBINSIZE = 40    /**<デバッガーの、入力領域 */
+    MONINSIZE = 40    /**<モニターの、入力領域 */
 };
 
 /**
@@ -62,22 +62,22 @@ enum {
 unsigned adrhash(WORD adr);
 
 /**
- * @brief 文字列から、デバッガーの引数を取得する
+ * @brief 文字列から、モニターの引数を取得する
  *
- * @return デバッガーの引数
+ * @return モニターの引数
  *
  * @param *str 文字列
  */
-DBARGS *dbargstok(const char *str);
+MONARGS *monargstok(const char *str);
 
 /**
- * @brief 行から、デバッガーの命令と引数を取得する
+ * @brief 行から、モニターの命令と引数を取得する
  *
- * @return デバッガーの命令と引数
+ * @return モニターの命令と引数
  *
  * @param *line 行
  */
-DBCMDLINE *dblinetok(const char *line);
+MONCMDLINE *monlinetok(const char *line);
 
 /**
  * @brief ブレークポイント表にアドレスがある場合はtrue、ない場合はfalseを返す
@@ -108,21 +108,10 @@ bool addbps(WORD adr);
 bool delbps(WORD adr);
 
 /**
- * @brief ブレークポイント表からすべてのアドレスを削除する
+ * @brief ブレークポイント表を解放する
  *
  * @return なし
- *
- * @param なし
- */
-void resetbps();
-
-/**
- * @brief ブレークポイント表を開放する
- *
- * @return なし
- *
- * @param なし
  */
 void freebps();
 
-#endif        /* end of DEBBUGER_INCLUDE */
+#endif        /* end of MONITOR_INCLUDE */
