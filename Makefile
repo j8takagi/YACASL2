@@ -1,4 +1,4 @@
-.PHONY: all build gtags \
+.PHONY: all srcall gtags \
         check valgrind \
         doc alldoc doc_inner \
         install uninstall \
@@ -7,7 +7,7 @@
         test-clean doc-clean doc_inner-clean
 
 CAT := cat
-CP := cp
+CP := cp -v
 ECHO := /bin/echo
 EXPR := expr
 GIT := git
@@ -29,27 +29,18 @@ VERSIONGITREF := $(shell $(GIT) show-ref -s --tags $(VERSION))
 
 MASTERGITREF := $(shell $(GIT) show-ref -s refs/heads/master)
 
-VERSIONFILES = include/version.h \
+VERSIONFILES := include/version.h \
         test/system/casl2_opt/opt_v/0.txt \
         test/system/comet2_opt/opt_v/0.txt \
         test/system/dumpword/opt_v/0.txt
 
-all: casl2 comet2 dumpword casl2rev INSTALL gtags
+CMDFILES := casl2 comet2 dumpword casl2rev
 
-casl2: src/casl2
-	$(CP) $< $@
+all: build INSTALL gtags
 
-comet2: src/comet2
-	$(CP) $< $@
-
-dumpword: src/dumpword
-	$(CP) $< $@
-
-casl2rev: src/casl2rev
-	$(CP) $< $@
-
-src/casl2 src/comet2 src/dumpword src/casl2rev:
+build:
 	$(MAKE) -C src all
+	@(for f in $(CMDFILES); do if test src/$$f -nt $$f; then $(CP) src/$$f $$f; fi; done)
 
 gtags:
 	$(if $(strip $(shell $(WHICH) $(GTAGS))),$(GTAGS),@$(ECHO) '$(GTAGS): not found')
