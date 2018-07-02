@@ -5,25 +5,6 @@
  */
 static BPSLIST *bps[BPSTABSIZE];
 
-/**
- * @brief ブレークポイントのエラー
- */
-static CERR cerr_bps[] = {
-    { 101, "break point already defined" },
-    { 102, "break point table is full" },
-    { 103, "break point not found" },
-    { 104, "break point address not set" },
-    { 105, "illegal break point address" },
-};
-
-/**
- * @brief ブレークポイントのエラーをエラーリストに追加する
- *
- * @return なし
- */
-void addcerrlist_bps();
-
-
 unsigned adrhash(WORD adr)
 {
     HKEY *key[1];
@@ -34,11 +15,6 @@ unsigned adrhash(WORD adr)
     h = hash(1, key, BPSTABSIZE);
     FREE(key[0]);
     return h;
-}
-
-void addcerrlist_bps()
-{
-    addcerrlist(ARRAYSIZE(cerr_bps), cerr_bps);
 }
 
 bool getbps(WORD adr)

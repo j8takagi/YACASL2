@@ -165,7 +165,7 @@ int main(int argc, char *argv[])
         case 'd':
             execmode.dump = true;
             break;
-        case 'b':
+        case 'm':
             execmode.step = true;
             break;
         case 'M':
