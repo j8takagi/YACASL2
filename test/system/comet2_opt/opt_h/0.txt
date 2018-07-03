@@ -1,1 +1,1 @@
-Usage: ../../../../comet2 [-btTdvh] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE
+Usage: ../../../../comet2 [-tTdmvh] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE

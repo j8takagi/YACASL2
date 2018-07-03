@@ -1,23 +1,31 @@
 #include "exec.h"
 
 /* exec.hに定義された関数群 */
-void dumpmemory()
+void dumpmemory(WORD start, WORD end)
 {
-    const int col = 16;
-    int i;
+    const WORD col = 0x10;
+    WORD i, j, mod = 0x0;
     /* Header */
     fprintf(stdout, "#%04X: adr :", sys->cpu->pr);
+    if(end > sys->memsize) {
+        end = sys->memsize;
+    }
     for(i = 0; i < sys->memsize && i < col; i++) {
         fprintf(stdout, " %04X", i);
     }
     fprintf(stdout, "\n");
     /* Memory */
-    for(i = 0; i < sys->memsize; i++) {
-        if(i % col == 0) {
+    for(i = start; i < end; i++) {
+        if((mod = i % col) == 0 || i == start) {
             fprintf(stdout, "#%04X: %04X: ", sys->cpu->pr, i);
         }
+        if(i == start) {
+            for(j = 0; j < mod; j++) {
+                fprintf(stdout, "     ");
+            }
+        }
         fprintf(stdout, "%04X", (sys->memory)[i]);
-        if(i > 0 && (i + 1) % col == 0) {
+        if((i > 0 && (i + 1) % col == 0) || (i + 1) == end) {
             fprintf(stdout, "\n");
         } else {
             fprintf(stdout, " ");

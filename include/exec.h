@@ -374,8 +374,11 @@ void svc();
  * @brief COMET IIのメモリを表示する
  *
  * @return なし
+ *
+ * @param start 表示の開始アドレス
+ * @param end 表示の終了アドレス
  */
-void dumpmemory();
+void dumpmemory(WORD start, WORD end);
 
 /**
  * @brief COMET IIのレジスタを表示する

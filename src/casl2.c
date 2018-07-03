@@ -43,6 +43,7 @@ static struct option longopts[] = {
     { "tracearithmetic", no_argument, NULL, 't' },
     { "tracelogical", no_argument, NULL, 'T' },
     { "dump", no_argument, NULL, 'd' },
+    { "monitor", no_argument, NULL, 'm' },
     { "memorysize", required_argument, NULL, 'M' },
     { "clocks", required_argument, NULL, 'C' },
     { "version", no_argument, NULL, 'v' },
@@ -126,10 +127,10 @@ int main(int argc, char *argv[])
     char *af[argc], *objfile = NULL;
     const char *version = PACKAGE_VERSION,  *cmdversion = "casl2 of YACASL2 version %s\n";
     const char *usage =
-        "Usage: %s [-slLaAtTdbvh] [-oO[<OBJECTFILE>]] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE1[ FILE2  ...]\n";
+        "Usage: %s [-slLaAtTdmvh] [-oO[<OBJECTFILE>]] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE1[ FILE2  ...]\n";
 
     /* オプションの処理 */
-    while((opt = getopt_long(argc, argv, "tTdslLbao::O::AM:C:vh", longopts, NULL)) != -1) {
+    while((opt = getopt_long(argc, argv, "tTdslLmao::O::AM:C:vh", longopts, NULL)) != -1) {
         switch(opt) {
         case 's':
             asmode.src = true;

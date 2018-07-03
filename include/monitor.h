@@ -52,6 +52,12 @@ enum {
     MONINSIZE = 40    /**<モニターの、入力領域 */
 };
 
+typedef enum {
+    MONREPEAT = 0,
+    MONNEXT = 1,
+    MONQUIT = 2,
+} MONCMDTYPE;
+
 /**
  * @brief アドレスのハッシュ値を返す
  *
@@ -78,6 +84,16 @@ MONARGS *monargstok(const char *str);
  * @param *line 行
  */
 MONCMDLINE *monlinetok(const char *line);
+
+/**
+ * @brief モニターの命令を実行する
+ *
+ * @return モニター命令の種類
+ *
+ * @param *cmd モニター命令
+ * @param *args モニター命令の引数
+ */
+MONCMDTYPE monitorcmd(char *cmd, MONARGS *args);
 
 /**
  * @brief ブレークポイント表にアドレスがある場合はtrue、ない場合はfalseを返す

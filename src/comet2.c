@@ -10,6 +10,7 @@ static struct option longopts[] = {
     {"tracelogical", no_argument, NULL, 'T'},
     {"dump", no_argument, NULL, 'd'},
     {"debug", no_argument, NULL, 'b'},
+    {"monitor", no_argument, NULL, 'm'},
     {"memorysize", required_argument, NULL, 'M'},
     {"clocks", required_argument, NULL, 'C'},
     { "version", no_argument, NULL, 'v' },
@@ -30,10 +31,10 @@ int main(int argc, char *argv[])
     int memsize = DEFAULT_MEMSIZE, clocks = DEFAULT_CLOCKS;
     int opt, stat = 0;
     const char *version = PACKAGE_VERSION,  *cmdversion = "comet2 of YACASL2 version %s\n";
-    const char *usage = "Usage: %s [-btTdvh] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE\n";
+    const char *usage = "Usage: %s [-tTdmvh] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE\n";
 
     /* オプションの処理 */
-    while((opt = getopt_long(argc, argv, "tTdM:C:vh", longopts, NULL)) != -1) {
+    while((opt = getopt_long(argc, argv, "tTdmM:C:vh", longopts, NULL)) != -1) {
         switch(opt) {
         case 't':
             execmode.trace = true;

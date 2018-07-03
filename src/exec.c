@@ -801,7 +801,7 @@ void exec()
             }
             if(execmode.dump) {                    /* dumpオプション指定時、メモリを出力 */
                 fprintf(stdout, "#%04X: Memory::::\n", sys->cpu->pr);
-                dumpmemory();
+                dumpmemory(0x0, 0xFFFF);
             }
             fprintf(stdout, "\n");
         }
