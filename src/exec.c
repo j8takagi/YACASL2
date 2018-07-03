@@ -851,13 +851,48 @@ execfin:
     }
 }
 
+void disassemble_cmd_adr_x(CMDTYPE cmdtype, const char *cmdname, WORD word, WORD adr, WORD loc)
+{
+    WORD x;
+    char *g;
+    fprintf(stdout, "\t%s\t", cmdname);
+    if(cmdtype == R_ADR_X) {
+        fprintf(stdout, "%s,", g = grstr((word & 0x00F0) >> 4));
+        FREE(g);
+    }
+    fprintf(stdout, "#%04X", adr);
+    if((x = (word & 0x000F)) != 0) {
+        fprintf(stdout, ",%s", g = grstr(x));
+        FREE(g);
+    }
+    fprintf(stdout, "\t\t\t\t; #%04X: #%04X #%04X", loc, word, adr);
+}
+
+void disassemble_cmd_r(CMDTYPE cmdtype, const char *cmdname, WORD word, WORD loc)
+{
+    char *g, *g1, *g2;
+    fprintf(stdout, "\t%s", cmdname);
+    if(cmdtype == R1_R2) {
+        g1 = grstr((word & 0x00F0) >> 4);
+        g2 = grstr(word & 0x000F);
+        fprintf(stdout, "\t%s,%s", g1, g2);
+        FREE(g1);
+        FREE(g2);
+    } else if(cmdtype == R_) {
+        g = grstr((word & 0x00F0) >> 4);
+        fprintf(stdout, "\t%s", g);
+        FREE(g);
+    }
+    fprintf(stdout, "\t\t\t\t; #%04X: #%04X", loc, word);
+}
+
 bool disassemble_file(const char *file)
 {
     bool stat = true;
     FILE *fp;
-    WORD i = 0, w, cmd, x, adr;
+    WORD i = 0, w, cmd, adr;
     CMDTYPE cmdtype = 0;
-    char *cmdname, *g, *g1, *g2;
+    char *cmdname;
 
     assert(file != NULL);
     if((fp = fopen(file, "rb")) == NULL) {
@@ -868,46 +903,19 @@ bool disassemble_file(const char *file)
     create_code_cmdtype();                          /* 命令のコードとタイプがキーのハッシュ表を作成 */
 
     fprintf(stdout, "MAIN\tSTART\n");
-    for(; ;) {
-        fread(&w, sizeof(WORD), 1, fp);
-        if(feof(fp)) {
-            break;
-        }
+    for(fread(&w, sizeof(WORD), 1, fp); !feof(fp); fread(&w, sizeof(WORD), 1, fp)) {
         cmd = w & 0xFF00;
         cmdname = getcmdname(cmd);
         cmdtype = getcmdtype(cmd);
-        if(cmd == 0xFF00 || (w != 0 && cmd == 0x0000)) {
+        if(cmd == 0xFF00 || (w != 0 && cmd == 0)) {
             fprintf(stdout, "\tDC\t%d\t\t\t\t; #%04X: #%04X :: ", w, i++, w);
             print_dumpword(w, true);
         } else if(cmdtype == R_ADR_X || cmdtype == ADR_X) {
             fread(&adr, sizeof(WORD), 1, fp);
-            fprintf(stdout, "\t%s\t", cmdname);
-            if(cmdtype == R_ADR_X) {
-                g = grstr((w & 0x00F0) >> 4);
-                fprintf(stdout, "%s,", g);
-                FREE(g);
-            }
-            fprintf(stdout, "#%04X", adr);
-            if((x = w & 0x000F) != 0) {
-                fprintf(stdout, ",%s", g = grstr(x));
-                FREE(g);
-            }
-            fprintf(stdout, "\t\t\t\t; #%04X: #%04X #%04X", i, w, adr);
+            disassemble_cmd_adr_x(cmdtype, cmdname, w, adr, i);
             i += 2;
         } else {
-            fprintf(stdout, "\t%s", cmdname);
-            if(cmdtype == R1_R2) {
-                g1 = grstr((w & 0x00F0) >> 4);
-                g2 = grstr(w & 0x000F);
-                fprintf(stdout, "\t%s,%s", g1, g2);
-                FREE(g1);
-                FREE(g2);
-            } else if(cmdtype == R_) {
-                g = grstr((w & 0x00F0) >> 4);
-                fprintf(stdout, "\t%s", g);
-                FREE(g);
-            }
-            fprintf(stdout, "\t\t\t\t; #%04X: #%04X", i++, w);
+            disassemble_cmd_r(cmdtype, cmdname, w, i++);
         }
         fprintf(stdout, "\n");
     }
@@ -915,4 +923,28 @@ bool disassemble_file(const char *file)
     free_code_cmdtype();
     fclose(fp);
     return stat;
+}
+
+void disassemble_memory(WORD start, WORD end)
+{
+    WORD i, w, cmd, adr;
+    CMDTYPE cmdtype = 0;
+    char *cmdname;
+
+    for(i = start; i <= end; i++) {
+        w = sys->memory[i];
+        cmd = w & 0xFF00;
+        cmdname = getcmdname(cmd);
+        cmdtype = getcmdtype(cmd);
+        if(cmd == 0xFF00 || (w != 0 && cmd == 0)) {
+            fprintf(stdout, "\tDC\t%d\t\t\t\t; #%04X: #%04X :: ", w, i, w);
+            print_dumpword(w, true);
+        } else if(cmdtype == R_ADR_X || cmdtype == ADR_X) {
+            adr = sys->memory[i+1];
+            disassemble_cmd_adr_x(cmdtype, cmdname, w, adr, i++);
+        } else {
+            disassemble_cmd_r(cmdtype, cmdname, w, i);
+        }
+        fprintf(stdout, "\n");
+    }
 }

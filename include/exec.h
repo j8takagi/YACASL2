@@ -396,11 +396,15 @@ void dspregister();
  */
 bool disassemble_file(const char *file);
 
+
 /**
- * @brief COMET IIモニターを起動する
+ * @brief COMET IIのメモリーを逆アセンブルし、標準出力へ出力する
  *
  * @return なし
+ *
+ * @param *start 逆アセンブルの開始位置
+ * @param *end 逆アセンブルの終了位置
  */
-void monitor();
+void disassemble_memory(WORD start, WORD end);
 
 #endif            /* YACASL2_EXEC_INCLUDEDの終端 */

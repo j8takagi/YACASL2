@@ -222,17 +222,17 @@ void mon_break(int argc, char *argv[])
     }
 }
 
-bool monitorcmd(char *cmd, MONARGS *args)
+MONCMDTYPE monitorcmd(char *cmd, MONARGS *args)
 {
-    bool next = false;
+    MONCMDTYPE cmdtype = MONREPEAT;
     if(stracmp(cmd, 2, (char* []){"s", "step"})) {
         execmode.step = true;
-        next = true;
+        cmdtype = MONNEXT;
     } else if(stracmp(cmd, 2, (char* []){"b", "break"})) {
         mon_break(args->argc, args->argv);
     } else if(stracmp(cmd, 2, (char* []){"c", "continue"})) {
         execmode.step = false;
-        next = true;
+        cmdtype = MONNEXT;
     } else if(stracmp(cmd, 2, (char* []){"t", "trace"})) {
         if(args->argc > 0 && stracmp(args->argv[0], 2, (char* []){"a", "auto"})) {
             execmode.logical = false;
@@ -258,9 +258,18 @@ bool monitorcmd(char *cmd, MONARGS *args)
             execmode.dump = true;
         } else if(args->argc > 0 && stracmp(args->argv[0], 2, (char* []){"no", "noauto"})) {
             execmode.dump = false;
-        } else {
-            dumpmemory();
+        } else if(args->argc == 1) {
+            dumpmemory(nh2word(args->argv[0]), 0xFFFF);
+        } else if(args->argc > 1) {
+            dumpmemory(nh2word(args->argv[0]), nh2word(args->argv[1]));
         }
+    } else if(stracmp(cmd, 2, (char* []){"r", "reverse"})) {
+        if(args->argc == 2) {
+            disassemble_memory(nh2word(args->argv[0]), nh2word(args->argv[1]));
+        }
+    } else if(stracmp(cmd, 2, (char* []){"q", "quit"})) {
+        fprintf(stdout, "Quit: COMET II monitor\n");
+        cmdtype = MONQUIT;
     } else if(stracmp(cmd, 3, (char* []){"?", "h", "help"})) {
         fprintf(stdout, "b[reak] -- Manipulate Breakpoints. Details in `b ?'.\n");
         fprintf(stdout, "s[tep] -- Step by step running your program until next interaction.\n");
@@ -269,7 +278,7 @@ bool monitorcmd(char *cmd, MONARGS *args)
         fprintf(stdout, "d[ump] -- Display memory dump. `d[ump] a[uto]/n[oauto]' set auto/noauto display.\n");
         fprintf(stdout, "?/h[elp] -- Display this help.\n");
     }
-    return next;
+    return cmdtype;
 }
 
 void free_moncmdline(MONCMDLINE *moncmdl)
@@ -294,7 +303,7 @@ void monitor()
 {
     char *buf, *p;
     MONCMDLINE *moncmdl;
-    bool next = false;
+    MONCMDTYPE cmdtype = MONREPEAT;
     do {
         fprintf(stdout, "COMET II (Type ? for help) > ");
         buf = malloc_chk(MONINSIZE + 1, "monitor.buf");
@@ -303,9 +312,16 @@ void monitor()
             *p = '\0';
         }
         if((moncmdl = monlinetok(buf)) != NULL) {
-            next = monitorcmd(moncmdl->cmd, moncmdl->args);
+            cmdtype = monitorcmd(moncmdl->cmd, moncmdl->args);
             free_moncmdline(moncmdl);
         }
         FREE(buf);
-    } while(next == false);
+        if(cmdtype == MONQUIT) {
+            shutdown();
+            freebps();
+            free_code_cmdtype();
+            freecerr();
+            exit(0);
+        }
+    } while(cmdtype == MONREPEAT);
 }

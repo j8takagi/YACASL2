@@ -130,4 +130,11 @@ bool delbps(WORD adr);
  */
 void freebps();
 
+/**
+ * @brief COMET IIモニターを起動する
+ *
+ * @return なし
+ */
+void monitor();
+
 #endif        /* end of MONITOR_INCLUDE */
