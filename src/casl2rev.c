@@ -49,7 +49,6 @@ int main(int argc, char *argv[])
     }
     disassemble_file(argv[optind]);                /* プログラム実行 */
     stat = (cerr->num == 0) ? 0 : 1;
-    /* エラーの解放 */
-    freecerr();
+    freecerr();                 /* エラーの解放 */
     return stat;
 }

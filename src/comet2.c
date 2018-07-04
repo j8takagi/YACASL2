@@ -9,11 +9,10 @@ static struct option longopts[] = {
     {"tracearithmetic", no_argument, NULL, 't'},
     {"tracelogical", no_argument, NULL, 'T'},
     {"dump", no_argument, NULL, 'd'},
-    {"debug", no_argument, NULL, 'b'},
     {"monitor", no_argument, NULL, 'm'},
     {"memorysize", required_argument, NULL, 'M'},
     {"clocks", required_argument, NULL, 'C'},
-    { "version", no_argument, NULL, 'v' },
+    {"version", no_argument, NULL, 'v' },
     {"help", no_argument, NULL, 'h'},
     {0, 0, 0, 0},
 };
