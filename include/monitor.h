@@ -7,7 +7,7 @@
 #include "hash.h"
 #include "cmem.h"
 #include "cerr.h"
-#include "exec.h"
+#include "disassemble.h"
 #include "word.h"
 
 /**

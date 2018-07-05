@@ -85,7 +85,7 @@ typedef enum {
     /**
      * オペランドなし
      */
-    NONE = 00,
+    NONE = 0,
 } CMDTYPE;
 
 /**

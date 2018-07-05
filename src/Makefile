@@ -3,7 +3,7 @@ CMDOBJ := casl2 comet2 dumpword casl2rev
 COMMONOBJ := word cmem cerr
 CASL2OBJ := struct hash
 ASOBJ := assemble token label
-EXECOBJ := exec dump monitor
+EXECOBJ := exec dump disassemble monitor
 
 # ヘッダファイル
 INCLUDEDIR := ../include

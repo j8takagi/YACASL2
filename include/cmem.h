@@ -31,7 +31,7 @@
  * @param size メモリーのサイズ
  * @param tag エラーメッセージなどで表示されるタグ
  */
-void *malloc_chk(size_t size, char *tag);
+void *malloc_chk(size_t size, const char *tag);
 
 /**
  * @brief 領域の数とサイズを指定してメモリーを確保するcallocを実行する

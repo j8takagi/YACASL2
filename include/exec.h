@@ -10,6 +10,7 @@
 #include "cmem.h"
 #include "cerr.h"
 #include "monitor.h"
+#include "disassemble.h"
 
 enum {
     INSIZE = 256    /**<IN命令の、入力領域 */
@@ -45,6 +46,14 @@ void addcerrlist_load();
  */
 bool loadassemble(const char *file);
 
+/**
+ * @brief 汎用レジスタの番号からレジスタを表す文字列を返す
+ *
+ * @return 汎用レジスタを表す文字列。「GR0」「GR1」・・・「GR7」のいずれか
+ *
+ * @param word レジスタ番号[0-7]を表すWORD値
+ */
+char *grstr(WORD word);
 
 /**
  * @class Exec
@@ -386,25 +395,5 @@ void dumpmemory(WORD start, WORD end);
  * @return なし
  */
 void dspregister();
-
-/**
- * @brief CASL IIのオブジェクトファイルを逆アセンブルし、標準出力へ出力する
- *
- * @return 正常終了時は0、異常終了時は0以外
- *
- * @param *file オブジェクトファイルのファイル名
- */
-bool disassemble_file(const char *file);
-
-
-/**
- * @brief COMET IIのメモリーを逆アセンブルし、標準出力へ出力する
- *
- * @return なし
- *
- * @param *start 逆アセンブルの開始位置
- * @param *end 逆アセンブルの終了位置
- */
-void disassemble_memory(WORD start, WORD end);
 
 #endif            /* YACASL2_EXEC_INCLUDEDの終端 */

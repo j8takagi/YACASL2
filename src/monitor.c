@@ -222,16 +222,53 @@ void mon_break(int argc, char *argv[])
     }
 }
 
+void mon_dump(int argc, char *argv[])
+{
+    int i = 0;
+    WORD start = 0, end = 0xFFFF;
+    if(argc > 0 && stracmp(argv[0], 2, (char* []){"a", "auto"})) {
+        execmode.dump = true;
+    } else if(argc > 0 && stracmp(argv[0], 2, (char* []){"no", "noauto"})) {
+        execmode.dump = false;
+    } else {
+        if(argc > 0) {
+            start = nh2word(argv[0]);
+            if(argc > 1) {
+                end = nh2word(argv[1]);
+            }
+        }
+        dumpmemory(start, end);
+        if(argc > 2) {
+            for(i = 2; i < argc; i++) {
+                if(i > 2) {
+                    fprintf(stderr, " ");
+                }
+                fprintf(stderr, "%s", argv[i+1]);
+            }
+            fprintf(stderr, ": ignored.\n");
+        }
+    }
+}
+
 MONCMDTYPE monitorcmd(char *cmd, MONARGS *args)
 {
     MONCMDTYPE cmdtype = MONREPEAT;
-    if(stracmp(cmd, 2, (char* []){"s", "step"})) {
-        execmode.step = true;
-        cmdtype = MONNEXT;
-    } else if(stracmp(cmd, 2, (char* []){"b", "break"})) {
+    if(stracmp(cmd, 2, (char* []){"b", "break"})) {
         mon_break(args->argc, args->argv);
     } else if(stracmp(cmd, 2, (char* []){"c", "continue"})) {
         execmode.step = false;
+        cmdtype = MONNEXT;
+    } else if(stracmp(cmd, 2, (char* []){"d", "dump"})) {
+        mon_dump(args->argc, args->argv);
+    } else if(stracmp(cmd, 2, (char* []){"q", "quit"})) {
+        fprintf(stdout, "Quit: COMET II monitor\n");
+        cmdtype = MONQUIT;
+    } else if(stracmp(cmd, 2, (char* []){"r", "reverse"})) {
+        if(args->argc == 2) {
+            disassemble_memory(nh2word(args->argv[0]), nh2word(args->argv[1]));
+        }
+    } else if(stracmp(cmd, 2, (char* []){"s", "step"})) {
+        execmode.step = true;
         cmdtype = MONNEXT;
     } else if(stracmp(cmd, 2, (char* []){"t", "trace"})) {
         if(args->argc > 0 && stracmp(args->argv[0], 2, (char* []){"a", "auto"})) {
@@ -253,29 +290,15 @@ MONCMDTYPE monitorcmd(char *cmd, MONARGS *args)
             fprintf(stdout, "#%04X: Register::::\n", sys->cpu->pr);
             dspregister();
         }
-    } else if(stracmp(cmd, 2, (char* []){"d", "dump"})) {
-        if(args->argc > 0 && stracmp(args->argv[0], 2, (char* []){"a", "auto"})) {
-            execmode.dump = true;
-        } else if(args->argc > 0 && stracmp(args->argv[0], 2, (char* []){"no", "noauto"})) {
-            execmode.dump = false;
-        } else if(args->argc == 1) {
-            dumpmemory(nh2word(args->argv[0]), 0xFFFF);
-        } else if(args->argc > 1) {
-            dumpmemory(nh2word(args->argv[0]), nh2word(args->argv[1]));
-        }
-    } else if(stracmp(cmd, 2, (char* []){"r", "reverse"})) {
-        if(args->argc == 2) {
-            disassemble_memory(nh2word(args->argv[0]), nh2word(args->argv[1]));
-        }
-    } else if(stracmp(cmd, 2, (char* []){"q", "quit"})) {
-        fprintf(stdout, "Quit: COMET II monitor\n");
-        cmdtype = MONQUIT;
     } else if(stracmp(cmd, 3, (char* []){"?", "h", "help"})) {
-        fprintf(stdout, "b[reak] -- Manipulate Breakpoints. Details in `b ?'.\n");
-        fprintf(stdout, "s[tep] -- Step by step running your program until next interaction.\n");
+        fprintf(stdout, "b[reak] -- Manipulate Breakpoints. See details, `b ?'.\n");
         fprintf(stdout, "c[ontinue] -- Continue running your program.\n");
-        fprintf(stdout, "t[race] -- Display CPU register. `t[race] a[uto]/n[oauto]' set auto/noauto display. \n");
         fprintf(stdout, "d[ump] -- Display memory dump. `d[ump] a[uto]/n[oauto]' set auto/noauto display.\n");
+        fprintf(stdout, "q[uit] -- Quit running your program.\n");
+        fprintf(stdout, "r[everse] -- Disassemble memory. `r[everse] <start address> <end address>.\n");
+        fprintf(stdout, "s[tep] -- Step by step running your program until next interaction.\n");
+        fprintf(stdout, "t[race] -- Display CPU register. `t[race] a[uto]/n[oauto]' set auto/noauto display. \n");
+        fprintf(stdout, "T[race] -- Display CPU register as logical value. `t[race] a[uto]/n[oauto]' set auto/noauto display. \n");
         fprintf(stdout, "?/h[elp] -- Display this help.\n");
     }
     return cmdtype;

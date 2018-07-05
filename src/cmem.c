@@ -1,6 +1,6 @@
 #include "cmem.h"
 
-void *malloc_chk(size_t size, char *tag)
+void *malloc_chk(size_t size, const char *tag)
 {
     void *p;
 

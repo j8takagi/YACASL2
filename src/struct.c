@@ -210,7 +210,7 @@ const void (*getcmdptr(WORD code))
 CMDTYPE getcmdtype(WORD code)
 {
     CMDTAB *t;
-    CMDTYPE type = 0;
+    CMDTYPE type = NONE;
 
     for(t = code_cmdtype[hash_code(code)]; t != NULL; t = t->next) {
         if(code == t->cmd->code) {
