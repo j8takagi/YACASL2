@@ -3,7 +3,34 @@
 /**
  * @brief 機械コードの出力列
  */
-int codecol = 38;
+int codecol = 32;
+
+/**
+ * @brief ファイルストリームから1ワードを取得する
+ *
+ * @return 取得した1ワード
+ *
+ * @param stream ファイルストリーム
+ */
+WORD fgetword(FILE *stream);
+
+/**
+ * @brief ファイルストリームを1ワード戻す
+ *
+ * @return なし
+ *
+ * @param stream ファイルストリーム
+ */
+void fungetword(FILE *stream);
+
+/**
+ * @brief ファイルストリームから、値が0の連続するWORD数を返す
+ *
+ * @return 値が0の連続するWORD数
+ *
+ * @param stream ファイルストリーム
+ */
+WORD zero_data_cnt(FILE *stream);
 
 /**
  * @brief 機械コードをコメントとして標準出力へ出力する
@@ -124,11 +151,36 @@ void disassemble_ds(WORD wcnt, WORD pradr)
     }
 }
 
+WORD fgetword(FILE *stream)
+{
+    WORD aword;
+    fread(&aword, sizeof(WORD), 1, stream);
+    return aword;
+}
+
+void fungetword(FILE *stream)
+{
+    fseek(stream, -sizeof(WORD), SEEK_CUR);
+}
+
+WORD zero_data_cnt(FILE *stream)
+{
+    WORD cnt = 0, word = 0;
+    while(!feof(stream) && word == 0) {
+        word = fgetword(stream);
+        cnt++;
+    }
+    if(!feof(stream)) {
+        fungetword(stream);
+    }
+    return cnt;
+}
+
 bool disassemble_file(const char *file)
 {
     bool stat = true;
     FILE *fp;
-    WORD i = 0, w, cmd, adr, dsarea;
+    WORD i = 0, word, cmd, zcnt;
     CMDTYPE cmdtype = 0;
     char *cmdname;
     bool inst = true;
@@ -142,37 +194,27 @@ bool disassemble_file(const char *file)
     create_code_cmdtype();                          /* 命令のコードとタイプがキーのハッシュ表を作成 */
 
     fprintf(stdout, "MAIN    START\n");
-    for(fread(&w, sizeof(WORD), 1, fp); !feof(fp); i++, fread(&w, sizeof(WORD), 1, fp)) {
-        cmd = w & 0xFF00;
-        cmdname = getcmdname(cmd);
+    for(word = fgetword(fp); !feof(fp); i++, word = fgetword(fp)) {
+        cmdname = getcmdname(cmd = word & 0xFF00);
         cmdtype = getcmdtype(cmd);
-        if(w == 0){
-            if(inst == true) {
+        if(word == 0){
+            if(inst == true) {  /* プログラム領域の場合  */
                 disassemble_cmd_r(NONE, "nop", 0, i);
-            } else {
-                dsarea = 1;
-                do {
-                    fread(&w, sizeof(WORD), 1, fp);
-                    dsarea++;
-                } while(w == 0 && !feof(fp));
-                if(!feof(fp)) {
-                    fseek(fp, -1 * sizeof(WORD) , SEEK_CUR);
-                }
-                if(dsarea == 1) {
+            } else {            /* データ領域の場合 */
+                if((zcnt = zero_data_cnt(fp)) == 1) { /* 1つだけの0はDCとみなす */
                     disassemble_dc(0, i);
-                } else {
-                    disassemble_ds(dsarea, i);
-                    i += dsarea - 1;
+                } else {        /* 連続する0はDSとみなす */
+                    disassemble_ds(zcnt, i);
+                    i += zcnt - 1;
                 }
             }
         } else if(cmd == 0) {
-            disassemble_dc(w, i);
+            disassemble_dc(word, i);
         } else {
             if(cmdtype == R_ADR_X || cmdtype == ADR_X) {
-                fread(&adr, sizeof(WORD), 1, fp);
-                disassemble_cmd_adr_x(cmdtype, cmdname, w, adr, i++);
+                disassemble_cmd_adr_x(cmdtype, cmdname, word, fgetword(fp), i++);
             } else {
-                disassemble_cmd_r(cmdtype, cmdname, w, i);
+                disassemble_cmd_r(cmdtype, cmdname, word, i);
             }
             inst = (cmd != 0x8100) ? true : false;
         }
@@ -186,30 +228,29 @@ bool disassemble_file(const char *file)
 
 void disassemble_memory(WORD start, WORD end)
 {
-    WORD i, w, cmd, adr;
+    WORD i, word, cmd;
     CMDTYPE cmdtype = 0;
     char *cmdname;
     bool inst = true;
 
     for(i = start; i <= end; i++) {
-        w = sys->memory[i];
-        cmd = w & 0xFF00;
-        cmdname = getcmdname(cmd);
+        word = sys->memory[i];
+        cmdname = getcmdname(cmd = word & 0xFF00);
         cmdtype = getcmdtype(cmd);
-        if(w == 0) {
-            if(inst == true) {
+        if(word == 0) {
+            if(inst == true) {  /* プログラム領域の場合  */
                 disassemble_cmd_r(NONE, "nop", 0, i);
-            } else {
+            } else {            /* データ領域の場合。メモリーでは、DC 0とみなす */
                 disassemble_dc(0, i);
             }
         } else if(cmd == 0) {
-            disassemble_dc(w, i);
+            disassemble_dc(word, i);
         } else {
             if(cmdtype == R_ADR_X || cmdtype == ADR_X) {
-                adr = sys->memory[i+1];
-                disassemble_cmd_adr_x(cmdtype, cmdname, w, adr, i++);
+                disassemble_cmd_adr_x(cmdtype, cmdname, word, sys->memory[i+1], i);
+                i++;
             } else {
-                disassemble_cmd_r(cmdtype, cmdname, w, i);
+                disassemble_cmd_r(cmdtype, cmdname, word, i);
             }
             inst = (cmd != 0x8100) ? true : false;
         }
