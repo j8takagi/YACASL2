@@ -1,6 +1,5 @@
 #include "package.h"
 #include "assemble.h"
-#include "exec.h"
 
 /**
  * @brief CASL IIのエラーをエラーリストに追加
@@ -17,16 +16,6 @@ void addcerrlist_casl2();
  * @param *str ファイル名
  */
 const char *objfile_name(const char *str);
-
-/**
- * @brief 指定された1つまたは複数のファイルを2回アセンブル
- *
- * @return なし
- *
- * @param filec アセンブルするファイルの数
- * @param filev アセンブルするファイル名の配列
- */
-void assemble(int filec, char *filev[]);
 
 /**
  * @brief casl2コマンドのオプション
@@ -67,50 +56,6 @@ const char *objfile_name(const char *str)
 {
     const char *default_name = "a.o";
     return (str == NULL) ? default_name : str;
-}
-
-void assemble(int filec, char *filev[])
-{
-    int i;
-    PASS pass;
-    WORD bp[filec];
-
-    create_cmdtype_code();                         /* 命令の名前とタイプがキーのハッシュ表を作成 */
-    asptr = malloc_chk(sizeof(ASPTR), "asptr");    /* アセンブル時のプロパティ用の領域確保 */
-    asptr->prog = malloc_chk(LABELSIZE + 1, "asptr.prog");
-    asptr->ptr = 0;
-    /* アセンブル。ラベル表作成のため、2回行う */
-    for(pass = FIRST; pass <= SECOND; pass++) {
-        for(i = 0; i < filec; i++) {
-            /* データの格納開始位置 */
-            if(pass == FIRST) {
-                bp[i] = asptr->ptr;
-            } else if(pass == SECOND) {
-                asptr->ptr = bp[i];
-            }
-            if(execmode.trace == true || execmode.dump == true ||
-               asmode.src == true || asmode.label == true || asmode.asdetail == true)
-            {
-                fprintf(stdout, "\nAssemble %s (%d)\n", filev[i], pass);
-            }
-            /* ファイルをアセンブル */
-            if(assemblefile(filev[i], pass) == false) {
-                goto asfin;
-            }
-        }
-        if(pass == FIRST && asmode.label == true) {
-            fprintf(stdout, "\nLabel::::\n");
-            printlabel();
-            if(asmode.onlylabel == true) {
-                break;
-            }
-        }
-    }
-asfin:
-    freelabel();                                  /* ラベルハッシュ表を解放 */
-    free_cmdtype_code();                          /* 命令の名前とタイプがキーのハッシュ表を解放 */
-    FREE(asptr->prog);                            /* アセンブル時のプロパティを解放 */
-    FREE(asptr);
 }
 
 /**
@@ -204,7 +149,7 @@ int main(int argc, char *argv[])
     for(i = 0; i < argc - optind; i++) {           /* 引数からファイル名配列を取得 */
         af[i] = argv[optind + i];
     }
-    assemble(i, af);                               /* アセンブル */
+    assemble(i, af, 0);                            /* アセンブル */
     if(asmode.onlylabel == true || cerr->num > 0) {
         goto casl2fin;
     }

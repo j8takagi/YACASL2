@@ -10,6 +10,7 @@
 #include <errno.h>
 #include "cerr.h"
 #include "cmem.h"
+#include "exec.h"
 #include "hash.h"
 #include "struct.h"
 #include "word.h"
@@ -185,6 +186,17 @@ void addcerrlist_assemble();
  * @param pass アセンブラが何回目かを表す数
  */
 bool assemblefile(const char *file, PASS pass);
+
+/**
+ * @brief 指定された1つまたは複数のファイルを2回アセンブル
+ *
+ * @return なし
+ *
+ * @param filec アセンブルするファイルの数
+ * @param filev アセンブルするファイル名の配列
+ * @param adr アセンブル結果を格納するアドレス
+ */
+void assemble(int filec, char *filev[], WORD adr);
 
 /**
  * @brief ファイルにアセンブル結果を書き込む

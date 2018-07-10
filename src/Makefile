@@ -1,9 +1,9 @@
 # ソースファイル。グループに分類
-CMDOBJ := casl2 comet2 dumpword casl2rev
+CMDOBJ := casl2 comet2 dumpword casl2rev comet2monitor
 COMMONOBJ := word cmem cerr
-CASL2OBJ := struct hash
+STRUCTOBJ := struct hash
 ASOBJ := assemble token label
-EXECOBJ := exec dump disassemble monitor
+EXECOBJ := exec dump monitor disassemble
 
 # ヘッダファイル
 INCLUDEDIR := ../include
@@ -21,22 +21,24 @@ WHICH := which
 
 all: build tag
 
-# casl2、comet2、dumpwordのビルド
+# casl2、comet2、dumpword、casl2rev、comet2monitorのビルド
 build: $(CMDOBJ)
 
-casl2: $(addsuffix .o,casl2 $(COMMONOBJ) $(CASL2OBJ) $(ASOBJ) $(EXECOBJ))
+casl2: $(addsuffix .o,casl2 $(COMMONOBJ) $(STRUCTOBJ) $(ASOBJ) $(EXECOBJ))
 
-comet2: $(addsuffix .o,comet2 $(COMMONOBJ) $(CASL2OBJ) $(EXECOBJ))
+comet2: $(addsuffix .o,comet2 $(COMMONOBJ) $(STRUCTOBJ) $(ASOBJ) $(EXECOBJ))
 
 dumpword: $(addsuffix .o,dumpword $(COMMONOBJ))
 
-casl2rev:$(addsuffix .o,casl2rev $(COMMONOBJ) $(CASL2OBJ) $(EXECOBJ))
+casl2rev:$(addsuffix .o,casl2rev $(COMMONOBJ) $(STRUCTOBJ) $(ASOBJ) $(EXECOBJ))
+
+comet2monitor:$(addsuffix .o,comet2monitor $(COMMONOBJ) $(STRUCTOBJ) $(ASOBJ) $(EXECOBJ))
 
 # .dファイルからヘッダファイルの依存関係を取得する
 # tags、check、clean、.d で終わるターゲットの場合は除く
 NODEP := %tags %check %clean %.d
 ifeq ($(filter $(NODEP),$(MAKECMDGOALS)),)
-  -include $(addsuffix .d,$(CMDOBJ) $(COMMONOBJ) $(CASL2OBJ) $(ASOBJ) $(EXECOBJ))
+  -include $(addsuffix .d,$(CMDOBJ) $(COMMONOBJ) $(STRUCTOBJ) $(ASOBJ) $(EXECOBJ))
 endif
 
 # tagファイル作成 - ctags & etags

@@ -1,7 +1,7 @@
 #ifndef DISASSEMBLE_INCLUDE
 #define DISASSEMBLE_INCLUDE
 
-#include "exec.h"
+#include "struct.h"
 
 /**
  * @brief CASL IIのオブジェクトファイルを逆アセンブルし、標準出力へ出力する

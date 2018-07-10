@@ -74,10 +74,7 @@ void disassemble_cmd_r(CMDTYPE cmdtype, const char *cmdname, WORD word, WORD pra
  *
  * @return なし
  *
- * @param cmdtype コマンドの種類
- * @param *cmdname コマンドの名前
  * @param word ワード値
- * @param adr アドレス値
  * @param pradr 次に実行すべき命令語の先頭アドレス
  */
 void disassemble_dc(WORD word, WORD pradr);

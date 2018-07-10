@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 {
     int memsize = DEFAULT_MEMSIZE, clocks = DEFAULT_CLOCKS;
     int opt, stat = 0;
-    const char *version = PACKAGE_VERSION,  *cmdversion = "comet2 of YACASL2 version %s\n";
+    const char *version = PACKAGE_VERSION,  *cmdversion = "comet2monitor: COMET II machine code monitor of YACASL2 version %s\n";
     const char *usage = "Usage: %s [-vh] [-M <MEMORYSIZE>] [-C <CLOCKS>]\n";
 
     /* オプションの処理 */
@@ -55,8 +55,8 @@ int main(int argc, char *argv[])
     /* COMET II仮想マシンのリセット */
     reset(memsize, clocks);
     execptr->start = 0;
-    execmode.step = true;
-    exec();                /* プログラム実行 */
+    execmode.monitor = true;
+    exec();                     /* プログラム実行 */
     shutdown();
     stat = (cerr->num == 0) ? 0 : 1;
     freecerr();                 /* エラーの解放 */

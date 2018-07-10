@@ -93,9 +93,8 @@ YACASL2の動作はCASL IIの仕様に準拠しているため、情報処理試
 また、本パッケージ中にCASL IIのサンプルプログラムが多数収録されています。
 
 YACASL2は、「ふつうの処理系」として動作します。
-ほかの多くのCASL IIエミュレータと違い、デバッガとして動作したり、
-コンピュータ内部の模式図を表示したりすることはありません。
-そのかわり、YACASL2は、次のような動作内容をすべてテキストで出力します。
+YACASL2の操作は、端末上のコマンドラインインターフェイス（CLI）で操作します。
+YACASL2は、次のような動作内容をすべてテキストで出力します。
 
 @itemize @bullet
 
@@ -112,10 +111,12 @@ YACASL2は、「ふつうの処理系」として動作します。
 実行時のメモリの内容
 @end itemize
 
-出力された動作内容は、GNU/Linuxのさまざまなコマンド、
+YACASL2では、機械コードモニターを使い、動作中のCPUやメモリーを調べたりデバッグしたりすることもできます。
+
+また、出力された動作内容は、GNU/Linuxのさまざまなコマンド、
 たとえば、@command{cat}、@command{less}、@command{grep}、@command{wc}などを使って解析できます。
 
-YACASL2の操作は、端末上のコマンドラインインターフェイスで行います。
+
 
 @node Sample usage, casl2 invocation, Overview, Top
 @chapter YACASL2の使用例
@@ -821,7 +822,7 @@ $ @kbd{dumpword '#0048'}
  #0048:     72 = #0048 = 0000000001001000 = 'H'
 @end example
 
-@unnumberedsubsec オプション
+@unnumberedsec オプション
 
 @command{dumpword}は、次のオプションを指定できます。
 

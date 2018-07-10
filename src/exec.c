@@ -94,9 +94,9 @@ static CERR cerr_load[] = {
 };
 
 /**
- * @brief 実行モード: trace, logical, dump, step
+ * @brief 実行モード: trace, logical, dump, monitor, step
  */
-EXECMODE execmode = {false, false, false, false};
+EXECMODE execmode = {false, false, false, false, false};
 
 char *pr2str(WORD pr)
 {
@@ -226,25 +226,23 @@ void addcerrlist_exec()
     addcerrlist(ARRAYSIZE(cerr_exec), cerr_exec);
 }
 
-bool loadassemble(const char *file)
+WORD loadassemble(const char *file, WORD start)
 {
     FILE *fp;
-    bool stat = true;
+    WORD end;
 
     assert(file != NULL);
     if((fp = fopen(file, "rb")) == NULL) {
         perror(file);
-        return false;
+        return 0;
     }
-    execptr->end = execptr->start +
-        fread(sys->memory, sizeof(WORD), sys->memsize - execptr->start, fp);
-    if(execptr->end == sys->memsize) {
+    end = start + fread(sys->memory + start, sizeof(WORD), sys->memsize - start, fp);
+    if(end == sys->memsize) {
         setcerr(210, file);    /* load - memory overflow */
         fprintf(stderr, "Load error - %d: %s\n", cerr->num, cerr->msg);
-        stat = false;
     }
     fclose(fp);
-    return stat;
+    return end;
 }
 
 void nop()
@@ -763,19 +761,12 @@ void svc()
     sys->cpu->pr += 2;
 }
 
-char *grstr(WORD word)
-{
-    assert(word <= 7);
-    char *str = malloc_chk(3 + 1, "grstr.str");
-    sprintf(str, "GR%d", word);
-    return str;
-}
-
 void exec()
 {
     clock_t clock_begin, clock_end;
     void (*cmdptr)();
     char *s;
+    const char *monmsg = "COMET II machine code monitor. Type ? for help.\n";
 
     create_code_cmdtype();                          /* 命令のコードとタイプがキーのハッシュ表を作成 */
     if(execmode.trace == true) {
@@ -795,8 +786,14 @@ void exec()
             }
             fprintf(stdout, "\n");
         }
-        /* デバッガーモードの場合、デバッガーを起動 */
-        if(execmode.step == true || getbps(sys->cpu->pr) == true) {
+        /* ステップモードまたはブレークポイントの場合、モニターを起動 */
+        if(
+            (execmode.monitor == true && sys->cpu->pr == execptr->start) ||
+            execmode.step == true || getbps(sys->cpu->pr) == true)
+        {
+            if(sys->cpu->pr == execptr->start) {
+                fprintf(stdout, "%s", monmsg);
+            }
             monitor();
         }
         /* プログラムレジスタをチェック */
@@ -824,9 +821,14 @@ void exec()
         if(cerr->num > 0) {
             goto execfin;
         }
-        /* 終了フラグがtrueの場合は、正常終了 */
+        /* 終了フラグがtrueの場合は、モニターまたは正常終了 */
         if(execptr->stop == true) {
-            break;
+            if(execmode.monitor == true) {
+                fprintf(stdout, "Return to top.\n");
+                monitor();
+            } else {
+                break;
+            }
         }
         /* クロック周波数の設定 */
         do {

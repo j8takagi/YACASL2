@@ -35,7 +35,7 @@ $(DOXYGEN_DIR): $(DOXYSRCDIR)/Doxyfile ../src ../include
 	$(CD) $(DOXYSRCDIR) && $(DOXYGEN)
 
 $(DOXYSRCDIR)/Doxyfile: Doxyfile
-	$(CP) -f Doxyfile $(DOXYSRCDIR)/
+	@$(CP) -vf Doxyfile $(DOXYSRCDIR)/
 
 # htagsのHTMLドキュメント作成先は、
 # 引数DIRで指定されたディレクトリーの下のHTMLディレクトリー

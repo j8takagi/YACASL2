@@ -2,6 +2,7 @@
 /comet2
 /dumpword
 /casl2rev
+/comet2monitor
 *.o
 *.o.casl
 !as/sample/hello.o

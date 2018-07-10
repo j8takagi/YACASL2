@@ -749,6 +749,50 @@ bool assemblefile(const char *file, PASS pass)
     return (cerr->num == 0) ? true : false;
 }
 
+void assemble(int filec, char *filev[], WORD adr)
+{
+    int i;
+    PASS pass;
+    WORD bp[filec];
+
+    create_cmdtype_code();                         /* 命令の名前とタイプがキーのハッシュ表を作成 */
+    asptr = malloc_chk(sizeof(ASPTR), "asptr");    /* アセンブル時のプロパティ用の領域確保 */
+    asptr->prog = malloc_chk(LABELSIZE + 1, "asptr.prog");
+    asptr->ptr = adr;
+    /* アセンブル。ラベル表作成のため、2回行う */
+    for(pass = FIRST; pass <= SECOND; pass++) {
+        for(i = 0; i < filec; i++) {
+            /* データの格納開始位置 */
+            if(pass == FIRST) {
+                bp[i] = asptr->ptr;
+            } else if(pass == SECOND) {
+                asptr->ptr = bp[i];
+            }
+            if(execmode.trace == true || execmode.dump == true ||
+               asmode.src == true || asmode.label == true || asmode.asdetail == true)
+            {
+                fprintf(stdout, "\nAssemble %s (%d)\n", filev[i], pass);
+            }
+            /* ファイルをアセンブル */
+            if(assemblefile(filev[i], pass) == false) {
+                goto asfin;
+            }
+        }
+        if(pass == FIRST && asmode.label == true) {
+            fprintf(stdout, "\nLabel::::\n");
+            printlabel();
+            if(asmode.onlylabel == true) {
+                break;
+            }
+        }
+    }
+asfin:
+    freelabel();                                  /* ラベルハッシュ表を解放 */
+    free_cmdtype_code();                          /* 命令の名前とタイプがキーのハッシュ表を解放 */
+    FREE(asptr->prog);                            /* アセンブル時のプロパティを解放 */
+    FREE(asptr);
+}
+
 /* assemble.hで定義された関数群 */
 void addcerrlist_assemble()
 {

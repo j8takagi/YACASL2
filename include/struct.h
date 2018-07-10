@@ -126,6 +126,15 @@ typedef struct {
 extern EXECPTR *execptr;
 
 /**
+ * @brief 汎用レジスタの番号からレジスタを表す文字列を返す
+ *
+ * @return 汎用レジスタを表す文字列。「GR0」「GR1」・・・「GR7」のいずれか
+ *
+ * @param word レジスタ番号[0-7]を表すWORD値
+ */
+char *grstr(WORD word);
+
+/**
  * COMET II仮想マシンのリセット
  */
 void reset(int memsize, int clocks);

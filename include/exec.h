@@ -23,11 +23,12 @@ typedef struct {
     bool trace;           /**<レジストリの内容をステップごとに表示する場合はtrue */
     bool logical;         /**<レジストリの内容を論理値（0から65535）で表示する場合はtrue */
     bool dump;            /**<メモリの内容をステップごとに表示する場合はtrue */
-    bool step;           /**<ステップ実行の場合はtrue */
+    bool monitor;         /**<モニターモードの場合はtrue */
+    bool step;            /**<ステップ実行の場合はtrue */
 } EXECMODE;
 
 /**
- * @brief 実行モード: trace, logical, dump, step
+ * @brief 実行モード: trace, logical, dump, monitor, step
  */
 extern EXECMODE execmode;
 
@@ -43,17 +44,13 @@ void addcerrlist_load();
 
 /**
  * @brief 指定されたファイルからアセンブル結果を読み込む
- */
-bool loadassemble(const char *file);
-
-/**
- * @brief 汎用レジスタの番号からレジスタを表す文字列を返す
  *
- * @return 汎用レジスタを表す文字列。「GR0」「GR1」・・・「GR7」のいずれか
+ * @return 読み込み終了アドレス。読み込めなかった場合は、0
  *
- * @param word レジスタ番号[0-7]を表すWORD値
+ * @param file 読み込むファイル名
+ * @param start 読み込み開始アドレス
  */
-char *grstr(WORD word);
+WORD loadassemble(const char *file, WORD start);
 
 /**
  * @class Exec

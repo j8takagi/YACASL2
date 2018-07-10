@@ -253,13 +253,26 @@ void mon_dump(int argc, char *argv[])
 MONCMDTYPE monitorcmd(char *cmd, MONARGS *args)
 {
     MONCMDTYPE cmdtype = MONREPEAT;
-    if(stracmp(cmd, 2, (char* []){"b", "break"})) {
+    if(stracmp(cmd, 2, (char* []){"a", "assemble"})) {
+        if(args->argc == 0) {
+            fprintf(stderr, "Error: Input file name.\n");
+        } else if(args->argc == 1) {
+            assemble(1, (char* []){args->argv[0]}, 0);
+        } else {
+            assemble(1, (char* []){args->argv[0]}, nh2word(args->argv[1]));
+        }
+    } else if(stracmp(cmd, 2, (char* []){"b", "break"})) {
         mon_break(args->argc, args->argv);
     } else if(stracmp(cmd, 2, (char* []){"c", "continue"})) {
         execmode.step = false;
         cmdtype = MONNEXT;
     } else if(stracmp(cmd, 2, (char* []){"d", "dump"})) {
         mon_dump(args->argc, args->argv);
+    } else if(stracmp(cmd, 2, (char* []){"l", "load"})) {
+        loadassemble(args->argv[0], nh2word(args->argv[1]));
+    } else if(stracmp(cmd, 2, (char* []){"n", "next"})) {
+        execmode.step = true;
+        cmdtype = MONNEXT;
     } else if(stracmp(cmd, 2, (char* []){"q", "quit"})) {
         fprintf(stdout, "Quit: COMET II monitor\n");
         cmdtype = MONQUIT;
@@ -267,9 +280,9 @@ MONCMDTYPE monitorcmd(char *cmd, MONARGS *args)
         if(args->argc == 2) {
             disassemble_memory(nh2word(args->argv[0]), nh2word(args->argv[1]));
         }
-    } else if(stracmp(cmd, 2, (char* []){"s", "step"})) {
-        execmode.step = true;
-        cmdtype = MONNEXT;
+    } else if(stracmp(cmd, 1, (char* []){"reset"})) {
+        fprintf(stdout, "Reset COMET II.\n");
+        reset(sys->memsize, sys->clocks);     /* COMET II仮想マシンのリセット */
     } else if(stracmp(cmd, 2, (char* []){"t", "trace"})) {
         if(args->argc > 0 && stracmp(args->argv[0], 2, (char* []){"a", "auto"})) {
             execmode.logical = false;
@@ -294,9 +307,12 @@ MONCMDTYPE monitorcmd(char *cmd, MONARGS *args)
         fprintf(stdout, "b[reak] -- Manipulate Breakpoints. See details, `b ?'.\n");
         fprintf(stdout, "c[ontinue] -- Continue running your program.\n");
         fprintf(stdout, "d[ump] -- Display memory dump. `d[ump] a[uto]/n[oauto]' set auto/noauto display.\n");
+        fprintf(stdout, "l[oad] -- Load object from a file to the memory. `l[oad] <filepath> <address>' if address is omitted, load to address 0.\n");
+        fprintf(stdout, "n[ext] -- Go next instruction.\n");
         fprintf(stdout, "q[uit] -- Quit running your program.\n");
+        fprintf(stdout, "reset -- Reset the system.\n");
         fprintf(stdout, "r[everse] -- Disassemble memory. `r[everse] <start address> <end address>.\n");
-        fprintf(stdout, "s[tep] -- Step by step running your program until next interaction.\n");
+        fprintf(stdout, "s[ave] -- Save object from the memory to a file. `s[ave] <filepath> [<start address1> [<end address>]]' if <start address> and <end address> is omitted, save the whole memory. if <end address> is omitted, save the memory after <start address>.\n");
         fprintf(stdout, "t[race] -- Display CPU register. `t[race] a[uto]/n[oauto]' set auto/noauto display. \n");
         fprintf(stdout, "T[race] -- Display CPU register as logical value. `t[race] a[uto]/n[oauto]' set auto/noauto display. \n");
         fprintf(stdout, "?/h[elp] -- Display this help.\n");
@@ -327,8 +343,9 @@ void monitor()
     char *buf, *p;
     MONCMDLINE *moncmdl;
     MONCMDTYPE cmdtype = MONREPEAT;
+
     do {
-        fprintf(stdout, "COMET II (Type ? for help) > ");
+        fprintf(stdout, "- ");
         buf = malloc_chk(MONINSIZE + 1, "monitor.buf");
         fgets(buf, MONINSIZE, stdin);
         if((p = strchr(buf, '\n')) != NULL) {

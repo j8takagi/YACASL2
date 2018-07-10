@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
             execmode.dump = true;
             break;
         case 'm':
-            execmode.step = true;
+            execmode.monitor = true;
             break;
         case 'M':
             memsize = atoi(optarg);
@@ -73,18 +73,15 @@ int main(int argc, char *argv[])
     if(argv[optind] == NULL) {
         setcerr(211, "");    /* object file not specified */
         fprintf(stderr, "comet2 error - %d: %s\n", cerr->num, cerr->msg);
-        freecerr();             /* エラーの解放 */
-        exit(1);
+        goto fin;
     }
-
-    /* COMET II仮想マシンのリセット */
-    reset(memsize, clocks);
+    reset(memsize, clocks);     /* COMET II仮想マシンのリセット */
     execptr->start = 0;
-    if(loadassemble(argv[optind]) == true) {
-        exec();                /* プログラム実行 */
+    if((execptr->end = loadassemble(argv[optind], execptr->start)) > 0 && cerr->num == 0) {
+        exec();                 /* プログラム実行 */
     }
-    /* COMET II仮想マシンのシャットダウン */
-    shutdown();
+    shutdown();                 /* COMET II仮想マシンのシャットダウン */
+fin:
     stat = (cerr->num == 0) ? 0 : 1;
     freecerr();                 /* エラーの解放 */
     return stat;

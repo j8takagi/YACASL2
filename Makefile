@@ -34,13 +34,13 @@ VERSIONFILES := include/version.h \
         test/system/comet2_opt/opt_v/0.txt \
         test/system/dumpword/opt_v/0.txt
 
-CMDFILES := casl2 comet2 dumpword casl2rev
+CMDFILES := casl2 comet2 dumpword casl2rev comet2monitor
 
 all: build INSTALL gtags
 
 build:
 	$(MAKE) -C src all
-	@(for f in $(CMDFILES); do if test src/$$f -nt $$f; then $(CP) src/$$f $$f; fi; done)
+	@(for f in $(CMDFILES); do if test ! -e $$f -o src/$$f -nt $$f; then $(CP) src/$$f $$f; fi; done)
 
 gtags:
 	$(if $(strip $(shell $(WHICH) $(GTAGS))),$(GTAGS),@$(ECHO) '$(GTAGS): not found')

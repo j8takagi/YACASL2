@@ -239,6 +239,18 @@ char *getcmdname(WORD code)
 }
 
 /**
+ * 汎用レジスタの番号からレジスタを表す文字列を返す
+ */
+
+char *grstr(WORD word)
+{
+    assert(word <= 7);
+    char *str = malloc_chk(3 + 1, "grstr.str");
+    sprintf(str, "GR%d", word);
+    return str;
+}
+
+/**
  * コードがキーの命令ハッシュ表を解放する
  */
 void free_code_cmdtype()
