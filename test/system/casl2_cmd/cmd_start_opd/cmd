@@ -1,0 +1,2 @@
+cat sum_10.casl
+../../../../casl2 -atd sum_10.casl

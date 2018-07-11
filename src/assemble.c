@@ -441,11 +441,9 @@ void assemble_start(const CMDLINE *cmdl, PASS pass)
     }
     /* プログラム名の設定 */
     strcpy(asptr->prog, cmdl->label);
-    /* オペランドがある場合、実行開始アドレスを設定 */
-    if(pass == SECOND && cmdl->opd->opdv[0] != NULL) {
-        if((execptr->start = getlabel(asptr->prog, cmdl->opd->opdv[0])) == 0xFFFF) {
-            setcerr(103, cmdl->opd->opdv[0]);    /* label not found */
-        }
+    /* オペランドがある場合、書き込みと実行の開始アドレスを設定 */
+    if(cmdl->opd->opdv[0] != NULL) {
+        asptr->ptr = execptr->start = getadr(asptr->prog, cmdl->opd->opdv[0], pass);
     }
 }
 
