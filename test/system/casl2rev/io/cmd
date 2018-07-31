@@ -1,1 +1,2 @@
+../../../../casl2 -O../../../../as/misc/io.o ../../../../as/misc/io.casl
 ../../../../casl2rev ../../../../as/misc/io.o
