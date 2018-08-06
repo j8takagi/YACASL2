@@ -4,10 +4,13 @@ define make_dirs
     $(foreach d,$1,$(MAKE) -sC $d $2)
 endef
 
-.PHONY: check valgrind clean
+.PHONY: check smoke valgrind clean
 
 check:
 	@$(call make_dirs,$(CMD),$@; )
+
+smoke:
+	$(MAKE) -sC casl2_smoke check
 
 valgrind:
 	@$(call make_dirs,$(CMD),$@; )

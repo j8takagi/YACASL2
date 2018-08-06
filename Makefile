@@ -60,6 +60,9 @@ doc_inner:
 check:
 	$(MAKE) -sC test/system
 
+smoke:
+	$(MAKE) -sC test/system smoke
+
 valgrind:
 	$(MAKE) -sC test/system valgrind
 
