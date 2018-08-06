@@ -52,8 +52,7 @@ int main(int argc, char *argv[])
     addcerrlist_load();
     addcerrlist_exec();
 
-    /* COMET II仮想マシンのリセット */
-    reset(memsize, clocks);
+    reset(memsize, clocks);     /* COMET II仮想マシンのリセット */
     execptr->start = 0;
     execmode.monitor = true;
     exec();                     /* プログラム実行 */
