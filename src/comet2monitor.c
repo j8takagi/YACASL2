@@ -52,11 +52,14 @@ int main(int argc, char *argv[])
     addcerrlist_load();
     addcerrlist_exec();
 
+    create_cmdtype_code();
     reset(memsize, clocks);     /* COMET II仮想マシンのリセット */
     execptr->start = 0;
     execmode.monitor = true;
     exec();                     /* プログラム実行 */
+
     shutdown();
+    free_cmdtype_code();
     stat = (cerr->num == 0) ? 0 : 1;
     freecerr();                 /* エラーの解放 */
     return stat;

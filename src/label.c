@@ -166,6 +166,9 @@ void freelabel()
             FREE(p->label->prog);
             FREE(p->label->label);
             FREE(p->label);
+            if(p == labels[i]) {
+                labels[i] = NULL;
+            }
             FREE(p);
         }
     }

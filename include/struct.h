@@ -111,7 +111,7 @@ typedef struct {
  */
 typedef struct _CMDTAB {
     struct _CMDTAB *next;       /**<リスト次項目へのポインタ */
-    COMET2CMD *cmd;             /**<命令コード表の項目 */
+    const COMET2CMD *cmd;       /**<命令コード表の項目 */
 } CMDTAB;
 
 /**

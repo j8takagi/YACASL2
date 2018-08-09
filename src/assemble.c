@@ -753,7 +753,6 @@ void assemble(int filec, char *filev[], WORD adr)
     PASS pass;
     WORD bp[filec];
 
-    create_cmdtype_code();                         /* 命令の名前とタイプがキーのハッシュ表を作成 */
     asptr = malloc_chk(sizeof(ASPTR), "asptr");    /* アセンブル時のプロパティ用の領域確保 */
     asptr->prog = malloc_chk(LABELSIZE + 1, "asptr.prog");
     asptr->ptr = adr;
@@ -785,9 +784,8 @@ void assemble(int filec, char *filev[], WORD adr)
         }
     }
 asfin:
-    freelabel();                                  /* ラベルハッシュ表を解放 */
-    free_cmdtype_code();                          /* 命令の名前とタイプがキーのハッシュ表を解放 */
-    FREE(asptr->prog);                            /* アセンブル時のプロパティを解放 */
+    freelabel();                              /* ラベルハッシュ表を解放 */
+    FREE(asptr->prog);                        /* アセンブル時のプロパティを解放 */
     FREE(asptr);
 }
 
