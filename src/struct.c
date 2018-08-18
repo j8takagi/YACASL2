@@ -70,7 +70,7 @@ enum {
 /**
  * ハッシュ表
  */
-static CMDTAB *cmdtype_code[CMDTABSIZE], *code_cmdtype[CMDTABSIZE];
+static CMDTAB *cmdtab[HASH_MAX][CMDTABSIZE];
 
 /**
  * 命令の名前とタイプからハッシュ値を生成する
@@ -121,15 +121,30 @@ bool create_cmdtable(CMDTAB_HASH hash)
         p->cmd = &comet2cmd[i];
         if(hash == HASH_CMDTYPE) {
             hashval = hash_cmdtype(comet2cmd[i].name, comet2cmd[i].type);
-            p->next = cmdtype_code[hashval];
-            cmdtype_code[hashval] = p;
         } else if(hash == HASH_CODE) {
             hashval = hash_code((&comet2cmd[i])->code);
-            p->next = code_cmdtype[hashval];
-            code_cmdtype[hashval] = p;
         }
+        p->next = cmdtab[hash][hashval];
+        cmdtab[hash][hashval] = p;
     }
     return true;
+}
+
+/**
+ * 命令ハッシュ表を解放する
+ */
+void free_cmdtable(CMDTAB_HASH hash)
+{
+    int i;
+    CMDTAB *p, *q;
+
+    for(i = 0; i < CMDTABSIZE; i++) {
+        for(p = cmdtab[hash][i]; p != NULL; p = q) {
+            q = p->next;
+            cmdtab[hash][i] = NULL;
+            FREE(p);
+        }
+    }
 }
 
 /**
@@ -142,39 +157,13 @@ WORD getcmdcode(const char *cmd, CMDTYPE type)
     WORD w = 0xFFFF;
 
     assert(cmd != NULL);
-    for(p = cmdtype_code[hash_cmdtype(cmd, type)]; p != NULL; p = p->next) {
+    for(p = cmdtab[HASH_CMDTYPE][hash_cmdtype(cmd, type)]; p != NULL; p = p->next) {
         if(strcmp(cmd, p->cmd->name) == 0 && type == p->cmd->type) {
             w = p->cmd->code;
             break;
         }
     }
     return w;
-}
-
-/**
- * 命令ハッシュ表を解放する
- */
-void free_cmdtable(CMDTAB_HASH hash)
-{
-    int i;
-    CMDTAB *p, *q;
-
-    for(i = 0; i < CMDTABSIZE; i++) {
-        if(hash == HASH_CMDTYPE) {
-            p = cmdtype_code[i];
-        } else if(hash == HASH_CODE) {
-            p = code_cmdtype[i];
-        }
-        for( ; p != NULL; p = q) {
-            q = p->next;
-            if(p == cmdtype_code[i]) {
-                cmdtype_code[i] = NULL;
-            } else if (p == code_cmdtype[i]) {
-                code_cmdtype[i] = NULL;
-            }
-            FREE(p);
-        }
-    }
 }
 
 /**
@@ -202,7 +191,7 @@ const void (*getcmdptr(WORD code))
     CMDTAB *t;
     const void *ptr = NULL;
 
-    for(t = code_cmdtype[hash_code(code)]; t != NULL; t = t->next) {
+    for(t = cmdtab[HASH_CODE][hash_code(code)]; t != NULL; t = t->next) {
         if(code == t->cmd->code) {
             ptr = t->cmd->ptr;
             break;
@@ -219,7 +208,7 @@ CMDTYPE getcmdtype(WORD code)
     CMDTAB *t;
     CMDTYPE type = NONE;
 
-    for(t = code_cmdtype[hash_code(code)]; t != NULL; t = t->next) {
+    for(t = cmdtab[HASH_CODE][hash_code(code)]; t != NULL; t = t->next) {
         if(code == t->cmd->code) {
             type = t->cmd->type;
             break;
@@ -236,7 +225,7 @@ char *getcmdname(WORD code)
     CMDTAB *t;
     char *cmd = NULL;
 
-    for(t = code_cmdtype[hash_code(code)]; t != NULL; t = t->next) {
+    for(t = cmdtab[HASH_CODE][hash_code(code)]; t != NULL; t = t->next) {
         if(code == t->cmd->code) {
             cmd = t->cmd->name;
             break;

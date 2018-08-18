@@ -57,8 +57,9 @@ extern SYSTEM *sys;
  * 命令ハッシュ表のハッシュの種類
  */
 typedef enum {
-    HASH_CMDTYPE = 0,
-    HASH_CODE = 1,
+    HASH_CMDTYPE,
+    HASH_CODE,
+    HASH_MAX,
 } CMDTAB_HASH;
 
 /**
@@ -162,20 +163,15 @@ void shutdown();
 bool create_cmdtable(CMDTAB_HASH hash);
 
 /**
+ * 命令ハッシュ表を解放する
+ */
+void free_cmdtable(CMDTAB_HASH hash);
+
+/**
  * 命令の名前とタイプから、命令コードを返す
  * 無効な場合は0xFFFFを返す
  */
 WORD getcmdcode(const char *cmd, CMDTYPE type);
-
-/**
- * 命令ハッシュ表を解放する
- */
-void free_cmdtable();
-
-/**
- * コードがキーの命令ハッシュ表を作成する
- */
-bool create_code_cmdtype();
 
 /**
  * 命令コードから命令の関数ポインタを返す
