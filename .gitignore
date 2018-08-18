@@ -18,3 +18,4 @@ core
 .DS_Store
 *.bak
 fontconfig
+*.log.core*

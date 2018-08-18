@@ -54,6 +54,15 @@ typedef struct {
 extern SYSTEM *sys;
 
 /**
+ * 命令ハッシュ表のハッシュの種類
+ */
+typedef enum {
+    HASH_CMDTYPE,
+    HASH_CODE,
+    HASH_MAX,
+} CMDTAB_HASH;
+
+/**
  * COMET II 命令
  * 命令タイプは、オペランドにより5種類に分類
  */
@@ -145,25 +154,24 @@ void reset(int memsize, int clocks);
 void shutdown();
 
 /**
- * 名前とタイプがキーの命令ハッシュ表を作成する
+ * @brief 命令ハッシュ表を作成する
+ *
+ * @return なし
+ *
+ * @param hash ハッシュ値
  */
-bool create_cmdtype_code();
+bool create_cmdtable(CMDTAB_HASH hash);
+
+/**
+ * 命令ハッシュ表を解放する
+ */
+void free_cmdtable(CMDTAB_HASH hash);
 
 /**
  * 命令の名前とタイプから、命令コードを返す
  * 無効な場合は0xFFFFを返す
  */
 WORD getcmdcode(const char *cmd, CMDTYPE type);
-
-/**
- * 名前とタイプがキーの命令ハッシュ表を解放する
- */
-void free_cmdtype_code();
-
-/**
- * コードがキーの命令ハッシュ表を作成する
- */
-bool create_code_cmdtype();
 
 /**
  * 命令コードから命令の関数ポインタを返す
@@ -179,10 +187,5 @@ CMDTYPE getcmdtype(WORD code);
  * 命令コードから命令の名前を返す
  */
 char *getcmdname(WORD code);
-
-/**
- * コードがキーの命令ハッシュ表を解放する
- */
-void free_code_cmdtype();
 
 #endif            /* YACASL2_CASL2_INCLUDEDの終端 */

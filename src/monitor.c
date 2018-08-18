@@ -359,7 +359,7 @@ void monitor()
         if(cmdtype == MONQUIT) {
             shutdown();
             freebps();
-            free_code_cmdtype();
+            free_cmdtable(HASH_CODE);
             freecerr();
             exit(0);
         }

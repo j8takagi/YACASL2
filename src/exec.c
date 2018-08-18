@@ -768,7 +768,8 @@ void exec()
     char *s;
     const char *monmsg = "COMET II machine code monitor. Type ? for help.\n";
 
-    create_code_cmdtype();                          /* 命令のコードとタイプがキーのハッシュ表を作成 */
+    create_cmdtable(HASH_CODE);                 /* 命令のコードとタイプがキーのハッシュ表を作成 */
+
     if(execmode.trace == true) {
         fprintf(stdout, "\nExecuting machine codes\n");
     }
@@ -837,7 +838,7 @@ void exec()
     }
 execfin:
     freebps();
-    free_code_cmdtype();                           /* 命令のコードとタイプがキーのハッシュ表を解放 */
+    free_cmdtable(HASH_CODE);              /* 命令のコードとタイプがキーのハッシュ表を解放 */
     if(cerr->num > 0) {
         fprintf(stderr, "Execute error - %d: %s\n", cerr->num, cerr->msg);
     }
