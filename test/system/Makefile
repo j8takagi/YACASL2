@@ -12,6 +12,9 @@ check:
 smoke:
 	$(MAKE) -sC casl2_smoke check
 
+smoke-valgrind:
+	$(MAKE) -sC casl2_smoke valgrind
+
 valgrind:
 	@$(call make_dirs,$(CMD),$@; )
 

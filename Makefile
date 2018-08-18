@@ -38,7 +38,7 @@ CMDFILES := casl2 comet2 dumpword casl2rev comet2monitor
 
 all: build INSTALL gtags
 
-build:
+build: version
 	$(MAKE) -C src all
 	@(for f in $(CMDFILES); do if test ! -e $$f -o src/$$f -nt $$f; then $(CP) src/$$f $$f; fi; done)
 
@@ -62,6 +62,9 @@ check:
 
 smoke:
 	$(MAKE) -sC test/system smoke
+
+smoke-valgrind:
+	$(MAKE) -sC test/system smoke-valgrind
 
 valgrind:
 	$(MAKE) -sC test/system valgrind
