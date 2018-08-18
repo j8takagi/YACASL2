@@ -145,7 +145,7 @@ int main(int argc, char *argv[])
         freecerr();                                    /* エラーの解放 */
         exit(1);
     }
-    create_cmdtype_code();                         /* 命令の名前とタイプがキーのハッシュ表を作成 */
+    create_cmdtable(HASH_CMDTYPE);                 /* 命令の名前とタイプがキーのハッシュ表を作成 */
     reset(memsize, clocks);                        /* 仮想マシンCOMET IIのリセット */
     for(i = 0; i < argc - optind; i++) {           /* 引数からファイル名配列を取得 */
         af[i] = argv[optind + i];
@@ -165,7 +165,7 @@ int main(int argc, char *argv[])
     }
 casl2fin:
     shutdown();                                    /* 仮想マシンCOMET IIのシャットダウン */
-    free_cmdtype_code();
+    free_cmdtable(HASH_CMDTYPE);
     stat = (cerr->num == 0) ? 0 : 1;
     freecerr();                                    /* エラーの解放 */
     return stat;

@@ -2,6 +2,7 @@
 #include "struct.h"
 #include "cerr.h"
 #include "exec.h"
+#include "monitor.h"
 
 int main(){
     int i;
@@ -25,7 +26,7 @@ int main(){
         { "PUSH", ADR_X }, { "POP", R_ }, { "CALL", ADR_X },
         { "SVC", ADR_X }, { "RET", NONE }
     };
-    create_cmdtype_code();
+    create_cmdtable(HASH_CMDTYPE);
     cerr_init();
     for(i = 0; i < sizeof(cmdcodelist)/sizeof(cmdcodelist[0]); i++) {
         code = getcmdcode(cmdcodelist[i].cmd, cmdcodelist[i].type);
@@ -35,6 +36,6 @@ int main(){
         }
     }
     freecerr();
-    free_cmdtype_code();
+    free_cmdtable(HASH_CMDTYPE);
     return 0;
 }

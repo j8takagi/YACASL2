@@ -188,7 +188,7 @@ bool disassemble_file(const char *file)
         return false;
     }
 
-    create_code_cmdtype();                          /* 命令のコードとタイプがキーのハッシュ表を作成 */
+    create_cmdtable(HASH_CODE);                   /* 命令のコードとタイプがキーのハッシュ表を作成 */
 
     fprintf(stdout, "MAIN    START\n");
     for(word = fgetword(fp); !feof(fp); i++, word = fgetword(fp)) {
@@ -218,7 +218,7 @@ bool disassemble_file(const char *file)
         fprintf(stdout, "\n");
     }
     fprintf(stdout, "        END\n");
-    free_code_cmdtype();
+    free_cmdtable(HASH_CODE);
     fclose(fp);
     return stat;
 }
