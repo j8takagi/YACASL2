@@ -141,9 +141,9 @@ void free_cmdtable(CMDTAB_HASH hash)
     for(i = 0; i < CMDTABSIZE; i++) {
         for(p = cmdtab[hash][i]; p != NULL; p = q) {
             q = p->next;
-            cmdtab[hash][i] = NULL;
             FREE(p);
         }
+        cmdtab[hash][i] = NULL;
     }
 }
 
