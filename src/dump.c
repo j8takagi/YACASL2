@@ -39,7 +39,7 @@ void dspregister()
     char *sp, *pr, *fr;
     for(i = 0; i < GRSIZE; i++ ) {
         fprintf(stdout, "#%04X: GR%d: ", sys->cpu->pr, i);
-        print_dumpword(sys->cpu->gr[i], (&execmode)->logical);
+        print_dumpword(sys->cpu->gr[i], execmode.logical);
         fprintf(stdout, "\n");
     }
     fprintf(stdout, "#%04X: SP:  %6d = #%04X = %s\n",

@@ -122,7 +122,7 @@ bool create_cmdtable(CMDTAB_HASH hash)
         if(hash == HASH_CMDTYPE) {
             hashval = hash_cmdtype(comet2cmd[i].name, comet2cmd[i].type);
         } else if(hash == HASH_CODE) {
-            hashval = hash_code((&comet2cmd[i])->code);
+            hashval = hash_code(comet2cmd[i].code);
         }
         p->next = cmdtab[hash][hashval];
         cmdtab[hash][hashval] = p;
