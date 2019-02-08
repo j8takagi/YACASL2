@@ -320,9 +320,9 @@ WORD getadr(const char *prog, const char *str, PASS pass)
 {
     WORD adr = 0x0;
 
-    if(*str == '=') {
+    if(str[0] == '=') {
         adr = getliteral(str, pass);
-    } else if(isdigit(*str) || *str == '-' || *str == '#') {
+    } else if(isdigit(str[0]) || str[0] == '-' || str[0] == '#') {
         adr = nh2word(str);
     } else {
         if(pass == SECOND) {
@@ -339,12 +339,13 @@ WORD grword(const char *str, bool is_x)
     WORD r;
 
     /*  "GR[0-7]" 以外の文字列では、0xFFFFを返して終了 */
-    if(!(strlen(str) == 3 && strncmp(str, "GR", 2) == 0 &&
-         (*(str+2) >= '0' && *(str+2) <= '0' + (GRSIZE - 1))))
+    if(strlen(str) != 3 ||
+       strncmp(str, "GR", 2) != 0 ||
+       str[2] < '0' || str[2] > '0' + (GRSIZE - 1))
     {
         return 0xFFFF;
     }
-    r = (WORD)(*(str+2) - '0');
+    r = (WORD)(str[2] - '0');
     /* GR0は指標レジスタとして用いることができない */
     if(is_x == true && r == 0x0) {
         setcerr(120, "");    /* GR0 in operand x */
@@ -355,10 +356,11 @@ WORD grword(const char *str, bool is_x)
 
 WORD getliteral(const char *str, PASS pass)
 {
-    assert(*str == '=');
+    assert(str[0] == '=');
     WORD adr = asptr->lptr;
 
-    if(*(++str) == '\'') {    /* 文字定数 */
+    str++;
+    if(str[0] == '\'') {    /* 文字定数 */
         writestr(str, true, pass);
     } else {
         writememory(nh2word(str), (asptr->lptr)++, pass);
@@ -387,26 +389,27 @@ void writestr(const char *str, bool literal, PASS pass)
     assert(*str == '\'');
     const char *p = str + 1;
     bool lw = false;
+    int i;
 
-    for(; ;) {
+    for(i = 0; p[i] != '\'' || p[i+1] == '\''; i++) {
         /* 閉じ「'」がないまま文字列が終了した場合 */
-        if(*p == '\0') {
+        if(!p[i]) {
             setcerr(123, str);    /* unclosed quote */
             break;
         }
-        /* 「'」の場合、次の文字が「'」でない場合は正常終了 */
-        if(*p == '\'' && *(++p) != '\'') {
-            break;
-        } else if(literal == true && lw == true) {
+        if(literal == true && lw == true) {
             setcerr(124, str);    /* more than one character in literal */
             break;
         }
+        if(p[i] == '\'') {
+            i++;
+        }
         /*リテラルの場合はリテラル領域に書込 */
         if(literal == true) {
-            writememory(*(p++), (asptr->lptr)++, pass);
+            writememory(p[i], (asptr->lptr)++, pass);
             lw = true;
         } else {
-            writememory(*(p++), (asptr->ptr)++, pass);
+            writememory(p[i], (asptr->ptr)++, pass);
         }
     }
 }

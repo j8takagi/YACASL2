@@ -50,32 +50,32 @@ OPD *opdtok(const char *str)
             break;
         }
         /* 先頭が等号（=）の場合 */
-        if(*r == '=') {
+        if(r[0] == '=') {
             r++;
         }
         /* 「'」の場合 */
-        if(*r == '\'') {
+        if(r[0] == '\'') {
             /* 「''」以外の場合はquote値を反転 */
-            if(*(r+1) != '\'' && !(q < r && *(r-1) == '\'')) {
+            if(r[1] != '\'' && !(q < r && r[-1] == '\'')) {
                 quoting = !quoting;
             }
             /* 文字列の長さを数える。「'」の場合は数えない */
-            if(*(r+1) != '\'') {
+            if(r[1] != '\'') {
                 rcnt++;
             }
         }
         if(quoting == true) {
             /* 閉じ「'」がないまま文字列が終了した場合 */
-            if(*r == '\0') {
+            if(!r[0]) {
                 setcerr(123, str);    /* unclosed quote */
                 break;
             }
             r++;
         } else {
             sepp = r + strcspn(r, ", ");
-            sepc = *sepp;
-            *sepp = '\0';
-            if(*q == '\0') {
+            sepc = sepp[0];
+            strcpy(sepp, "");
+            if(!q[0]) {
                 setcerr(121, "");    /* cannot get operand token */
                 break;
             }
@@ -105,29 +105,29 @@ CMDLINE *linetok(const char *line)
     bool quoting = false;
     CMDLINE *cmdl = NULL;
 
-    if(*line == '\0') {
+    if(!line[0]) {
         return NULL;
     }
     tokens = strdup_chk(line, "tokens");
     /* コメントを削除 */
-    for(p = tokens; *p != '\0'; p++) {
+    for(p = tokens; p[0]; p++) {
         /* 「'」で囲まれた文字列の処理。「''」は無視 */
-        if(*p == '\'' && *(p+1) != '\'' && !(p > tokens && *(p-1) == '\'')) {
+        if(p[0] == '\'' && p[1] != '\'' && !(p > tokens && p[-1] == '\'')) {
             quoting = !quoting;
-        } else if(quoting == false && *p == ';') {
-            *p = '\0';
+        } else if(quoting == false && p[0] == ';') {
+            strcpy(p, "");
             break;
         }
     }
-    if(*tokens != '\n' && *tokens != '\0') {
+    if(tokens[0] && tokens[0] != '\n') {
         p = tokens;
         cmdl = malloc_chk(sizeof(CMDLINE), "cmdl");
         cmdl->label = malloc_chk(LABELSIZE + 1, "cmdl.label");
         /* ラベルの取得。行の先頭が空白またはタブの場合、ラベルは空 */
         if((sepp = p + strcspn(p, " \t\n")) == p){
-            *(cmdl->label) = '\0';
+            strcpy(cmdl->label, "");
         } else {        /* ラベルを取得 */
-            *sepp = '\0';
+            strcpy(sepp, "");
             /* 文字列が長すぎる場合はエラー */
             if(strlen(p) > LABELSIZE) {
                 setcerr(104, p);    /* label length is too long */
@@ -137,12 +137,12 @@ CMDLINE *linetok(const char *line)
             p = sepp + 1;
         }
         /* ラベルと命令の間の空白をスキップ */
-        while(*p == ' ' || *p == '\t') {
+        while(p[0] == ' ' || p[0] == '\t') {
             p++;
         }
         /* 命令とオペランドの取得 */
-        if(*p == '\n' || *p == '\0') {        /* 命令がない場合は、終了 */
-            if(*(cmdl->label) != '\0') {      /* ラベルが定義されていて命令がない場合はエラー */
+        if(!p[0] || p[0] == '\n') {        /* 命令がない場合は、終了 */
+            if(cmdl->label) {      /* ラベルが定義されていて命令がない場合はエラー */
                 setcerr(105, "");    /* no command in the line */
             }
             FREE(cmdl->label);
@@ -150,17 +150,17 @@ CMDLINE *linetok(const char *line)
         } else {
             /* 命令の取得 */
             sepp = p + strcspn(p, " \t\n");
-            *sepp = '\0';
+            strcpy(sepp, "");
             cmdl->cmd = strdup_chk(p, "cmdl.cmd");
             p = sepp + 1;
             /* 命令とオペランドの間の空白をスキップ */
-            while(*p == ' ' || *p == '\t') {
+            while(p[0] == ' ' || p[0] == '\t') {
                 p++;
             }
             /* 改行かタブまでの文字列を取得 */
             /* 「'」で囲まれた文字列に含まれる場合があるため、空白は無視 */
             if((sepp = p + strcspn(p, "\t\n")) > p) {
-                *sepp = '\0';
+                strcpy(sepp, "");
                 cmdl->opd = opdtok(p);
             } else {
                 cmdl->opd = malloc_chk(sizeof(OPD), "cmdl.opd");
