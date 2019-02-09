@@ -56,4 +56,14 @@ void *calloc_chk(size_t nmemb, size_t size, char *tag);
  */
 char *strdup_chk(const char *s, char *tag);
 
+/**
+ * @brief malloc_chkを実行してメモリを確保し、コピーした文字列の指定した長さの部分を返す
+ *
+ * @return コピーした文字列
+ *
+ * @param s 文字列
+ * @param len 文字列の長さ
+ * @param tag エラーメッセージなどで表示されるタグ
+ */
+char *strndup_chk(const char *s, size_t len, char *tag);
 #endif

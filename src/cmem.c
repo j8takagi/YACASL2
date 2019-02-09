@@ -31,3 +31,14 @@ char *strdup_chk(const char *s, char *tag)
     strcpy(t, s);
     return t;
 }
+
+char *strndup_chk(const char *s, size_t len, char *tag)
+{
+    assert(s != NULL);
+    char *t;
+
+    t = malloc_chk(len + 1, tag);
+    strncpy(t, s, len);
+    t[len] = '\0';
+    return t;
+}
