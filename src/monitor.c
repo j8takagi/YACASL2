@@ -132,7 +132,7 @@ MONARGS *monargstok(const char *str)
         }
         sepp = r + strcspn(r, " ");
         sepc = *sepp;
-        *sepp = '\0';
+        strcpy(sepp, "");
         args->argv[++(args->argc)-1] = strdup_chk(q, "args.argv[]");
         q = r = sepp + 1;
     } while(sepc == ' ');
@@ -146,7 +146,7 @@ MONCMDLINE *monlinetok(const char *line)
     long l;
     MONCMDLINE *moncmdl = NULL;
 
-    if(*line == '\n' || *line == '\0') {
+    if(!line[0] || line[0] == '\n') {
         return NULL;
     }
     p = tokens = strdup_chk(line, "tokens");
@@ -349,7 +349,7 @@ void monitor()
         buf = malloc_chk(MONINSIZE + 1, "monitor.buf");
         fgets(buf, MONINSIZE, stdin);
         if((p = strchr(buf, '\n')) != NULL) {
-            *p = '\0';
+            strcpy(p, "");
         }
         if((moncmdl = monlinetok(buf)) != NULL) {
             cmdtype = monitorcmd(moncmdl->cmd, moncmdl->args);

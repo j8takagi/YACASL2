@@ -64,7 +64,7 @@ static int comet2cmdsize = ARRAYSIZE(comet2cmd);
  * ハッシュ表のサイズ
  */
 enum {
-    CMDTABSIZE = 39,
+    CMDTABSIZE = 41,
 };
 
 /**

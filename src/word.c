@@ -42,13 +42,13 @@ WORD n2word(const char *str)
     int n;
     /* WORD値に変換 */
     n = strtol(str, &check, 10);
-    if(*check != '\0') {
+    if(check[0]) {
         setcerr(114, str);    /* not integer */
         return 0x0;
     }
     /* nが-32768から32767の範囲にないときは、その下位16ビットを格納 */
     if(n < -32768 || n > 32767) {
-        n = n & 0xFFFF;
+        n &= 0xFFFF;
     }
     return (WORD)n;
 }
@@ -66,7 +66,7 @@ WORD h2word(const char *str)
     }
     /* WORD値に変換 */
     w = (WORD)strtol(str, &check, 16);
-    if(*check != '\0') {
+    if(check[0]) {
         setcerr(115, str-1);    /* not hex */
         return 0x0;
     }
@@ -105,12 +105,12 @@ char *word2n(WORD word)
     int i = 0, j;
 
     do{
-        *(p + i++) = word % 10 + '0';
+        p[i++] = word % 10 + '0';
     } while((word /= 10) > 0);
     for(j = 0; j < i; j++) {
-        *(digit + j) = *(p + (i - 1) - j);
+        digit[j] = p[(i-1)-j];
     }
-    *(digit + j + 1) = '\0';
+    digit[j] = '\0';
     FREE(p);
     return digit;
 }
@@ -121,26 +121,26 @@ char *word2bit(const WORD word)
         MAXLEN = 16,        /* WORD値を2進数で表したときの最大桁数 */
     };
     WORD mask = 0x8000;
-    char *bit, *p;
+    char *bit = malloc_chk(MAXLEN + 1, "word2bit.bit");
+    int i = 0;
 
-    bit = p = malloc_chk(MAXLEN + 1, "word2bit.bit");
     do {
-        *p++ = (word & mask) ? '1' : '0';
+        bit[i++] = (word & mask) ? '1' : '0';
     } while((mask >>= 1) > 0);
-    *p = '\0';
+    bit[i] = '\0';
     return bit;
 }
 
 void print_dumpword(WORD word, bool logicalmode)
 {
-    char *b;
+    char *bit = word2bit(word);
 
     if(logicalmode == true) {
         fprintf(stdout, "%6d", word);
     } else {
         fprintf(stdout, "%6d", (signed short)word);
     }
-    fprintf(stdout, " = #%04X = %s", word, (b = word2bit(word)));
+    fprintf(stdout, " = #%04X = %s", word, bit);
     /* 「文字の組」の符号表に記載された文字と、改行（CR）／タブを表示 */
     if(word >= 0x20 && word <= 0x7E) {
         fprintf(stdout, " = \'%c\'", word);
@@ -149,5 +149,5 @@ void print_dumpword(WORD word, bool logicalmode)
     } else if(word == '\t') {
         fprintf(stdout, " = \'\\t\'");
     }
-    FREE(b);
+    FREE(bit);
 }

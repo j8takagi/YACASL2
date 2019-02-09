@@ -63,7 +63,7 @@ unsigned labelhash(const char *prog, const char *label)
     int i = 0, j;
     unsigned h;
 
-    if(*prog != '\0') {
+    if(prog[0]) {
         keys[i++] = label_hashkey(prog);
     }
     keys[i] = label_hashkey(label);
@@ -94,7 +94,7 @@ WORD getlabel(const char *prog, const char *label)
 
     for(p = labels[labelhash(prog, label)]; p != NULL; p = p->next) {
         l = p->label;
-        if((*prog == '\0' || (strcmp(prog, l->prog) == 0)) &&
+        if((!prog[0] || (strcmp(prog, l->prog) == 0)) &&
            strcmp(label, l->label) == 0)
         {
             return l->adr;
@@ -147,7 +147,7 @@ void printlabel()
     }
     qsort(l, s, sizeof(*l), compare_adr);
     for(i = 0; i < s; i++) {
-        if(*(l[i]->prog) != '\0') {
+        if(*(l[i]->prog)) {
             fprintf(stdout, "%s.", l[i]->prog);
         }
         fprintf(stdout, "%s ---> #%04X\n", l[i]->label, l[i]->adr);

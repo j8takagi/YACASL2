@@ -116,7 +116,7 @@ void svcin()
         return;
     }
     for(i = 0; i < INSIZE; i++) {
-        if(*(buf + i) == '\0' || *(buf + i) == '\n') {
+        if(!buf[i] || buf[i] == '\n') {
             --i;
             break;
         }
