@@ -147,7 +147,7 @@ void printlabel()
     }
     qsort(l, s, sizeof(*l), compare_adr);
     for(i = 0; i < s; i++) {
-        if(*(l[i]->prog)) {
+        if(l[i]->prog[0]) {
             fprintf(stdout, "%s.", l[i]->prog);
         }
         fprintf(stdout, "%s ---> #%04X\n", l[i]->label, l[i]->adr);
