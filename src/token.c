@@ -107,15 +107,16 @@ CMDLINE *linetok(const char *line)
     bool quoting = false;
     CMDLINE *cmdl = NULL;
 
-    if(!line[0]) {
+    if(!line[0] || line[0] == '\n') {
         return NULL;
     }
     tok = p = strdup_chk(line, "tok");
     /* コメントを削除 */
     for(i = 0; p[i]; i++) {
-        /* 「'」で囲まれた文字列の処理。「''」は無視 */
-        if(p[i] == '\'' && p[i+1] != '\'' && !(i > 0 && p[i-1] == '\'')) {
+        /* 「'」で囲まれた文字列の場合。「''」は無視 */
+        if(p[i] == '\'' && p[i+1] != '\'' && (i == 0 || p[i-1] != '\'')) {
             quoting = !quoting;
+        /* 「'」で囲まれた文字列でない場合、文字列末尾の「;」以降を削除 */
         } else if(quoting == false && p[i] == ';') {
             p[i] = '\0';
             break;
@@ -131,17 +132,18 @@ CMDLINE *linetok(const char *line)
     } else {        /* ラベルを取得 */
         /* 文字列が長すぎる場合はエラー */
         if(i > LABELSIZE) {
-            p[i] = '\0';
-            setcerr(104, p);    /* label length is too long */
+            setcerr(104, strndup_chk(p, i, "cerr"));    /* label length is too long */
         } else {
             cmdl->label = strndup_chk(p, i, "cmdl->label");
         }
+        /* 文字列の先頭をラベルの次の文字に移動 */
         p += i + 1;
     }
-    /* ラベルと命令の間の空白をスキップ */
-    while(p[0] == ' ' || p[0] == '\t') {
-        p++;
+    /* 文字列の先頭から、ラベルと命令の間の空白を削除 */
+    for(i = 0; p[i] == ' ' || p[i] == '\t'; i++) {
+        ;
     }
+    p += i;
     /* 命令とオペランドの取得 */
     if(!p[0] || p[0] == '\n') {        /* 命令がない場合は、終了 */
         if(cmdl->label) {      /* ラベルが定義されていて命令がない場合はエラー */
@@ -153,20 +155,20 @@ CMDLINE *linetok(const char *line)
     }
     /* 命令の取得 */
     i = strcspn(p, " \t\n");
-    p[i] = '\0';
-    cmdl->cmd = strdup_chk(p, "cmdl.cmd");
+    cmdl->cmd = strndup_chk(p, i, "cmdl.cmd");
+    /* 文字列の先頭を命令の次の文字に移動 */
     p += i + 1;
-    /* 命令とオペランドの間の空白をスキップ */
-    while(p[0] == ' ' || p[0] == '\t') {
-        p++;
+    /* 文字列の先頭から、命令とオペランドの間の空白を削除 */
+    for(i = 0; p[i] == ' ' || p[i] == '\t'; i++) {
+        ;
     }
+    p += i;
     /* 改行かタブまでの文字列を取得 */
     /* 「'」で囲まれた文字列に含まれる場合があるため、空白は無視 */
     if((i = strcspn(p, "\t\n")) > 0) {
-        p[i] = '\0';
-        cmdl->opd = opdtok(p);
+        cmdl->opd = opdtok(strndup_chk(p, i, "cmdl->opd"));
     } else {
-        cmdl->opd = malloc_chk(sizeof(OPD), "cmdl.opd");
+        cmdl->opd = malloc_chk(sizeof(OPD), "cmdl->opd");
         cmdl->opd->opdc = 0;
     }
 linetokfin:
