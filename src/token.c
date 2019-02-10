@@ -102,7 +102,7 @@ void addcerrlist_tok()
 
 CMDLINE *linetok(const char *line)
 {
-    char *tok, *p;
+    char *tok = NULL, *p = NULL, *lbl = NULL;
     int i;
     bool quoting = false;
     CMDLINE *cmdl = NULL;
@@ -122,30 +122,42 @@ CMDLINE *linetok(const char *line)
             break;
         }
     }
+    /* 文字列末尾の改行と空白を削除 */
+    i = strlen(p) - 1;
+    while(i > 0 && (p[i] == '\n' || p[i] == ' ' || p[i] == '\t')) {
+        p[i--] = '\0';
+    }
+    /* 空行の場合、終了 */
     if(!p[0] || p[0] == '\n') {
         goto linetokfin;
     }
     cmdl = malloc_chk(sizeof(CMDLINE), "cmdl");
-    /* ラベルの取得。行の先頭が空白またはタブの場合、ラベルは空 */
-    if((i = strcspn(p, " \t\n")) == 0){
-        cmdl->label = strdup_chk("", "cmdl->label");
-    } else {        /* ラベルを取得 */
+
+    /* ラベルの取得 */
+    /* 行の先頭が空白またはタブの場合、ラベルは空 */
+    if((i = strcspn(p, " \t\n")) == 0) {
+        lbl = strdup_chk("", "linetok.lbl");
+    } else {
+        lbl = strndup_chk(p, i, "linetok.lbl");
         /* 文字列が長すぎる場合はエラー */
         if(i > LABELSIZE) {
-            setcerr(104, strndup_chk(p, i, "cerr"));    /* label length is too long */
-        } else {
-            cmdl->label = strndup_chk(p, i, "cmdl->label");
+            setcerr(104, lbl);    /* label length is too long */
+            FREE(lbl);
+            goto linetokfin;
         }
-        /* 文字列の先頭をラベルの次の文字に移動 */
-        p += i + 1;
+        /* 文字列先頭をラベルの次の文字に移動 */
+        p += i;
     }
-    /* 文字列の先頭から、ラベルと命令の間の空白を削除 */
+    cmdl->label = lbl;
+
+    /* 命令の取得 */
+    /* 文字列先頭の、ラベルと命令の間の空白を削除 */
     for(i = 0; p[i] == ' ' || p[i] == '\t'; i++) {
         ;
     }
     p += i;
-    /* 命令とオペランドの取得 */
-    if(!p[0] || p[0] == '\n') {        /* 命令がない場合は、終了 */
+    /* 命令がない場合は、終了 */
+    if(!p[0]) {
         if(cmdl->label) {      /* ラベルが定義されていて命令がない場合はエラー */
             setcerr(105, "");    /* no command in the line */
         }
@@ -153,24 +165,20 @@ CMDLINE *linetok(const char *line)
         FREE(cmdl);
         goto linetokfin;
     }
-    /* 命令の取得 */
-    i = strcspn(p, " \t\n");
+    /* 命令取得の実行 */
+    i = strcspn(p, " \t");
     cmdl->cmd = strndup_chk(p, i, "cmdl.cmd");
+
+    /* オペランドの取得 */
     /* 文字列の先頭を命令の次の文字に移動 */
     p += i + 1;
-    /* 文字列の先頭から、命令とオペランドの間の空白を削除 */
+    /* 文字列先頭の、命令とオペランドの間の空白を削除 */
     for(i = 0; p[i] == ' ' || p[i] == '\t'; i++) {
         ;
     }
     p += i;
-    /* 改行かタブまでの文字列を取得 */
-    /* 「'」で囲まれた文字列に含まれる場合があるため、空白は無視 */
-    if((i = strcspn(p, "\t\n")) > 0) {
-        cmdl->opd = opdtok(strndup_chk(p, i, "cmdl->opd"));
-    } else {
-        cmdl->opd = malloc_chk(sizeof(OPD), "cmdl->opd");
-        cmdl->opd->opdc = 0;
-    }
+    /* オペランド取得の実行 */
+    cmdl->opd = opdtok(p);
 linetokfin:
     FREE(tok);
     return cmdl;
