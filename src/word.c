@@ -84,6 +84,9 @@ WORD nh2word(const char *str)
     WORD w;
 
     assert(sizeof(WORD) * 8 == 16); /* WORD型のサイズが16ビットであることを確認 */
+    if(str == NULL) {
+        return 0x0;
+    }
     if(!isdigit(*str) && *str != '-' && *str != '#') {
         setcerr(114, str);    /* not integer */
         return 0x0;

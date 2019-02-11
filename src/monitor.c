@@ -349,19 +349,20 @@ void monitor()
         buf = malloc_chk(MONINSIZE + 1, "monitor.buf");
         fgets(buf, MONINSIZE, stdin);
         if((p = strchr(buf, '\n')) != NULL) {
-            strcpy(p, "");
+            p = '\0';
         }
         if((moncmdl = monlinetok(buf)) != NULL) {
             cmdtype = monitorcmd(moncmdl->cmd, moncmdl->args);
             free_moncmdline(moncmdl);
         }
-        FREE(buf);
-        if(cmdtype == MONQUIT) {
+        if(!buf[0] || cmdtype == MONQUIT) {
+            FREE(buf);
             shutdown();
             freebps();
             free_cmdtable(HASH_CODE);
             freecerr();
             exit(0);
         }
+        FREE(buf);
     } while(cmdtype == MONREPEAT);
 }
