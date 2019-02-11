@@ -441,7 +441,7 @@ void assemble_start(const CMDLINE *cmdl, PASS pass)
         setcerr(106, "");    /* operand count mismatch */
         return;
     }
-    if(!*(cmdl->label)) {
+    if(!cmdl->label[0]) {
         setcerr(107, "");    /* no label in START */
         return;
     }
@@ -575,7 +575,7 @@ bool casl2cmd(CMD *cmdtbl, const CMDLINE *cmdl, PASS pass)
 {
     int i;
     void (*cmdptr)();
-    for(i = 0; *(cmdtbl[i].name); i++) {
+    for(i = 0; cmdtbl[i].name[0]; i++) {
         if(strcmp(cmdl->cmd, cmdtbl[i].name) == 0) {
             cmdptr = cmdtbl[i].ptr;
             (*cmdptr)(cmdl, pass);
@@ -675,7 +675,7 @@ bool assemble_comet2cmd(const CMDLINE *cmdl, PASS pass)
 bool assembletok(const CMDLINE *cmdl, PASS pass)
 {
     /* 命令がない場合 */
-    if(!*(cmdl->cmd)) {
+    if(!cmdl->cmd[0]) {
         return true;
     }
     /* アセンブラ命令またはマクロ命令の書込 */
@@ -700,7 +700,7 @@ bool assembleline(const char *line, PASS pass)
     stat = (cerr->num == 0) ? true : false;
     if(cmdl != NULL) {
         if(stat == true) {
-            if(pass == FIRST && *(cmdl->label)) {
+            if(pass == FIRST && cmdl->label[0]) {
                 stat = addlabel(asptr->prog, cmdl->label, asptr->ptr);
             }
         }

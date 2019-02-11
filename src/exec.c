@@ -124,7 +124,7 @@ void svcin()
             setcerr(208, "");    /* SVC input - memory overflow */
             break;
         }
-        sys->memory[sys->cpu->gr[1]+i] = *(buf + i);
+        sys->memory[sys->cpu->gr[1] + i] = buf[i];
     }
     sys->memory[sys->cpu->gr[2]] = i + 1;
     FREE(buf);
