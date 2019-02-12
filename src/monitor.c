@@ -340,7 +340,8 @@ void free_moncmdline(MONCMDLINE *moncmdl)
 
 void monitor()
 {
-    char *buf, *p;
+    char *buf = NULL;
+    int i;
     MONCMDLINE *moncmdl;
     MONCMDTYPE cmdtype = MONREPEAT;
 
@@ -348,21 +349,24 @@ void monitor()
         fprintf(stdout, "- ");
         buf = malloc_chk(MONINSIZE + 1, "monitor.buf");
         fgets(buf, MONINSIZE, stdin);
-        if((p = strchr(buf, '\n')) != NULL) {
-            p = '\0';
+        fprintf(stdout, "%s", buf);
+        if(!buf[0]) {
+            cmdtype = MONQUIT;
+        }
+        if((i = strcspn(buf, "\n")) > 0 || buf[0] == '\n') {
+            buf[i] = '\0';
         }
         if((moncmdl = monlinetok(buf)) != NULL) {
             cmdtype = monitorcmd(moncmdl->cmd, moncmdl->args);
             free_moncmdline(moncmdl);
         }
-        if(!buf[0] || cmdtype == MONQUIT) {
-            FREE(buf);
+        FREE(buf);
+        if(cmdtype == MONQUIT) {
             shutdown();
             freebps();
             free_cmdtable(HASH_CODE);
             freecerr();
             exit(0);
         }
-        FREE(buf);
     } while(cmdtype == MONREPEAT);
 }
