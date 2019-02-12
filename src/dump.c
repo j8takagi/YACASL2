@@ -14,6 +14,7 @@ void dumpmemory(WORD start, WORD end)
         fprintf(stdout, " %04X", i);
     }
     fprintf(stdout, "\n");
+    fprintf(stdout, "       -------------------------------------------------------------------------------------\n");
     /* Memory */
     for(i = start; i < end; i++) {
         if((mod = i % col) == 0 || i == start) {
