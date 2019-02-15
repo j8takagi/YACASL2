@@ -1,0 +1,1 @@
+cd ../../../.. && ./comet2monitor <monitor/load.monitor

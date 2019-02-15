@@ -1,0 +1,4 @@
+COMET II machine code monitor. Type ? for help.
+(comet2 monitor) l as/sample/sum_10.o
+(comet2 monitor) d
+(comet2 monitor) 

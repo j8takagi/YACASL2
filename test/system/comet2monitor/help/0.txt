@@ -1,0 +1,15 @@
+COMET II machine code monitor. Type ? for help.
+(comet2 monitor) ?
+b[reak] -- Manipulate Breakpoints. See details, `b ?'.
+c[ontinue] -- Continue running your program.
+d[ump] -- Display memory dump. `d[ump] a[uto]/n[oauto]' set auto/noauto display.
+l[oad] -- Load object from a file to the memory. `l[oad] <filepath> <address>' if address is omitted, load to address 0.
+n[ext] -- Go next instruction.
+q[uit] -- Quit running your program.
+reset -- Reset the system.
+r[everse] -- Disassemble memory. `r[everse] <start address> <end address>.
+s[ave] -- Save object from the memory to a file. `s[ave] <filepath> [<start address1> [<end address>]]' if <start address> and <end address> is omitted, save the whole memory. if <end address> is omitted, save the memory after <start address>.
+t[race] -- Display CPU register. `t[race] a[uto]/n[oauto]' set auto/noauto display. 
+T[race] -- Display CPU register as logical value. `t[race] a[uto]/n[oauto]' set auto/noauto display. 
+?/h[elp] -- Display this help.
+(comet2 monitor) 

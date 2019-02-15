@@ -1,0 +1,4 @@
+l as/sample/hello.o
+d a 0 #22
+T a
+c

@@ -1,0 +1,3 @@
+COMET II machine code monitor. Type ? for help.
+(comet2 monitor) q
+Quit: COMET II monitor
