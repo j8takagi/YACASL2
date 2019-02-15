@@ -5,6 +5,11 @@
  */
 static BPSLIST *bps[BPSTABSIZE];
 
+/**
+ * @brief comet2monitorのプロンプト
+ */
+static char *monitor_prompt = "(comet2 monitor)";
+
 unsigned adrhash(WORD adr)
 {
     HKEY *key[1];
@@ -347,7 +352,7 @@ void monitor()
     MONCMDTYPE cmdtype = MONREPEAT;
 
     do {
-        fprintf(stdout, "- ");
+        fprintf(stdout, "%s ", monitor_prompt);
         buf = malloc_chk(MONINSIZE + 1, "monitor.buf");
         fgets(buf, MONINSIZE, stdin);
         fprintf(stdout, "%s", buf);
