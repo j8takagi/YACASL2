@@ -94,9 +94,9 @@ static CERR cerr_load[] = {
 };
 
 /**
- * @brief 実行モード: trace, logical, dump, monitor, step
+ * @brief 実行モード: trace, logical, dump, dump_start, dump_end,  monitor, step
  */
-EXECMODE execmode = {false, false, false, false, false};
+EXECMODE execmode = {false, false, false, 0, 0xFFFF, false, false};
 
 char *pr2str(WORD pr)
 {
@@ -783,7 +783,7 @@ void exec()
             }
             if(execmode.dump) {                    /* dumpオプション指定時、メモリを出力 */
                 fprintf(stdout, "#%04X: Memory::::\n", sys->cpu->pr);
-                dumpmemory(0x0, 0xFFFF);
+                dumpmemory(execmode.dump_start, execmode.dump_end);
             }
             fprintf(stdout, "\n");
         }
