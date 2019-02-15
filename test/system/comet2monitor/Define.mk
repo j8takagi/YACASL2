@@ -1,1 +1,1 @@
-/home/kazubito/yacasl2/test/Template/Define.mk
+../../Template/Define.mk

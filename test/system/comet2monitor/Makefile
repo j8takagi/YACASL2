@@ -1,1 +1,1 @@
-/home/kazubito/yacasl2/test/Template/Group.mk
+../../Template/Group.mk
