@@ -242,7 +242,7 @@ void mon_dump(int argc, char *argv[])
         }
         dumpmemory(start, end);
         if(argc > i) {
-            for(j = i; i < argc; j++) {
+            for(j = i; j < argc; j++) {
                 if(j > i) {
                     fprintf(stderr, " ");
                 }
