@@ -224,26 +224,27 @@ void mon_break(int argc, char *argv[])
 
 void mon_dump(int argc, char *argv[])
 {
-    int i = 0;
+    int i = 0, j;
     WORD start = 0, end = 0xFFFF;
     if(argc > 0 && stracmp(argv[0], 2, (char* []){"a", "auto"})) {
         execmode.dump = true;
+        i++;
     } else if(argc > 0 && stracmp(argv[0], 2, (char* []){"no", "noauto"})) {
         execmode.dump = false;
-    } else {
-        if(argc > 0) {
-            start = nh2word(argv[0]);
-            if(argc > 1) {
-                end = nh2word(argv[1]);
-            }
+        i++;
+    }
+    if(argc > i) {
+        start = execmode.dump_start = nh2word(argv[i++]);
+        if(argc > i) {
+            end = execmode.dump_end = nh2word(argv[i++]);
         }
         dumpmemory(start, end);
-        if(argc > 2) {
-            for(i = 2; i < argc; i++) {
-                if(i > 2) {
+        if(argc > i) {
+            for(j = i; i < argc; j++) {
+                if(j > i) {
                     fprintf(stderr, " ");
                 }
-                fprintf(stderr, "%s", argv[i+1]);
+                fprintf(stderr, "%s", argv[j]);
             }
             fprintf(stderr, ": ignored.\n");
         }
