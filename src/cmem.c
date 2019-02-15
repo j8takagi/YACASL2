@@ -37,8 +37,12 @@ char *strndup_chk(const char *s, size_t len, char *tag)
     assert(s != NULL);
     char *t;
 
-    t = malloc_chk(len + 1, tag);
-    strncpy(t, s, len);
-    t[len] = '\0';
+    if(len < strlen(s)) {
+        t = malloc_chk(len + 1, tag);
+        strncpy(t, s, len);
+        t[len] = '\0';
+    } else {
+        t = strdup_chk(s, tag);
+    }
     return t;
 }
