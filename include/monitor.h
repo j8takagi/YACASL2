@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
+#include "token.h"
 #include "assemble.h"
 #include "hash.h"
 #include "cmem.h"
