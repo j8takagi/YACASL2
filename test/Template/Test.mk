@@ -39,11 +39,13 @@ define time_cmd
     ($(TIME) ./$1 1>$(DEV_NULL) 2>$(DEV_NULL)) 2>&1 | $(GREP) '^real' >$2
 endef
 
+CMD_VALGRIND = $(strip $(shell if test "`$(FILE) $(CMD_FILE)`" = "data"; then cat $(CMD_FILE); else $(PRINTF) "./$(CMD_FILE)"; fi))
+
 # valgrindによるメモリーチェック結果を、指定されたファイルに出力して表示
 # 引数は、テスト名、コマンドファイル、出力ファイル
 # 用例: $(call valgrind_cmd,file_cmd,file_out)
 define valgrind_cmd
-    -$(VALGRIND) $(VALGRINDFLAG) $(strip $(shell tail -1 $(CMD_FILE))) 1>/dev/null 2>&1
+    -$(VALGRIND) $(VALGRINDFLAG) $(CMD_VALGRIND) 1>/dev/null 2>&1
 endef
 
 # テスト実行コマンド。
