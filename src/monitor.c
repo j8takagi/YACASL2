@@ -123,25 +123,22 @@ void freebps()
 MONARGS *monargstok(const char *str)
 {
     MONARGS *args = malloc_chk(sizeof(MONARGS), "args");
-    char *p, *q, *r, *sepp;     /* pは文字列全体の先頭位置、qはトークンの先頭位置、rは文字の位置 */
-    int sepc = ' ';
+    char *tok, *p, sepc = ' ';
+    int i = 0;
 
     args->argc = 0;
-    if(str == NULL) {
+    if(!str || !str[0]) {
         return args;
     }
-    p = q = r = strdup_chk(str, "argstok.p");
+    tok = p = strdup_chk(str, "argstok.p");
     do {
-        while(*q == ' ' || *q == '\t'){
-            q = ++r;
-        }
-        sepp = r + strcspn(r, " ");
-        sepc = *sepp;
-        strcpy(sepp, "");
-        args->argv[++(args->argc)-1] = strdup_chk(q, "args.argv[]");
-        q = r = sepp + 1;
+        i = strcspn(p, " ");
+        sepc = p[i];
+        args->argv[(args->argc)++] = strndup_chk(p, i, "args->argv[]");
+        p += i + 1;
+        i = 0;
     } while(sepc == ' ');
-    FREE(p);
+    FREE(tok);
     return args;
 }
 
@@ -275,7 +272,7 @@ MONCMDTYPE monitorcmd(char *cmd, MONARGS *args)
     } else if(stracmp(cmd, 2, (char* []){"d", "dump"})) {
         mon_dump(args->argc, args->argv);
     } else if(stracmp(cmd, 2, (char* []){"l", "load"})) {
-        loadassemble(args->argv[0], nh2word(args->argv[1]));
+        execptr->end = loadassemble(args->argv[0], nh2word(args->argv[1]));
     } else if(stracmp(cmd, 2, (char* []){"n", "next"})) {
         execmode.step = true;
         cmdtype = MONNEXT;

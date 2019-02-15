@@ -44,7 +44,7 @@ void *malloc_chk(size_t size, const char *tag);
  * @param size 領域1個あたりのメモリーサイズ
  * @param tag エラーメッセージなどで表示されるタグ
  */
-void *calloc_chk(size_t nmemb, size_t size, char *tag);
+void *calloc_chk(size_t nmemb, size_t size, const char *tag);
 
 /**
  * @brief malloc_chkを実行してメモリを確保し、コピーした文字列を返す
@@ -54,7 +54,7 @@ void *calloc_chk(size_t nmemb, size_t size, char *tag);
  * @param s 文字列
  * @param tag エラーメッセージなどで表示されるタグ
  */
-char *strdup_chk(const char *s, char *tag);
+char *strdup_chk(const char *s, const char *tag);
 
 /**
  * @brief malloc_chkを実行してメモリを確保し、コピーした文字列の指定した長さの部分を返す
@@ -65,5 +65,14 @@ char *strdup_chk(const char *s, char *tag);
  * @param len 文字列の長さ
  * @param tag エラーメッセージなどで表示されるタグ
  */
-char *strndup_chk(const char *s, size_t len, char *tag);
+char *strndup_chk(const char *s, size_t len, const char *tag);
+
+/**
+ * @brief 文字列の末尾から、改行と空白とタブを削除する
+ *
+ * @return 末尾から改行と空白とタブを削除した文字列
+ *
+ * @param s 文字列
+ */
+char *strip_end(char *s);
 #endif
