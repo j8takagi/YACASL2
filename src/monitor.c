@@ -227,7 +227,7 @@ void mon_break(int argc, char *argv[])
 void mon_dump(int argc, char *argv[])
 {
     int i = 0, j;
-    WORD start = 0, end = 0xFFFF;
+    WORD dump_start = 0, dump_end = 0x40;
     if(argc > 0 && stracmp(argv[0], 2, (char* []){"a", "auto"})) {
         execmode.dump = true;
         i++;
@@ -236,11 +236,10 @@ void mon_dump(int argc, char *argv[])
         i++;
     }
     if(argc > i) {
-        start = execmode.dump_start = nh2word(argv[i++]);
+        dump_start = execmode.dump_start = nh2word(argv[i++]);
         if(argc > i) {
-            end = execmode.dump_end = nh2word(argv[i++]);
+            dump_end = execmode.dump_end = nh2word(argv[i++]);
         }
-        dumpmemory(start, end);
         if(argc > i) {
             for(j = i; j < argc; j++) {
                 if(j > i) {
@@ -251,6 +250,7 @@ void mon_dump(int argc, char *argv[])
             fprintf(stderr, ": ignored.\n");
         }
     }
+    dumpmemory(dump_start, dump_end);
 }
 
 MONCMDTYPE monitorcmd(char *cmd, MONARGS *args)
