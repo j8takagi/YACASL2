@@ -386,34 +386,28 @@ void writememory(WORD word, WORD adr, PASS pass)
 
 void writestr(const char *str, bool literal, PASS pass)
 {
-    assert(*str == '\'');
-    const char *p = str + 1;
+    assert(str[0] == '\'');
+    int i;
     bool lw = false;
 
-    for(; ;) {
-        /* 閉じ「'」がないまま文字列が終了した場合 */
-        if(!p[0]) {
+    /* 「'」の場合、1文字スキップし、次の文字が「'」でなければ正常終了 */
+    for(i = 1; str[i] != '\'' || str[++i] == '\''; i++) {
+        /* 「'」が閉じないまま文字列が終了した場合はエラー */
+        if(!str[i]) {
             setcerr(123, str);    /* unclosed quote */
             break;
         }
-        /* 「'」の場合、次の文字が「'」でない場合は正常終了 */
-        if(p[0] == '\'') {
-            p++;
-            if(p[0] != '\'') {
-                break;
-            }
-        } else if(literal == true && lw == true) {
+        if(literal == true && lw == true) {
             setcerr(124, str);    /* more than one character in literal */
             break;
         }
         /*リテラルの場合はリテラル領域に書込 */
         if(literal == true) {
-            writememory(p[0], (asptr->lptr)++, pass);
+            writememory(str[i], (asptr->lptr)++, pass);
             lw = true;
         } else {
-            writememory(p[0], (asptr->ptr)++, pass);
+            writememory(str[i], (asptr->ptr)++, pass);
         }
-        p++;
     }
 }
 
@@ -424,7 +418,7 @@ void writedc(const char *str, PASS pass)
     if(*str == '\'') {
         writestr(str, false, pass);
     } else {
-        if(*str == '#' || isdigit(*str) || *str == '-') {
+        if(str[0] == '#' || isdigit(str[0]) || str[0] == '-') {
             adr = nh2word(str);
         } else {
             if(pass == SECOND && (adr = getlabel(asptr->prog, str)) == 0xFFFF) {

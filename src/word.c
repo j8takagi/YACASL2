@@ -36,7 +36,7 @@ static CERR cerr_word[] = {
 
 WORD n2word(const char *str)
 {
-    assert(isdigit(*str) || *str == '-');
+    assert(isdigit(str[0]) || str[0] == '-');
 
     char *check;
     int n;
@@ -55,7 +55,7 @@ WORD n2word(const char *str)
 
 WORD h2word(const char *str)
 {
-    assert(*str == '#');
+    assert(str[0] == '#');
 
     WORD w = 0x0;
     char *check;
@@ -104,18 +104,19 @@ char *word2n(WORD word)
     enum {
         MAXLEN = 5,        /* WORD値を10進数で表したときの最大桁数 */
     };
-    char *p = malloc_chk(MAXLEN + 1, "word2n.p"), *digit = malloc_chk(MAXLEN + 1, "word2n.digit");
+    char *n = malloc_chk(MAXLEN + 1, "word2n.n"), tmp;
     int i = 0, j;
 
     do{
-        p[i++] = word % 10 + '0';
+        n[i++] = word % 10 + '0';
     } while((word /= 10) > 0);
     for(j = 0; j < i; j++) {
-        digit[j] = p[(i-1)-j];
+        tmp = n[j];
+        n[j] = n[(i-1)-j];
+        n[(i-1)-j] = tmp;
     }
-    digit[j] = '\0';
-    FREE(p);
-    return digit;
+    n[j] = '\0';
+    return n;
 }
 
 char *word2bit(const WORD word)
@@ -136,7 +137,7 @@ char *word2bit(const WORD word)
 
 void print_dumpword(WORD word, bool logicalmode)
 {
-    char *bit = word2bit(word);
+    const char *bit = word2bit(word);
 
     if(logicalmode == true) {
         fprintf(stdout, "%6d", word);
@@ -152,5 +153,4 @@ void print_dumpword(WORD word, bool logicalmode)
     } else if(word == '\t') {
         fprintf(stdout, " = \'\\t\'");
     }
-    FREE(bit);
 }

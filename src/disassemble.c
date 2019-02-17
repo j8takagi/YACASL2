@@ -93,8 +93,8 @@ void disassemble_puts_code(int ascol, WORD pradr, int wordc, WORD wordv[])
 }
 void disassemble_cmd_adr_x(CMDTYPE cmdtype, const char *cmdname, WORD word, WORD adr, WORD pradr)
 {
-    WORD x;
-    char *g;
+    WORD x = 0;
+    char *g = NULL;
     int cnt = 0;
     cnt += fprintf(stdout, "        %-7s ", cmdname);
     if(cmdtype == R_ADR_X) {
@@ -111,7 +111,7 @@ void disassemble_cmd_adr_x(CMDTYPE cmdtype, const char *cmdname, WORD word, WORD
 
 void disassemble_cmd_r(CMDTYPE cmdtype, const char *cmdname, WORD word, WORD pradr)
 {
-    char *g, *g1, *g2;
+    char *g = NULL, *g1 = NULL, *g2 = NULL;
     int cnt = 0;
     cnt += fprintf(stdout, "        %-7s ", cmdname);
     if(cmdtype == R1_R2) {
@@ -192,13 +192,15 @@ bool disassemble_file(const char *file)
 
     fprintf(stdout, "MAIN    START\n");
     for(word = fgetword(fp); !feof(fp); i++, word = fgetword(fp)) {
-        cmdname = getcmdname(cmd = word & 0xFF00);
+        cmd = word & 0xFF00;
+        cmdname = getcmdname(cmd);
         cmdtype = getcmdtype(cmd);
         if(word == 0){
             if(inst == true) {  /* プログラム領域の場合  */
                 disassemble_cmd_r(NONE, "nop", 0, i);
             } else {            /* データ領域の場合 */
-                if((zcnt = zero_data_cnt(fp)) == 1) { /* 1つだけの0はDCとみなす */
+                zcnt = zero_data_cnt(fp);
+                if(zcnt == 1) { /* 1つだけの0はDCとみなす */
                     disassemble_dc(0, i);
                 } else {        /* 連続する0はDSとみなす */
                     disassemble_ds(zcnt, i);
@@ -225,29 +227,29 @@ bool disassemble_file(const char *file)
 
 void disassemble_memory(WORD start, WORD end)
 {
-    WORD i, word, cmd;
+    WORD i, cmd;
     CMDTYPE cmdtype = 0;
     char *cmdname;
     bool inst = true;
 
     for(i = start; i <= end; i++) {
-        word = sys->memory[i];
-        cmdname = getcmdname(cmd = word & 0xFF00);
+        cmd = sys->memory[i] & 0xFF00;
+        cmdname = getcmdname(cmd);
         cmdtype = getcmdtype(cmd);
-        if(word == 0) {
+        if(sys->memory[i] == 0) {
             if(inst == true) {  /* プログラム領域の場合  */
                 disassemble_cmd_r(NONE, "nop", 0, i);
             } else {            /* データ領域の場合。メモリーでは、DC 0とみなす */
                 disassemble_dc(0, i);
             }
         } else if(cmd == 0) {
-            disassemble_dc(word, i);
+            disassemble_dc(sys->memory[i], i);
         } else {
             if(cmdtype == R_ADR_X || cmdtype == ADR_X) {
-                disassemble_cmd_adr_x(cmdtype, cmdname, word, sys->memory[i+1], i);
+                disassemble_cmd_adr_x(cmdtype, cmdname, sys->memory[i], sys->memory[i+1], i);
                 i++;
             } else {
-                disassemble_cmd_r(cmdtype, cmdname, word, i);
+                disassemble_cmd_r(cmdtype, cmdname, sys->memory[i], i);
             }
             inst = (cmd != 0x8100) ? true : false;
         }
