@@ -186,12 +186,27 @@ bool stracmp(char *str1, int str2c, char *str2v[])
     return false;
 }
 
+void warn_ignore_arg(int argc, char *argv[])
+{
+    int i;
+    for(i = 0; i < argc; i++) {
+        if(i > 0) {
+            fprintf(stderr, " ");
+        }
+        fprintf(stderr, "%s", argv[i]);
+    }
+    fprintf(stderr, ": ignored.\n");
+}
+
 void mon_break(int argc, char *argv[])
 {
     WORD w;
+    int i = 0;
     if(stracmp(argv[0], 2, (char* []){"l", "list"})) {
+        i++;
         listbps();
     } else if(stracmp(argv[0], 2, (char* []){"r", "reset"})) {
+        i++;
         freebps();
         fprintf(stdout, "All breakpoints are deleted.\n");
     } else {
@@ -201,18 +216,21 @@ void mon_break(int argc, char *argv[])
             }
         }
         if(stracmp(argv[0], 2, (char* []){"a", "add"})) {
+            i += 2;
             if(addbps(w) == true) {
                 fprintf(stdout, "#%04X: breakpoint added\n", w);
             } else {
                 fprintf(stdout, "No breakpoint added\n");
             }
         } else if(stracmp(argv[0], 2, (char* []){"d", "del"})) {
+            i += 2;
             if(delbps(w) == true) {
                 fprintf(stdout, "#%04X: breakpoint deleted\n", w);
             } else {
                 fprintf(stdout, "No breakpoint deleted\n");
             }
         } else if(stracmp(argv[0], 3, (char* []){"?", "h", "help"})) {
+            i++;
             fprintf(stdout, "breakpoint manipulate:\n");
             fprintf(stdout, "    b[reak] a[dd] <address>\n");
             fprintf(stdout, "    b[reak] d[el] <address>\n");
@@ -221,12 +239,15 @@ void mon_break(int argc, char *argv[])
         } else {
             fprintf(stderr, "%s: Not breakpoint manipulate command. see `b ?'.\n", argv[0]);
         }
+        if(argc > i) {
+            warn_ignore_arg(argc - i, argv + i);
+        }
     }
 }
 
 void mon_dump(int argc, char *argv[])
 {
-    int i = 0, j;
+    int i = 0;
     WORD dump_start = 0, dump_end = 0x40;
     if(argc > 0 && stracmp(argv[0], 2, (char* []){"a", "auto"})) {
         execmode.dump = true;
@@ -236,21 +257,24 @@ void mon_dump(int argc, char *argv[])
         i++;
     }
     if(argc > i) {
-        dump_start = execmode.dump_start = nh2word(argv[i++]);
+        dump_start = nh2word(argv[i++]);
         if(argc > i) {
-            dump_end = execmode.dump_end = nh2word(argv[i++]);
-        }
-        if(argc > i) {
-            for(j = i; j < argc; j++) {
-                if(j > i) {
-                    fprintf(stderr, " ");
-                }
-                fprintf(stderr, "%s", argv[j]);
+            if(argv[i][0] =='+') {
+                dump_end = dump_start + nh2word(argv[i] + 1);
+            } else {
+                dump_end = nh2word(argv[i]);
             }
-            fprintf(stderr, ": ignored.\n");
+        } else {
+            dump_end += dump_start;
         }
+        i++;
+    }
+    if(argc > i) {
+        warn_ignore_arg(argc - i, argv + i);
     }
     dumpmemory(dump_start, dump_end);
+    execmode.dump_start = dump_start;
+    execmode.dump_end = dump_end;
 }
 
 MONCMDTYPE monitorcmd(char *cmd, MONARGS *args)
