@@ -137,14 +137,14 @@ char *word2bit(const WORD word)
 
 void print_dumpword(WORD word, bool logicalmode)
 {
-    const char *bit = word2bit(word);
+    char *bit = NULL;
 
     if(logicalmode == true) {
         fprintf(stdout, "%6d", word);
     } else {
         fprintf(stdout, "%6d", (signed short)word);
     }
-    fprintf(stdout, " = #%04X = %s", word, bit);
+    fprintf(stdout, " = #%04X = %s", word, (bit = word2bit(word)));
     /* 「文字の組」の符号表に記載された文字と、改行（CR）／タブを表示 */
     if(word >= 0x20 && word <= 0x7E) {
         fprintf(stdout, " = \'%c\'", word);
@@ -153,4 +153,5 @@ void print_dumpword(WORD word, bool logicalmode)
     } else if(word == '\t') {
         fprintf(stdout, " = \'\\t\'");
     }
+    FREE(bit);
 }

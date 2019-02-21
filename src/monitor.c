@@ -145,24 +145,29 @@ MONARGS *monargstok(const char *str)
 MONCMDLINE *monlinetok(const char *line)
 {
     char *tokens, *p;
-    long l;
+    int i;
     MONCMDLINE *moncmdl = NULL;
 
     if(!line[0] || line[0] == '\n') {
         return NULL;
     }
     p = tokens = strdup_chk(line, "tokens");
+    /* コメントを削除 */
+    strip_casl2_comment(p);
+    /* 文字列末尾の改行と空白を削除 */
+    strip_end(p);
+
     moncmdl = malloc_chk(sizeof(MONCMDLINE), "moncmdl");
     /* コマンドの取得 */
-    moncmdl->cmd = malloc_chk((l = strcspn(p, " \t\n")) + 1, "moncmdl.cmd");
-    strncpy(moncmdl->cmd, p, l);
+    i = strcspn(p, " \t\n");
+    moncmdl->cmd = strndup_chk(p, i, "moncmdl->cmd");
     /* コマンドと引数の間の空白をスキップ */
-    p += l;
+    p += i;
     while(*p == ' ' || *p == '\t') {
         p++;
     }
     /* 引数として、改行までの文字列を取得 */
-    if((l = strcspn(p, "\n")) > 0) {
+    if(strcspn(p, "\n") > 0) {
         moncmdl->args = monargstok(p);
     } else {
         moncmdl->args = malloc_chk(sizeof(MONARGS), "moncmdl.args");
@@ -391,7 +396,7 @@ void monitor()
         if(cmdtype == MONQUIT) {
             shutdown();
             freebps();
-            free_cmdtable(HASH_CODE);
+            free_cmdtable(HASH_CMDTYPE);
             freecerr();
             exit(0);
         }

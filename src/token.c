@@ -94,24 +94,6 @@ void addcerrlist_tok()
     addcerrlist(ARRAYSIZE(cerr_opdtok), cerr_opdtok);
 }
 
-char *strip_casl2_comment(char *s)
-{
-    int i;
-    bool quoting = false;
-
-    for(i = 0; s[i]; i++) {
-        /* 「'」で囲まれた文字列の場合。「''」は無視 */
-        if(s[i] == '\'' && s[i+1] != '\'' && (quoting == false || s[i-1] != '\'')) {
-            quoting = !quoting;
-        /* 「'」で囲まれた文字列でない場合、文字列末尾の「;」以降を削除 */
-        } else if(quoting == false && s[i] == ';') {
-            s[i] = '\0';
-            break;
-        }
-    }
-    return s;
-}
-
 CMDLINE *linetok(const char *line)
 {
     char *tok = NULL, *p = NULL;
