@@ -41,7 +41,9 @@ TEST := test
 TIME := time
 TR := tr
 VALGRIND := valgrind
-VALGRINDFLAG :=  -q --leak-check=full --show-leak-kinds=all --log-file=valgrind.log
+VALGRIND_LOGFILE := _valgrind.log
+VALGRINDFLAG :=  -q --leak-check=full --show-leak-kinds=all --log-file=$(VALGRIND_LOGFILE)
+VALGRIND_CMDLOGFILE := valgrind.log
 
 ######################################################################
 # テストグループとテストでの共通マクロ
@@ -130,6 +132,9 @@ GROUP_MAKEFILE_REL = $(call rel_to,$(GROUPDIR),$(GROUP_MAKEFILE))
 
 # テストコマンドファイル
 CMD_FILE := cmd
+
+# valgrindテストコマンドファイル
+VALGRIND_CMD_FILE := cmd_valgrind
 
 # テスト説明ファイル
 DESC_FILE := desc.txt
