@@ -747,11 +747,12 @@ bool assemblefile(const char *file, PASS pass)
     return (cerr->num == 0) ? true : false;
 }
 
-void assemble(int filec, char *filev[], WORD adr)
+bool assemble(int filec, char *filev[], WORD adr)
 {
     int i;
     PASS pass;
     WORD bp[filec];
+    bool stat = false;
 
     asptr = malloc_chk(sizeof(ASPTR), "asptr");    /* アセンブル時のプロパティ用の領域確保 */
     asptr->prog = malloc_chk(LABELSIZE + 1, "asptr.prog");
@@ -771,7 +772,8 @@ void assemble(int filec, char *filev[], WORD adr)
                 fprintf(stdout, "\nAssemble %s (%d)\n", filev[i], pass);
             }
             /* ファイルをアセンブル */
-            if(assemblefile(filev[i], pass) == false) {
+            stat = assemblefile(filev[i], pass);
+            if(stat == false) {
                 goto asfin;
             }
         }
@@ -787,6 +789,7 @@ asfin:
     freelabel();                              /* ラベルハッシュ表を解放 */
     FREE(asptr->prog);                        /* アセンブル時のプロパティを解放 */
     FREE(asptr);
+    return stat;
 }
 
 /* assemble.hで定義された関数群 */

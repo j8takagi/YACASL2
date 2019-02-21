@@ -75,4 +75,14 @@ char *strndup_chk(const char *s, size_t len, const char *tag);
  * @param s 文字列
  */
 char *strip_end(char *s);
+
+/**
+ * @brief 文字列から「'」以降の文字列をCASL IIのコメントとして削除する。「''」の場合は除く
+ *
+ * @return コメントを削除した文字列
+ *
+ * @param s 文字列
+ */
+char *strip_casl2_comment(char *s);
+
 #endif

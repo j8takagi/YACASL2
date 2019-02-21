@@ -60,6 +60,7 @@ int main(int argc, char *argv[])
 
     shutdown();
     free_cmdtable(HASH_CMDTYPE);
+    free_cmdtable(HASH_CODE);
     stat = (cerr->num == 0) ? 0 : 1;
     freecerr();                 /* エラーの解放 */
     return stat;
