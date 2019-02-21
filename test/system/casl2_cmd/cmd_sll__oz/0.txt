@@ -1,9 +1,3 @@
-;;; SLL r,adr オーバーフローし、結果は零
-MAIN    START
-        LAD     GR1,3
-        SLL     GR1,16
-        RET
-        END
 
 Assemble ../../../../as/cmd/SLL/sll__oz.casl (0)
 

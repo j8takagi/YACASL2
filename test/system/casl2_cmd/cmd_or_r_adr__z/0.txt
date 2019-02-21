@@ -1,11 +1,3 @@
-;;; OR r,adr 演算結果が零
-MAIN    START
-        LD      GR1,A
-        OR      GR1,B
-        RET
-A       DC      #0001
-B       DC      #FFFE
-        END
 
 Assemble ../../../../as/cmd/OR/or_r_adr__z.casl (0)
 

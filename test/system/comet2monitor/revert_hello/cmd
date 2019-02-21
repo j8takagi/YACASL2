@@ -1,1 +1,1 @@
-cd ../../../.. && ./comet2monitor <monitor/revert_hello.monitor
+../../../../comet2monitor <revert_hello.monitor

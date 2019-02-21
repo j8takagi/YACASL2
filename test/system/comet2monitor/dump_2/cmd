@@ -1,1 +1,1 @@
-cd ../../../.. && ./comet2monitor <monitor/dump_2.monitor
+../../../../comet2monitor <dump_2.monitor

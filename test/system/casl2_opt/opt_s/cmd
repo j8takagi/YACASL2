@@ -1,2 +1,1 @@
-cat ../../../../as/sample/sum_10.casl
 ../../../../casl2 -s ../../../../as/sample/sum_10.casl

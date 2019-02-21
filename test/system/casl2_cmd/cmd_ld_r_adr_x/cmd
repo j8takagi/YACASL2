@@ -1,2 +1,1 @@
-cat ../../../../as/cmd/LD/ld_r_adr_x.casl
 ../../../../casl2 -atd -M64 ../../../../as/cmd/LD/ld_r_adr_x.casl

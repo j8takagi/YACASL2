@@ -1,24 +1,3 @@
-;;; sum_10.casl
-;;; 1から10までの整数をすべて加算した値をメモリーに格納する
-MAIN    START   #20
-        PUSH    0,GR1
-        PUSH    0,GR2
-        XOR     GR2,GR2         ; GR2を初期化
-        LD      GR1,FST         ; GR1に初項をメモリーから転送
-LOOP    ADDL    GR2,GR1         ; ループ先頭。GR2 <- GR2 + GR1
-        ADDL    GR1,STEP        ; GR1 <- GR1 + 公差
-        CPL     GR1,LST         ; GR1が末項より大きい場合は終了
-        JPL     FIN             ; ↓
-        JUMP    LOOP            ; ループ終端
-FIN     ST      GR2,RST         ; GR2の結果をメモリーに転送
-        POP     GR2
-        POP     GR1
-        RET
-FST     DC      1               ; 初項
-LST     DC      10              ; 末項
-STEP    DC      1               ; 公差
-RST     DS      1               ; 結果
-        END
 
 Assemble sum_10.casl (0)
 

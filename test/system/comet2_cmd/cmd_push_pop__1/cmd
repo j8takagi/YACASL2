@@ -1,3 +1,1 @@
-../../../../casl2 -O ../../../../as/cmd/POP/push_pop__1.casl
 ../../../../comet2 -td -M64 a.o
-rm -f a.o

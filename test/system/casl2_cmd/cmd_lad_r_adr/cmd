@@ -1,2 +1,1 @@
-cat ../../../../as/cmd/LAD/lad_r_adr.casl
 ../../../../casl2 -atd -M16 ../../../../as/cmd/LAD/lad_r_adr.casl

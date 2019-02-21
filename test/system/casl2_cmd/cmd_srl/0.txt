@@ -1,9 +1,3 @@
-;;; SRL r,adr
-MAIN    START
-        LAD     GR1,#C000
-        SRL     GR1,14
-        RET
-        END
 
 Assemble ../../../../as/cmd/SRL/srl.casl (0)
 

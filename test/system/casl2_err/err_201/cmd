@@ -1,3 +1,1 @@
-YACASL2DIR=../../../..
-cat $YACASL2DIR/as/err/err_201.casl
-$YACASL2DIR/casl2 -M8 $YACASL2DIR/as/err/err_201.casl
+../../../../casl2 -M8 ../../../../as/err/err_201.casl

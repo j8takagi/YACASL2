@@ -1,14 +1,3 @@
-;;; JMI adr OF:1/SF:0/ZF:0
-MAIN    START
-        LD      GR1,A
-        SRL     GR1,1
-        JMI     TO
-        LAD     GR1,0
-        JUMP    FIN
-TO      LAD     GR1,#FFFF
-FIN     RET
-A       DC      #0003
-        END
 
 Assemble ../../../../as/cmd/JMI/jmi__o.casl (0)
 

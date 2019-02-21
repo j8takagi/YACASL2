@@ -1,6 +1,2 @@
-MAIN    START
-        LAD
-        RET
-        END
 Assemble error - 112: LAD: not command of no operand
 ../../../../as/err/err_112.casl:    2:        LAD

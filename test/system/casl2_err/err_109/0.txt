@@ -1,6 +1,2 @@
-MAIN    START
-        ST      GR1,GR2
-        RET
-        END
 Assemble error - 109: ST: not command of operand "r1,r2"
 ../../../../as/err/err_109.casl:    2:        ST      GR1,GR2

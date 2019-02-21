@@ -1,4 +1,4 @@
-l as/sample/hello.o
+l hello.o
 d a 0 #22
 t a
 c

@@ -1,11 +1,3 @@
-;;; SUBA r,adr オーバーフロー
-MAIN    START
-        LD      GR1,A
-        SUBA    GR1,B
-        RET
-A       DC      #8002           ; -32766
-B       DC      #7FFF           ; 32767
-        END
 
 Assemble ../../../../as/cmd/SUBA/suba_r_adr__o.casl (0)
 

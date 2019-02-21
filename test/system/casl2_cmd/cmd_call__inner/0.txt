@@ -1,11 +1,3 @@
-;;; CALL 同じプログラムの中にあるラベルを指定
-MAIN    START   BEGIN
-BEGIN   LAD     GR1,29
-        CALL    COPY
-        RET
-COPY    LD      GR2,GR1
-        RET
-        END
 
 Assemble ../../../../as/cmd/CALL/call__inner.casl (0)
 

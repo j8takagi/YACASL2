@@ -1,11 +1,3 @@
-;;; AND r,adr
-MAIN    START
-        LD      GR1,A
-        AND     GR1,B
-        RET
-A       DC      #3000
-B       DC      #4FFF
-        END
 
 Assemble ../../../../as/cmd/AND/and_r_adr.casl (0)
 

@@ -1,8 +1,2 @@
-MAIN    START
-        LAD     GR0,1
-        LD      GR1,A,GR0
-        RET
-A       DC      7,-7
-        END
 Assemble error - 120: GR0 in operand x
 ../../../../as/err/err_120.casl:    3:        LD      GR1,A,GR0

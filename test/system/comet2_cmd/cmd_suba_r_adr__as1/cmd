@@ -1,3 +1,1 @@
-../../../../casl2 -O ../../../../as/cmd/SUBA/suba_r_adr__as1.casl
 ../../../../comet2 -td -M8 a.o
-rm -f a.o

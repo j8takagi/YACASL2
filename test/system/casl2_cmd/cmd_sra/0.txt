@@ -1,9 +1,3 @@
-;;; SRA r,adr
-MAIN    START
-        LAD     GR1,#6000
-        SRA     GR1,13
-        RET
-        END
 
 Assemble ../../../../as/cmd/SRA/sra.casl (0)
 

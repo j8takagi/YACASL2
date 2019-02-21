@@ -1,9 +1,3 @@
-;;; SLA r,adr
-MAIN    START
-        LAD     GR1,3
-        SLA     GR1,13
-        RET
-        END
 
 Assemble ../../../../as/cmd/SLA/sla.casl (0)
 

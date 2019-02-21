@@ -1,2 +1,1 @@
-cat ../../../../as/cmd/JUMP/jump__z.casl
 ../../../../casl2 -atd -M16 ../../../../as/cmd/JUMP/jump__z.casl

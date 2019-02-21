@@ -1,17 +1,3 @@
-;;; CALL
-;;; 同じプログラムの中とほかのプログラムの入口名の両方で定義されたラベルを指定
-;;; YACASL2では、ほかのプログラムの入口名を優先
-MAIN    START   BEGIN
-BEGIN   LAD     GR1,29
-        CALL    COPY
-        RET
-COPY    LD      GR2,GR1
-        RET
-        END
-COPY    START
-        LD      GR2,GR1
-        RET
-        END
 
 Assemble ../../../../as/cmd/CALL/call__both.casl (0)
 

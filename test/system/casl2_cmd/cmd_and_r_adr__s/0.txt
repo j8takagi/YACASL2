@@ -1,11 +1,3 @@
-;;; AND r,adr 演算結果の符号が負
-MAIN    START
-        LD      GR1,A
-        AND     GR1,B
-        RET
-A       DC      #8000
-B       DC      #FFFF
-        END
 
 Assemble ../../../../as/cmd/AND/and_r_adr__s.casl (0)
 

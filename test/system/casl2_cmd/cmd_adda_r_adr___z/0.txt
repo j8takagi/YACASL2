@@ -1,11 +1,3 @@
-;;; ADDA r,adr 演算結果が零
-MAIN    START
-        LD      GR1,A
-        ADDA    GR1,B
-        RET
-A       DC      0
-B       DC      0
-        END
 
 Assemble ../../../../as/cmd/ADDA/adda_r_adr__z.casl (0)
 

@@ -1,11 +1,3 @@
-;;; SUBL r,adr 演算結果が負数(r > adr)
-MAIN    START
-        LD      GR1,A
-        SUBL    GR1,B
-        RET
-A       DC      10
-B       DC      20
-        END
 
 Assemble ../../../../as/cmd/SUBL/subl_r_adr__as0.casl (0)
 

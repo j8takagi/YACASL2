@@ -1,2 +1,2 @@
-l as/sample/sum_10.o
+l sum_10.o
 d 0 +#20

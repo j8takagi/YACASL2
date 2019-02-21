@@ -1,13 +1,3 @@
-;;; CALL ほかのプログラムの入口名を指定
-MAIN    START
-        LAD     GR1,29
-        CALL    COPY
-        RET
-        END
-COPY    START
-        LD      GR2,GR1
-        RET
-        END
 
 Assemble ../../../../as/cmd/CALL/call__outer.casl (0)
 

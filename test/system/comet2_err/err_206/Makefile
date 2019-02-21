@@ -1,22 +1,19 @@
 include ../Define.mk
 include ../Test.mk
 
-CC := gcc
-CFLAGS := -Wall
 INCLUDEDIR := ../../../../include
+CC := gcc
+CFLAGS := -Wall -Wextra -I$(INCLUDEDIR)
 
-.INTERMEDIATE: create_a a.o
+.INTERMEDIATE: create_a
+
+cmd: a.o
 
 a.o: create_a
-	./$^
+	./$<
 
-create_a: create_a.c
-	$(CC) $(CFLAGS) -I $(INCLUDEDIR) -o $@ $^
+clean: cleanobj
 
-$(CMD_FILE): a.o
+cleanobj:
+	$(RM) a.o
 
-clean: clean0
-
-clean0:
-	@rm -f create_a
-	@rm -f a.o

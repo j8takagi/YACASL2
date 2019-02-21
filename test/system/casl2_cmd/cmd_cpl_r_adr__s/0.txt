@@ -1,11 +1,3 @@
-;;; CPL r,adr SF:1
-MAIN    START   BEGIN
-BEGIN   LD      GR1,A
-        CPL     GR1,B
-        RET
-A       DC      #5000
-B       DC      #7000
-        END
 
 Assemble ../../../../as/cmd/CPL/cpl_r_adr__s.casl (0)
 

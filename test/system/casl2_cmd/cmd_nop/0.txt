@@ -1,16 +1,3 @@
-;;; NOP
-MAIN    START
-        NOP
-        NOP
-        NOP
-        NOP
-        NOP
-        NOP
-        NOP
-        NOP
-        NOP
-        RET
-        END
 
 Assemble ../../../../as/cmd/NOP/nop.casl (0)
 
