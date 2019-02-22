@@ -24,6 +24,7 @@ int main(int argc, char *argv[])
     const char *version = PACKAGE_VERSION,  *cmdversion = "disassemble of YACASL2 version %s\n";
     const char *usage = "Usage: %s [-vh] FILE\n";
 
+    /* エラーの定義 */
     cerr_init();
     addcerrlist_load();
     addcerrlist_exec();
@@ -33,13 +34,14 @@ int main(int argc, char *argv[])
         switch(opt) {
         case 'v':
             fprintf(stdout, cmdversion, version);
-            return 0;
+            goto casl2revfin;
         case 'h':
             fprintf(stdout, usage, argv[0]);
-            return 0;
+            goto casl2revfin;
         case '?':
             fprintf(stderr, usage, argv[0]);
-            exit(1);
+            setcerr(212, "");    /* invalid option */
+            goto casl2revfin;
         }
     }
     if(argv[optind] == NULL) {
@@ -48,7 +50,10 @@ int main(int argc, char *argv[])
         exit(1);
     }
     disassemble_file(argv[optind]);                /* プログラム実行 */
-    stat = (cerr->num == 0) ? 0 : 1;
+casl2revfin:
+    if(cerr->num > 0) {
+        stat = 1;
+    }
     freecerr();                 /* エラーの解放 */
     return stat;
 }

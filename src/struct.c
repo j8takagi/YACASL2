@@ -112,7 +112,7 @@ unsigned hash_cmdtype(const char *cmd, CMDTYPE type)
  */
 bool create_cmdtable(CMDTAB_HASH hash)
 {
-    CMDTAB *p;
+    CMDTAB *p = NULL;
     unsigned hashval;
     int i;
 

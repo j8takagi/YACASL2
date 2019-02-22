@@ -135,7 +135,7 @@ int main(int argc, char *argv[])
             goto casl2fin;
         case '?':
             fprintf(stderr, usage, argv[0]);
-            setcerr(127, "");    /* invalid option */
+            setcerr(212, "");    /* invalid option */
             goto casl2fin;
         }
     }
@@ -143,7 +143,7 @@ int main(int argc, char *argv[])
     /* ソースファイルが指定されていない場合は終了 */
     if(argv[optind] == NULL) {
         setcerr(126, "");    /* no source file */
-        fprintf(stderr, "CASL2 error - %d: %s\n", cerr->num, cerr->msg);
+        fprintf(stderr, "casl2 error - %d: %s\n", cerr->num, cerr->msg);
         goto casl2fin;
     }
     create_cmdtable(HASH_CMDTYPE);                 /* 命令の名前とタイプがキーのハッシュ表を作成 */
@@ -153,7 +153,7 @@ int main(int argc, char *argv[])
     }
     /* アセンブル */
     if(assemble(i, af, 0) == false || asmode.onlylabel == true) {
-        goto freecmdtable;
+        goto shutdown;
     }
     /* オブジェクトファイル名が指定されている場合は、アセンブル結果をオブジェクトファイルに出力 */
     if(objfile != NULL) {
@@ -163,10 +163,10 @@ int main(int argc, char *argv[])
     if(asmode.onlyassemble == false) {
         exec();                                    /* 仮想マシンCOMET IIの実行 */
     }
-freecmdtable:
-    shutdown();                                    /* 仮想マシンCOMET IIのシャットダウン */
-    free_cmdtable(HASH_CMDTYPE);
+shutdown:
+    shutdown();                                   /* 仮想マシンCOMET IIのシャットダウン */
 casl2fin:
+    free_cmdtable(HASH_CMDTYPE);
     FREE(objfile);
     if(cerr->num > 0) {
         stat = 1;

@@ -25,15 +25,6 @@ WORD n2word(const char *str);
  */
 WORD h2word(const char *str);
 
-/**
- * @brief wordのエラー定義
- */
-static CERR cerr_word[] = {
-    { 114, "not integer" },
-    { 115, "not hex" },
-    { 116, "out of hex range" },
-};
-
 WORD n2word(const char *str)
 {
     assert(isdigit(str[0]) || str[0] == '-');
@@ -73,7 +64,31 @@ WORD h2word(const char *str)
     return w;
 }
 
+/**
+ * @brief wordのエラー定義
+ */
+static CERR cerr_word[] = {
+    { 114, "not integer" },
+    { 115, "not hex" },
+    { 116, "out of hex range" },
+};
+
+/**
+ * @brief ファイル読み込みのエラー定義
+ */
+static CERR cerr_load[] = {
+    { 210, "load - memory overflow" },
+    { 211, "object file not specified" },
+    { 212, "invalid option" },
+    { 213, "invalid argument" },
+};
+
 /* word.hで定義された関数群 */
+void addcerrlist_load()
+{
+    addcerrlist(ARRAYSIZE(cerr_load), cerr_load);
+}
+
 void addcerrlist_word()
 {
     addcerrlist(ARRAYSIZE(cerr_word), cerr_word);

@@ -370,10 +370,23 @@ void free_moncmdline(MONCMDLINE *moncmdl)
     }
 }
 
+int monquit()
+{
+    int stat = 0;
+    shutdown();
+    freebps();
+    free_cmdtable(HASH_CMDTYPE);
+    free_cmdtable(HASH_CODE);
+    if(cerr->num > 0) {
+        stat = 1;
+    }
+    freecerr();
+    return stat;
+}
+
 void monitor()
 {
     char *buf = NULL;
-    int i;
     MONCMDLINE *moncmdl;
     MONCMDTYPE cmdtype = MONREPEAT;
 
@@ -385,20 +398,14 @@ void monitor()
         if(!buf[0]) {
             cmdtype = MONQUIT;
         }
-        if((i = strcspn(buf, "\n")) > 0 || buf[0] == '\n') {
-            buf[i] = '\0';
-        }
+        strip_end(buf);        /* 文字列末尾の改行と空白を削除 */
         if((moncmdl = monlinetok(buf)) != NULL) {
             cmdtype = monitorcmd(moncmdl->cmd, moncmdl->args);
             free_moncmdline(moncmdl);
         }
         FREE(buf);
         if(cmdtype == MONQUIT) {
-            shutdown();
-            freebps();
-            free_cmdtable(HASH_CMDTYPE);
-            freecerr();
-            exit(0);
+            exit(monquit());
         }
     } while(cmdtype == MONREPEAT);
 }
