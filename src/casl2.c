@@ -1,5 +1,6 @@
 #include "package.h"
 #include "assemble.h"
+#include "exec.h"
 
 /**
  * @brief CASL IIのエラーをエラーリストに追加

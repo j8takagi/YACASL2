@@ -9,11 +9,7 @@
 #include <assert.h>
 #include <errno.h>
 #include "cerr.h"
-#include "cmem.h"
-#include "exec.h"
-#include "hash.h"
 #include "struct.h"
-#include "word.h"
 #include "token.h"
 
 /**
