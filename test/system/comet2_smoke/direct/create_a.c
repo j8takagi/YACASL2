@@ -18,6 +18,5 @@ int main()
     }
     fwrite(w, sizeof(WORD), ARRAYSIZE(w), fp);
     fclose(fp);
-    FREE(fp);
     return 0;
 }

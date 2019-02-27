@@ -5,4 +5,5 @@ breakpoint manipulate:
     b[reak] d[el] <address>
     b[reak] l[ist]
     b[reak] r[eset]
-(comet2 monitor) 1: ignored.
+(comet2 monitor) 
+1: ignored.

@@ -396,11 +396,11 @@ void monitor()
         fprintf(stdout, "%s ", monitor_prompt);
         buf = malloc_chk(MONINSIZE + 1, "monitor.buf");
         fgets(buf, MONINSIZE, stdin);
-        fprintf(stdout, "%s", buf);
         if(!buf[0]) {
             cmdtype = MONQUIT;
         }
         strip_end(buf);        /* 文字列末尾の改行と空白を削除 */
+        fprintf(stdout, "%s\n", buf);
         if((moncmdl = monlinetok(buf)) != NULL) {
             cmdtype = monitorcmd(moncmdl->cmd, moncmdl->args);
             free_moncmdline(moncmdl);

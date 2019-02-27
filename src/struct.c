@@ -70,7 +70,7 @@ enum {
 /**
  * ハッシュ表
  */
-static CMDTAB *cmdtab[HASH_MAX][CMDTABSIZE] = {NULL};
+static CMDTAB *cmdtab[HASH_MAX][CMDTABSIZE] = {{NULL}};
 
 /**
  * 命令の名前とタイプからハッシュ値を生成する
