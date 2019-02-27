@@ -19,18 +19,6 @@ static struct option longopts[] = {
 
 
 /**
- * @brief comet2のエラー定義
- */
-CERR cerr_comet2[] = {
-    { 127, "invalid option" },
-};
-
-void addcerrlist_comet2()
-{
-    addcerrlist(ARRAYSIZE(cerr_comet2), cerr_comet2);
-}
-
-/**
  * @brief comet2コマンドのメイン
  *
  * @return 正常終了時は0、異常終了時は1
@@ -50,7 +38,6 @@ int main(int argc, char *argv[])
 
     /* エラーの定義 */
     cerr_init();
-    addcerrlist_comet2();
     addcerrlist_load();
     addcerrlist_exec();
 

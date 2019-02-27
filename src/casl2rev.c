@@ -1,5 +1,5 @@
 #include "package.h"
-#include "exec.h"
+#include "disassemble.h"
 
 /**
  * @brief casl2revコマンドのオプション
@@ -29,7 +29,6 @@ int main(int argc, char *argv[])
     /* エラーの定義 */
     cerr_init();
     addcerrlist_load();
-    addcerrlist_exec();
 
     /* オプションの処理 */
     while((opt = getopt_long(argc, argv, "vh", longopts, NULL)) != -1) {
