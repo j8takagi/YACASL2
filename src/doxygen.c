@@ -6,6 +6,7 @@
  * - src/comet2monitor.c
  * - src/dumpword.c
  * - src/casl2rev.c
+ * - src/comet2monitor.c
  *
  * \section そのほかのソースファイル
  * - src/assemble.c

@@ -1,9 +1,3 @@
-;;; SLA r,adr オーバーフローし、結果は零
-MAIN    START
-        LAD     GR1,3
-        SLA     GR1,15
-        RET
-        END
 
 Assemble ../../../../as/cmd/SLA/sla__oz.casl (0)
 

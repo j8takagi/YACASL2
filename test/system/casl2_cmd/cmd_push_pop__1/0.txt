@@ -1,30 +1,3 @@
-;;; PUSH / POP 値の交換
-MAIN    START
-        LD      GR1,A
-        LD      GR1,0,GR7
-        LD      GR2,1,GR7
-        LD      GR3,2,GR7
-        LD      GR4,3,GR7
-        LD      GR5,4,GR7
-        LD      GR6,5,GR7
-        LD      GR7,6,GR7
-        PUSH    0,GR1
-        PUSH    0,GR2
-        PUSH    0,GR3
-        PUSH    0,GR4
-        PUSH    0,GR5
-        PUSH    0,GR6
-        PUSH    0,GR7
-        POP     GR1
-        POP     GR2
-        POP     GR3
-        POP     GR4
-        POP     GR5
-        POP     GR6
-        POP     GR7
-        RET
-A       DC      1,2,3,4,5,6,7
-        END
 
 Assemble ../../../../as/cmd/POP/push_pop__1.casl (0)
 

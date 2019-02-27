@@ -1,8 +1,4 @@
-#include <stdio.h>
-#include <string.h>
-#include "cerr.h"
-#include "cmem.h"
-#include "assemble.h"
+#include "token.h"
 
 /**
  * @brief 「,」区切りの文字列から、オペランドのトークンを取得
@@ -56,7 +52,7 @@ OPD *opdtok(const char *str)
         /* 「'」の場合 */
         if(p[i] == '\'') {
             /* 「''」以外の場合はquote値を反転する */
-            if(p[i+1] != '\'' && (i == 0 || p[i-1] != '\'')) {
+            if(p[i+1] != '\'' && (quoting == false || p[i-1] != '\'')) {
                 quoting = !quoting;
             }
             /* 「'」をカウントする。「''」の場合は1をカウント */
@@ -98,30 +94,13 @@ void addcerrlist_tok()
     addcerrlist(ARRAYSIZE(cerr_opdtok), cerr_opdtok);
 }
 
-char *strip_casl2_comment(char *s)
-{
-    int i;
-    bool quoting = false;
-
-    for(i = 0; s[i]; i++) {
-        /* 「'」で囲まれた文字列の場合。「''」は無視 */
-        if(s[i] == '\'' && s[i+1] != '\'' && (i == 0 || s[i-1] != '\'')) {
-            quoting = !quoting;
-        /* 「'」で囲まれた文字列でない場合、文字列末尾の「;」以降を削除 */
-        } else if(quoting == false && s[i] == ';') {
-            s[i] = '\0';
-            break;
-        }
-    }
-    return s;
-}
-
 CMDLINE *linetok(const char *line)
 {
-    char *tok = NULL, *p = NULL, *lbl = NULL;
+    char *tok = NULL, *p = NULL;
     int i;
     CMDLINE *cmdl = NULL;
 
+    assert(line);
     if(!line[0] || line[0] == '\n') {
         return NULL;
     }
@@ -139,22 +118,20 @@ CMDLINE *linetok(const char *line)
     /* ラベルの取得 */
     /* 行の先頭が空白またはタブの場合、ラベルは空 */
     if((i = strcspn(p, " \t")) == 0) {
-        lbl = strdup_chk("", "linetok.lbl");
+        cmdl->label = strdup_chk("", "cmdl->label");
     } else {
-        lbl = strndup_chk(p, i, "linetok.lbl");
+        cmdl->label = strndup_chk(p, i, "cmdl->label");
         /* ラベルの文字列が長すぎる場合はエラー */
         if(i > LABELSIZE) {
-            setcerr(104, lbl);    /* label length is too long */
-            FREE(lbl);
+            setcerr(104, cmdl->label);    /* label length is too long */
+            FREE(cmdl->label);
             goto linetokfin;
         }
-        /* 文字列先頭をラベルの次の文字に移動 */
-        p += i;
     }
-    /* ラベル取得の実行 */
-    cmdl->label = lbl;
 
     /* 命令の取得 */
+    /* 文字列先頭をラベルの次の文字に移動 */
+    p += i;
     /* 文字列先頭を、ラベルと命令の間の空白の後ろに移動 */
     p += strspn(p, " \t");
     /* 命令がない場合は、終了 */

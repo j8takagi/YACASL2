@@ -23,11 +23,17 @@ static struct option longopts[] = {
 int main(int argc, char *argv[])
 {
     bool logicalmode = false;    /* レジストリの内容を論理値（0から65535）で表示する場合はtrue */
-    int opt;
+    int opt, stat = 0;
     WORD word;
     const char *version = PACKAGE_VERSION,  *cmdversion = "dumpword of YACASL2 version %s\n";
     const char *usage = "Usage: %s [-alh] WORD\n";
 
+    /* エラーの定義 */
+    cerr_init();
+    addcerrlist_load();
+    addcerrlist_word();
+
+    /* オプションの処理 */
     while((opt = getopt_long(argc, argv, "alvh", longopts, NULL)) != -1) {
         switch(opt) {
         case 'l':
@@ -35,35 +41,35 @@ int main(int argc, char *argv[])
             break;
         case 'v':
             fprintf(stdout, cmdversion, version);
-            return 0;
+            goto dumpwordfin;
         case 'h':
             fprintf(stdout, usage, argv[0]);
-            return 0;
+            goto dumpwordfin;
         case '?':
             fprintf(stderr, usage, argv[0]);
-            exit(1);
+            setcerr(212, "");    /* invalid option */
+            goto dumpwordfin;
         }
     }
 
-    /* エラーの定義 */
-    cerr_init();
-    addcerrlist_word();
-
     if(argv[optind] == NULL) {
+        setcerr(213, "");    /* invalid argument */
         fprintf(stderr, usage, argv[0]);
-        freecerr();
-        exit(1);
+        goto dumpwordfin;
     }
     /* WORD値に変換 */
     word = nh2word(argv[optind]);
     if(cerr->num > 0) {
         fprintf(stderr, "Dumpword Error - %d: %s\n", cerr->num, cerr->msg);
-        freecerr();
-        exit(1);
+        goto dumpwordfin;
     }
     fprintf(stdout, "%6s: ", argv[optind]);
     print_dumpword(word, logicalmode);
     fprintf(stdout, "\n");
-    freecerr();
-    return 0;
+dumpwordfin:
+    if(cerr->num > 0) {
+        stat = 1;
+    }
+    freecerr();                 /* エラーの解放 */
+    return stat;
 }

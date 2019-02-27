@@ -1,17 +1,3 @@
-;;; DS
-MAIN    START
-        LAD     GR1,A
-        LAD     GR1,B
-        LAD     GR1,C
-        LAD     GR1,D
-        LAD     GR1,E
-        RET
-A       DS      1
-B       DS      2
-C       DS      4
-D       DS      0
-E       DC      #FFFF
-        END
 
 Assemble ../../../../as/cmd/DS/ds.casl (0)
 

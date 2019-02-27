@@ -1,3 +1,1 @@
-../../../../casl2 -O ../../../../as/cmd/SRA/sra__o.casl
 ../../../../comet2 -td -M8 a.o
-rm -f a.o

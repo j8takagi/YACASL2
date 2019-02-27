@@ -1,2 +1,1 @@
-cat ../../../../as/cmd/ADDA/adda_r1_r2.casl
 ../../../../casl2 -atd -M128 ../../../../as/cmd/ADDA/adda_r1_r2.casl

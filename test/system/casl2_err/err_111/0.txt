@@ -1,7 +1,2 @@
-MAIN    START
-        LD      A
-        RET
-A       DC      3
-        END
 Assemble error - 111: LD: not command of operand "adr[,x]"
 ../../../../as/err/err_111.casl:    2:        LD      A

@@ -1,0 +1,2 @@
+../../../../casl2 -sla -Oopt.o ../../../../as/sample/sum_10.casl
+

@@ -46,6 +46,7 @@ static struct option longopts[] = {
  */
 CERR cerr_casl2[] = {
     { 126, "no source file" },
+    { 127, "invalid option" },
 };
 
 void addcerrlist_casl2()
@@ -74,6 +75,12 @@ int main(int argc, char *argv[])
     const char *version = PACKAGE_VERSION,  *cmdversion = "casl2 of YACASL2 version %s\n";
     const char *usage =
         "Usage: %s [-slLaAtTdmvh] [-oO[<OBJECTFILE>]] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE1[ FILE2  ...]\n";
+
+    /* エラーの定義 */
+    cerr_init();
+    addcerrlist_casl2();
+    addcerrlist_assemble();
+    addcerrlist_exec();
 
     /* オプションの処理 */
     while((opt = getopt_long(argc, argv, "tTdslLmao::O::AM:C:vh", longopts, NULL)) != -1) {
@@ -123,51 +130,48 @@ int main(int argc, char *argv[])
             break;
         case 'v':
             fprintf(stdout, cmdversion, version);
-            return 0;
+            goto casl2fin;
         case 'h':
             fprintf(stdout, usage, argv[0]);
-            return 0;
+            goto casl2fin;
         case '?':
             fprintf(stderr, usage, argv[0]);
-            exit(1);
+            setcerr(212, "");    /* invalid option */
+            goto casl2fin;
         }
     }
-
-    /* エラーの定義 */
-    cerr_init();
-    addcerrlist_casl2();
-    addcerrlist_assemble();
-    addcerrlist_exec();
 
     /* ソースファイルが指定されていない場合は終了 */
     if(argv[optind] == NULL) {
         setcerr(126, "");    /* no source file */
-        fprintf(stderr, "CASL2 error - %d: %s\n", cerr->num, cerr->msg);
-        freecerr();                                    /* エラーの解放 */
-        exit(1);
+        fprintf(stderr, "casl2 error - %d: %s\n", cerr->num, cerr->msg);
+        goto casl2fin;
     }
     create_cmdtable(HASH_CMDTYPE);                 /* 命令の名前とタイプがキーのハッシュ表を作成 */
     reset(memsize, clocks);                        /* 仮想マシンCOMET IIのリセット */
     for(i = 0; i < argc - optind; i++) {           /* 引数からファイル名配列を取得 */
         af[i] = argv[optind + i];
     }
-    assemble(i, af, 0);                            /* アセンブル */
-    if(asmode.onlylabel == true || cerr->num > 0) {
-        goto casl2fin;
+    /* アセンブル */
+    if(assemble(i, af, 0) == false || asmode.onlylabel == true) {
+        goto shutdown;
     }
     /* オブジェクトファイル名が指定されている場合は、アセンブル結果をオブジェクトファイルに出力 */
     if(objfile != NULL) {
         outassemble(objfile);
-        FREE(objfile);
     }
     /* onlyassembleモード以外の場合、仮想マシンCOMET IIを実行 */
     if(asmode.onlyassemble == false) {
         exec();                                    /* 仮想マシンCOMET IIの実行 */
     }
+shutdown:
+    shutdown();                                   /* 仮想マシンCOMET IIのシャットダウン */
 casl2fin:
-    shutdown();                                    /* 仮想マシンCOMET IIのシャットダウン */
     free_cmdtable(HASH_CMDTYPE);
-    stat = (cerr->num == 0) ? 0 : 1;
+    FREE(objfile);
+    if(cerr->num > 0) {
+        stat = 1;
+    }
     freecerr();                                    /* エラーの解放 */
     return stat;
 }

@@ -1,6 +1,1 @@
-;;; casl2 -M8 err_203.casl
-MAIN    START
-        POP     GR1
-        RET
-        END
 Execute error - 203: PR:#0000: Stack Pointer (SP) - stack underflow

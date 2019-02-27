@@ -1,7 +1,2 @@
-MAIN    START
-        LD      GR1,A
-        RET
-A
-        END
 Assemble error - 105: no command in the line
 ../../../../as/err/err_105.casl:    4:A

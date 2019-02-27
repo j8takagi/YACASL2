@@ -1,3 +1,1 @@
-../../../../casl2 -O ../../../../as/cmd/DC/dc__io.casl
 ../../../../comet2 -td -M32 a.o
-rm -f a.o

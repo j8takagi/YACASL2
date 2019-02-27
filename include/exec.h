@@ -22,11 +22,6 @@ enum {
 void addcerrlist_exec();
 
 /**
- * @brief アセンブル結果読み込みエラーをエラーリストに追加する
- */
-void addcerrlist_load();
-
-/**
  * @brief 指定されたファイルからアセンブル結果を読み込む
  *
  * @return 読み込み終了アドレス。読み込めなかった場合は、0

@@ -1,0 +1,8 @@
+COMET II machine code monitor. Type ? for help.
+(comet2 monitor) b ?
+breakpoint manipulate:
+    b[reak] a[dd] <address>
+    b[reak] d[el] <address>
+    b[reak] l[ist]
+    b[reak] r[eset]
+(comet2 monitor) 

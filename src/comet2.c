@@ -17,6 +17,19 @@ static struct option longopts[] = {
     {0, 0, 0, 0},
 };
 
+
+/**
+ * @brief comet2のエラー定義
+ */
+CERR cerr_comet2[] = {
+    { 127, "invalid option" },
+};
+
+void addcerrlist_comet2()
+{
+    addcerrlist(ARRAYSIZE(cerr_comet2), cerr_comet2);
+}
+
 /**
  * @brief comet2コマンドのメイン
  *
@@ -31,6 +44,12 @@ int main(int argc, char *argv[])
     int opt, stat = 0;
     const char *version = PACKAGE_VERSION,  *cmdversion = "comet2 of YACASL2 version %s\n";
     const char *usage = "Usage: %s [-tTdmvh] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE\n";
+
+    /* エラーの定義 */
+    cerr_init();
+    addcerrlist_comet2();
+    addcerrlist_load();
+    addcerrlist_exec();
 
     /* オプションの処理 */
     while((opt = getopt_long(argc, argv, "tTdmM:C:vh", longopts, NULL)) != -1) {
@@ -56,33 +75,32 @@ int main(int argc, char *argv[])
             break;
         case 'v':
             fprintf(stdout, cmdversion, version);
-            return 0;
+            goto comet2fin;
         case 'h':
             fprintf(stdout, usage, argv[0]);
-            return 0;
+            goto comet2fin;
         case '?':
             fprintf(stderr, usage, argv[0]);
-            exit(1);
+            setcerr(212, "");    /* invalid option */
+            goto comet2fin;
         }
     }
-    /* エラーの定義 */
-    cerr_init();
-    addcerrlist_load();
-    addcerrlist_exec();
-
     if(argv[optind] == NULL) {
         setcerr(211, "");    /* object file not specified */
         fprintf(stderr, "comet2 error - %d: %s\n", cerr->num, cerr->msg);
-        goto fin;
+        goto comet2fin;
     }
     reset(memsize, clocks);     /* COMET II仮想マシンのリセット */
     execptr->start = 0;
-    if((execptr->end = loadassemble(argv[optind], execptr->start)) > 0 && cerr->num == 0) {
+    execptr->end = loadassemble(argv[optind], execptr->start);
+    if(execptr->end > 0 && cerr->num == 0) {
         exec();                 /* プログラム実行 */
     }
     shutdown();                 /* COMET II仮想マシンのシャットダウン */
-fin:
-    stat = (cerr->num == 0) ? 0 : 1;
+comet2fin:
+    if(cerr->num > 0) {
+        stat = 1;
+    }
     freecerr();                 /* エラーの解放 */
     return stat;
 }

@@ -1,9 +1,3 @@
-;;; SLL r,adr 正数のオーバーフロー
-MAIN    START
-        LAD     GR1,2
-        SLL     GR1,15
-        RET
-        END
 
 Assemble ../../../../as/cmd/SLL/sll__o.casl (0)
 

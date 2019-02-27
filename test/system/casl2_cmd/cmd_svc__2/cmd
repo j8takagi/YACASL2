@@ -1,2 +1,1 @@
-cat ../../../../as/cmd/SVC/svc__2.casl
 ../../../../casl2 -atd -M64 ../../../../as/cmd/SVC/svc__2.casl

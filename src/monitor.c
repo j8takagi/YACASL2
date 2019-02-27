@@ -145,24 +145,29 @@ MONARGS *monargstok(const char *str)
 MONCMDLINE *monlinetok(const char *line)
 {
     char *tokens, *p;
-    long l;
+    int i;
     MONCMDLINE *moncmdl = NULL;
 
     if(!line[0] || line[0] == '\n') {
         return NULL;
     }
     p = tokens = strdup_chk(line, "tokens");
+    /* コメントを削除 */
+    strip_casl2_comment(p);
+    /* 文字列末尾の改行と空白を削除 */
+    strip_end(p);
+
     moncmdl = malloc_chk(sizeof(MONCMDLINE), "moncmdl");
     /* コマンドの取得 */
-    moncmdl->cmd = malloc_chk((l = strcspn(p, " \t\n")) + 1, "moncmdl.cmd");
-    strncpy(moncmdl->cmd, p, l);
+    i = strcspn(p, " \t\n");
+    moncmdl->cmd = strndup_chk(p, i, "moncmdl->cmd");
     /* コマンドと引数の間の空白をスキップ */
-    p += l;
+    p += i;
     while(*p == ' ' || *p == '\t') {
         p++;
     }
     /* 引数として、改行までの文字列を取得 */
-    if((l = strcspn(p, "\n")) > 0) {
+    if(strcspn(p, "\n") > 0) {
         moncmdl->args = monargstok(p);
     } else {
         moncmdl->args = malloc_chk(sizeof(MONARGS), "moncmdl.args");
@@ -186,12 +191,27 @@ bool stracmp(char *str1, int str2c, char *str2v[])
     return false;
 }
 
+void warn_ignore_arg(int argc, char *argv[])
+{
+    int i;
+    for(i = 0; i < argc; i++) {
+        if(i > 0) {
+            fprintf(stderr, " ");
+        }
+        fprintf(stderr, "%s", argv[i]);
+    }
+    fprintf(stderr, ": ignored.\n");
+}
+
 void mon_break(int argc, char *argv[])
 {
     WORD w;
+    int i = 0;
     if(stracmp(argv[0], 2, (char* []){"l", "list"})) {
+        i++;
         listbps();
     } else if(stracmp(argv[0], 2, (char* []){"r", "reset"})) {
+        i++;
         freebps();
         fprintf(stdout, "All breakpoints are deleted.\n");
     } else {
@@ -201,18 +221,21 @@ void mon_break(int argc, char *argv[])
             }
         }
         if(stracmp(argv[0], 2, (char* []){"a", "add"})) {
+            i += 2;
             if(addbps(w) == true) {
                 fprintf(stdout, "#%04X: breakpoint added\n", w);
             } else {
                 fprintf(stdout, "No breakpoint added\n");
             }
         } else if(stracmp(argv[0], 2, (char* []){"d", "del"})) {
+            i += 2;
             if(delbps(w) == true) {
                 fprintf(stdout, "#%04X: breakpoint deleted\n", w);
             } else {
                 fprintf(stdout, "No breakpoint deleted\n");
             }
         } else if(stracmp(argv[0], 3, (char* []){"?", "h", "help"})) {
+            i++;
             fprintf(stdout, "breakpoint manipulate:\n");
             fprintf(stdout, "    b[reak] a[dd] <address>\n");
             fprintf(stdout, "    b[reak] d[el] <address>\n");
@@ -221,13 +244,16 @@ void mon_break(int argc, char *argv[])
         } else {
             fprintf(stderr, "%s: Not breakpoint manipulate command. see `b ?'.\n", argv[0]);
         }
+        if(argc > i) {
+            warn_ignore_arg(argc - i, argv + i);
+        }
     }
 }
 
 void mon_dump(int argc, char *argv[])
 {
-    int i = 0, j;
-    WORD start = 0, end = 0xFFFF;
+    int i = 0;
+    WORD dump_start = 0, dump_end = 0x40;
     if(argc > 0 && stracmp(argv[0], 2, (char* []){"a", "auto"})) {
         execmode.dump = true;
         i++;
@@ -236,21 +262,24 @@ void mon_dump(int argc, char *argv[])
         i++;
     }
     if(argc > i) {
-        start = execmode.dump_start = nh2word(argv[i++]);
+        dump_start = nh2word(argv[i++]);
         if(argc > i) {
-            end = execmode.dump_end = nh2word(argv[i++]);
-        }
-        dumpmemory(start, end);
-        if(argc > i) {
-            for(j = i; j < argc; j++) {
-                if(j > i) {
-                    fprintf(stderr, " ");
-                }
-                fprintf(stderr, "%s", argv[j]);
+            if(argv[i][0] =='+') {
+                dump_end = dump_start + nh2word(argv[i] + 1);
+            } else {
+                dump_end = nh2word(argv[i]);
             }
-            fprintf(stderr, ": ignored.\n");
+        } else {
+            dump_end += dump_start;
         }
+        i++;
     }
+    if(argc > i) {
+        warn_ignore_arg(argc - i, argv + i);
+    }
+    dumpmemory(dump_start, dump_end);
+    execmode.dump_start = dump_start;
+    execmode.dump_end = dump_end;
 }
 
 MONCMDTYPE monitorcmd(char *cmd, MONARGS *args)
@@ -341,10 +370,23 @@ void free_moncmdline(MONCMDLINE *moncmdl)
     }
 }
 
+int monquit()
+{
+    int stat = 0;
+    shutdown();
+    freebps();
+    free_cmdtable(HASH_CMDTYPE);
+    free_cmdtable(HASH_CODE);
+    if(cerr->num > 0) {
+        stat = 1;
+    }
+    freecerr();
+    return stat;
+}
+
 void monitor()
 {
     char *buf = NULL;
-    int i;
     MONCMDLINE *moncmdl;
     MONCMDTYPE cmdtype = MONREPEAT;
 
@@ -356,20 +398,14 @@ void monitor()
         if(!buf[0]) {
             cmdtype = MONQUIT;
         }
-        if((i = strcspn(buf, "\n")) > 0 || buf[0] == '\n') {
-            buf[i] = '\0';
-        }
+        strip_end(buf);        /* 文字列末尾の改行と空白を削除 */
         if((moncmdl = monlinetok(buf)) != NULL) {
             cmdtype = monitorcmd(moncmdl->cmd, moncmdl->args);
             free_moncmdline(moncmdl);
         }
         FREE(buf);
         if(cmdtype == MONQUIT) {
-            shutdown();
-            freebps();
-            free_cmdtable(HASH_CODE);
-            freecerr();
-            exit(0);
+            exit(monquit());
         }
     } while(cmdtype == MONREPEAT);
 }

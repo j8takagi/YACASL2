@@ -1,2 +1,1 @@
-cat ../../../../as/cmd/CPA/cpa_r_adr_x__s.casl
 ../../../../casl2 -atd -M16 ../../../../as/cmd/CPA/cpa_r_adr_x__s.casl

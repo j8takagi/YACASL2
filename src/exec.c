@@ -86,14 +86,6 @@ static CERR cerr_exec[] = {
 };
 
 /**
- * @brief アセンブル結果読み込みエラーの定義
- */
-static CERR cerr_load[] = {
-    { 210, "load - memory overflow" },
-    { 211, "object file not specified" },
-};
-
-/**
  * @brief 実行モード: trace, logical, dump, dump_start, dump_end,  monitor, step
  */
 EXECMODE execmode = {false, false, false, 0, 0xFFFF, false, false};
@@ -216,11 +208,6 @@ WORD get_val_adr_x(WORD adr, WORD oprx)
 }
 
 /* exec.hで定義された関数群 */
-void addcerrlist_load()
-{
-    addcerrlist(ARRAYSIZE(cerr_load), cerr_load);
-}
-
 void addcerrlist_exec()
 {
     addcerrlist(ARRAYSIZE(cerr_exec), cerr_exec);

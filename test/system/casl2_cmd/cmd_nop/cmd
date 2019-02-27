@@ -1,2 +1,1 @@
-cat ../../../../as/cmd/NOP/nop.casl
 ../../../../casl2 -atd -M16 ../../../../as/cmd/NOP/nop.casl

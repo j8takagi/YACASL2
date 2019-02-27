@@ -1,9 +1,3 @@
-;;; SLA r,adr オーバーフロー
-MAIN    START
-        LAD     GR1,3
-        SLA     GR1,14
-        RET
-        END
 
 Assemble ../../../../as/cmd/SLA/sla__o.casl (0)
 

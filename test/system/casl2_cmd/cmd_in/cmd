@@ -1,2 +1,1 @@
-cat ../../../../as/cmd/IN/in.casl teststr.txt
 ../../../../casl2 -atd -M64 ../../../../as/cmd/IN/in.casl <teststr.txt

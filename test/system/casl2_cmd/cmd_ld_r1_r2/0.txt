@@ -1,16 +1,3 @@
-MAIN    START
-        LAD     GR1,A
-        LD      GR0,0,GR1
-        LD      GR2,2,GR1
-        LD      GR3,3,GR1
-        LD      GR4,4,GR1
-        LD      GR5,5,GR1
-        LD      GR6,6,GR1
-        LD      GR7,7,GR1
-        LD      GR1,1,GR1
-        RET
-A       DC      2,3,5,7,11,13,17,19
-        END
 
 Assemble ../../../../as/cmd/LD/ld_r1_r2.casl (0)
 

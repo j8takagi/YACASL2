@@ -1,2 +1,1 @@
-cat ../../../../as/cmd/RPOP/rpop.casl
 ../../../../casl2 -atd -M64 ../../../../as/cmd/RPOP/rpop.casl

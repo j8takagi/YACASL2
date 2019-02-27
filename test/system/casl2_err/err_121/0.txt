@@ -1,9 +1,2 @@
-MAIN    START   BEGIN
-BEGIN   LD      GR1, A
-        ADDA    GR1,B
-        RET
-A       DC      3
-B       DC      1
-        END
 Assemble error - 121: cannot get operand token
 ../../../../as/err/err_121.casl:    2:BEGIN   LD      GR1, A

@@ -35,12 +35,15 @@ LN := ln -s
 MKDIR := mkdir -p
 MV := mv
 PRINTF := printf
+REALPATH := realpath
 SED := sed
 TEST := test
 TIME := time
 TR := tr
 VALGRIND := valgrind
-VALGRINDFLAG :=  -q --leak-check=full --show-leak-kinds=all --log-file=valgrind.log
+VALGRIND_LOGFILE := _valgrind.log
+VALGRINDFLAG :=  -q --leak-check=full --show-leak-kinds=all --log-file=$(VALGRIND_LOGFILE)
+VALGRIND_CMDLOGFILE := valgrind.log
 
 ######################################################################
 # テストグループとテストでの共通マクロ
@@ -65,6 +68,14 @@ define create_dir
     $(call chk_var_null,$1)
     $(call chk_file_ext,$1)
     $(MKDIR) $1
+endef
+
+
+# ファイル1からファイル2への相対パス
+# 引数は、ファイル名1、ファイル名2
+# 用例: $(call rel_to,file1,file2)
+define rel_to
+    $(strip $(shell $(REALPATH) --relative-to=$1 $2))
 endef
 
 # テストディレクトリーのMakefileを作成
@@ -103,11 +114,17 @@ DEFINE_FILE := Define.mk
 # テストのターゲットを定義したMakefile
 TEST_MAKEFILE := Test.mk
 
-# すべてのMakefile群
-MAKEFILES := $(DEFINE_FILE) $(TEST_MAKEFILE)
+# テストグループのMakefileとしてコピーされるファイル
+GROUP_MAKEFILE := Group.mk
 
-# すべてのMakefile群の絶対パス
-MAKEFILES_ABS := $(foreach file,$(MAKEFILES),$(CURDIR)/$(file))
+# DEFINE_FILEの相対パス
+DEFINE_FILE_REL = $(call rel_to,$(GROUPDIR),$(DEFINE_FILE))
+
+# TEST_MAKEFILEの相対パス
+TEST_MAKEFILE_REL = $(call rel_to,$(GROUPDIR),$(TEST_MAKEFILE))
+
+# GROUP_MAKEFILEの相対パス
+GROUP_MAKEFILE_REL = $(call rel_to,$(GROUPDIR),$(GROUP_MAKEFILE))
 
 ######################################################################
 # テストのディレクトリー
@@ -115,6 +132,9 @@ MAKEFILES_ABS := $(foreach file,$(MAKEFILES),$(CURDIR)/$(file))
 
 # テストコマンドファイル
 CMD_FILE := cmd
+
+# valgrindテストコマンドファイル
+VALGRIND_CMD_FILE := cmd_valgrind
 
 # テスト説明ファイル
 DESC_FILE := desc.txt

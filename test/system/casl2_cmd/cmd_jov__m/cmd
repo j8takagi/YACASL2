@@ -1,2 +1,1 @@
-cat ../../../../as/cmd/JOV/jov__m.casl
 ../../../../casl2 -atd -M16 ../../../../as/cmd/JOV/jov__m.casl

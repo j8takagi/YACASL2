@@ -1,7 +1,2 @@
-MAIN    START
-        CALL    GR1,A
-        RET
-A       DC      3
-        END
 Assemble error - 110: CALL: not command of operand "r,adr[,x]"
 ../../../../as/err/err_110.casl:    2:        CALL    GR1,A

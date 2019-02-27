@@ -1,9 +1,3 @@
-;;; SRA r,adr 負数のオーバーフロー
-MAIN    START
-        LAD     GR1,#A000
-        SRA     GR1,14
-        RET
-        END
 
 Assemble ../../../../as/cmd/SRA/sra__os.casl (0)
 

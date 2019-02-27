@@ -1,3 +1,1 @@
-../../../../casl2 -O ../../../../as/err/err_208.casl
 ../../../../comet2 -M32 a.o <teststr.txt
-rm -f a.o

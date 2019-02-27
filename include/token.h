@@ -52,15 +52,6 @@ typedef struct {
 void addcerrlist_tok();
 
 /**
- * @brief 文字列から「'」以降の文字列をCASL IIのコメントとして削除する。「''」の場合は除く
- *
- * @return コメントを削除した文字列
- *
- * @param s 文字列
- */
-char *strip_casl2_comment(char *s);
-
-/**
  * @brief 行から、ラベル・コマンド・オペランドを取得する
  *
  * @return ラベル・コマンド・オペランド

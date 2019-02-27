@@ -1,7 +1,2 @@
-MAIN    START
-        LD      GR1
-        RET
-A       DC      1
-        END
 Assemble error - 108: LD: not command of operand "r"
 ../../../../as/err/err_108.casl:    2:        LD      GR1

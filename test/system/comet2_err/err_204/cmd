@@ -1,2 +1,1 @@
-make a.o >/dev/null
 ../../../../comet2 a.o

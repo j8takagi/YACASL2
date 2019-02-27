@@ -1,14 +1,3 @@
-;;;JPL adr OF:0/SF:0/ZF:0
-MAIN    START
-        LD      GR1,A
-        AND     GR1,GR1
-        JPL     TO
-        LAD     GR1,0
-        JUMP    FIN
-TO      LAD     GR1,#FFFF
-FIN     RET
-A       DC      1
-        END
 
 Assemble ../../../../as/cmd/JPL/jpl__p.casl (0)
 

@@ -1,1 +1,1 @@
-CASL2 error - 126: no source file
+casl2 error - 126: no source file

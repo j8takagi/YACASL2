@@ -1,2 +1,1 @@
-cat ../../../../as/cmd/SRA/sra__s.casl
 ../../../../casl2 -atd -M8 ../../../../as/cmd/SRA/sra__s.casl

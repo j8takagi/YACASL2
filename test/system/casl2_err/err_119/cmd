@@ -1,2 +1,1 @@
-cat ../../../../as/err/err_119.casl
 ../../../../casl2 -M8 ../../../../as/err/err_119.casl

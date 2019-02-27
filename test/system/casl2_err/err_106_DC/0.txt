@@ -1,6 +1,2 @@
-MAIN    START
-        RET
-        DC
-        END
 Assemble error - 106: operand mismatch in CASL II command
 ../../../../as/err/err_106_DC.casl:    3:        DC

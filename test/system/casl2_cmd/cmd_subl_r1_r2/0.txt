@@ -1,12 +1,3 @@
-;;; SUBL r1,r2
-MAIN    START
-BEGIN   LD      GR1,A
-        LD      GR2,B
-        SUBL    GR1,GR2
-        RET
-A       DC      3
-B       DC      1
-        END
 
 Assemble ../../../../as/cmd/SUBL/subl_r1_r2.casl (0)
 

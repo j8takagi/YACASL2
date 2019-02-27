@@ -11,9 +11,6 @@
 # 変数やマクロの定義
 include Define.mk
 
-# テストグループのMakefileとしてコピーされるファイル
-GROUP_MAKEFILE := Group.mk
-
 .PHONY: group groupdir copymk linkmk
 
 MKFILE_METHOD = $(if $(LINKMK),linkmk,copymk)
@@ -25,8 +22,8 @@ groupdir:
 
 copymk:
 	@$(CP) $(GROUP_MAKEFILE) $(GROUPDIR)/Makefile
-	@$(CP) $(MAKEFILES) $(GROUPDIR)/
+	@$(CP) $(DEFINE_FILE) $(TEST_MAKEFILE) $(GROUPDIR)/
 
 linkmk:
-	@$(LN) $(CURDIR)/$(GROUP_MAKEFILE) $(GROUPDIR)/Makefile
-	@$(LN) $(MAKEFILES_ABS) $(GROUPDIR)/
+	@$(LN) $(DEFINE_FILE_REL) $(TEST_MAKEFILE) $(GROUPDIR)/
+	@$(LN) $(GROUP_MAKEFILE_REL) $(GROUPDIR)/Makefile

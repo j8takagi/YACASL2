@@ -9,6 +9,11 @@
 typedef unsigned short WORD;
 
 /**
+ * @brief アセンブル結果読み込みエラーをエラーリストに追加する
+ */
+void addcerrlist_load();
+
+/**
  * @brief wordデータ型についてのエラーをエラーリストに追加する
  *
  * @return なし

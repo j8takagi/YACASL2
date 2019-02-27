@@ -39,16 +39,16 @@ define time_cmd
     ($(TIME) ./$1 1>$(DEV_NULL) 2>$(DEV_NULL)) 2>&1 | $(GREP) '^real' >$2
 endef
 
-CMD_VALGRIND = $(strip $(shell if test "`$(FILE) $(CMD_FILE)`" = "data"; then cat $(CMD_FILE); else $(PRINTF) "./$(CMD_FILE)"; fi))
+VALGRIND_CMD = $(strip $(shell if test -s $(VALGRIND_CMD_FILE); then $(CAT) $(VALGRIND_CMD_FILE); elif test "`$(FILE) $(CMD_FILE)`" = "data"; then $(CAT) $(CMD_FILE); else $(PRINTF) "./$(CMD_FILE)"; fi))
 
 # valgrindによるメモリーチェック結果を、指定されたファイルに出力して表示
 # 引数は、テスト名、コマンドファイル、出力ファイル
 # 用例: $(call valgrind_cmd,file_cmd,file_out)
 define valgrind_cmd
-    -$(VALGRIND) $(VALGRINDFLAG) $(CMD_VALGRIND) 1>/dev/null 2>&1
+    -$(VALGRIND) $(VALGRINDFLAG) $(VALGRIND_CMD) 1>/dev/null 2>&1
 endef
 
-# テスト実行コマンド。
+# テスト実行コマンド
 # コマンドファイルを実行し、標準出力を指定されたファイルに保存。
 # エラー発生時は、エラー出力を出力ファイルとエラーファイルに保存。
 # 引数は、コマンドファイル、出力ファイル、エラーファイル
@@ -129,7 +129,7 @@ reset: all-clean $(CMD_FILE)
 	@$(CAT) $(TEST0_FILE)
 
 clean:
-	@$(RM) $(TEST_RES_FILES) $(TIME_FILE) $(VALGRIND_FILE) core
+	@$(RM) $(TEST_RES_FILES) $(TIME_FILE) $(VALGRIND_LOGFILE) $(VALGRIND_CMDLOGFILE) core
 
 all-clean: clean
 	@$(RM) $(TEST0_FILE)
@@ -140,11 +140,14 @@ time: time-clean $(TIME_FILE)
 time-clean:
 	@$(RM) $(TIME_FILE)
 
-valgrind: valgrind-clean $(VALGRIND_FILE)
-	if test -s $(VALGRIND_FILE); then $(ECHO) $(CURDIR) && $(CAT) $(VALGRIND_FILE); else $(RM) $(VALGRIND_FILE); fi
+valgrind: valgrind-clean $(VALGRIND_LOGFILE) $(VALGRIND_CMDLOGFILE)
+	if test -s $(VALGRIND_LOGFILE); then $(ECHO) $(CURDIR) && $(CAT) $(VALGRIND_LOGFILE); else $(RM) $(VALGRIND_LOGFILE); fi
+
+$(VALGRIND_CMDLOGFILE): $(VALGRIND_LOGFILE)
+	@$(PRINTF) "$(VALGRIND) $(VALGRINDFLAG) $(VALGRIND_CMD)\n" | $(CAT) - $(VALGRIND_LOGFILE) >$(VALGRIND_CMDLOGFILE)
 
 valgrind-clean:
-	@$(RM) $(VALGRIND_FILE)
+	@$(RM) $(VALGRIND_LOGFILE)
 
 $(TEST1_FILE): $(CMD_FILE)
 	@-$(call exec_cmd,$^,$@,$(ERR_FILE))
@@ -161,5 +164,5 @@ $(DETAIL_FILE): $(LOG_FILE)
 $(TIME_FILE): $(CMD_FILE)
 	@$(call time_cmd,$^,$@)
 
-$(VALGRIND_FILE): $(CMD_FILE)
+$(VALGRIND_LOGFILE): $(CMD_FILE)
 	$(call valgrind_cmd,$^,$@)

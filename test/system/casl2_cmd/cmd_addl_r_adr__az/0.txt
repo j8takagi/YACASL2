@@ -1,11 +1,3 @@
-;;; ADDL r,adr ADDAでは演算結果が零
-MAIN    START
-        LD      GR1,A
-        ADDL    GR1,B
-        RET
-A       DC      #FFF6           ; 65526
-B       DC      10
-        END
 
 Assemble ../../../../as/cmd/ADDL/addl_r_adr__az.casl (0)
 

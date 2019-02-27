@@ -1,9 +1,3 @@
-;;; SRL r,adr オーバーフロー
-MAIN    START
-        LAD     GR1,#C000
-        SRL     GR1,15
-        RET
-        END
 
 Assemble ../../../../as/cmd/SRL/srl__o.casl (0)
 

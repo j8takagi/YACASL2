@@ -1,11 +1,3 @@
-;;; ADDA r,adr
-MAIN    START
-BEGIN   LD      GR1,A
-        ADDA    GR1,B
-        RET
-A       DC      3
-B       DC      1
-        END
 
 Assemble ../../../../as/cmd/ADDA/adda_r_adr.casl (0)
 

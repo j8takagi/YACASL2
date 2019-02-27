@@ -1,6 +1,2 @@
-MAIN    START
-        LD      GR1,-A
-        RET
-        END
 Assemble error - 114: -A: not integer
 ../../../../as/err/err_114.casl:    2:        LD      GR1,-A

@@ -13,7 +13,19 @@ static struct option longopts[] = {
 };
 
 /**
- * @brief comet2コマンドのメイン
+ * @brief casl2のエラー定義
+ */
+CERR cerr_comet2monitor[] = {
+    { 401, "invalid option" },
+};
+
+void addcerrlist_comet2monitor()
+{
+    addcerrlist(ARRAYSIZE(cerr_comet2monitor), cerr_comet2monitor);
+}
+
+/**
+ * @brief comet2monitorコマンドのメイン
  *
  * @return 正常終了時は0、異常終了時は1
  *
@@ -26,6 +38,12 @@ int main(int argc, char *argv[])
     int opt, stat = 0;
     const char *version = PACKAGE_VERSION,  *cmdversion = "comet2monitor: COMET II machine code monitor of YACASL2 version %s\n";
     const char *usage = "Usage: %s [-vh] [-M <MEMORYSIZE>] [-C <CLOCKS>]\n";
+
+    /* エラーの定義 */
+    cerr_init();
+    addcerrlist_load();
+    addcerrlist_exec();
+    addcerrlist_comet2monitor();
 
     /* オプションの処理 */
     while((opt = getopt_long(argc, argv, "M:C:vh", longopts, NULL)) != -1) {
@@ -41,26 +59,25 @@ int main(int argc, char *argv[])
             return 0;
         case 'h':
             fprintf(stdout, usage, argv[0]);
-            return 0;
+            goto comet2monitorfin;
         case '?':
             fprintf(stderr, usage, argv[0]);
-            exit(1);
+            setcerr(212, "");    /* invalid option */
+            goto comet2monitorfin;
         }
     }
-    /* エラーの定義 */
-    cerr_init();
-    addcerrlist_load();
-    addcerrlist_exec();
-
     create_cmdtable(HASH_CMDTYPE);
     reset(memsize, clocks);     /* COMET II仮想マシンのリセット */
     execptr->start = 0;
     execmode.monitor = true;
     exec();                     /* プログラム実行 */
-
     shutdown();
+comet2monitorfin:
     free_cmdtable(HASH_CMDTYPE);
-    stat = (cerr->num == 0) ? 0 : 1;
+    free_cmdtable(HASH_CODE);
+    if(cerr->num > 0) {
+        stat = 1;
+    }
     freecerr();                 /* エラーの解放 */
     return stat;
 }

@@ -1,12 +1,3 @@
-;;; SUBL r,adr,x
-MAIN    START
-BEGIN   LD      GR1,A
-        LAD     GR2,1
-        SUBL    GR1,A,GR2
-        RET
-A       DC      5
-        DC      2
-        END
 
 Assemble ../../../../as/cmd/SUBL/subl_r_adr_x.casl (0)
 

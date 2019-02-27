@@ -1,6 +1,1 @@
-;;; casl2 -M8 err_207.casl
-MAIN    START
-        LD      GR1,#FFFF
-        RET
-        END
 Execute error - 207: PR:#0001: address in word #2 - out of memory

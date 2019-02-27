@@ -8,7 +8,7 @@
  */
 int main()
 {
-    FILE *fp;
+    FILE *fp = NULL;
     const WORD w[] = {0x1010, 0x0005, 0x2210, 0x0006, 0x8100, 0x0003, 0x0001};
     const char *f = "a.o";
 
@@ -18,5 +18,6 @@ int main()
     }
     fwrite(w, sizeof(WORD), ARRAYSIZE(w), fp);
     fclose(fp);
+    FREE(fp);
     return 0;
 }

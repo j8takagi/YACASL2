@@ -1,2 +1,2 @@
-cat ../../../../as/sample/sum_10.casl
-../../../../casl2 -sla -O ../../../../as/sample/sum_10.casl
+sh cmd_valgrind
+od -x a.o
