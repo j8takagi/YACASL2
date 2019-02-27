@@ -3,6 +3,7 @@
  * \section メイン関数
  * - src/casl2.c
  * - src/comet2.c
+ * - src/comet2monitor.c
  * - src/dumpword.c
  * - src/casl2rev.c
  *
@@ -10,6 +11,7 @@
  * - src/assemble.c
  * - src/cerr.c
  * - src/cmem.c
+ * - src/disassemble.c
  * - src/dump.c
  * - src/exec.c
  * - src/hash.c
@@ -23,11 +25,13 @@
  * - include/assemble.h
  * - include/cerr.h
  * - include/cmem.h
+ * - include/disassemble.h
  * - include/exec.h
  * - include/hash.h
  * - include/monitor.h
  * - include/package.h
  * - include/struct.h
+ * - include/token.h
  * - include/version.h
  * - include/word.h
  *
