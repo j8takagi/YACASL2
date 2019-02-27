@@ -1,2 +1,1 @@
-cat ../../../../as/sample/hello.casl
 ../../../../casl2 -sla ../../../../as/sample/hello.casl

@@ -1,9 +1,3 @@
-MAIN    START
-        OUT     OBUF,LEN
-        RET
-OBUF    DC      'Hello, World!'
-LEN     DC      13
-        END
 
 Assemble ../../../../as/sample/hello.casl (0)
 ../../../../as/sample/hello.casl:    1:MAIN    START
