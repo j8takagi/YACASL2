@@ -15,7 +15,7 @@ void addcerrlist_casl2();
  *
  * @param *str ファイル名
  */
-const char *objfile_name(const char *str);
+char *objfile_name(const char *str);
 
 /**
  * @brief casl2コマンドのオプション
@@ -53,10 +53,13 @@ void addcerrlist_casl2()
     addcerrlist(ARRAYSIZE(cerr_casl2), cerr_casl2);
 }
 
-const char *objfile_name(const char *str)
+char *objfile_name(const char *name)
 {
     const char *default_name = "a.o";
-    return (str == NULL) ? default_name : str;
+    return strdup_chk(
+        (name == NULL || !name[0]) ? default_name : name,
+        "objfile_name"
+        );
 }
 
 /**
@@ -69,9 +72,15 @@ const char *objfile_name(const char *str)
  */
 int main(int argc, char *argv[])
 {
-    int memsize = DEFAULT_MEMSIZE, clocks = DEFAULT_CLOCKS, opt, i, stat = 0;
-    char *af[argc], *objfile = NULL;
-    const char *version = PACKAGE_VERSION,  *cmdversion = "casl2 of YACASL2 version %s\n";
+    int memsize = DEFAULT_MEMSIZE;
+    int clocks = DEFAULT_CLOCKS;
+    int opt = 0;
+    int stat = 0;
+    int asfilecnt = 0;
+    char **asfile = NULL;
+    char *objfile = NULL;
+    const char *version = PACKAGE_VERSION;
+    const char *cmdversion = "casl2 of YACASL2 version %s\n";
     const char *usage =
         "Usage: %s [-slLaAtTdmvh] [-oO[<OBJECTFILE>]] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE1[ FILE2  ...]\n";
 
@@ -102,11 +111,11 @@ int main(int argc, char *argv[])
             asmode.onlyassemble = true;
             break;
         case 'o':
-            objfile = strdup_chk(objfile_name(optarg), "objfile");
+            objfile = objfile_name(optarg);
             break;
         case 'O':
             asmode.onlyassemble = true;
-            objfile = strdup_chk(objfile_name(optarg), "objfile");
+            objfile = objfile_name(optarg);
             break;
         case 't':
             execmode.trace = true;
@@ -148,11 +157,13 @@ int main(int argc, char *argv[])
     }
     create_cmdtable(HASH_CMDTYPE);                 /* 命令の名前とタイプがキーのハッシュ表を作成 */
     reset(memsize, clocks);                        /* 仮想マシンCOMET IIのリセット */
-    for(i = 0; i < argc - optind; i++) {           /* 引数からファイル名配列を取得 */
-        af[i] = argv[optind + i];
+    asfilecnt = argc - optind;
+    asfile = calloc_chk(asfilecnt, sizeof(char *), "asfile");
+    for(int i = 0; i < asfilecnt; i++) {           /* 引数からファイル名配列を取得 */
+        asfile[i] = argv[optind + i];
     }
     /* アセンブル */
-    if(assemble(i, af, 0) == false || asmode.onlylabel == true) {
+    if(assemble(asfilecnt, asfile, 0) == false || asmode.onlylabel == true) {
         goto shutdown;
     }
     /* オブジェクトファイル名が指定されている場合は、アセンブル結果をオブジェクトファイルに出力 */
@@ -166,8 +177,9 @@ int main(int argc, char *argv[])
 shutdown:
     shutdown();                                   /* 仮想マシンCOMET IIのシャットダウン */
 casl2fin:
-    free_cmdtable(HASH_CMDTYPE);
     FREE(objfile);
+    FREE(asfile);
+    free_cmdtable(HASH_CMDTYPE);
     if(cerr->num > 0) {
         stat = 1;
     }

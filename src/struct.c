@@ -4,12 +4,12 @@
 /**
  * COMET IIの仮想実行マシンシステム
  */
-SYSTEM *sys;
+SYSTEM *sys = NULL;
 
 /**
  * プログラム実行時の開始と終了のアドレス
  */
-EXECPTR *execptr;
+EXECPTR *execptr = NULL;
 
 /**
  * システムCOMET IIの命令表
@@ -70,7 +70,7 @@ enum {
 /**
  * ハッシュ表
  */
-static CMDTAB *cmdtab[HASH_MAX][CMDTABSIZE];
+static CMDTAB *cmdtab[HASH_MAX][CMDTABSIZE] = {NULL};
 
 /**
  * 命令の名前とタイプからハッシュ値を生成する
@@ -87,8 +87,8 @@ unsigned hash_code(WORD code);
  */
 unsigned hash_cmdtype(const char *cmd, CMDTYPE type)
 {
-    HKEY *keys[2];
-    unsigned hashval;
+    HKEY *keys[2] = {NULL};
+    unsigned hashval = 0;
 
     /* 命令名を設定 */
     keys[0] = malloc_chk(sizeof(HKEY), "hash_cmdtype.keys[0]");
@@ -114,9 +114,8 @@ bool create_cmdtable(CMDTAB_HASH hash)
 {
     CMDTAB *p = NULL;
     unsigned hashval;
-    int i;
 
-    for(i = 0; i < comet2cmdsize; i++) {
+    for(int i = 0; i < comet2cmdsize; i++) {
         p = malloc_chk(sizeof(CMDTAB), "create_cmdtable.p");
         p->cmd = &comet2cmd[i];
         if(hash == HASH_CMDTYPE) {
@@ -135,10 +134,10 @@ bool create_cmdtable(CMDTAB_HASH hash)
  */
 void free_cmdtable(CMDTAB_HASH hash)
 {
-    int i;
-    CMDTAB *p, *q;
+    CMDTAB *p = NULL;
+    CMDTAB *q = NULL;
 
-    for(i = 0; i < CMDTABSIZE; i++) {
+    for(int i = 0; i < CMDTABSIZE; i++) {
         for(p = cmdtab[hash][i]; p != NULL; p = q) {
             q = p->next;
             FREE(p);
@@ -153,7 +152,7 @@ void free_cmdtable(CMDTAB_HASH hash)
  */
 WORD getcmdcode(const char *cmd, CMDTYPE type)
 {
-    CMDTAB *p;
+    CMDTAB *p = NULL;
     WORD w = 0xFFFF;
 
     assert(cmd != NULL);
@@ -171,8 +170,8 @@ WORD getcmdcode(const char *cmd, CMDTYPE type)
  */
 unsigned hash_code(WORD code)
 {
-    HKEY *keys[1];
-    unsigned h;
+    HKEY *keys[1] = {NULL};
+    unsigned h = 0;
 
     /* 命令コードを設定 */
     keys[0] = malloc_chk(sizeof(HKEY), "hash_code.key");
@@ -188,7 +187,7 @@ unsigned hash_code(WORD code)
  */
 const void (*getcmdptr(WORD code))
 {
-    CMDTAB *t;
+    CMDTAB *t = NULL;
     const void *ptr = NULL;
 
     for(t = cmdtab[HASH_CODE][hash_code(code)]; t != NULL; t = t->next) {
@@ -205,7 +204,7 @@ const void (*getcmdptr(WORD code))
  */
 CMDTYPE getcmdtype(WORD code)
 {
-    CMDTAB *t;
+    CMDTAB *t = NULL;
     CMDTYPE type = NONE;
 
     for(t = cmdtab[HASH_CODE][hash_code(code)]; t != NULL; t = t->next) {
@@ -222,7 +221,7 @@ CMDTYPE getcmdtype(WORD code)
  */
 char *getcmdname(WORD code)
 {
-    CMDTAB *t;
+    CMDTAB *t = NULL;
     char *cmd = NULL;
 
     for(t = cmdtab[HASH_CODE][hash_code(code)]; t != NULL; t = t->next) {
@@ -241,7 +240,9 @@ char *getcmdname(WORD code)
 char *grstr(WORD word)
 {
     assert(word <= 7);
-    char *str = malloc_chk(3 + 1, "grstr.str");
+    char *str = NULL;
+
+    str = malloc_chk(3 + 1, "grstr.str");
     sprintf(str, "GR%d", word);
     return str;
 }
@@ -251,8 +252,6 @@ char *grstr(WORD word)
  */
 void reset(int memsize, int clocks)
 {
-    int i;
-
     sys = malloc_chk(sizeof(SYSTEM), "sys");
     /* メモリサイズを設定 */
     sys->memsize = memsize;
@@ -262,7 +261,7 @@ void reset(int memsize, int clocks)
     sys->memory = calloc_chk(sys->memsize, sizeof(WORD), "memory");
     /* CPUを初期化 */
     sys->cpu = malloc_chk(sizeof(CPU), "cpu");
-    for(i = 0; i < GRSIZE; i++) {                    /* 汎用レジスタ  */
+    for(int i = 0; i < GRSIZE; i++) {                    /* 汎用レジスタ  */
         sys->cpu->gr[i] = 0x0;
     }
     sys->cpu->sp = sys->memsize;   /* スタックポインタ */

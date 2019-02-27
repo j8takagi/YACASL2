@@ -81,8 +81,7 @@ void disassemble_dc(WORD word, WORD pradr);
 
 void disassemble_puts_code(int ascol, WORD pradr, int wordc, WORD wordv[])
 {
-    int i;
-    for(i = 0; i < codecol-ascol; i++){
+    for(int i = 0; i < codecol-ascol; i++){
         fprintf(stdout, " ");
     }
     if(wordc == 1) {
@@ -96,6 +95,7 @@ void disassemble_cmd_adr_x(CMDTYPE cmdtype, const char *cmdname, WORD word, WORD
     WORD x = 0;
     char *g = NULL;
     int cnt = 0;
+
     cnt += fprintf(stdout, "        %-7s ", cmdname);
     if(cmdtype == R_ADR_X) {
         cnt += fprintf(stdout, "%s,", g = grstr((word & 0x00F0) >> 4));
@@ -111,8 +111,11 @@ void disassemble_cmd_adr_x(CMDTYPE cmdtype, const char *cmdname, WORD word, WORD
 
 void disassemble_cmd_r(CMDTYPE cmdtype, const char *cmdname, WORD word, WORD pradr)
 {
-    char *g = NULL, *g1 = NULL, *g2 = NULL;
+    char *g = NULL;
+    char *g1 = NULL;
+    char *g2 = NULL;
     int cnt = 0;
+
     cnt += fprintf(stdout, "        %-7s ", cmdname);
     if(cmdtype == R1_R2) {
         g1 = grstr((word & 0x00F0) >> 4);
@@ -131,6 +134,7 @@ void disassemble_cmd_r(CMDTYPE cmdtype, const char *cmdname, WORD word, WORD pra
 void disassemble_dc(WORD word, WORD pradr)
 {
     int cnt = 0;
+
     cnt = fprintf(stdout, "        DC      %-5d ", word);
     disassemble_puts_code(cnt, pradr, 1, (WORD []){word});
     fprintf(stdout, " ::" );
@@ -139,10 +143,11 @@ void disassemble_dc(WORD word, WORD pradr)
 
 void disassemble_ds(WORD wcnt, WORD pradr)
 {
-    int cnt = 0, i;
+    int cnt = 0;
+
     cnt = fprintf(stdout, "        DS      %-5d ", wcnt);
     disassemble_puts_code(cnt, pradr, 1, (WORD []){0});
-    for(i = 0; i < wcnt - 1; i++) {
+    for(int i = 0; i < wcnt - 1; i++) {
         fprintf(stdout, "\n");
         disassemble_puts_code(0, pradr+1, 1, (WORD []){0});
     }
@@ -162,7 +167,9 @@ void fungetword(FILE *stream)
 
 WORD zero_data_cnt(FILE *stream)
 {
-    WORD cnt = 0, word = 0;
+    WORD cnt = 0;
+    WORD word = 0;
+
     while(!feof(stream) && word == 0) {
         word = fgetword(stream);
         cnt++;
@@ -176,10 +183,13 @@ WORD zero_data_cnt(FILE *stream)
 bool disassemble_file(const char *file)
 {
     bool stat = true;
-    FILE *fp;
-    WORD i = 0, word, cmd, zcnt;
+    FILE *fp = NULL;
+    WORD i = 0;
+    WORD word = 0;
+    WORD cmd = 0;
+    WORD zcnt = 0;
     CMDTYPE cmdtype = 0;
-    char *cmdname;
+    const char *cmdname = NULL;
     bool inst = true;
 
     assert(file != NULL);
@@ -227,12 +237,12 @@ bool disassemble_file(const char *file)
 
 void disassemble_memory(WORD start, WORD end)
 {
-    WORD i, cmd;
+    WORD cmd = 0;
     CMDTYPE cmdtype = 0;
-    char *cmdname;
+    const char *cmdname = NULL;
     bool inst = true;
 
-    for(i = start; i <= end; i++) {
+    for(int i = start; i <= end; i++) {
         cmd = sys->memory[i] & 0xFF00;
         cmdname = getcmdname(cmd);
         cmdtype = getcmdtype(cmd);

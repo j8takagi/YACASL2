@@ -36,9 +36,10 @@ void dumpmemory(WORD start, WORD end)
 
 void dspregister()
 {
-    int i;
-    char *sp, *pr, *fr;
-    for(i = 0; i < GRSIZE; i++ ) {
+    char *sp = NULL;
+    char *pr = NULL;
+    char *fr = NULL;
+    for(int i = 0; i < GRSIZE; i++ ) {
         fprintf(stdout, "#%04X: GR%d: ", sys->cpu->pr, i);
         print_dumpword(sys->cpu->gr[i], execmode.logical);
         fprintf(stdout, "\n");
@@ -48,7 +49,7 @@ void dspregister()
     fprintf(stdout, "#%04X: PR:  %6d = #%04X = %s\n",
             sys->cpu->pr, sys->cpu->pr, sys->cpu->pr, pr = word2bit(sys->cpu->pr));
     fprintf(stdout, "#%04X: FR (OF SF ZF): %s\n",
-            sys->cpu->pr, ((fr = word2bit(sys->cpu->fr)) + 13));
+            sys->cpu->pr, ((fr = word2bit(sys->cpu->fr)) + 13)); /* FRは末尾3けたを表示 */
 
     FREE(sp);
     FREE(pr);

@@ -49,26 +49,26 @@ static CERR cerr_label[] = {
 };
 
 HKEY *label_hashkey(const char *value) {
-    HKEY *key;
+    HKEY *key = NULL;
 
     key = malloc_chk(sizeof(HKEY), "label_hashkey");
     key->type = CHARS;
-    key->val.s = strdup_chk(value, "label_hashkey.value");
+    key->val.s = strdup_chk(value, "label_hashkey->value");
     return key;
 }
 
 unsigned labelhash(const char *prog, const char *label)
 {
-    HKEY *keys[2];
-    int i = 0, j;
-    unsigned h;
+    HKEY *keys[2] = {NULL};
+    int i = 0;
+    unsigned h = 0;
 
     if(prog[0]) {
         keys[i++] = label_hashkey(prog);
     }
     keys[i] = label_hashkey(label);
     h = hash(i+1, keys, LABELTABSIZE);
-    for(j = 0; j < i + 1; j++) {
+    for(int j = 0; j < i + 1; j++) {
         FREE(keys[j]->val.s);
         FREE(keys[j]);
     }
@@ -89,8 +89,8 @@ void addcerrlist_label()
 WORD getlabel(const char *prog, const char *label)
 {
     assert(prog != NULL && label != NULL);
-    LABELTAB *p;
-    LABELARRAY *l;
+    LABELTAB *p = NULL;
+    LABELARRAY *l = NULL;
 
     for(p = labels[labelhash(prog, label)]; p != NULL; p = p->next) {
         l = p->label;
@@ -106,9 +106,9 @@ WORD getlabel(const char *prog, const char *label)
 bool addlabel(const char *prog, const char *label, WORD adr)
 {
     assert(label != NULL);
-    LABELTAB *p;
-    LABELARRAY *l;
-    unsigned h;
+    LABELTAB *p = NULL;
+    LABELARRAY *l = NULL;
+    unsigned h = 0;
 
     /* 登録されたラベルを検索。すでに登録されている場合はエラー発生 */
     if(getlabel(prog, label) != 0xFFFF) {
@@ -134,19 +134,19 @@ bool addlabel(const char *prog, const char *label, WORD adr)
 
 void printlabel()
 {
-    int i, s = 0;
-    LABELTAB *p;
-    LABELARRAY **l;
+    int s = 0;
+    LABELTAB *p = NULL;
+    LABELARRAY **l = {NULL};
 
     l = calloc_chk(labelcnt, sizeof(LABELARRAY **), "labels");
-    for(i = 0; i < LABELTABSIZE; i++) {
+    for(int i = 0; i < LABELTABSIZE; i++) {
         for(p = labels[i]; p != NULL; p = p->next) {
             assert(p->label != NULL);
             l[s++] = p->label;
         }
     }
     qsort(l, s, sizeof(*l), compare_adr);
-    for(i = 0; i < s; i++) {
+    for(int i = 0; i < s; i++) {
         if(l[i]->prog[0]) {
             fprintf(stdout, "%s.", l[i]->prog);
         }
@@ -158,7 +158,8 @@ void printlabel()
 void freelabel()
 {
     int i;
-    LABELTAB *p, *q;
+    LABELTAB *p = NULL;
+    LABELTAB *q = NULL;
 
     for(i = 0; i < LABELTABSIZE; i++) {
         for(p = labels[i]; p != NULL; p = q) {

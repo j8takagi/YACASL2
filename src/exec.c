@@ -161,8 +161,8 @@ void setfr(WORD adr)
 
 WORD get_r_r1(WORD oprx)
 {
-    WORD r;
-    char *s;
+    WORD r = 0;
+    char *s = NULL;
 
     if((r = ((oprx & 0x00F0) >>4)) > GRSIZE - 1) {
         setcerr(205, s = pr2str(sys->cpu->pr));    /* r/r1 in word #1 - not GR */
@@ -174,8 +174,8 @@ WORD get_r_r1(WORD oprx)
 
 WORD get_x_r2(WORD oprx)
 {
-    WORD x;
-    char *s;
+    WORD x = 0;
+    char *s = NULL;
 
     if((x = (oprx & 0x000F)) > GRSIZE - 1) {
         setcerr(206, s = pr2str(sys->cpu->pr));    /* r/r1 in word #1 - not GR */
@@ -196,8 +196,8 @@ WORD get_adr_x(WORD adr, WORD oprx)
 
 WORD get_val_adr_x(WORD adr, WORD oprx)
 {
-    WORD a;
-    char *s;
+    WORD a = 0;
+    char *s = NULL;
 
     if((a = get_adr_x(adr, oprx)) >= sys->memsize) {
         setcerr(207, s = pr2str(sys->cpu->pr + 1));    /* address in word #2 - out of memory */
@@ -215,8 +215,8 @@ void addcerrlist_exec()
 
 WORD loadassemble(const char *file, WORD start)
 {
-    FILE *fp;
-    WORD end;
+    FILE *fp = NULL;
+    WORD end = 0;
 
     assert(file != NULL);
     if((fp = fopen(file, "rb")) == NULL) {
@@ -695,8 +695,8 @@ void push()
 void pop()
 {
     assert(sys->cpu->sp > execptr->end);
-    WORD w;
-    char *s;
+    WORD w = 0;
+    char *s = NULL;
 
     if(sys->cpu->sp >= sys->memsize) {
         setcerr(203, s = pr2str(sys->cpu->pr));        /* Stack Pointer (SP) - stack underflow */
@@ -711,11 +711,11 @@ void pop()
 void call()
 {
     assert(sys->cpu->sp > execptr->end && sys->cpu->sp <= sys->memsize);
-    WORD w[2];
-    w[0] = sys->memory[sys->cpu->pr];
-    w[1] = sys->memory[sys->cpu->pr + 1];
     sys->memory[--(sys->cpu->sp)] = sys->cpu->pr + 1;
-    sys->cpu->pr = get_adr_x(w[1], w[0]);
+    sys->cpu->pr = get_adr_x(
+        sys->memory[sys->cpu->pr + 1],
+        sys->memory[sys->cpu->pr]
+        );
 }
 
 void ret()
@@ -730,10 +730,11 @@ void ret()
 
 void svc()
 {
-    WORD w[2];
-    w[0] = sys->memory[sys->cpu->pr];
-    w[1] = sys->memory[sys->cpu->pr + 1];
-    switch(get_adr_x(w[1], w[0]))
+    switch(get_adr_x(
+               sys->memory[sys->cpu->pr + 1],
+               sys->memory[sys->cpu->pr]
+               )
+        )
     {
     case 0x0:                   /* STOP */
         execptr->stop = true;
@@ -750,9 +751,10 @@ void svc()
 
 void exec()
 {
-    clock_t clock_begin, clock_end;
-    void (*cmdptr)();
-    char *s;
+    clock_t clock_begin = 0;
+    clock_t clock_end = 0;
+    void (*cmdptr)() = NULL;
+    char *s = NULL;
     const char *monmsg = "COMET II machine code monitor. Type ? for help.\n";
 
     create_cmdtable(HASH_CODE);                 /* 命令のコードとタイプがキーのハッシュ表を作成 */

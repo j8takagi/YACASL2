@@ -49,20 +49,17 @@ char *strndup_chk(const char *s, size_t len, const char *tag)
 
 char *strip_end(char *s)
 {
-    int i;
-    i = strlen(s) - 1;
-    while(i > 0 && (s[i] == '\n' || s[i] == ' ' || s[i] == '\t')) {
-        s[i--] = '\0';
+    for(int i = strlen(s) - 1; i > 0 && (s[i] == '\n' || s[i] == ' ' || s[i] == '\t'); i--) {
+        s[i] = '\0';
     }
     return s;
 }
 
 char *strip_casl2_comment(char *s)
 {
-    int i;
     bool quoting = false;
 
-    for(i = 0; s[i]; i++) {
+    for(int i = 0; s[i]; i++) {
         /* 「'」で囲まれた文字列の場合。「''」は無視 */
         if(s[i] == '\'' && s[i+1] != '\'' && (quoting == false || s[i-1] != '\'')) {
             quoting = !quoting;

@@ -34,9 +34,12 @@ void addcerrlist_comet2monitor()
  */
 int main(int argc, char *argv[])
 {
-    int memsize = DEFAULT_MEMSIZE, clocks = DEFAULT_CLOCKS;
-    int opt, stat = 0;
-    const char *version = PACKAGE_VERSION,  *cmdversion = "comet2monitor: COMET II machine code monitor of YACASL2 version %s\n";
+    int memsize = DEFAULT_MEMSIZE;
+    int clocks = DEFAULT_CLOCKS;
+    int opt = 0;
+    int stat = 0;
+    const char *version = PACKAGE_VERSION;
+    const char *cmdversion = "comet2monitor: COMET II machine code monitor of YACASL2 version %s\n";
     const char *usage = "Usage: %s [-vh] [-M <MEMORYSIZE>] [-C <CLOCKS>]\n";
 
     /* エラーの定義 */

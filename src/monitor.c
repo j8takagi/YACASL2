@@ -24,7 +24,7 @@ unsigned adrhash(WORD adr)
 
 bool getbps(WORD adr)
 {
-    BPSLIST *p;
+    BPSLIST *p = NULL;
 
     for(p = bps[adrhash(adr)]; p != NULL; p = p->next) {
         if(p->adr == adr) {
@@ -36,8 +36,8 @@ bool getbps(WORD adr)
 
 bool addbps(WORD adr)
 {
-    BPSLIST *p;
-    unsigned h;
+    BPSLIST *p = NULL;
+    unsigned h = 0;
 
     /* 登録されたラベルを検索。すでに登録されている場合は終了 */
     if(getbps(adr) == true) {
@@ -56,8 +56,9 @@ bool addbps(WORD adr)
 
 bool delbps(WORD adr)
 {
-    BPSLIST *p, *q;
-    unsigned h;
+    BPSLIST *p = NULL;
+    BPSLIST *q = NULL;
+    unsigned h = 0;
     bool res = false;
 
     p = bps[h = adrhash(adr)];
@@ -88,7 +89,7 @@ bool delbps(WORD adr)
 void listbps()
 {
     int i, cnt = 0;
-    BPSLIST *p;
+    BPSLIST *p = NULL;
 
     fprintf(stdout, "List of breakpoints\n");
     for(i = 0; i < BPSTABSIZE; i++) {
@@ -104,7 +105,8 @@ void listbps()
 
 void freebpslist(BPSLIST *head)
 {
-    BPSLIST *p, *q;
+    BPSLIST *p = NULL;
+    BPSLIST *q = NULL;
     for(p = head; p != NULL; p = q) {
         q = p->next;
         FREE(p);
@@ -113,8 +115,7 @@ void freebpslist(BPSLIST *head)
 
 void freebps()
 {
-    int i;
-    for(i = 0; i < BPSTABSIZE; i++) {
+    for(int i = 0; i < BPSTABSIZE; i++) {
         freebpslist(bps[i]);
         bps[i] = NULL;
     }
@@ -123,8 +124,9 @@ void freebps()
 MONARGS *monargstok(const char *str)
 {
     MONARGS *args = malloc_chk(sizeof(MONARGS), "args");
-    char *tok, *p, sepc = ' ';
-    int i = 0;
+    char *tok = NULL;
+    char *p = NULL;
+    char sepc = ' ';
 
     args->argc = 0;
     if(!str || !str[0]) {
@@ -132,11 +134,10 @@ MONARGS *monargstok(const char *str)
     }
     tok = p = strdup_chk(str, "argstok.p");
     do {
-        i = strcspn(p, " ");
+        int i = strcspn(p, " ");
         sepc = p[i];
         args->argv[(args->argc)++] = strndup_chk(p, i, "args->argv[]");
         p += i + 1;
-        i = 0;
     } while(sepc == ' ');
     FREE(tok);
     return args;
@@ -144,8 +145,9 @@ MONARGS *monargstok(const char *str)
 
 MONCMDLINE *monlinetok(const char *line)
 {
-    char *tokens, *p;
-    int i;
+    char *tokens = NULL;
+    char *p = NULL;
+    int i = 0;
     MONCMDLINE *moncmdl = NULL;
 
     if(!line[0] || line[0] == '\n') {
@@ -387,7 +389,7 @@ int monquit()
 void monitor()
 {
     char *buf = NULL;
-    MONCMDLINE *moncmdl;
+    MONCMDLINE *moncmdl = NULL;
     MONCMDTYPE cmdtype = MONREPEAT;
 
     do {

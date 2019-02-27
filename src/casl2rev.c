@@ -20,8 +20,10 @@ static struct option longopts[] = {
  */
 int main(int argc, char *argv[])
 {
-    int opt, stat = 0;
-    const char *version = PACKAGE_VERSION,  *cmdversion = "disassemble of YACASL2 version %s\n";
+    int opt = 0;
+    int stat = 0;
+    const char *version = PACKAGE_VERSION;
+    const char *cmdversion = "disassemble of YACASL2 version %s\n";
     const char *usage = "Usage: %s [-vh] FILE\n";
 
     /* エラーの定義 */
@@ -47,7 +49,7 @@ int main(int argc, char *argv[])
     if(argv[optind] == NULL) {
         setcerr(211, "");    /* object file not specified */
         fprintf(stderr, "disassemble error - %d: %s\n", cerr->num, cerr->msg);
-        exit(1);
+        goto casl2revfin;
     }
     disassemble_file(argv[optind]);                /* プログラム実行 */
 casl2revfin:

@@ -23,9 +23,11 @@ static struct option longopts[] = {
 int main(int argc, char *argv[])
 {
     bool logicalmode = false;    /* レジストリの内容を論理値（0から65535）で表示する場合はtrue */
-    int opt, stat = 0;
-    WORD word;
-    const char *version = PACKAGE_VERSION,  *cmdversion = "dumpword of YACASL2 version %s\n";
+    int opt = 0;
+    int stat = 0;
+    WORD word = 0;
+    const char *version = PACKAGE_VERSION;
+    const char *cmdversion = "dumpword of YACASL2 version %s\n";
     const char *usage = "Usage: %s [-alh] WORD\n";
 
     /* エラーの定義 */

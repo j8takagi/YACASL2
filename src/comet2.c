@@ -40,9 +40,12 @@ void addcerrlist_comet2()
  */
 int main(int argc, char *argv[])
 {
-    int memsize = DEFAULT_MEMSIZE, clocks = DEFAULT_CLOCKS;
-    int opt, stat = 0;
-    const char *version = PACKAGE_VERSION,  *cmdversion = "comet2 of YACASL2 version %s\n";
+    int memsize = DEFAULT_MEMSIZE;
+    int clocks = DEFAULT_CLOCKS;
+    int opt = 0;
+    int stat = 0;
+    const char *version = PACKAGE_VERSION;
+    const char *cmdversion = "comet2 of YACASL2 version %s\n";
     const char *usage = "Usage: %s [-tTdmvh] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE\n";
 
     /* エラーの定義 */

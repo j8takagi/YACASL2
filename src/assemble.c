@@ -307,7 +307,7 @@ static CMD macrocmd[] = {
     { "", NULL }
 };
 
-ASPTR *asptr;
+ASPTR *asptr = NULL;
 
 ASMODE asmode = {false, false, false, false, false};
 
@@ -318,7 +318,7 @@ void printline(FILE *stream, const char *filename, int lineno, char *line)
 
 WORD getadr(const char *prog, const char *str, PASS pass)
 {
-    WORD adr = 0x0;
+    WORD adr = 0;
 
     if(str[0] == '=') {
         adr = getliteral(str, pass);
@@ -336,7 +336,7 @@ WORD getadr(const char *prog, const char *str, PASS pass)
 
 WORD grword(const char *str, bool is_x)
 {
-    WORD r;
+    WORD r = 0;
 
     /*  "GR[0-7]" 以外の文字列では、0xFFFFを返して終了 */
     if(strlen(str) != 3 ||
@@ -349,7 +349,7 @@ WORD grword(const char *str, bool is_x)
     /* GR0は指標レジスタとして用いることができない */
     if(is_x == true && r == 0x0) {
         setcerr(120, "");    /* GR0 in operand x */
-        return 0x0;
+        return 0;
     }
     return r;
 }
@@ -370,7 +370,7 @@ WORD getliteral(const char *str, PASS pass)
 
 void writememory(WORD word, WORD adr, PASS pass)
 {
-    char *n;
+    char *n = NULL;
 
     /* メモリオーバーの場合、エラー発生 */
     if(adr >= sys->memsize) {
@@ -387,11 +387,10 @@ void writememory(WORD word, WORD adr, PASS pass)
 void writestr(const char *str, bool literal, PASS pass)
 {
     assert(str[0] == '\'');
-    int i;
     bool lw = false;
 
     /* 「'」の場合、1文字スキップし、次の文字が「'」でなければ正常終了 */
-    for(i = 1; str[i] != '\'' || str[++i] == '\''; i++) {
+    for(int i = 1; str[i] != '\'' || str[++i] == '\''; i++) {
         /* 「'」が閉じないまま文字列が終了した場合はエラー */
         if(!str[i]) {
             setcerr(123, str);    /* unclosed quote */
@@ -466,12 +465,11 @@ void assemble_end(const CMDLINE *cmdl, PASS pass)
 
 void assemble_ds(const CMDLINE *cmdl, PASS pass)
 {
-    int i;
     if(cmdl->opd->opdc != 1) {
         setcerr(106, "");    /* operand count mismatch */
         return;
     }
-    for(i = 0; i < atoi(cmdl->opd->opdv[0]); i++) {
+    for(int i = 0; i < atoi(cmdl->opd->opdv[0]); i++) {
         writememory(0x0, (asptr->ptr)++, pass);
         if(cerr->num > 0) {
             break;
@@ -481,12 +479,11 @@ void assemble_ds(const CMDLINE *cmdl, PASS pass)
 
 void assemble_dc(const CMDLINE *cmdl, PASS pass)
 {
-    int i;
     if(cmdl->opd->opdc == 0 || cmdl->opd->opdc >= OPDSIZE) {
         setcerr(106, "");    /* operand count mismatch */
         return;
     }
-    for(i = 0; i < cmdl->opd->opdc; i++) {
+    for(int i = 0; i < cmdl->opd->opdc; i++) {
         writedc(cmdl->opd->opdv[i], pass);
         if(cerr->num > 0) {
             break;
@@ -496,7 +493,9 @@ void assemble_dc(const CMDLINE *cmdl, PASS pass)
 
 void assemble_in(const CMDLINE *cmdl, PASS pass)
 {
-    char *line = malloc_chk(LINESIZE + 1, "assemble_in.line");
+    char *line = NULL;
+
+    line = malloc_chk(LINESIZE + 1, "assemble_in.line");
     if(cmdl->opd->opdc == 0 || cmdl->opd->opdc > 2) {
         setcerr(106, "");    /* operand count mismatch */
         return;
@@ -515,7 +514,9 @@ void assemble_in(const CMDLINE *cmdl, PASS pass)
 
 void assemble_out(const CMDLINE *cmdl, PASS pass)
 {
-    char *line = malloc_chk(LINESIZE + 1, "assemble_out.line");
+    char *line = NULL;
+
+    line = malloc_chk(LINESIZE + 1, "assemble_out.line");
     if(cmdl->opd->opdc == 0 || cmdl->opd->opdc > 2) {
         setcerr(106, "");    /* operand count mismatch */
         return;
@@ -537,13 +538,14 @@ void assemble_out(const CMDLINE *cmdl, PASS pass)
 
 void assemble_rpush(const CMDLINE *cmdl, PASS pass)
 {
-    int i;
-    char *line = malloc_chk(LINESIZE + 1, "assemble_rpush.line");
+    char *line = NULL;
+
+    line = malloc_chk(LINESIZE + 1, "assemble_rpush.line");
     if(cmdl->opd->opdc > 0) {
         setcerr(106, "");    /* operand count mismatch */
         return;
     }
-    for(i = 1; i <= GRSIZE-1; i++) {
+    for(int i = 1; i <= GRSIZE-1; i++) {
         sprintf(line, "    PUSH 0,GR%d", i);
         assembleline(line, pass);
     }
@@ -552,13 +554,14 @@ void assemble_rpush(const CMDLINE *cmdl, PASS pass)
 
 void assemble_rpop(const CMDLINE *cmdl, PASS pass)
 {
-    int i;
-    char *line = malloc_chk(LINESIZE + 1, "assemble_rpop.line");
+    char *line = NULL;
+
+    line = malloc_chk(LINESIZE + 1, "assemble_rpop.line");
     if(cmdl->opd->opdc > 0) {
         setcerr(106, "");    /* operand count mismatch */
         return;
     }
-    for(i = GRSIZE-1; i >= 1; i--) {
+    for(int i = GRSIZE-1; i >= 1; i--) {
         sprintf(line, "    POP GR%d", i);
         assembleline(line, pass);
     }
@@ -567,9 +570,9 @@ void assemble_rpop(const CMDLINE *cmdl, PASS pass)
 
 bool casl2cmd(CMD *cmdtbl, const CMDLINE *cmdl, PASS pass)
 {
-    int i;
-    void (*cmdptr)();
-    for(i = 0; cmdtbl[i].name[0]; i++) {
+    void (*cmdptr)() = NULL;
+
+    for(int i = 0; cmdtbl[i].name[0]; i++) {
         if(strcmp(cmdl->cmd, cmdtbl[i].name) == 0) {
             cmdptr = cmdtbl[i].ptr;
             (*cmdptr)(cmdl, pass);
@@ -581,7 +584,10 @@ bool casl2cmd(CMD *cmdtbl, const CMDLINE *cmdl, PASS pass)
 
 bool assemble_comet2cmd(const CMDLINE *cmdl, PASS pass)
 {
-    WORD cmd, r_r1, x_r2, adr;
+    WORD cmd = 0;
+    WORD r_r1 = 0;
+    WORD x_r2 = 0;
+    WORD adr = 0;
 
     /* オペランドなし */
     if(cmdl->opd->opdc == 0) {
@@ -686,9 +692,8 @@ bool assembletok(const CMDLINE *cmdl, PASS pass)
 
 bool assembleline(const char *line, PASS pass)
 {
-    CMDLINE *cmdl;
+    CMDLINE *cmdl = NULL;
     bool stat = true;
-    int i;
 
     cmdl = linetok(line);
     stat = (cerr->num == 0) ? true : false;
@@ -703,7 +708,7 @@ bool assembleline(const char *line, PASS pass)
         }
         FREE(cmdl->label);
         if(cmdl->opd != NULL) {
-            for(i = 0; i < cmdl->opd->opdc; i++) {
+            for(int i = 0; i < cmdl->opd->opdc; i++) {
                 FREE(cmdl->opd->opdv[i]);
             }
         }
@@ -722,8 +727,8 @@ bool assembleline(const char *line, PASS pass)
 bool assemblefile(const char *file, PASS pass)
 {
     int lineno = 1;
-    char *line;
-    FILE *fp;
+    char *line = NULL;
+    FILE *fp = NULL;
 
     if((fp = fopen(file, "r")) == NULL) {
         cerr->num = errno;
@@ -803,7 +808,7 @@ void addcerrlist_assemble()
 
 void outassemble(const char *file)
 {
-    FILE *fp;
+    FILE *fp = NULL;
 
     if((fp = fopen(file, "w")) == NULL) {
         perror(file);

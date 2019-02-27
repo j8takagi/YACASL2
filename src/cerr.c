@@ -6,32 +6,32 @@ void cerr_init()
     cerr->num = 0;
 }
 
-CERR *cerr;
+CERR *cerr = NULL;
 
 CERRLIST *cerrlist = NULL;
 
 void addcerrlist(int cerrc, CERR cerrv[])
 {
-    int i;
-    CERRLIST *p = NULL, *q = malloc_chk(sizeof(CERRLIST), "cerrlist");
+    CERRLIST *stat = NULL;
+    CERRLIST *p = NULL;
 
     assert(cerrc > 0 && cerrv != NULL);
-    for(i = 0; i < cerrc; i++) {
+    for(int i = 0; i < cerrc; i++) {
         if(p == NULL) {
-            p = q;
+            stat = p = malloc_chk(sizeof(CERRLIST), "cerrlist");
         } else {
-            p = p->next = malloc_chk(sizeof(CERRLIST), "cerrlist.next");
+            p = p->next = malloc_chk(sizeof(CERRLIST), "cerrlist->next");
         }
         p->cerr = &cerrv[i];
         p->next = NULL;
     }
     p->next = cerrlist;
-    cerrlist = q;
+    cerrlist = stat;
 }
 
 void printcerrlist()
 {
-    CERRLIST *p;
+    CERRLIST *p = NULL;
 
     if(cerrlist == NULL) {
         puts("error list is null.");
@@ -57,7 +57,7 @@ void setcerr(int num, const char *str)
 
 char *getcerrmsg(int num)
 {
-    CERRLIST *p;
+    CERRLIST *p = NULL;
     char *msg = "unknown error";
 
     for(p = cerrlist; p != NULL; p = p->next) {
@@ -71,7 +71,8 @@ char *getcerrmsg(int num)
 
 void freecerr()
 {
-    CERRLIST *p = cerrlist, *q;
+    CERRLIST *p = NULL;
+    CERRLIST *q = NULL;
 
     /* 現在のエラーメッセージを解放 */
     FREE(cerr->msg);

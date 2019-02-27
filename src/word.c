@@ -29,7 +29,7 @@ WORD n2word(const char *str)
 {
     assert(isdigit(str[0]) || str[0] == '-');
 
-    char *check;
+    char *check = NULL;
     int n;
     /* WORD値に変換 */
     n = strtol(str, &check, 10);
@@ -48,8 +48,8 @@ WORD h2word(const char *str)
 {
     assert(str[0] == '#');
 
-    WORD w = 0x0;
-    char *check;
+    WORD w = 0;
+    char *check = NULL;
     str++;
     if(*str == '-' || strlen(str) > 4) {
         setcerr(116, str-1);    /* out of hex range */
@@ -140,9 +140,10 @@ char *word2bit(const WORD word)
         MAXLEN = 16,        /* WORD値を2進数で表したときの最大桁数 */
     };
     WORD mask = 0x8000;
-    char *bit = malloc_chk(MAXLEN + 1, "word2bit.bit");
+    char *bit = NULL;
     int i = 0;
 
+    bit = malloc_chk(MAXLEN + 1, "word2bit.bit");
     do {
         bit[i++] = (word & mask) ? '1' : '0';
     } while((mask >>= 1) > 0);
