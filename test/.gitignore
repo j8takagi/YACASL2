@@ -1,5 +1,6 @@
 1.txt
 *.log
 *.o
+create_a
 !system/*/*/sum_10.o
 !system/*/*/hello.o
