@@ -17,24 +17,6 @@ enum {
 };
 
 /**
- * @brief 実行モードを表すデータ型
- */
-typedef struct {
-    bool trace;           /**<レジストリの内容をステップごとに表示する場合はtrue */
-    bool logical;         /**<レジストリの内容を論理値（0から65535）で表示する場合はtrue */
-    bool dump;            /**<メモリの内容をステップごとに表示する場合はtrue */
-    int dump_start;       /**<メモリの内容をステップごとに表示する場合の開始アドレス */
-    int dump_end;         /**<メモリの内容をステップごとに表示する場合の終了アドレス */
-    bool monitor;         /**<モニターモードの場合はtrue */
-    bool step;            /**<ステップ実行の場合はtrue */
-} EXECMODE;
-
-/**
- * @brief 実行モード: trace, logical, dump, monitor, step
- */
-extern EXECMODE execmode;
-
-/**
  * @brief 実行エラーをエラーリストに追加する
  */
 void addcerrlist_exec();

@@ -1,4 +1,4 @@
-.PHONY: all clean doxygen-clean gnu_global-clean cmetrics-clean
+.PHONY: all clean doxyfile-update doxygen-clean gnu_global-clean cmetrics-clean
 
 CD := cd
 CMETRICS := cmetrics
@@ -34,7 +34,10 @@ $(DOXYGEN_DIR): $(DOXYSRCDIR)/Doxyfile ../src ../include
 	$(INSTALL) -d $(DOXYGEN_DIR)
 	$(CD) $(DOXYSRCDIR) && $(DOXYGEN)
 
-$(DOXYSRCDIR)/Doxyfile: Doxyfile
+doxyfile-update: Doxyfile
+	$(DOXYGEN) -u $<
+
+$(DOXYSRCDIR)/Doxyfile: doxyfile-update
 	@$(CP) -vf Doxyfile $(DOXYSRCDIR)/
 
 # htagsのHTMLドキュメント作成先は、

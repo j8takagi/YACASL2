@@ -3,6 +3,7 @@
  * \section メイン関数
  * - src/casl2.c
  * - src/comet2.c
+ * - src/comet2monitor.c
  * - src/dumpword.c
  * - src/casl2rev.c
  * - src/comet2monitor.c
