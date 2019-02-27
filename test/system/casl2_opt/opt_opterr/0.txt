@@ -1,2 +1,1 @@
-../../../../casl2: invalid option -- 'z'
 Usage: ../../../../casl2 [-slLaAtTdmvh] [-oO[<OBJECTFILE>]] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE1[ FILE2  ...]
