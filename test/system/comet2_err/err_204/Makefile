@@ -5,8 +5,6 @@ CC := gcc
 CFLAGS := -Wall
 INCLUDEDIR := ../../../../include
 
-.INTERMEDIATE: create_a a.o
-
 a.o: create_a
 	./$^
 
