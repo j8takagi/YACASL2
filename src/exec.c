@@ -215,25 +215,6 @@ void addcerrlist_exec()
     addcerrlist(ARRAYSIZE(cerr_exec), cerr_exec);
 }
 
-WORD loadassemble(const char *file, WORD start)
-{
-    FILE *fp = NULL;
-    WORD end = 0;
-
-    assert(file != NULL);
-    if((fp = fopen(file, "rb")) == NULL) {
-        perror(file);
-        return 0;
-    }
-    end = start + fread(sys->memory + start, sizeof(WORD), sys->memsize - start, fp);
-    if(end == sys->memsize) {
-        setcerr(210, file);    /* load - memory overflow */
-        fprintf(stderr, "Load error - %d: %s\n", cerr->num, cerr->msg);
-    }
-    fclose(fp);
-    return end;
-}
-
 void nop()
 {
     sys->cpu->pr += 1;

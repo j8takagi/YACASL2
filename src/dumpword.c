@@ -49,14 +49,14 @@ int main(int argc, char *argv[])
             goto dumpwordfin;
         case '?':
             fprintf(stderr, usage, argv[0]);
-            setcerr(212, "");    /* invalid option */
+            setcerr(999, "");
             goto dumpwordfin;
         }
     }
 
     if(argv[optind] == NULL) {
-        setcerr(213, "");    /* invalid argument */
         fprintf(stderr, usage, argv[0]);
+        setcerr(999, "");
         goto dumpwordfin;
     }
     /* WORD値に変換 */

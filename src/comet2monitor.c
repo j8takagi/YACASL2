@@ -1,5 +1,6 @@
 #include "package.h"
 #include "exec.h"
+#include "load.h"
 
 /**
  * comet2monitorコマンドのオプション
