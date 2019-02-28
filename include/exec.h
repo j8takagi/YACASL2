@@ -1,5 +1,5 @@
-#ifndef YACASL2_EXEC_INCLUDED
-#define YACASL2_EXEC_INCLUDED
+#ifndef YACASL2_EXEC_H_INCLUDED
+#define YACASL2_EXEC_H_INCLUDED
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -20,16 +20,6 @@ enum {
  * @brief 実行エラーをエラーリストに追加する
  */
 void addcerrlist_exec();
-
-/**
- * @brief 指定されたファイルからアセンブル結果を読み込む
- *
- * @return 読み込み終了アドレス。読み込めなかった場合は、0
- *
- * @param file 読み込むファイル名
- * @param start 読み込み開始アドレス
- */
-WORD loadassemble(const char *file, WORD start);
 
 /**
  * @class Exec
@@ -372,4 +362,4 @@ void dumpmemory(WORD start, WORD end);
  */
 void dspregister();
 
-#endif            /* YACASL2_EXEC_INCLUDEDの終端 */
+#endif

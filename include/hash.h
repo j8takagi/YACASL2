@@ -1,5 +1,5 @@
-#ifndef YACASL2_HASH_INCLUDED
-#define YACASL2_HASH_INCLUDED
+#ifndef YACASL2_HASH_H_INCLUDED
+#define YACASL2_HASH_H_INCLUDED
 
 /**
  * @brief ハッシュ共用体の数値

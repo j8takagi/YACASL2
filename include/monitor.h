@@ -1,11 +1,12 @@
-#ifndef MONITOR_INCLUDE
-#define MONITOR_INCLUDE
+#ifndef YACASL2_MONITOR_H_INCLUDE
+#define YACASL2_MONITOR_H_INCLUDE
 
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
 #include "assemble.h"
 #include "exec.h"
+#include "load.h"
 
 /**
  * @brief モニター
@@ -134,4 +135,4 @@ void freebps();
  */
 void monitor();
 
-#endif        /* end of MONITOR_INCLUDE */
+#endif

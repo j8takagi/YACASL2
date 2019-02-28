@@ -1,5 +1,5 @@
-#ifndef DISASSEMBLE_INCLUDE
-#define DISASSEMBLE_INCLUDE
+#ifndef YACASL2_DISASSEMBLE_H_INCLUDE
+#define YACASL2_DISASSEMBLE_H_INCLUDE
 
 #include "struct.h"
 
@@ -22,4 +22,4 @@ bool disassemble_file(const char *file);
  */
 void disassemble_memory(WORD start, WORD end);
 
-#endif        /* end of DISASSEMBLE_INCLUDE */
+#endif

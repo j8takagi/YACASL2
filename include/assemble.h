@@ -1,5 +1,5 @@
-#ifndef YACASL2_ASSEMBLE_INCLUDED
-#define YACASL2_ASSEMBLE_INCLUDED
+#ifndef YACASL2_ASSEMBLE_H_INCLUDED
+#define YACASL2_ASSEMBLE_H_INCLUDED
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -155,4 +155,4 @@ bool assemble(int filec, char *filev[], WORD adr);
  */
 void outassemble(const char *file);
 
-#endif            /* YACASL2_ASSEMBLE_INCLUDEDの終端 */
+#endif

@@ -1,5 +1,5 @@
-#ifndef TOKEN_INCLUDE
-#define TOKEN_INCLUDE
+#ifndef YACASL2_TOKEN_INCLUDE
+#define YACASL2_TOKEN_INCLUDE
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -60,4 +60,4 @@ void addcerrlist_tok();
  */
 CMDLINE *linetok(const char *line);
 
-#endif        /* end of TOKEN_INCLUDE */
+#endif
