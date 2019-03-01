@@ -32,7 +32,6 @@ int main(int argc, char *argv[])
 
     /* エラーの定義 */
     cerr_init();
-    addcerrlist_load();
     addcerrlist_word();
 
     /* オプションの処理 */
