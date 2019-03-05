@@ -88,11 +88,11 @@ bool delbps(WORD adr)
 
 void listbps()
 {
-    int i, cnt = 0;
+    int cnt = 0;
     BPSLIST *p = NULL;
 
     fprintf(stdout, "List of breakpoints\n");
-    for(i = 0; i < BPSTABSIZE; i++) {
+    for(int i = 0; i < BPSTABSIZE; i++) {
         for(p = bps[i]; p != NULL; p = p->next) {
             fprintf(stdout, "#%04X\n", p->adr);
             cnt++;

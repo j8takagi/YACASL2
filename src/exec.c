@@ -297,10 +297,11 @@ void suba_r1_r2()
 
 void addl_gr(WORD r, WORD val, bool add)
 {
-    unsigned long o, s;
+    unsigned long o = 0;
+    unsigned long s = 0;
 
     o = sys->cpu->gr[r];
-    sys->cpu->fr = 0x0;    /* flag initialize */
+    sys->cpu->fr = 0;    /* flag initialize */
 
     if(add == true) {
         s = o + val;

@@ -102,20 +102,20 @@ WORD nh2word(const char *str)
 char *word2n(WORD word)
 {
     enum {
-        MAXLEN = 5,        /* WORD値を10進数で表したときの最大桁数 */
+        MAXLEN = 5,        /* WORD値を10進数で表したときの最大けた数 */
     };
-    char *n = malloc_chk(MAXLEN + 1, "word2n.n"), tmp;
-    int i = 0, j;
+    char *n = malloc_chk(MAXLEN + 1, "word2n.n");
+    int d = 0;                  /* けた数 */
 
     do{
-        n[i++] = word % 10 + '0';
+        n[d++] = word % 10 + '0';
     } while((word /= 10) > 0);
-    for(j = 0; j < i; j++) {
-        tmp = n[j];
-        n[j] = n[(i-1)-j];
-        n[(i-1)-j] = tmp;
+    for(int i = 0; i < d; i++) {
+        char tmp = n[i];
+        n[i] = n[(d-1)-i];
+        n[(d-1)-i] = tmp;
     }
-    n[j] = '\0';
+    n[d] = '\0';
     return n;
 }
 

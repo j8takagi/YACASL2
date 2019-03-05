@@ -412,7 +412,7 @@ void writestr(const char *str, bool literal, PASS pass)
 
 void writedc(const char *str, PASS pass)
 {
-    WORD adr = 0x0;
+    WORD adr = 0;
 
     if(*str == '\'') {
         writestr(str, false, pass);
@@ -493,9 +493,8 @@ void assemble_dc(const CMDLINE *cmdl, PASS pass)
 
 void assemble_in(const CMDLINE *cmdl, PASS pass)
 {
-    char *line = NULL;
+    char *line = malloc_chk(LINESIZE + 1, "assemble_in.line");
 
-    line = malloc_chk(LINESIZE + 1, "assemble_in.line");
     if(cmdl->opd->opdc == 0 || cmdl->opd->opdc > 2) {
         setcerr(106, "");    /* operand count mismatch */
         return;
@@ -514,9 +513,8 @@ void assemble_in(const CMDLINE *cmdl, PASS pass)
 
 void assemble_out(const CMDLINE *cmdl, PASS pass)
 {
-    char *line = NULL;
+    char *line = malloc_chk(LINESIZE + 1, "assemble_out.line");
 
-    line = malloc_chk(LINESIZE + 1, "assemble_out.line");
     if(cmdl->opd->opdc == 0 || cmdl->opd->opdc > 2) {
         setcerr(106, "");    /* operand count mismatch */
         return;
@@ -538,9 +536,8 @@ void assemble_out(const CMDLINE *cmdl, PASS pass)
 
 void assemble_rpush(const CMDLINE *cmdl, PASS pass)
 {
-    char *line = NULL;
+    char *line = malloc_chk(LINESIZE + 1, "assemble_rpush.line");
 
-    line = malloc_chk(LINESIZE + 1, "assemble_rpush.line");
     if(cmdl->opd->opdc > 0) {
         setcerr(106, "");    /* operand count mismatch */
         return;
@@ -554,9 +551,8 @@ void assemble_rpush(const CMDLINE *cmdl, PASS pass)
 
 void assemble_rpop(const CMDLINE *cmdl, PASS pass)
 {
-    char *line = NULL;
+    char *line = malloc_chk(LINESIZE + 1, "assemble_rpop.line");
 
-    line = malloc_chk(LINESIZE + 1, "assemble_rpop.line");
     if(cmdl->opd->opdc > 0) {
         setcerr(106, "");    /* operand count mismatch */
         return;
