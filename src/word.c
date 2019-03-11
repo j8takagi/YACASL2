@@ -104,19 +104,17 @@ char *word2n(WORD word)
     enum {
         MAXLEN = 5,        /* WORD値を10進数で表したときの最大けた数 */
     };
-    char *n = malloc_chk(MAXLEN + 1, "word2n.n");
+    char *s = malloc_chk(MAXLEN + 1, "word2n.n");
+    char *t = NULL;
     int d = 0;                  /* けた数 */
 
     do{
-        n[d++] = word % 10 + '0';
+        s[d++] = word % 10 + '0';
     } while((word /= 10) > 0);
-    for(int i = 0; i < d; i++) {
-        char tmp = n[i];
-        n[i] = n[(d-1)-i];
-        n[(d-1)-i] = tmp;
-    }
-    n[d] = '\0';
-    return n;
+    s[d] = '\0';
+    t = strrev(s);
+    FREE(s);
+    return t;
 }
 
 char *word2bit(const WORD word)
@@ -138,14 +136,14 @@ char *word2bit(const WORD word)
 
 void print_dumpword(WORD word, bool logicalmode)
 {
-    char *bit = NULL;
+    char *bit = word2bit(word);
 
     if(logicalmode == true) {
-        fprintf(stdout, "%6d", word);
+        fprintf(stdout, "%6u", word);
     } else {
         fprintf(stdout, "%6d", (signed short)word);
     }
-    fprintf(stdout, " = #%04X = %s", word, (bit = word2bit(word)));
+    fprintf(stdout, " = #%04X = %s", word, bit);
     /* 「文字の組」の符号表に記載された文字と、改行（CR）／タブを表示 */
     if(word >= 0x20 && word <= 0x7E) {
         fprintf(stdout, " = \'%c\'", word);

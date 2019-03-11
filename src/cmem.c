@@ -25,9 +25,7 @@ void *calloc_chk(size_t nmemb, size_t size, const char *tag)
 char *strdup_chk(const char *s, const char *tag)
 {
     assert(s != NULL);
-    char *t = NULL;
-
-    t = malloc_chk(strlen(s) + 1, tag);
+    char *t = malloc_chk(strlen(s) + 1, tag);
     strcpy(t, s);
     return t;
 }
@@ -70,4 +68,15 @@ void strip_casl2_comment(char *s)
     }
 }
 
+char *strrev(const char *s)
+{
+    char *t = strdup_chk(s, "strrev.t");
+    int l = strlen(t);
+
+    for(int i = 0; i < l-1-i; i++) {
+        char tmp = t[i];
+        t[i] = t[l-1-i];
+        t[l-1-i] = tmp;
+    }
+    return t;
 }
