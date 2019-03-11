@@ -70,19 +70,28 @@ char *strndup_chk(const char *s, size_t len, const char *tag);
 /**
  * @brief 文字列の末尾から、改行と空白とタブを削除する
  *
- * @return 末尾から改行と空白とタブを削除した文字列
+ * @return なし
  *
  * @param s 文字列
  */
-char *strip_end(char *s);
+void strip_end(char *s);
 
 /**
  * @brief 文字列から「'」以降の文字列をCASL IIのコメントとして削除する。「''」の場合は除く
  *
- * @return コメントを削除した文字列
+ * @return なし
  *
  * @param s 文字列
  */
-char *strip_casl2_comment(char *s);
+void strip_casl2_comment(char *s);
+
+/**
+ * @brief 逆にした文字列を返す
+ *
+ * @return 逆にしたした文字列
+ *
+ * @param s 文字列
+ */
+char *strrev(const char *s);
 
 #endif

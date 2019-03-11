@@ -47,15 +47,14 @@ char *strndup_chk(const char *s, size_t len, const char *tag)
     return t;
 }
 
-char *strip_end(char *s)
+void strip_end(char *s)
 {
-    for(int i = strlen(s) - 1; i > 0 && (s[i] == '\n' || s[i] == ' ' || s[i] == '\t'); i--) {
+    for(int i = strlen(s) - 1; i > 0 && (s[i] == '\n' || s[i] == '\r' || s[i] == ' ' || s[i] == '\t'); i--) {
         s[i] = '\0';
     }
-    return s;
 }
 
-char *strip_casl2_comment(char *s)
+void strip_casl2_comment(char *s)
 {
     bool quoting = false;
 
@@ -69,5 +68,6 @@ char *strip_casl2_comment(char *s)
             break;
         }
     }
-    return s;
+}
+
 }
