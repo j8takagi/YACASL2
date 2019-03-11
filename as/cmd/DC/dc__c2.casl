@@ -1,0 +1,5 @@
+;; DC 文字定数
+MAIN    START
+        RET
+        DC      ''
+        END
