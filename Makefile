@@ -71,7 +71,7 @@ valgrind:
 
 install: casl2 comet2 dumpword install-info
 	$(INSTALL) -d $(bindir)
-	$(INSTALL) $(CMD) $(bindir)/
+	$(INSTALL) $(CMDFILES) $(bindir)/
 
 install-info:
 	$(MAKE) -C doc install-info
