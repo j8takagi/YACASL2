@@ -71,13 +71,13 @@ valgrind:
 
 install: casl2 comet2 dumpword install-info
 	$(INSTALL) -d $(bindir)
-	$(INSTALL) $(CMD) $(bindir)/
+	$(INSTALL) $(CMDFILES) $(bindir)/
 
 install-info:
 	$(MAKE) -C doc install-info
 
 uninstall: uninstall-info
-	$(RM) $(prefix $(bindir)/,$(CMD))
+	$(RM) $(prefix $(bindir)/,$(CMDFILES))
 
 version: $(VERSIONFILES)
 	@$(ECHO) "YACASL2 Version: $(VERSION)"
@@ -93,7 +93,7 @@ distclean: cmd-clean src-distclean gtags-clean version-clean clean
 clean: src-clean doc-clean doc_inner-clean
 
 cmd-clean:
-	$(RM) $(CMD)
+	$(RM) $(CMDFILES)
 
 src-clean:
 	$(MAKE) -sC src clean
