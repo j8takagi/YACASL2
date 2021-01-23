@@ -17,7 +17,7 @@
 ******
 
  YACASL2は、LinuxやMac OS Xなど、UNIX系のOS上で動作します。現在動作を確
-認しているのは、Ubuntu LinuxとMac OS Xです。
+認しているのは、Arch LinuxとUbuntu Linux、Mac OS Xです。
 
  インストール時に、'tar' 'gcc' 'make'が必要です。Linuxでは多くの場合、標
 準でインストールされています。Mac OS Xの場合、Xcodeの「Command Line
