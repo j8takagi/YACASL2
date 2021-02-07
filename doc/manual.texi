@@ -387,7 +387,8 @@ Executing machine codes
 $ @kbd{casl2 -t addl.casl | grep 'GR1:'}
 #0000: GR1:      0 = #0000 = 0000000000000000
 #0002: GR1:      3 = #0003 = 0000000000000011
-#0004: GR1:      4 = #0004 = 0000000000000100
+#0004: GR1:      5 = #0005 = 0000000000000101
+#0006: GR1:      5 = #0005 = 0000000000000101
 @end example
 
 この内容を、先に出力したアセンブル結果と比較してください。
@@ -404,6 +405,9 @@ $ @kbd{casl2 -t addl.casl | grep 'GR1:'}
 @item #0004
 @tab #0004
 @tab @code{ADDL GR1,B}
+@item #0006
+@tab #0006
+@tab @code{ST GR1,C}
 @end multitable
 
 @node End value, Step count, Register specify, Register and memory
@@ -411,11 +415,11 @@ $ @kbd{casl2 -t addl.casl | grep 'GR1:'}
 
 @command{grep}と@command{tail}を組み合わせれば、プログラム終了時の値を表示できます。
 
-@file{addl.casl}でプログラム終了時の値を確認するには、次のようにします。
+@file{addl.casl}でプログラム終了時のGR1の値を確認するには、次のようにします。
 
 @example
 $ @kbd{casl2 -t addl.casl | grep 'GR1:' | tail -1}
-#0004: GR1:      4 = #0004 = 0000000000000100
+#0006: GR1:      5 = #0005 = 0000000000000101
 @end example
 
 @file{sum_10.casl}は、1から10までの整数の和を求め、GR2に格納してからメモリにストア（書き込み）します。
