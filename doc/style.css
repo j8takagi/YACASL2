@@ -143,7 +143,13 @@ pre.example strong {
     border: 2px solid green;
 }
 
-th, em {
+pre.example em {
+    font-size: 100%;
+    font-style: normal;
+    font-weight: bold;
+}
+
+th {
     font-style: normal;
     font-weight: bold;
     font-family: sans-serif;
