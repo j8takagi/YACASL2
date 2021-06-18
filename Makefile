@@ -69,7 +69,7 @@ smoke-valgrind:
 valgrind:
 	$(MAKE) -sC test/system valgrind
 
-install: casl2 comet2 dumpword install-info
+install: $(CMDFILES) install-info
 	$(INSTALL) -d $(bindir)
 	$(INSTALL) $(CMDFILES) $(bindir)/
 
