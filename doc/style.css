@@ -166,3 +166,8 @@ dfn {
 .header, .menu {
     display: none;
 }
+
+em {
+    font-style: normal;
+    font-weight: bold;
+}
