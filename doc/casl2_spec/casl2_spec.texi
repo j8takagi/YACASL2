@@ -14,12 +14,12 @@
 @c %**end of header
 
 @copying
-Copyright @copyright{} Information-technology Promotion Agency, Japan. All rights reserved 2012
+Copyright @copyright{} Information-technology Promotion Agency, Japan. All rights reserved 2021
 @end copying
 
 @titlepage
 @title 情報処理技術者試験 アセンブラ言語の仕様
-@subtitle 「試験で使用する情報処理用語・プログラム言語など Ver 2.2（平成24年5月22日） 別紙1」より
+@subtitle 「試験で使用する情報処理用語・プログラム言語など Ver 4.3（2021年10月8日） 別紙3」より
 @end titlepage
 
 @chapter システム COMET IIの仕様
