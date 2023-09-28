@@ -2,12 +2,13 @@
         check valgrind \
         doc alldoc doc_inner \
         install uninstall \
-        version gittag \
+        version gittag copyright \
         clean src-clean gtags-clean \
         test-clean doc-clean doc_inner-clean
 
 CAT := cat
 CP := cp -v
+DATE := date
 ECHO := /bin/echo
 EXPR := expr
 GIT := git
@@ -15,6 +16,7 @@ GREP := grep
 GTAGS := gtags
 INSTALL := install
 SED := sed
+SEDI := $(SED) -i
 WC := wc
 WHICH := which
 XARGS := xargs
@@ -36,7 +38,9 @@ VERSIONFILES := include/version.h \
 
 CMDFILES := casl2 comet2 dumpword casl2rev comet2monitor
 
-all: build INSTALL gtags
+YEAR := $(shell $(DATE) '+%Y')
+
+all: copyright INSTALL build gtags
 
 build: version
 	$(MAKE) -C src all
@@ -87,6 +91,10 @@ $(VERSIONFILES): VERSION
 
 gittag:
 	if test `$(GIT) status -s | $(WC) -l` -gt 0; then $(ECHO) "Error: commit, first."; exit 1; fi; if test "$(VERSIONGITREF)" != "$(MASTERGITREF)"; then $(GIT) tag $(VERSION); fi
+
+copyright:
+	$(SEDI) 's/Copyright (c) 2010-20[0-9][0-9]/Copyright (c) 2010-$(YEAR)/' LICENSE README
+	$(SEDI) 's/Copyright @copyright{} 2010-20[0-9][0-9]/Copyright @copyright{} 2010-$(YEAR)/' doc/*.texi
 
 distclean: cmd-clean src-distclean gtags-clean version-clean clean
 
