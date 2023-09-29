@@ -93,8 +93,8 @@ gittag:
 	if test `$(GIT) status -s | $(WC) -l` -gt 0; then $(ECHO) "Error: commit, first."; exit 1; fi; if test "$(VERSIONGITREF)" != "$(MASTERGITREF)"; then $(GIT) tag $(VERSION); fi
 
 copyright:
-	$(SEDI) 's/Copyright (c) 2010-20[0-9][0-9]/Copyright (c) 2010-$(YEAR)/' LICENSE README
-	$(SEDI) 's/Copyright @copyright{} 2010-20[0-9][0-9]/Copyright @copyright{} 2010-$(YEAR)/' doc/*.texi
+	$(SEDI) 's/Copyright (c) 2010-20[0-9][0-9]/Copyright (c) 2010-$(YEAR)/g' LICENSE README
+	$(SEDI) 's/Copyright @copyright{} 2010-20[0-9][0-9]/Copyright @copyright{} 2010-$(YEAR)/g' doc/*.texi
 
 distclean: cmd-clean src-distclean gtags-clean version-clean clean
 
