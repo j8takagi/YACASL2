@@ -51,7 +51,7 @@ YACASL2の使用例
 * Register and memory::         実行時のレジスタとメモリを表示
 * Only assemble::               アセンブルと実行を別に行う
 * Analyze word::                1語の解析
-* Use CASL2LIB::                CASL2ライブラリの使用
+* Use CASL2LIB::                CASL IIライブラリの使用
 
 実行時のレジスタとメモリを表示
 
@@ -131,7 +131,7 @@ YACASL2 は、テキストファイルに記述されたCASLプログラムを�
 * Register and memory::         実行時のレジスタとメモリを表示
 * Only assemble::               アセンブルと実行を別に行う
 * Analyze word::                1語の解析
-* Use CASL2LIB::                CASL2ライブラリの使用
+* Use CASL2LIB::                CASL IIライブラリの使用
 @end menu
 
 @node Simple output, Assemble result, Sample usage, Sample usage
@@ -514,7 +514,7 @@ $ @kbd{dumpword 72}
 @end example
 
 @node Use CASL2LIB,  , Analyze word, Sample usage
-@section CASL2ライブラリの使用
+@section CASL IIライブラリの使用
 
 YACASL2の@file{as/casl2lib}ディレクトリには、CASL IIで記述されたライブラリファイルが格納されています。
 
