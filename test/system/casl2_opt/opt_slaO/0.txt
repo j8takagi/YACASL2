@@ -3,83 +3,68 @@ Assemble ../../../../as/sample/sum_10.casl (0)
 ../../../../as/sample/sum_10.casl:    1:;;; sum_10.casl
 ../../../../as/sample/sum_10.casl:    2:;;; 1から10までの整数をすべて加算した値をメモリーに格納する
 ../../../../as/sample/sum_10.casl:    3:MAIN    START
-../../../../as/sample/sum_10.casl:    4:        PUSH    0,GR1
-../../../../as/sample/sum_10.casl:    5:        PUSH    0,GR2
-../../../../as/sample/sum_10.casl:    6:        XOR     GR2,GR2         ; GR2を初期化
-../../../../as/sample/sum_10.casl:    7:        LD      GR1,FST         ; GR1に初項をメモリーから転送
-../../../../as/sample/sum_10.casl:    8:LOOP    ADDL    GR2,GR1         ; ループ先頭。GR2 <- GR2 + GR1
-../../../../as/sample/sum_10.casl:    9:        ADDL    GR1,STEP        ; GR1 <- GR1 + 公差
-../../../../as/sample/sum_10.casl:   10:        CPL     GR1,LST         ; GR1が末項より大きい場合は終了
-../../../../as/sample/sum_10.casl:   11:        JPL     FIN             ; ↓
-../../../../as/sample/sum_10.casl:   12:        JUMP    LOOP            ; ループ終端
-../../../../as/sample/sum_10.casl:   13:FIN     ST      GR2,RST         ; GR2の結果をメモリーに転送
-../../../../as/sample/sum_10.casl:   14:        POP     GR2
-../../../../as/sample/sum_10.casl:   15:        POP     GR1
-../../../../as/sample/sum_10.casl:   16:        RET
-../../../../as/sample/sum_10.casl:   17:FST     DC      1               ; 初項
-../../../../as/sample/sum_10.casl:   18:LST     DC      10              ; 末項
-../../../../as/sample/sum_10.casl:   19:STEP    DC      1               ; 公差
-../../../../as/sample/sum_10.casl:   20:RST     DS      1               ; 結果
-../../../../as/sample/sum_10.casl:   21:        END
+../../../../as/sample/sum_10.casl:    4:        XOR     GR2,GR2         ; GR2を初期化
+../../../../as/sample/sum_10.casl:    5:        LD      GR1,FST         ; GR1に初項をメモリーから転送
+../../../../as/sample/sum_10.casl:    6:LOOP    ADDL    GR2,GR1         ; ループ先頭。GR2 <- GR2 + GR1
+../../../../as/sample/sum_10.casl:    7:        ADDL    GR1,STEP        ; GR1 <- GR1 + 公差
+../../../../as/sample/sum_10.casl:    8:        CPL     GR1,LST         ; GR1が末項より大きい場合は終了
+../../../../as/sample/sum_10.casl:    9:        JPL     FIN             ; ↓
+../../../../as/sample/sum_10.casl:   10:        JUMP    LOOP            ; ループ終端
+../../../../as/sample/sum_10.casl:   11:FIN     ST      GR2,RST         ; GR2の結果をメモリーに転送
+../../../../as/sample/sum_10.casl:   12:        RET
+../../../../as/sample/sum_10.casl:   13:FST     DC      1               ; 初項
+../../../../as/sample/sum_10.casl:   14:LST     DC      10              ; 末項
+../../../../as/sample/sum_10.casl:   15:STEP    DC      1               ; 公差
+../../../../as/sample/sum_10.casl:   16:RST     DS      1               ; 結果
+../../../../as/sample/sum_10.casl:   17:        END
 
 Label::::
 MAIN ---> #0000
-MAIN.LOOP ---> #0007
-MAIN.FIN ---> #0010
-MAIN.FST ---> #0015
-MAIN.LST ---> #0016
-MAIN.STEP ---> #0017
-MAIN.RST ---> #0018
+MAIN.LOOP ---> #0003
+MAIN.FIN ---> #000C
+MAIN.FST ---> #000F
+MAIN.LST ---> #0010
+MAIN.STEP ---> #0011
+MAIN.RST ---> #0012
 
 Assemble ../../../../as/sample/sum_10.casl (1)
 ../../../../as/sample/sum_10.casl:    1:;;; sum_10.casl
 ../../../../as/sample/sum_10.casl:    2:;;; 1から10までの整数をすべて加算した値をメモリーに格納する
 ../../../../as/sample/sum_10.casl:    3:MAIN    START
-../../../../as/sample/sum_10.casl:    4:        PUSH    0,GR1
-	#0000	#7001
-	#0001	#0000
-../../../../as/sample/sum_10.casl:    5:        PUSH    0,GR2
-	#0002	#7002
-	#0003	#0000
-../../../../as/sample/sum_10.casl:    6:        XOR     GR2,GR2         ; GR2を初期化
-	#0004	#3622
-../../../../as/sample/sum_10.casl:    7:        LD      GR1,FST         ; GR1に初項をメモリーから転送
-	#0005	#1010
-	#0006	#0015
-../../../../as/sample/sum_10.casl:    8:LOOP    ADDL    GR2,GR1         ; ループ先頭。GR2 <- GR2 + GR1
-	#0007	#2621
-../../../../as/sample/sum_10.casl:    9:        ADDL    GR1,STEP        ; GR1 <- GR1 + 公差
-	#0008	#2210
-	#0009	#0017
-../../../../as/sample/sum_10.casl:   10:        CPL     GR1,LST         ; GR1が末項より大きい場合は終了
-	#000A	#4110
-	#000B	#0016
-../../../../as/sample/sum_10.casl:   11:        JPL     FIN             ; ↓
-	#000C	#6500
-	#000D	#0010
-../../../../as/sample/sum_10.casl:   12:        JUMP    LOOP            ; ループ終端
-	#000E	#6400
-	#000F	#0007
-../../../../as/sample/sum_10.casl:   13:FIN     ST      GR2,RST         ; GR2の結果をメモリーに転送
-	#0010	#1120
-	#0011	#0018
-../../../../as/sample/sum_10.casl:   14:        POP     GR2
-	#0012	#7120
-../../../../as/sample/sum_10.casl:   15:        POP     GR1
-	#0013	#7110
-../../../../as/sample/sum_10.casl:   16:        RET
-	#0014	#8100
-../../../../as/sample/sum_10.casl:   17:FST     DC      1               ; 初項
-	#0015	#0001
-../../../../as/sample/sum_10.casl:   18:LST     DC      10              ; 末項
-	#0016	#000A
-../../../../as/sample/sum_10.casl:   19:STEP    DC      1               ; 公差
-	#0017	#0001
-../../../../as/sample/sum_10.casl:   20:RST     DS      1               ; 結果
-	#0018	#0000
-../../../../as/sample/sum_10.casl:   21:        END
-0000000 7001 0000 7002 0000 3622 1010 0015 2621
-0000020 2210 0017 4110 0016 6500 0010 6400 0007
-0000040 1120 0018 7120 7110 8100 0001 000a 0001
-0000060 0000
-0000062
+../../../../as/sample/sum_10.casl:    4:        XOR     GR2,GR2         ; GR2を初期化
+	#0000	#3622
+../../../../as/sample/sum_10.casl:    5:        LD      GR1,FST         ; GR1に初項をメモリーから転送
+	#0001	#1010
+	#0002	#000F
+../../../../as/sample/sum_10.casl:    6:LOOP    ADDL    GR2,GR1         ; ループ先頭。GR2 <- GR2 + GR1
+	#0003	#2621
+../../../../as/sample/sum_10.casl:    7:        ADDL    GR1,STEP        ; GR1 <- GR1 + 公差
+	#0004	#2210
+	#0005	#0011
+../../../../as/sample/sum_10.casl:    8:        CPL     GR1,LST         ; GR1が末項より大きい場合は終了
+	#0006	#4110
+	#0007	#0010
+../../../../as/sample/sum_10.casl:    9:        JPL     FIN             ; ↓
+	#0008	#6500
+	#0009	#000C
+../../../../as/sample/sum_10.casl:   10:        JUMP    LOOP            ; ループ終端
+	#000A	#6400
+	#000B	#0003
+../../../../as/sample/sum_10.casl:   11:FIN     ST      GR2,RST         ; GR2の結果をメモリーに転送
+	#000C	#1120
+	#000D	#0012
+../../../../as/sample/sum_10.casl:   12:        RET
+	#000E	#8100
+../../../../as/sample/sum_10.casl:   13:FST     DC      1               ; 初項
+	#000F	#0001
+../../../../as/sample/sum_10.casl:   14:LST     DC      10              ; 末項
+	#0010	#000A
+../../../../as/sample/sum_10.casl:   15:STEP    DC      1               ; 公差
+	#0011	#0001
+../../../../as/sample/sum_10.casl:   16:RST     DS      1               ; 結果
+	#0012	#0000
+../../../../as/sample/sum_10.casl:   17:        END
+0000000 3622 1010 000f 2621 2210 0011 4110 0010
+0000020 6500 000c 6400 0003 1120 0012 8100 0001
+0000040 000a 0001 0000
+0000046
