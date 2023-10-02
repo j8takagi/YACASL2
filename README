@@ -7,10 +7,9 @@ YACASL2は、UNIX／Linuxのコマンドラインインターフェイスで動�
 オープンソースのCASL II処理システムです。
 CASL IIは、情報処理試験で用いられるアセンブラ言語で、次の資料で仕様が定義されています。
 
-  情報処理技術者試験 情報処理安全確保支援士試験 試験で使用する情報技術に関する用語・プログラム言語など Ver 4.2
-  https://www.jitec.ipa.go.jp/1_13download/shiken_yougo_ver4_2.pdf （PDFファイル）
-      別紙 1 アセンブラ言語の仕様
-
+  情報処理技術者試験 情報処理安全確保支援士試験 試験で使用する情報技術に関する用語・プログラム言語など Ver 4.3
+  https://www.ipa.go.jp/shiken/syllabus/ps6vr7000000i9g3-att/shiken_yougo_ver4_3.pdf （PDFファイル）
+      別紙 2 アセンブラ言語の仕様
 
 同梱ドキュメント
 ******************
