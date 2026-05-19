@@ -47,7 +47,6 @@ typedef struct {
 /**
  * @brief トークン取得のエラーを追加する
  *
- * @return なし
  */
 void addcerrlist_tok();
 

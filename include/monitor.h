@@ -124,14 +124,12 @@ bool delbps(WORD adr);
 /**
  * @brief ブレークポイント表を解放する
  *
- * @return なし
  */
 void freebps();
 
 /**
  * @brief COMET IIモニターを起動する
  *
- * @return なし
  */
 void monitor();
 

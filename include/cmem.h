@@ -26,8 +26,6 @@
  *
  * メモリを確保できない場合はエラーを出力して終了
  *
- * @return なし
- *
  * @param size メモリーのサイズ
  * @param tag エラーメッセージなどで表示されるタグ
  */
@@ -37,8 +35,6 @@ void *malloc_chk(size_t size, const char *tag);
  * @brief 領域の数とサイズを指定してメモリーを確保するcallocを実行する
  *
  * メモリを確保できない場合はエラーを出力して終了
- *
- * @return なし
  *
  * @param nmemb 領域の数
  * @param size 領域1個あたりのメモリーサイズ
@@ -70,16 +66,12 @@ char *strndup_chk(const char *s, size_t len, const char *tag);
 /**
  * @brief 文字列の末尾から、改行と空白とタブを削除する
  *
- * @return なし
- *
  * @param s 文字列
  */
 void strip_end(char *s);
 
 /**
  * @brief 文字列から「'」以降の文字列をCASL IIのコメントとして削除する。「''」の場合は除く
- *
- * @return なし
  *
  * @param s 文字列
  */

@@ -77,7 +77,6 @@ typedef enum {
 /**
  * @brief ラベルのエラーをエラーリストに追加する
  *
- * @return なし
  */
 void addcerrlist_label();
 
@@ -105,21 +104,18 @@ bool addlabel(const char *prog, const char *label, WORD adr);
 /**
  * @brief ラベル表を表示する
  *
- * @return なし
  */
 void printlabel();
 
 /**
  * @brief ラベル表を解放する
  *
- * @return なし
  */
 void freelabel();
 
 /**
  * @brief アセンブルエラーをエラーリストに追加する
  *
- * @return なし
  */
 void addcerrlist_assemble();
 
@@ -148,8 +144,6 @@ bool assemble(int filec, char *filev[], WORD adr);
 
 /**
  * @brief ファイルにアセンブル結果を書き込む
- *
- * @return なし
  *
  * @param *file ファイル名
  */

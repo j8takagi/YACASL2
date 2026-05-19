@@ -32,7 +32,6 @@ void addcerrlist_exec();
  *
  * @relatesalso Exec
  *
- * @return なし
  */
 void exec();
 
@@ -40,7 +39,6 @@ void exec();
  * @brief NOP命令。語長1（OPのみ）
  * @relatesalso Exec
  *
- * @return なし
  */
 void nop();
 
@@ -48,7 +46,6 @@ void nop();
  * @brief LD命令 - オペランドr,adr,x。語長2
  * @relatesalso Exec
  *
- * @return なし
  */
 void ld_r_adr_x();
 
@@ -56,7 +53,6 @@ void ld_r_adr_x();
  * @brief LD命令 - オペランドr1,r2。語長1
  * @relatesalso Exec
  *
- * @return なし
  */
 void ld_r1_r2();
 
@@ -64,7 +60,6 @@ void ld_r1_r2();
  * @brief ST命令。語長2
  * @relatesalso Exec
  *
- * @return なし
  */
 void st();
 
@@ -72,7 +67,6 @@ void st();
  * @brief LAD命令。語長2
  * @relatesalso Exec
  *
- * @return なし
  */
 void lad();
 
@@ -80,7 +74,6 @@ void lad();
  * @brief ADDA命令 - オペランドr,adr,x。語長2
  * @relatesalso Exec
  *
- * @return なし
  */
 void adda_r_adr_x();
 
@@ -88,7 +81,6 @@ void adda_r_adr_x();
  * @brief ADDA命令 - オペランドr1,r2。語長1
  * @relatesalso Exec
  *
- * @return なし
  */
 void adda_r1_r2();
 
@@ -96,7 +88,6 @@ void adda_r1_r2();
  * @brief SUBA命令 - オペランドr,adr,x。語長2
  * @relatesalso Exec
  *
- * @return なし
  */
 void suba_r_adr_x();
 
@@ -104,7 +95,6 @@ void suba_r_adr_x();
  * @brief SUBA命令 - オペランドr1,r2。語長1
  * @relatesalso Exec
  *
- * @return なし
  */
 void suba_r1_r2();
 
@@ -112,7 +102,6 @@ void suba_r1_r2();
  * @brief ADDL命令 - オペランドr,adr,x。語長2
  * @relatesalso Exec
  *
- * @return なし
  */
 void addl_r_adr_x();
 
@@ -120,7 +109,6 @@ void addl_r_adr_x();
  * @brief ADDL命令 - オペランドr1,r2。語長1
  * @relatesalso Exec
  *
- * @return なし
  */
 void addl_r1_r2();
 
@@ -128,7 +116,6 @@ void addl_r1_r2();
  * @brief SUBL命令 - オペランドr,adr,x。語長2
  * @relatesalso Exec
  *
- * @return なし
  */
 void subl_r_adr_x();
 
@@ -136,7 +123,6 @@ void subl_r_adr_x();
  * @brief SUBL命令 - オペランドr1,r2。語長1
  * @relatesalso Exec
  *
- * @return なし
  */
 void subl_r1_r2();
 
@@ -144,7 +130,6 @@ void subl_r1_r2();
  * @brief AND命令 - オペランドr,adr,x。語長2
  * @relatesalso Exec
  *
- * @return なし
  */
 void and_r_adr_x();
 
@@ -152,7 +137,6 @@ void and_r_adr_x();
  * @brief AND命令 - オペランドr1,r2。語長1
  * @relatesalso Exec
  *
- * @return なし
  */
 void and_r1_r2();
 
@@ -160,7 +144,6 @@ void and_r1_r2();
  * @brief OR命令 - オペランドr,adr,x。語長2
  * @relatesalso Exec
  *
- * @return なし
  */
 void or_r_adr_x();
 
@@ -168,7 +151,6 @@ void or_r_adr_x();
  * @brief OR命令 - オペランドr1,r2。語長1
  * @relatesalso Exec
  *
- * @return なし
  */
 void or_r1_r2();
 
@@ -176,7 +158,6 @@ void or_r1_r2();
  * @brief XOR命令 - オペランドr,adr,x。語長2
  * @relatesalso Exec
  *
- * @return なし
  */
 void xor_r_adr_x();
 
@@ -184,7 +165,6 @@ void xor_r_adr_x();
  * @brief XOR命令 - オペランドr1,r2。語長1
  * @relatesalso Exec
  *
- * @return なし
  */
 void xor_r1_r2();
 
@@ -192,7 +172,6 @@ void xor_r1_r2();
  * @brief CPA命令 - オペランドr,adr,x。語長2
  * @relatesalso Exec
  *
- * @return なし
  */
 void cpa_r_adr_x();
 
@@ -200,7 +179,6 @@ void cpa_r_adr_x();
  * @brief CPA命令 - オペランドr1,r2。語長1
  * @relatesalso Exec
  *
- * @return なし
  */
 void cpa_r1_r2();
 
@@ -208,7 +186,6 @@ void cpa_r1_r2();
  * @brief CPL命令 - オペランドr,adr,x。語長2
  * @relatesalso Exec
  *
- * @return なし
  */
 void cpl_r_adr_x();
 
@@ -216,7 +193,6 @@ void cpl_r_adr_x();
  * @brief CPL命令 - オペランドr1,r2。語長1
  * @relatesalso Exec
  *
- * @return なし
  */
 void cpl_r1_r2();
 
@@ -226,7 +202,6 @@ void cpl_r1_r2();
  * 算術演算なので、第15ビットは送り出されない
  * @relatesalso Exec
  *
- * @return なし
  */
 void sla();
 
@@ -237,7 +212,6 @@ void sla();
  * 空いたビット位置には符号と同じものが入る
  * @relatesalso Exec
  *
- * @return なし
  */
 void sra();
 
@@ -245,7 +219,6 @@ void sra();
  * @brief SLL命令 - オペランドr,adr,x。語長2
  * @relatesalso Exec
  *
- * @return なし
  */
 void sll();
 
@@ -253,7 +226,6 @@ void sll();
  * @brief SRL命令 - オペランドr,adr,x。語長2
  * @relatesalso Exec
  *
- * @return なし
  */
 void srl();
 
@@ -261,7 +233,6 @@ void srl();
  * @brief JPL命令。語長2
  * @relatesalso Exec
  *
- * @return なし
  */
 void jpl();
 
@@ -269,7 +240,6 @@ void jpl();
  * @brief JMI命令。語長2
  * @relatesalso Exec
  *
- * @return なし
  */
 void jmi();
 
@@ -277,7 +247,6 @@ void jmi();
  * @brief JNZ命令。語長2
  * @relatesalso Exec
  *
- * @return なし
  */
 void jnz();
 
@@ -285,7 +254,6 @@ void jnz();
  * @brief JZE命令。語長2
  * @relatesalso Exec
  *
- * @return なし
  */
 void jze();
 
@@ -293,7 +261,6 @@ void jze();
  * @brief JOV命令。語長2
  * @relatesalso Exec
  *
- * @return なし
  */
 void jov();
 
@@ -301,7 +268,6 @@ void jov();
  * @brief JUMP命令。語長2
  * @relatesalso Exec
  *
- * @return なし
  */
 void jump();
 
@@ -309,7 +275,6 @@ void jump();
  * @brief PUSH命令。語長2
  * @relatesalso Exec
  *
- * @return なし
  */
 void push();
 
@@ -317,7 +282,6 @@ void push();
  * @brief POP命令。語長1
  * @relatesalso Exec
  *
- * @return なし
  */
 void pop();
 
@@ -325,7 +289,6 @@ void pop();
  * @brief CALL命令。語長2
  * @relatesalso Exec
  *
- * @return なし
  */
 void call();
 
@@ -333,7 +296,6 @@ void call();
  * @brief RET命令。語長1（OPのみ）
  * @relatesalso Exec
  *
- * @return なし
  */
 void ret();
 
@@ -341,14 +303,11 @@ void ret();
  * @brief SVC命令。語長2
  * @relatesalso Exec
  *
- * @return なし
  */
 void svc();
 
 /**
  * @brief COMET IIのメモリを表示する
- *
- * @return なし
  *
  * @param start 表示の開始アドレス
  * @param end 表示の終了アドレス
@@ -358,7 +317,6 @@ void dumpmemory(WORD start, WORD end);
 /**
  * @brief COMET IIのレジスタを表示する
  *
- * @return なし
  */
 void dspregister();
 

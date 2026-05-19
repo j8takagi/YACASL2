@@ -17,8 +17,6 @@ WORD fgetword(FILE *stream);
 /**
  * @brief ファイルストリームを1ワード戻す
  *
- * @return なし
- *
  * @param stream ファイルストリーム
  */
 void fungetword(FILE *stream);
@@ -35,8 +33,6 @@ WORD zero_data_cnt(FILE *stream);
 /**
  * @brief 機械コードをコメントとして標準出力へ出力する
  *
- * @return なし
- *
  * @param ascol アセンブラの列位置
  * @param pradr 次に実行すべき命令語の先頭アドレス
  * @param wordc ワード値の数
@@ -46,8 +42,6 @@ void disassemble_puts_code(int ascol, WORD pradr, int wordc, WORD wordv[]);
 
 /**
  * @brief 種類がR_ADRまたはR_ADR_Xのコマンドを逆アセンブルし、標準出力へ出力する
- *
- * @return なし
  *
  * @param cmdtype コマンドの種類
  * @param *cmdname コマンドの名前
@@ -60,8 +54,6 @@ void disassemble_cmd_adr_x(CMDTYPE cmdtype, const char *cmdname, WORD word, WORD
 /**
  * @brief 種類がR1_R2またはR_のコマンドを逆アセンブルし、標準出力へ出力する
  *
- * @return なし
- *
  * @param cmdtype コマンドの種類
  * @param *cmdname コマンドの名前
  * @param word ワード値
@@ -71,8 +63,6 @@ void disassemble_cmd_r(CMDTYPE cmdtype, const char *cmdname, WORD word, WORD pra
 
 /**
  * @brief DCコマンドを逆アセンブルし、標準出力へ出力する
- *
- * @return なし
  *
  * @param word ワード値
  * @param pradr 次に実行すべき命令語の先頭アドレス

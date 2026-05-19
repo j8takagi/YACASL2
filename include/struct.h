@@ -175,8 +175,6 @@ void shutdown();
 /**
  * @brief 命令ハッシュ表を作成する
  *
- * @return なし
- *
  * @param hash ハッシュ値
  */
 bool create_cmdtable(CMDTAB_HASH hash);

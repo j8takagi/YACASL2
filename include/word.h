@@ -11,7 +11,6 @@ typedef unsigned short WORD;
 /**
  * @brief wordデータ型についてのエラーをエラーリストに追加する
  *
- * @return なし
  */
 void addcerrlist_word();
 
@@ -44,8 +43,6 @@ char *word2bit(const WORD word);
 
 /**
  * @brief WORD値を解析して表示する
- *
- * @return なし
  *
  * @param word WORD値
  * @param logicalmode 論理演算の場合はtrue、算術演算の場合はfalse

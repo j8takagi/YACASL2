@@ -15,8 +15,6 @@ bool disassemble_file(const char *file);
 /**
  * @brief COMET IIのメモリーを逆アセンブルし、標準出力へ出力する
  *
- * @return なし
- *
  * @param *start 逆アセンブルの開始位置
  * @param *end 逆アセンブルの終了位置
  */

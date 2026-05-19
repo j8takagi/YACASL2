@@ -5,7 +5,6 @@
 /**
  * @brief CASL IIのエラーをエラーリストに追加
  *
- * @return なし
  */
 void addcerrlist_casl2();
 

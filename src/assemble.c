@@ -3,8 +3,6 @@
 /**
  * @brief ファイルストリームの現在行を番号付きで表示する
  *
- * @return なし
- *
  * @param *stream ファイルストリーム
  * @param *filename ファイル名
  * @param lineno 行番号
@@ -52,8 +50,6 @@ WORD getliteral(const char *str, PASS pass);
 /**
  * @brief アドレス値をメモリに書き込む
  *
- * @return なし
- *
  * @param word アドレス値
  * @param adr アドレス
  * @param pass アセンブラが何回目かを表す数
@@ -62,8 +58,6 @@ void writememory(WORD word, WORD adr, PASS pass);
 
 /**
  * @brief 文字をメモリに書き込む
- *
- * @return なし
  *
  * @param *str アドレスを表す文字列。リテラル／10進定数／16進定数／アドレス定数が含まれる
  * @param literal リテラルの場合はtrue
@@ -74,8 +68,6 @@ void writestr(const char *str, bool literal, PASS pass);
 /**
  * @brief DC命令を書込
  *
- * @return なし
- *
  * @param str アドレスを表す文字列。10進定数／16進定数／アドレス定数が含まれる
  * @param pass アセンブラが何回目かを表す数
  */
@@ -84,8 +76,6 @@ void writedc(const char *str, PASS pass);
 /**
  * @brief アセンブラ命令STARTの処理
  * @relatesalso Casl2cmd
- *
- * @return なし
  *
  * @param *cmdl 1行分のラベル・コマンド・オペランド
  * @param pass アセンブラが何回目かを表す数
@@ -96,8 +86,6 @@ void assemble_start(const CMDLINE *cmdl, PASS pass);
  * @brief アセンブラ命令DSの処理
  * @relatesalso Casl2cmd
  *
- * @return なし
- *
  * @param *cmdl 1行分のラベル・コマンド・オペランド
  * @param pass アセンブラが何回目かを表す数
  */
@@ -107,8 +95,6 @@ void assemble_ds(const CMDLINE *cmdl, PASS pass);
  * @brief アセンブラ命令ENDの処理
  * @relatesalso Casl2cmd
  *
- * @return なし
- *
  * @param *cmdl 1行分のラベル・コマンド・オペランド
  * @param pass アセンブラが何回目かを表す数
  */
@@ -117,8 +103,6 @@ void assemble_end(const CMDLINE *cmdl, PASS pass);
 /**
  * @brief アセンブラ命令DCの処理
  * @relatesalso Casl2cmd
- *
- * @return なし
  *
  * @param *cmdl 1行分のラベル・コマンド・オペランド
  * @param pass アセンブラが何回目かを表す数
@@ -139,8 +123,6 @@ void assemble_dc(const CMDLINE *cmdl, PASS pass);
  * @endcode
  * @relatesalso Casl2cmd
  *
- *
- * @return なし
  *
  * @param *cmdl 1行分のラベル・コマンド・オペランド
  * @param pass アセンブラが何回目かを表す数
@@ -164,8 +146,6 @@ void assemble_in(const CMDLINE *cmdl, PASS pass);
  * @endcode
  * @relatesalso Casl2cmd
  *
- * @return なし
- *
  * @param *cmdl 1行分のラベル・コマンド・オペランド
  * @param pass アセンブラが何回目かを表す数
  */
@@ -184,8 +164,6 @@ void assemble_out(const CMDLINE *cmdl, PASS pass);
  *       PUSH 0,GR7
  * @endcode
  * @relatesalso Casl2cmd
- *
- * @return なし
  *
  * @param *cmdl 1行分のラベル・コマンド・オペランド
  * @param pass アセンブラが何回目かを表す数
@@ -206,8 +184,6 @@ void assemble_rpush(const CMDLINE *cmdl, PASS pass);
  *      POP GR1
  * @endcode
  * @relatesalso Casl2cmd
- *
- * @return なし
  *
  * @param *cmdl 1行分のラベル・コマンド・オペランド
  * @param pass アセンブラが何回目かを表す数

@@ -12,21 +12,17 @@ char *pr2str(WORD pr);
 /**
  * @brief 標準入力から文字データを読込（SVC 1）
  *
- * @return なし
  */
 void svcin();
 
 /**
  * @brief 標準出力へ文字データを書出（SVC 2）
  *
- * @return なし
  */
 void svcout();
 
 /**
  * @brief ロード／論理積／論理和／排他的論理和のフラグ設定。OFは常に0
- *
- * @return なし
  *
  * @param adr アドレス
  */

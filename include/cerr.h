@@ -43,14 +43,12 @@ enum {
 /**
  * @brief エラーを初期化する
  *
- * @return なし
  */
 void cerr_init();
 
 /**
  * @brief エラーリストを作成・追加する
  *
- * @return なし
  *
  * @param cerrc 作成または追加するエラーの数
  * @param cerrv 作成または追加するエラーの配列
@@ -60,14 +58,11 @@ void addcerrlist(int cerrc, CERR cerrv[]);
 /**
  * @brief エラーリストを表示する
  *
- * @return なし
  */
 void printcerrlist();
 
 /**
  * @brief 現在のエラーを設定する
- *
- * @return なし
  *
  * @param num エラー番号
  * @param *str エラーメッセージに含まれる文字列
@@ -86,7 +81,6 @@ char *getcerrmsg(int num);
 /**
  * @brief エラーリストと現在のエラーを解放する
  *
- * @return なし
  */
 void freecerr();
 #endif
