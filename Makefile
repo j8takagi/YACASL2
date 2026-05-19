@@ -29,7 +29,7 @@ VERSION := $(shell $(CAT) VERSION)
 
 VERSIONGITREF := $(shell $(GIT) show-ref -s --tags $(VERSION))
 
-MASTERGITREF := $(shell $(GIT) show-ref -s refs/heads/master)
+MAINGITREF := $(shell $(GIT) show-ref -s refs/heads/main)
 
 VERSIONFILES := include/version.h \
         test/system/casl2_opt/opt_v/0.txt \
@@ -90,7 +90,7 @@ $(VERSIONFILES): VERSION
 	@$(SED) -e "s/@@VERSION@@/$(VERSION)/g" $@.version >$@
 
 gittag:
-	if test `$(GIT) status -s | $(WC) -l` -gt 0; then $(ECHO) "Error: commit, first."; exit 1; fi; if test "$(VERSIONGITREF)" != "$(MASTERGITREF)"; then $(GIT) tag $(VERSION); fi
+	if test `$(GIT) status -s | $(WC) -l` -gt 0; then $(ECHO) "Error: commit, first."; exit 1; fi; if test "$(VERSIONGITREF)" != "$(MAINGITREF)"; then $(GIT) tag $(VERSION); fi
 
 copyright:
 	$(SEDI) 's/Copyright (c) 2010-20[0-9][0-9]/Copyright (c) 2010-$(YEAR)/g' LICENSE README
