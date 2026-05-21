@@ -32,7 +32,10 @@ Copyright @copyright{} 2010-2023 j8takagi
 @insertcopying
 @end titlepage
 
-@node Top, Overview, (dir), (dir)
+@node Top, Overview
+@ifhtml
+@top YACASL2 - CASL II 処理システム
+@end ifhtml
 
 @menu
 * Overview::                    YACASL2の概要

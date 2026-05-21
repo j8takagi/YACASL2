@@ -23,7 +23,10 @@ Copyright @copyright{} 2010-2023 j8takagi
 @insertcopying
 @end titlepage
 
-@node Top, Require, (dir), (dir)
+@node Top, Require
+@ifhtml
+@top YACASL2のインストール
+@end ifhtml
 
 @menu
 * Require::                     要件
