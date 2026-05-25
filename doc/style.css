@@ -152,9 +152,6 @@ th {
     font-style: normal;
     font-weight: bold;
     font-family: sans-serif;
-}
-
-th {
     text-align: center;
 }
 
@@ -169,4 +166,8 @@ dfn {
 em {
     font-style: normal;
     font-weight: bold;
+}
+
+hr {
+    display: none;
 }
