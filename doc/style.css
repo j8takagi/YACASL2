@@ -35,10 +35,9 @@ h2 {
     border: 2px solid navy;
 }
 
-.contents {
-    background-color: #DDF;
-    border: 4px double #000;
-    padding: 0.5em 1em 0.5em 1em;
+.contents, .mini-toc {
+    border: 4px double #DDF;
+    padding: 0.5em 1em 0.5em 2em;
 }
 
 .contents h2 {
@@ -153,9 +152,6 @@ th {
     font-style: normal;
     font-weight: bold;
     font-family: sans-serif;
-}
-
-th {
     text-align: center;
 }
 
@@ -170,4 +166,8 @@ dfn {
 em {
     font-style: normal;
     font-weight: bold;
+}
+
+hr {
+    display: none;
 }

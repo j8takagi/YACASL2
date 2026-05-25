@@ -10,6 +10,8 @@ TEXITARGETS := casl2_spec.html
 
 all: casl2_spec.html casl2_spec.pdf
 
+casl2_spec.html: style.css
+
 clean: texinfo-clean
 	$(RM) *.bak
 	$(MAKE) -C img clean

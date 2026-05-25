@@ -19,9 +19,9 @@ all: base htmls pdf casl2_spec
 
 info: yacasl2.info
 
-html: $(addsuffix .html,$(DOCS))
+html: $(addsuffix .html,$(DOCS)) style.css
 
-htmls: $(addsuffix _html,$(DOCS))
+htmls: $(addsuffix _html,$(DOCS)) style.css
 
 pdf: $(addsuffix .pdf,$(DOCS))
 
