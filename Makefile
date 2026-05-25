@@ -27,9 +27,9 @@ libdir ?= $(prefix)/share
 
 VERSION := $(shell $(CAT) VERSION)
 
-VERSIONGITREF := $(shell $(GIT) show-ref -s --tags $(VERSION))
+VERSIONGITREF = $(shell $(GIT) show-ref -s --tags $(VERSION))
 
-MAINGITREF := $(shell $(GIT) show-ref -s refs/heads/main)
+MAINGITREF = $(shell $(GIT) show-ref -s refs/heads/main)
 
 VERSIONFILES := include/version.h \
         test/system/casl2_opt/opt_v/0.txt \
