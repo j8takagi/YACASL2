@@ -542,7 +542,7 @@ void assemble_rpop(const CMDLINE *cmdl, PASS pass)
 
 bool casl2cmd(CMD *cmdtbl, const CMDLINE *cmdl, PASS pass)
 {
-    void (*cmdptr)() = NULL;
+    void (*cmdptr)(const CMDLINE *, PASS) = NULL;
 
     for(int i = 0; cmdtbl[i].name[0]; i++) {
         if(strcmp(cmdl->cmd, cmdtbl[i].name) == 0) {
