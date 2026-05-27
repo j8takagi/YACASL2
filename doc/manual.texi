@@ -86,6 +86,28 @@ CASL IIは情報処理試験で用いられるアセンブラ言語で、
 @end cartouche
 @end iftex
 
+この資料の必要部分を抜粋し、HTMLとPDFに変換したもの
+
+@iftex
+@cartouche
+@end iftex
+@quotation
+@uref{casl2_spec/casl2_spec.html, 情報処理技術者試験 アセンブラ言語の仕様（HTML版）}
+@end quotation
+@iftex
+@end cartouche
+@end iftex
+
+@iftex
+@cartouche
+@end iftex
+@quotation
+@uref{casl2_spec/casl2_spec.pdf, 情報処理技術者試験 アセンブラ言語の仕様（PDF版）}
+@end quotation
+@iftex
+@end cartouche
+@end iftex
+
 YACASL2は、CASL IIアセンブラ言語で記述されたファイルをアセンブルし、
 仮想マシンCOMET II上で実行します。
 アセンブルと実行は、連続で行うこともできますし、

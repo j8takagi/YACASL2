@@ -15,6 +15,13 @@ h1, h2 {
     margin-left: -2em;
 }
 
+.breadcrumbs {
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ccc;
+    font-size: 90%;
+}
+
 .node{
     margin-left: -3em;
     color: inherit;
@@ -94,8 +101,9 @@ a:hover {
     text-decoration: underline;
 }
 
-pre.example, pre.verbatim {
-    padding: 0.5em 1em 0.5em 1em;
+.example, pre.verbatim {
+    margin: 0.5em 0 0.5em 0;
+    padding: 0 0 0 1em;
     border: 1px solid #CCC;
 }
 
@@ -108,11 +116,20 @@ blockquote {
     border: 1px solid #00F;
 }
 
-kbd, code, .file, var {
+kbd, code, .file, var, kbd.kbd {
     font-style: normal;
     font-weight: normal;
     font-family: monospace;
-    font-size: 120%;
+    font-size: 110%;
+    margin-left:0.25em;
+    margin-right: 0.25em;
+}
+
+kbd.kbd {
+    font-style: normal;
+    font-weight: bold;
+    font-family: monospace;
+    font-size: 110%;
     margin-left:0.25em;
     margin-right: 0.25em;
 }
@@ -127,7 +144,7 @@ table.cartouche, table.cartouche th, table.cartouche td  {
     border: none;
 }
 
-pre.example .command, pre.example .option, pre.example kbd {
+pre.example .command, pre.example .option, pre.example {
     font-weight: bold;
     font-family: monospace;
     font-size: 110%;
@@ -170,4 +187,10 @@ em {
 
 hr {
     display: none;
+}
+
+p.nav-panel {
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    margin-top: 0.5em;
 }
