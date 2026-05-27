@@ -13,7 +13,7 @@ all: casl2_spec.html casl2_spec.pdf
 casl2_spec.html: style.css
 
 clean: texinfo-clean
-	$(RM) *.bak
+	$(RM) *.bak *.dvi
 	$(MAKE) -C img clean
 
 distclean: clean texinfo-distclean

@@ -42,7 +42,7 @@
     <path d="M10,840 L730,840" />
     <path d="M10,900 L730,900" />
   </g>
-  <g font-size="15px" font-family="sans-serif" fill="black">
+  <g font-size="10pt" font-family="sans-serif" fill="black">
     <text x="80" y="55">第1語</text>
     <text x="240" y="55">第2語</text>
     <text x="25" y="75">OP</text>
@@ -58,7 +58,7 @@
     <text x="625" y="85">意味</text>
   </g>
 
-  <g font-size="15px" fill="black">
+  <g font-size="10pt" fill="black">
     <text x="25" y="115">0</text><text x="65" y="115">0</text><text x="100" y="115">&#x2014;</text><text x="140" y="115">&#x2014;</text><text x="245" y="115">&#x2014;</text><text x="345" y="115">1</text><text x="380" y="115" font-family="monospace">NOP</text><text x="555" y="115">no operation</text>
     <text x="25" y="135">1</text><text x="65" y="135">0</text><text x="345" y="135">2</text><text x="380" y="135" font-family="monospace">LD</text><text x="440" y="135" font-family="monospace">r,adr,x</text><text x="555" y="135">load</text>
     <text x="65" y="155">1</text><text x="345" y="155">2</text><text x="380" y="155" font-family="monospace">ST</text><text x="440" y="155" font-family="monospace">r,adr,x</text><text x="555" y="155">store</text>
