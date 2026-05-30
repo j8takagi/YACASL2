@@ -1,5 +1,5 @@
-RMR := $(RM) -r
 SED := sed
+DATE := date
 
 DOCS := install manual
 CSS := style.css
@@ -11,11 +11,16 @@ TEXITARGETS := install.html manual.html
 
 INSTALL-INFO-TARGETS := yacasl2.info
 
+YEAR := $(shell $(DATE) '+%Y')
+
 .PHONY: base all info html htmls pdf casl2_spec distclean clean
 
-base: install.txt info html
+base: copyright install.txt info html
 
 all: base htmls pdf casl2_spec
+
+copyright:
+	$(SED) -i.sed_bak 's/Copyright @copyright{} 2010-20[0-9][0-9]/Copyright @copyright{} 2010-$(YEAR)/g' *.texi && $(RM) *.sed_bak
 
 info: yacasl2.info
 
@@ -37,12 +42,12 @@ yacasl2.info: manual.texi
 
 # makeで作成されたドキュメントはすべて削除
 distclean: clean texinfo-distclean
-	$(RM) install.txt *.info *.html *_html *.pdf
+	$(RM) install.txt *.info *.html *_html *.pdf *.sed_bak
 	$(MAKE) -C casl2_spec distclean
 
 # make baseで作成されたドキュメントは残す
 clean: texinfo-clean
-	$(RM) *.bak
+	$(RM) *.sed_bak
 	$(MAKE) -C casl2_spec clean
 
 include texinfo.mk

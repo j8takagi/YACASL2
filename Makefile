@@ -16,7 +16,6 @@ GREP := grep
 GTAGS := gtags
 INSTALL := install
 SED := sed
-SEDI := $(SED) -i
 WC := wc
 WHICH := which
 XARGS := xargs
@@ -38,7 +37,7 @@ VERSIONFILES := include/version.h \
 
 CMDFILES := casl2 comet2 dumpword casl2rev comet2monitor
 
-YEAR := $(shell $(DATE) '+%Y')
+YEAR = $(shell $(DATE) '+%Y')
 
 all: copyright INSTALL build gtags
 
@@ -93,8 +92,7 @@ gittag:
 	if test `$(GIT) status -s | $(WC) -l` -gt 0; then $(ECHO) "Error: commit, first."; exit 1; fi; if test "$(VERSIONGITREF)" != "$(MAINGITREF)"; then $(GIT) tag $(VERSION); fi
 
 copyright:
-	$(SEDI) 's/Copyright (c) 2010-20[0-9][0-9]/Copyright (c) 2010-$(YEAR)/g' LICENSE README
-	$(SEDI) 's/Copyright @copyright{} 2010-20[0-9][0-9]/Copyright @copyright{} 2010-$(YEAR)/g' doc/*.texi
+	$(SED) -i.bak 's/Copyright (c) 2010-20[0-9][0-9]/Copyright (c) 2010-$(YEAR)/g' LICENSE README && $(RM) *.bak
 
 distclean: cmd-clean src-distclean gtags-clean version-clean clean
 
