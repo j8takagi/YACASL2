@@ -1,6 +1,7 @@
 #include "package.h"
 #include "exec.h"
 #include "load.h"
+#include "monitor.h"
 
 /**
  * comet2monitorコマンドのオプション
@@ -69,6 +70,10 @@ int main(int argc, char *argv[])
             setcerr(212, "");    /* invalid option */
             goto comet2monitorfin;
         }
+    }
+    /* 残りの引数（オプション以外の引数）があるかチェック */
+    if (optind < argc) {
+        warn_ignore_arg(argc - optind, argv + optind);
     }
     create_cmdtable(HASH_CMDTYPE);
     reset(memsize, clocks);     /* COMET II仮想マシンのリセット */

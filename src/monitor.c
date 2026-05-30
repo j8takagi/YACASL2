@@ -196,13 +196,14 @@ bool stracmp(char *str1, int str2c, char *str2v[])
 void warn_ignore_arg(int argc, char *argv[])
 {
     int i;
+    fprintf(stderr, "Info: arguments '");
     for(i = 0; i < argc; i++) {
         if(i > 0) {
             fprintf(stderr, " ");
         }
         fprintf(stderr, "%s", argv[i]);
     }
-    fprintf(stderr, ": ignored.\n");
+    fprintf(stderr, "' are ignored.\n");
 }
 
 void mon_break(int argc, char *argv[])
