@@ -6,4 +6,4 @@ breakpoint manipulate:
     b[reak] l[ist]
     b[reak] r[eset]
 (comet2 monitor) 
-1: ignored.
+Info: arguments '1' are ignored.
