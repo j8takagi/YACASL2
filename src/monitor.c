@@ -402,7 +402,9 @@ void monitor()
         }
         strip_end(buf);        /* 文字列末尾の改行と空白を削除 */
         fprintf(stdout, "%s\n", buf);
-        if((moncmdl = monlinetok(buf)) != NULL) {
+        if(buf[0] == '!') {
+            system(buf + 1);
+        } else if((moncmdl = monlinetok(buf)) != NULL) {
             cmdtype = monitorcmd(moncmdl->cmd, moncmdl->args);
             free_moncmdline(moncmdl);
         }
