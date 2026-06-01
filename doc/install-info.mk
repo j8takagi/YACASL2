@@ -1,5 +1,5 @@
 prefix ?= ~
-infodir ?= $(prefix)/share/info
+infodir ?= $(prefix)/.local/share/info
 
 GZIP := gzip
 INSTALL := install
