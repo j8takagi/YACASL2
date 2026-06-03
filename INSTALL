@@ -5,12 +5,11 @@
   2.2.1 GnuPG分離署名での検証
   2.2.2 MD5ハッシュ値での検証
 2.3 YACASL2ファイルの展開
-2.4 'casl2' 'comet2' 'dumpword'のビルド
+2.4 ビルド
 2.5 'casl2'の実行テスト
 2.6 詳細なテスト
 2.7 インストール
 2.8 環境変数の設定
-  シェルの確認
   2.8.1 'PATH'の設定
   2.8.2 'INFOPATH'の設定
 
@@ -45,56 +44,67 @@ Tools」に含まれます。
 ---------------------------
 
  GnuPGの'gpg'で圧縮ファイルを検証します。この検証を行うには、GnuPGがイン
-ストールされ、自分の秘密鍵と公開鍵のペアが作成されている必要があります。
+ストールされ、自分用の秘密鍵が作成されている必要があります。 また、あら
+かじめ'tar.gz'または'tar.xz'ファイルと、対応する検証用ファイル
+'tar.gz.asc'または'tar.xz.asc'ファイルを同じディレクトリーに保存し、その
+ディレクトリーに移動しておきます。
 
+     $ ls yacasl2.tar.gz*
+     yacasl2.tar.gz  yacasl2.tar.gz.asc
      $ gpg --verify yacasl2.tar.xz.asc
-     gpg: Signature made Sat Oct 27 02:17:16 2012 JST using RSA key ID 25B62DD1
-     gpg: Can't check signature: public key not found
-     $ gpg --recv-keys 25B62DD1
-     gpg: requesting key 25B62DD1 from hkp server keys.gnupg.net
-     gpg: key 25B62DD1: public key "j8takagi <j8takagi@nifty.com>" imported
+     gpg: assuming signed data in 'yacasl2.tar.gz'
+     gpg: Signature made Tue 02 Jun 2026 01:14:17 AM JST
+     gpg:                using EDDSA key 77EC282A2F7317EBFF7BFD067F593ED86D88E1D5
+     gpg: Can't check signature: No public key
+     $ gpg --recv-keys 77EC282A2F7317EBFF7BFD067F593ED86D88E1D5
+     gpg: key 7F593ED86D88E1D5: public key "j8takagi <j8takagi@nifty.com>" imported
+     gpg: marginals needed: 3  completes needed: 1  trust model: pgp
+     gpg: depth: 0  valid:   1  signed:   0  trust: 0-, 0q, 0n, 0m, 0f, 1u
+     gpg: next trustdb check due at 2029-06-01
      gpg: Total number processed: 1
-     gpg:               imported: 1  (RSA: 1)
+     gpg:               imported: 1
+     $ gpg --lsign-key 77EC282A2F7317EBFF7BFD067F593ED86D88E1D5
 
-     $ gpg --lsign-key 25B62DD1
+     pub  ed25519/7F593ED86D88E1D5
+          created: 2026-04-23  expires: 2031-04-30  usage: SC
+          trust: unknown       validity: unknown
+     sub  cv25519/B3433115DBD37726
+          created: 2026-04-23  expires: never       usage: E
+     [ unknown] (1). j8takagi <j8takagi@nifty.com>
 
-     pub  2048R/25B62DD1  created: 2012-09-29  expires: never       usage: SC
-                          trust: unknown       validity: full
-     sub  2048R/92E25C29  created: 2012-09-29  expires: never       usage: E
-     [  full  ] (1). j8takagi <j8takagi@nifty.com>
 
+     pub  ed25519/7F593ED86D88E1D5
+          created: 2026-04-23  expires: 2031-04-30  usage: SC
+          trust: unknown       validity: unknown
+      Primary key fingerprint: 77EC 282A 2F73 17EB FF7B  FD06 7F59 3ED8 6D88 E1D5
 
-     pub  2048R/25B62DD1  created: 2012-09-29  expires: never       usage: SC
-                          trust: unknown       validity: full
-      Primary key fingerprint: ...
+          j8takagi <j8takagi@nifty.com>
 
-          .* <.*@.*>
-
+     This key is due to expire on 2031-04-30.
      Are you sure that you want to sign this key with your
-     key ".* <.*@.*>"
+     key "j8takagi <j8takagi@nifty.com>" (4223493EBCB683A9)
 
      The signature will be marked as non-exportable.
 
      Really sign? (y/N) y
 
-     You need a passphrase to unlock the secret key for
-     user: ".* <.*@.*>"
-     2048-bit RSA key, ID ........, created 20..-..-..
-
-     <input password> password
-
-     $ gpg --verify yacasl2.tar.xz.asc
-     gpg: Signature made Sat Oct 27 02:17:16 2012 JST using RSA key ID 25B62DD1
+     $ gpg --verify yacasl2.tar.gz.asc
+     gpg: assuming signed data in 'yacasl2.tar.gz'
+     gpg: Signature made Tue 02 Jun 2026 01:14:17 AM JST
+     gpg:                using EDDSA key 77EC282A2F7317EBFF7BFD067F593ED86D88E1D5
      gpg: checking the trustdb
-     gpg: 3 marginal(s) needed, 1 complete(s) needed, PGP trust model
-     gpg: depth: 0  valid:   1  signed:   4  trust: 0-, 0q, 0n, 0m, 0f, 1u
-     gpg: depth: 1  valid:   4  signed:   0  trust: 4-, 0q, 0n, 0m, 0f, 0u
-     gpg: Good signature from "j8takagi <j8takagi@nifty.com>"
+     gpg: marginals needed: 3  completes needed: 1  trust model: pgp
+     gpg: depth: 0  valid:   1  signed:   1  trust: 0-, 0q, 0n, 0m, 0f, 1u
+     gpg: depth: 1  valid:   1  signed:   0  trust: 1-, 0q, 0n, 0m, 0f, 0u
+     gpg: next trustdb check due at 2029-06-01
+     gpg: Good signature from "j8takagi <j8takagi@nifty.com>" [full]
+     gpg: Signature notation: manu=2,2.5+1.12,0,3
 
 2.2.2 MD5ハッシュ値での検証
 ---------------------------
 
- 'openssl'と'diff'で圧縮ファイルを検証します。
+ 'openssl'で圧縮ファイルから生成したMD5ハッシュ値が、ダウンロードした
+'yacasl2.tar.gz.md5sum'ファイルの内容と同じかどうか'diff'で検証します。
 
      $ openssl md5 yacasl2.tar.gz | diff -s yacasl2.tar.gz.md5sum -
      Files yacasl2.tar.gz.md5sum and - are identical
@@ -106,10 +116,12 @@ Tools」に含まれます。
 
      $ tar xvzf yacasl2.tar.gz
 
-2.4 'casl2' 'comet2' 'dumpword'のビルド
-=======================================
+2.4 ビルド
+==========
 
- 展開したら、'make'コマンドで'casl2' 'comet2' 'dumpword'をビルドします。
+ 展開したら、'make'コマンドを実行してビルドします。 YACASL2のコマンド実
+行ファイルである'casl2' 'comet2' 'dumpword' 'casl2rev' 'commet2monitor'が
+生成されます。
 
      $ cd yacasl2
      $ make
@@ -165,15 +177,15 @@ Tools」に含まれます。
 2.7 インストール
 ================
 
- ビルドが成功したら、'make install'コマンドで必要なファイルをインストー
-ルできます。 初期設定では、ホームディレクトリー以下にYACASL2のファイルが
-インストールされます。
+ YACASL2のコマンド実行ファイルはビルド後、'make install'コマンドでインス
+トールできます。インストール先は初期設定では、'~/bin'ディレクトリーです
+。
 
      $ make install
 
- コマンド実行時にオプションを指定することで、インストール先のディレクト
-リーを変更できます。 例えば、'/usr/local'以下にファイルをインストールす
-るには、 次のようにコマンドを実行します。
+ インストール先を変更するには、'prefix'などのオプションを指定します。 例
+えば'/usr/local'ディレクトリーにインストールするには、次のようにコマンド
+を実行します。
 
      $ sudo make install prefix=/usr/local
 
@@ -188,48 +200,53 @@ INFODIR        infoファイルのインストール先         '$prefix/share/i
 2.8 環境変数の設定
 ==================
 
- 環境変数'PATH'や'CASL2LIB'を設定することで、YACASL2が使いやすくなります
-。環境変数は、使っているシェルを確認してから設定します。
-
-シェルの確認
-------------
-
- 環境変数の設定方法は使っているシェルによって異なります。シェルは、次の
-コマンドで確認できます。
-
-     $ echo $SHELL
-     /bin/bash
-
- 現在もっとも多く使われているシェルは、Bashでしょう。以下、Bashでの設定
-方法を説明します。
+ 環境変数'PATH'や'INFOPATH'を設定することで、YACASL2が使いやすくなります
+。
 
 2.8.1 'PATH'の設定
 ------------------
 
- 'PATH'にYACASL2の実行ファイルのインストール先を追加すると、ディレクトリ
-ーの指定を省略して'casl2' 'comet2' 'dumpword'を実行できます。例えば、初
-期設定のまま実行ファイルを'~/bin'にインストールしたときは、次のコマンド
-で設定できます。
+ 'PATH'にYACASL2の実行ファイルのインストール先が含まれている場合は、ディ
+レクトリーの指定を省略して'casl2'などの実行ファイル名を指定できます。
+'PATH'は、次のコマンドで確認できます。
 
-     $ PATH=$PATH:~/bin && export PATH
+     $ echo $PATH
 
- 環境変数の設定は、シェルの初期設定ファイルに追加することでログインした
-あと自動的に反映されるようになります。Bashでは'~/.bashrc'が初期設定ファ
-イルです。次のコマンドで追加できます。
+ YACASL2のインストール先の初期設定である'~/bin'ディレクトリーは、OSイン
+ストール時に'PATH'に含まれている場合もあります。含まれていない場合は、次
+のコマンドで'PATH'に追加できます。
 
-     $ echo ’PATH=$PATH:~/bin && export PATH’ >>~/.bashrc
+     $ PATH=$HOME/bin:$PATH; export PATH
+
+ '~/.profile'や'~/.bashrc'などの初期化ファイルに'PATH'への追加を設定して
+おけば、YACASL2のコマンド実行時に常にディレクトリーの指定を省略できます
+。 次は、'PATH'に'~/bin'が二重に追加されることを防ぐ書き方です。
+
+     case ":${PATH}:" in
+         *":${HOME}/bin:"*) ;;
+         *) export PATH="${HOME}/bin:${PATH}" ;;
+     esac
 
 2.8.2 'INFOPATH'の設定
 ----------------------
 
- 'INFOPATH'にYACASL2のInfoファイルをインストールしたディレクトリーを追加
-すると、ディレクトリーの指定を省略して'casl2' 'comet2' 'dumpword'を実行
-できます。例えば、初期設定のままInfoファイルを'~/share/info'にインストー
-ルしたときは、次のコマンドで設定できます。
+ 環境変数'INFOPATH'とInfoが適切に設定されていれば、次のコマンドで
+YACASL2のInfoを表示できます。
 
-     $ INFOPATH=$INFOPATH:~/share/info && export INFOPATH
+     $ info yacasl2
 
- '~/.bashrc'には次のコマンドで追加できます。
+ 'INFOPATH'にYACASL2のInfoファイルをインストールしたディレクトリーの追加
+は、次のコマンドでできます。なお、YACASL2のInfoファイルインストール先の
+初期設定は、'~/.local/share/info'です。
 
-     $ echo 'INFOPATH=$INFOPATH:~/share/info && export INFOPATH' >>~/.bashrc
+     $ INFOPATH=$HOME/.local/share/info:$INFOPATH; export INFOPATH
+
+ '~/.profile'や'~/.bashrc'などの初期化ファイルに'INFOPATH'への追加を設定
+しておけば、常にYACASL2のInfoを表示できます。 次は、'INFOPATH'に
+'~/.local/share/info'が二重に追加されることを防ぐ書き方です。
+
+     case ":${INFOPATH}:" in
+         *":${HOME}/.local/share/info:"*) ;;
+         *) export INFOPATH="${HOME}/.local/share/info:${INFOPATH}" ;;
+     esac
 
