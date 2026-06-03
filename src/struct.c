@@ -247,19 +247,7 @@ char *grstr(WORD word)
     return str;
 }
 
-/**
- * COMET II仮想マシンのリセット
- */
-void reset(int memsize, int clocks)
-{
-    sys = malloc_chk(sizeof(SYSTEM), "sys");
-    /* メモリサイズを設定 */
-    sys->memsize = memsize;
-    /* クロック周波数を設定 */
-    sys->clocks = clocks;
-    /* メモリを初期化 */
-    sys->memory = calloc_chk(sys->memsize, sizeof(WORD), "memory");
-    /* CPUを初期化 */
+void cpu_reset() {
     sys->cpu = malloc_chk(sizeof(CPU), "cpu");
     for(int i = 0; i < GRSIZE; i++) {                    /* 汎用レジスタ  */
         sys->cpu->gr[i] = 0x0;
@@ -267,15 +255,55 @@ void reset(int memsize, int clocks)
     sys->cpu->sp = sys->memsize;   /* スタックポインタ */
     sys->cpu->pr = 0x0;            /* プログラムレジスタ */
     sys->cpu->fr = 0x0;            /* フラグレジスタ */
+}
+
+void memory_reset() {
+}
+
+
+/**
+ * COMET II仮想マシンの初期化
+ */
+void comet2_init(int memsize, int clocks)
+{
+    sys = malloc_chk(sizeof(SYSTEM), "sys");
+    /* メモリサイズを設定 */
+    sys->memsize = memsize;
+    /* クロック周波数を設定 */
+    sys->clocks = clocks;
+    /* メモリ領域の確保 */
+    sys->memory = calloc_chk(sys->memsize, sizeof(WORD), "memory");
+    /* CPUをクリア */
+    cpu_reset();
     /* CASL2プログラムの開始と終了のアドレスを初期化 */
     execptr = malloc_chk(sizeof(EXECPTR), "execptr");
     execptr->stop = false;
 }
 
 /**
+ * COMET II仮想マシンのCPUリセット
+ */
+void comet2_reset()
+{
+    /* CPUをリセット */
+    cpu_reset();
+}
+
+/**
+ * COMET II仮想マシンのCPUとメモリをリセット
+ */
+void comet2_resetall()
+{
+    /* CPUをリセット */
+    cpu_reset();
+    /* メモリをリセット */
+    memset(sys->memory, 0, sys->memsize * sizeof(WORD));
+}
+
+/**
  * COMET II仮想マシンのシャットダウン
  */
-void shutdown()
+void comet2_shutdown()
 {
     FREE(execptr);
     FREE(sys->memory);

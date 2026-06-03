@@ -135,6 +135,13 @@ bool delbps(WORD adr);
  */
 void freebps();
 
+
+/**
+ * @brief モニター終了時の処理をする
+ *
+ */
+int monquit();
+
 /**
  * @brief COMET IIモニターを起動する
  *

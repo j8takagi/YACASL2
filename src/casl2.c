@@ -156,7 +156,7 @@ int main(int argc, char *argv[])
         goto casl2fin;
     }
     create_cmdtable(HASH_CMDTYPE);                 /* 命令の名前とタイプがキーのハッシュ表を作成 */
-    reset(memsize, clocks);                        /* 仮想マシンCOMET IIのリセット */
+    comet2_init(memsize, clocks);                  /* 仮想マシンCOMET IIの初期化 */
     asfilecnt = argc - optind;
     asfile = calloc_chk(asfilecnt, sizeof(char *), "asfile");
     for(int i = 0; i < asfilecnt; i++) {           /* 引数からファイル名配列を取得 */
@@ -175,7 +175,7 @@ int main(int argc, char *argv[])
         exec();                                    /* 仮想マシンCOMET IIの実行 */
     }
 shutdown:
-    shutdown();                                   /* 仮想マシンCOMET IIのシャットダウン */
+    comet2_shutdown();                             /* 仮想マシンCOMET IIのシャットダウン */
 casl2fin:
     FREE(objfile);
     FREE(asfile);

@@ -165,12 +165,22 @@ char *grstr(WORD word);
 /**
  * COMET II仮想マシンのリセット
  */
-void reset(int memsize, int clocks);
+void comet2_init(int memsize, int clocks);
+
+/**
+ * COMET II仮想マシンのCPUをリセット
+ */
+void comet2_reset();
+
+/**
+ * COMET II仮想マシンのCPUとメモリをリセット
+ */
+void comet2_resetall();
 
 /**
  * COMET II仮想マシンのシャットダウン
  */
-void shutdown();
+void comet2_shutdown();
 
 /**
  * @brief 命令ハッシュ表を作成する

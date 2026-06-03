@@ -81,13 +81,13 @@ int main(int argc, char *argv[])
         fprintf(stderr, "comet2 error - %d: %s\n", cerr->num, cerr->msg);
         goto comet2fin;
     }
-    reset(memsize, clocks);     /* COMET II仮想マシンのリセット */
+    comet2_init(memsize, clocks);     /* COMET II仮想マシンの初期化 */
     execptr->start = 0;
     execptr->end = loadassemble(argv[optind], execptr->start);
     if(execptr->end > 0 && cerr->num == 0) {
         exec();                 /* プログラム実行 */
     }
-    shutdown();                 /* COMET II仮想マシンのシャットダウン */
+    comet2_shutdown();          /* COMET II仮想マシンのシャットダウン */
 comet2fin:
     if(cerr->num > 0) {
         stat = 1;

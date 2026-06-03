@@ -76,11 +76,11 @@ int main(int argc, char *argv[])
         warn_ignore_arg(argc - optind, argv + optind);
     }
     create_cmdtable(HASH_CMDTYPE);
-    reset(memsize, clocks);     /* COMET II仮想マシンのリセット */
+    comet2_init(memsize, clocks);     /* COMET II仮想マシンの初期化 */
     execptr->start = 0;
     execmode.monitor = true;
     exec();                     /* プログラム実行 */
-    shutdown();
+    comet2_shutdown();
 comet2monitorfin:
     free_cmdtable(HASH_CMDTYPE);
     free_cmdtable(HASH_CODE);

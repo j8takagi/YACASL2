@@ -1,3 +1,5 @@
+#include <readline/readline.h>
+#include <readline/history.h>
 #include "monitor.h"
 
 /**
@@ -8,7 +10,7 @@ static BPSLIST *bps[BPSTABSIZE];
 /**
  * @brief comet2monitorのプロンプト
  */
-static char *monitor_prompt = "(comet2 monitor)";
+static char *monitor_prompt = "(comet2 monitor) ";
 
 unsigned adrhash(WORD adr)
 {
@@ -257,32 +259,30 @@ void mon_dump(int argc, char *argv[])
 {
     int i = 0;
     WORD dump_start = 0, dump_end = 0x40;
-    if(argc > 0 && stracmp(argv[0], 2, (char* []){"a", "auto"})) {
+    if(stracmp(argv[0], 2, (char* []){"a", "auto"})) {
         execmode.dump = true;
-        i++;
-    } else if(argc > 0 && stracmp(argv[0], 2, (char* []){"no", "noauto"})) {
+    } else if(stracmp(argv[0], 2, (char* []){"no", "noauto"})) {
         execmode.dump = false;
-        i++;
-    }
-    if(argc > i) {
-        dump_start = nh2word(argv[i++]);
+    } else {
         if(argc > i) {
-            if(argv[i][0] =='+') {
-                dump_end = dump_start + nh2word(argv[i] + 1);
+            dump_start = nh2word(argv[i++]);
+            if(argc > i) {
+                if(argv[i][0] =='+') {
+                    dump_end = dump_start + nh2word(argv[i] + 1);
+                } else {
+                    dump_end = nh2word(argv[i]) + 1;
+                }
             } else {
-                dump_end = nh2word(argv[i]);
+                dump_end += dump_start;
             }
-        } else {
-            dump_end += dump_start;
         }
-        i++;
+        dumpmemory(dump_start, dump_end);
+        execmode.dump_start = dump_start;
+        execmode.dump_end = dump_end;
     }
-    if(argc > i) {
+    if(argc > ++i) {
         warn_ignore_arg(argc - i, argv + i);
     }
-    dumpmemory(dump_start, dump_end);
-    execmode.dump_start = dump_start;
-    execmode.dump_end = dump_end;
 }
 
 MONCMDTYPE monitorcmd(char *cmd, MONARGS *args)
@@ -316,8 +316,11 @@ MONCMDTYPE monitorcmd(char *cmd, MONARGS *args)
             disassemble_memory(nh2word(args->argv[0]), nh2word(args->argv[1]));
         }
     } else if(stracmp(cmd, 1, (char* []){"reset"})) {
-        fprintf(stdout, "Reset COMET II.\n");
-        reset(sys->memsize, sys->clocks);     /* COMET II仮想マシンのリセット */
+        fprintf(stdout, "Reset COMET II CPU.\n");
+        comet2_reset();     /* COMET II仮想マシンのCPUのリセット */
+    } else if(stracmp(cmd, 1, (char* []){"resetall"})) {
+        fprintf(stdout, "Reset COMET II CPU and memory.\n");
+        comet2_resetall();     /* COMET II仮想マシンのCPUとメモリのリセット */
     } else if(stracmp(cmd, 2, (char* []){"t", "trace"})) {
         if(args->argc > 0 && stracmp(args->argv[0], 2, (char* []){"a", "auto"})) {
             execmode.logical = false;
@@ -339,13 +342,15 @@ MONCMDTYPE monitorcmd(char *cmd, MONARGS *args)
             dspregister();
         }
     } else if(stracmp(cmd, 3, (char* []){"?", "h", "help"})) {
+        fprintf(stdout, "!<system command> -- Run a system command.\n");
         fprintf(stdout, "b[reak] -- Manipulate Breakpoints. See details, `b ?'.\n");
         fprintf(stdout, "c[ontinue] -- Continue running your program.\n");
         fprintf(stdout, "d[ump] -- Display memory dump. `d[ump] a[uto]/n[oauto]' set auto/noauto display.\n");
         fprintf(stdout, "l[oad] -- Load object from a file to the memory. `l[oad] <filepath> <address>' if address is omitted, load to address 0.\n");
         fprintf(stdout, "n[ext] -- Go next instruction.\n");
         fprintf(stdout, "q[uit] -- Quit running your program.\n");
-        fprintf(stdout, "reset -- Reset the system.\n");
+        fprintf(stdout, "reset -- Reset COMET II CPU.\n");
+        fprintf(stdout, "resetall -- Reset COMET II CPU and memory.\n");
         fprintf(stdout, "r[everse] -- Disassemble memory. `r[everse] <start address> <end address>.\n");
         fprintf(stdout, "s[ave] -- Save object from the memory to a file. `s[ave] <filepath> [<start address1> [<end address>]]' if <start address> and <end address> is omitted, save the whole memory. if <end address> is omitted, save the memory after <start address>.\n");
         fprintf(stdout, "t[race] -- Display CPU register. `t[race] a[uto]/n[oauto]' set auto/noauto display. \n");
@@ -376,7 +381,7 @@ void free_moncmdline(MONCMDLINE *moncmdl)
 int monquit()
 {
     int stat = 0;
-    shutdown();
+    comet2_shutdown();
     freebps();
     free_cmdtable(HASH_CMDTYPE);
     free_cmdtable(HASH_CODE);
@@ -389,28 +394,50 @@ int monquit()
 
 void monitor()
 {
-    char *buf = NULL;
+    static char *buf = NULL;
+    static char *last_buf = NULL;
     MONCMDLINE *moncmdl = NULL;
     MONCMDTYPE cmdtype = MONREPEAT;
 
     do {
-        fprintf(stdout, "%s ", monitor_prompt);
-        buf = malloc_chk(MONINSIZE + 1, "monitor.buf");
-        fgets(buf, MONINSIZE, stdin);
-        if(!buf[0]) {
-            cmdtype = MONQUIT;
+        buf = readline(monitor_prompt);
+        /* EOFの処理 */
+        if(buf == NULL) {
+            FREE(buf);
+            FREE(last_buf);
+            exit(monquit());
         }
-        strip_end(buf);        /* 文字列末尾の改行と空白を削除 */
-        fprintf(stdout, "%s\n", buf);
+        /* 空行（Enterだけ）の場合は、前回のコマンドをリピート */
+        if(buf[0] == '\0') {
+            if(last_buf == NULL) {
+                /* 前回実行したコマンドがなければ何もしない */
+                FREE(buf);
+                fprintf(stdout, ">\n");
+            } else {
+                buf = strdup_chk(last_buf, "monitor.buf_repeat");
+                cmdtype = MONREPEAT;
+            }
+        } else {
+            strip_end(buf);        /* 文字列末尾の改行と空白を削除 */
+            /* 履歴（ヒストリ）に追加 */
+            add_history(buf);
+            last_buf = strdup_chk(buf, "monitor.last_buf");
+        }
+        /* 実行コマンドをstdout に出力。ログに残すため */
+        fprintf(stdout, "> %s\n", buf);
+
         if(buf[0] == '!') {
             system(buf + 1);
         } else if((moncmdl = monlinetok(buf)) != NULL) {
             cmdtype = monitorcmd(moncmdl->cmd, moncmdl->args);
             free_moncmdline(moncmdl);
         }
-        FREE(buf);
         if(cmdtype == MONQUIT) {
+            FREE(buf);
+            FREE(last_buf);
             exit(monquit());
         }
     } while(cmdtype == MONREPEAT);
+    FREE(buf);
+    FREE(last_buf);
 }
