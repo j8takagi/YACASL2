@@ -1,1 +1,1 @@
-../../../../comet2monitor <dump_2.monitor
+../../../../comet2monitor <dump_2.monitor | sed '/^(comet2 monitor) /d'

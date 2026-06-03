@@ -87,7 +87,7 @@ TEST_VALGRIND_FILES := $(foreach test,$(TESTS),$(test)/$(VALGRIND_FILE))
 # 用例: $(call group_report,name,file_log,file_report)
 define group_report
     $(ECHO) '$1: $(SUCCESS_TEST) / $(ALL_TEST) tests passed. Details in $(GROUP_DIR)/$2' >$3
-    if $(TEST) $(FAIL_TEST) -eq 0; then $(ECHO) "$1: All tests are succeded." >>$3; fi
+    if $(TEST) $(FAIL_TEST) -eq 0; then $(ECHO) "$1: All tests are succeeded." >>$3; fi
 endef
 
 # リストで指定したディレクトリーでmakeを実行

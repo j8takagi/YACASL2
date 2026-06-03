@@ -1,1 +1,1 @@
-../../../../comet2monitor <revert_hello.monitor
+../../../../comet2monitor <revert_hello.monitor | sed '/^(comet2 monitor) /d'
