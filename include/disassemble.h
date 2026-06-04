@@ -1,6 +1,7 @@
-#ifndef YACASL2_DISASSEMBLE_H_INCLUDE
-#define YACASL2_DISASSEMBLE_H_INCLUDE
+#ifndef YACASL2_DISASSEMBLE_H_INCLUDED
+#define YACASL2_DISASSEMBLE_H_INCLUDED
 
+#include "word.h"
 #include "struct.h"
 
 /**

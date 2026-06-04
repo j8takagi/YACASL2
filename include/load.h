@@ -1,5 +1,8 @@
-#ifndef YACASL2_LOAD_H_INCLUDE
-#define YACASL2_LOAD_H_INCLUDE
+#ifndef YACASL2_LOAD_H_INCLUDED
+#define YACASL2_LOAD_H_INCLUDED
+#include "word.h"
+#include "struct.h"
+#include "cerr.h"
 
 /**
  * @brief アセンブル結果読み込みエラーをエラーリストに追加する

@@ -1,5 +1,5 @@
-#ifndef YACASL2_MONITOR_H_INCLUDE
-#define YACASL2_MONITOR_H_INCLUDE
+#ifndef YACASL2_MONITOR_H_INCLUDED
+#define YACASL2_MONITOR_H_INCLUDED
 
 #include <stdio.h>
 #include <string.h>

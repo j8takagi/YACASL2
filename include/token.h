@@ -1,5 +1,5 @@
-#ifndef YACASL2_TOKEN_INCLUDE
-#define YACASL2_TOKEN_INCLUDE
+#ifndef YACASL2_TOKEN_H_INCLUDED
+#define YACASL2_TOKEN_H_INCLUDED
 
 #include <stdio.h>
 #include <stdlib.h>

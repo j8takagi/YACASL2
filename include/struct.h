@@ -1,5 +1,5 @@
-#ifndef YACASL2_STRUCT_INCLUDED
-#define YACASL2_STRUCT_INCLUDED
+#ifndef YACASL2_STRUCT_H_INCLUDED
+#define YACASL2_STRUCT_H_INCLUDED
 
 #include <stdio.h>
 #include <assert.h>
@@ -8,7 +8,6 @@
 #include "word.h"
 #include "cmem.h"
 #include "hash.h"
-#include "exec.h"
 
 /**
  * @brief COMET IIの規格値

@@ -1,3 +1,4 @@
+#define _GNU_SOURCE
 #include "package.h"
 #include "disassemble.h"
 #include "load.h"

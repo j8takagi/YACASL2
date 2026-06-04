@@ -9,7 +9,6 @@
 #include "word.h"
 #include "cmem.h"
 #include "cerr.h"
-#include "monitor.h"
 #include "disassemble.h"
 
 enum {

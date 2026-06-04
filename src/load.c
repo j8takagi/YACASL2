@@ -1,12 +1,5 @@
-#include <stdio.h>
-#include <string.h>
-#include <assert.h>
-#include <stdlib.h>
-#include <ctype.h>
+#include "load.h"
 
-#include "word.h"
-#include "struct.h"
-#include "cerr.h"
 
 /**
  * @brief ファイル読み込みのエラー定義

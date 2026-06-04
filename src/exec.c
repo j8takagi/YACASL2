@@ -1,4 +1,5 @@
 #include "exec.h"
+#include "monitor.h"
 
 /**
  * @brief プログラムレジスタ（PR）を表すWORD値を文字列に変換
