@@ -1,6 +1,6 @@
 body {
-    margin-left: 6em;
-    margin-right: 12em;
+    margin-left: 7.5%;
+    margin-right: 15%;
     color: black;
     background-color: #EEE;
     font-family: sans-serif;
@@ -12,18 +12,18 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1, h2 {
-    margin-left: -2em;
+    margin-left: -5%;
 }
 
 .breadcrumbs {
-    padding-bottom: 10px;
-    margin-bottom: 20px;
+    padding-bottom: 5%;
+    margin-bottom: 10%;
     border-bottom: 1px solid #ccc;
     font-size: 90%;
 }
 
 .node{
-    margin-left: -3em;
+    margin-left: -7.5%;
     color: inherit;
     background-color: #DDF;
 }
@@ -38,13 +38,13 @@ table.menu, table.menu th, table.menu td {
 }
 
 h2 {
-    padding: 0.25em;
+    padding: 0.5%;
     border: 2px solid navy;
 }
 
 .contents, .mini-toc {
     border: 4px double #DDF;
-    padding: 0.5em 1em 0.5em 2em;
+    padding: 0.25% 0.5% 0.5% 2%;
 }
 
 .contents h2 {
@@ -79,11 +79,11 @@ h2.shortcontents-heading{
 }
 
 .shortcontents a {
-   margin-right: 1em;
+   margin-right: 0.25%;
 }
 
 h3, h4, h5 {
-    margin-left: -1em;
+    margin-left: -0.25%;
 }
 
 h5 {
@@ -91,9 +91,9 @@ h5 {
 }
 
 p {
-    line-height: 1.25em;
+    line-height: 125%;
     margin-top: 0;
-    margin-bottom: 0.5em;
+    margin-bottom: 0.5%;
 }
 
 a:hover {
@@ -102,8 +102,8 @@ a:hover {
 }
 
 .example, pre.verbatim {
-    margin: 0.5em 0 0.5em 0;
-    padding: 0 0 0 1em;
+    margin: 0.25% 0 0.25% 0;
+    padding: 0 0 0 2.5%;
     border: 1px solid #CCC;
 }
 
@@ -112,7 +112,6 @@ a {
 }
 
 blockquote {
-    line-height: 1.25em;
     border: 1px solid #00F;
 }
 
@@ -121,8 +120,7 @@ kbd, code, .file, var, kbd.kbd {
     font-weight: normal;
     font-family: monospace;
     font-size: 110%;
-    margin-left:0.25em;
-    margin-right: 0.25em;
+    margin-left:0.5%;
 }
 
 kbd.kbd {
@@ -137,7 +135,7 @@ kbd.kbd {
 table, th, td {
     border: 1px solid black;
     border-collapse: collapse; /* 枠線の表示方法 */
-    margin-bottom: 1em;
+    margin-bottom: 2.5%;
 }
 
 table.cartouche, table.cartouche th, table.cartouche td  {
@@ -192,5 +190,5 @@ hr {
 p.nav-panel {
     border-top: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
-    margin-top: 0.5em;
+    margin-top: 5%;
 }
