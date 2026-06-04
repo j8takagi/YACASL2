@@ -49,6 +49,11 @@ Tools」に含まれます。
 'tar.gz.asc'または'tar.xz.asc'ファイルを同じディレクトリーに保存し、その
 ディレクトリーに移動しておきます。
 
+ 次の手順では'gpg --verify'による検証を2回実行させています。1回目では検
+証に失敗する一方で、必要な鍵などの情報を得ています。その鍵を'gpg
+--recv-keys'で取得し、'gpg --lsign-key'でローカル署名した後、再度'gpg
+--verify'による検証を行い、成功させています。
+
      $ ls yacasl2.tar.gz*
      yacasl2.tar.gz  yacasl2.tar.gz.asc
      $ gpg --verify yacasl2.tar.xz.asc
@@ -120,13 +125,13 @@ Tools」に含まれます。
 ==========
 
  展開したら、'make'コマンドを実行してビルドします。 YACASL2のコマンド実
-行ファイルである'casl2' 'comet2' 'dumpword' 'casl2rev' 'commet2monitor'が
+行ファイルである'casl2' 'comet2' 'dumpword' 'casl2rev' 'comet2monitor'が
 生成されます。
 
      $ cd yacasl2
      $ make
      make -C src
-     make[1]: Entering directory ‘/home/kazubito/yacasl2/src’
+     make[1]: Entering directory ‘/home/username/yacasl2/src’
      gcc -c -g -Wall -I ../include casl2.c
      gcc -c -g -Wall -I ../include word.c
      gcc -c -g -Wall -I ../include hash.c
@@ -146,7 +151,7 @@ Tools」に含まれます。
      struct.o cmd.o exec.o dump.o
      gcc -c -g -Wall -I ../include dumpword.c
      gcc -g -Wall -I ../include -o ../dumpword dumpword.o word.o cerr.o
-     make[1]: Leaving directory ‘/home/kazubito/yacasl2/src’
+     make[1]: Leaving directory ‘/home/username/yacasl2/src’
 
 2.5 'casl2'の実行テスト
 =======================
@@ -166,13 +171,13 @@ Tools」に含まれます。
      $ make check
      195 / 195 tests passed. Details in /home/username/yacasl2/test/integra
      tion/casl2/Test.log
-     All tests are succeded.
+     All tests are succeeded.
      149 / 149 tests passed. Details in /home/username/yacasl2/test/integra
      tion/comet2/Test.log
-     All tests are succeded.
+     All tests are succeeded.
      4 / 4 tests passed. Details in /home/username/yacasl2/test/integration
      /dumpword/Test.log
-     All tests are succeded.
+     All tests are succeeded.
 
 2.7 インストール
 ================
@@ -237,16 +242,16 @@ YACASL2のInfoを表示できます。
 
  'INFOPATH'にYACASL2のInfoファイルをインストールしたディレクトリーの追加
 は、次のコマンドでできます。なお、YACASL2のInfoファイルインストール先の
-初期設定は、'~/.local/share/info'です。
+初期設定は、'~/share/info'です。
 
-     $ INFOPATH=$HOME/.local/share/info:$INFOPATH; export INFOPATH
+     $ INFOPATH=$HOME/share/info:$INFOPATH; export INFOPATH
 
  '~/.profile'や'~/.bashrc'などの初期化ファイルに'INFOPATH'への追加を設定
 しておけば、常にYACASL2のInfoを表示できます。 次は、'INFOPATH'に
-'~/.local/share/info'が二重に追加されることを防ぐ書き方です。
+'~/share/info'が二重に追加されることを防ぐ書き方です。
 
      case ":${INFOPATH}:" in
-         *":${HOME}/.local/share/info:"*) ;;
-         *) export INFOPATH="${HOME}/.local/share/info:${INFOPATH}" ;;
+         *":${HOME}/share/info:"*) ;;
+         *) export INFOPATH="${HOME}/share/info:${INFOPATH}" ;;
      esac
 
