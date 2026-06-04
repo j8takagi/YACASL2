@@ -16,8 +16,8 @@ h1, h2 {
 }
 
 .breadcrumbs {
-    padding-bottom: 5%;
-    margin-bottom: 10%;
+    padding-bottom: 1%;
+    margin-bottom: 2%;
     border-bottom: 1px solid #ccc;
     font-size: 90%;
 }
@@ -190,5 +190,5 @@ hr {
 p.nav-panel {
     border-top: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
-    margin-top: 5%;
+    margin-top: 2%;
 }
