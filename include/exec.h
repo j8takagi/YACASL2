@@ -9,7 +9,6 @@
 #include "word.h"
 #include "cmem.h"
 #include "cerr.h"
-#include "disassemble.h"
 
 enum {
     INSIZE = 256    /**<IN命令の、入力領域 */
