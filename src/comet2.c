@@ -60,10 +60,14 @@ int main(int argc, char *argv[])
             execmode.monitor = true;
             break;
         case 'M':
-            memsize = atoi(optarg);
+            if((memsize = memsize_str2word(optarg)) == 0) {
+                goto comet2fin;
+            }
             break;
         case 'C':
-            clocks = atoi(optarg);
+            if((clocks = clock_str2clock(optarg)) == 0) {
+                goto comet2fin;
+            }
             break;
         case 'v':
             fprintf(stdout, cmdversion, version);

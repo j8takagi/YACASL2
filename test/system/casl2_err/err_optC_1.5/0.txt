@@ -1,0 +1,1 @@
+Clock: `1.5' is not integer.

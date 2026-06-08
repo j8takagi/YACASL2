@@ -1,3 +1,4 @@
+#include <errno.h>
 #include "struct.h"
 #include "exec.h"
 
@@ -81,6 +82,16 @@ unsigned hash_cmdtype(const char *cmd, CMDTYPE type);
  * 命令コードからハッシュ値を生成する
  */
 unsigned hash_code(WORD code);
+
+/**
+ * CPUのリセット
+ */
+void cpu_reset();
+
+/**
+ * メモリのリセット
+ */
+void memory_reset();
 
 /**
  * 命令の名前とタイプからハッシュ値を生成する
@@ -247,9 +258,39 @@ char *grstr(WORD word)
     return str;
 }
 
+WORD memsize_str2word(const char *str) {
+    return (WORD)str2l_range(str, 1, MAX_MEMSIZE, "Memory Size");
+}
+
+/**
+ * COMET II仮想マシンの初期化
+ */
+void comet2_init(WORD memsize, CLOCK clocks)
+{
+    sys = malloc_chk(sizeof(SYSTEM), "sys");
+    /* メモリサイズを設定 */
+    assert(0 < memsize && memsize <= MAX_MEMSIZE-1);
+    sys->memsize = memsize;
+    /* クロック周波数を設定 */
+    assert(0 < clocks && clocks <= MAX_CLOCKS);
+    sys->clocks = clocks;
+    /* CPU領域の確保 */
+    sys->cpu = malloc_chk(sizeof(CPU), "comet2_init.cpu");
+    /* CPUをリセット */
+    cpu_reset();
+    /* メモリ領域の確保 */
+    sys->memory = calloc_chk(sys->memsize, sizeof(WORD), "comet2_init.memory");
+    /* メモリをリセット */
+    memory_reset();
+    /* CASL2プログラムの開始と終了のアドレスを初期化 */
+    execptr = malloc_chk(sizeof(EXECPTR), "execptr");
+    execptr->stop = false;
+}
+
+
 void cpu_reset() {
-    sys->cpu = malloc_chk(sizeof(CPU), "cpu");
-    for(int i = 0; i < GRSIZE; i++) {                    /* 汎用レジスタ  */
+    /* 汎用レジスタ  */
+    for(int i = 0; i < GRSIZE; i++) {
         sys->cpu->gr[i] = 0x0;
     }
     sys->cpu->sp = sys->memsize;   /* スタックポインタ */
@@ -257,27 +298,11 @@ void cpu_reset() {
     sys->cpu->fr = 0x0;            /* フラグレジスタ */
 }
 
-void memory_reset() {
-}
-
-
 /**
- * COMET II仮想マシンの初期化
+ * メモリのリセット
  */
-void comet2_init(int memsize, int clocks)
-{
-    sys = malloc_chk(sizeof(SYSTEM), "sys");
-    /* メモリサイズを設定 */
-    sys->memsize = memsize;
-    /* クロック周波数を設定 */
-    sys->clocks = clocks;
-    /* メモリ領域の確保 */
-    sys->memory = calloc_chk(sys->memsize, sizeof(WORD), "memory");
-    /* CPUをクリア */
-    cpu_reset();
-    /* CASL2プログラムの開始と終了のアドレスを初期化 */
-    execptr = malloc_chk(sizeof(EXECPTR), "execptr");
-    execptr->stop = false;
+void memory_reset() {
+    memset(sys->memory, 0, sys->memsize * sizeof(WORD));
 }
 
 /**
@@ -297,7 +322,7 @@ void comet2_resetall()
     /* CPUをリセット */
     cpu_reset();
     /* メモリをリセット */
-    memset(sys->memory, 0, sys->memsize * sizeof(WORD));
+    memory_reset();
 }
 
 /**

@@ -6,6 +6,7 @@
 #include <string.h>
 #include <assert.h>
 #include <stdbool.h>
+#include <limits.h>
 
 /**
  * @brief 配列のサイズを返すマクロ
@@ -20,6 +21,17 @@
 #ifndef FREE
 #define FREE(ptr) {free(ptr); ptr = NULL;}
 #endif
+
+/**
+ * @brief 数値文字列が特定の範囲の数値かチェックし、正の場合は変換した数値、不正の場合は0を返す
+ *
+ * @param str 数値文字列
+ * @param min 範囲最小値
+ * @param min 範囲最大値
+ * @param tag エラーメッセージなどで表示される名前
+ *
+ */
+long str2l_range(const char *str, long min, long max, const char *name);
 
 /**
  * @brief mallocを実行し、0で初期化する

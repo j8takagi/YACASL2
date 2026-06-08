@@ -80,12 +80,23 @@ static CERR cerr_exec[] = {
     { 207, "address in word #2 - out of memory" },
     { 208, "SVC input - memory overflow" },
     { 209, "SVC output - memory overflow" },
+    { 214, "CPU Clocks - not positive integer" },
+    { 215, "Memory Size - not integer or out of range: 1 - 65536" },
 };
 
 /**
  * @brief 実行モード: trace, logical, dump, dump_start, dump_end,  monitor, step
  */
 EXECMODE execmode = {false, false, false, 0, 0xFFFF, false, false};
+
+CLOCK clock_str2clock(const char *str) {
+    long val = str2l_range(str, 1, LONG_MAX, "Clock");
+    if(val > MAX_CLOCKS) {
+        val = MAX_CLOCKS;
+        fprintf(stderr, "Info - %s: Clock frequency exceeds maximum. Set to %ld\n", str, val);
+    }
+    return (CLOCK)val;
+}
 
 char *pr2str(WORD pr)
 {
@@ -110,7 +121,8 @@ void svcin()
             break;
         }
         if(sys->cpu->gr[1] + i > execptr->end) {
-            setcerr(208, "");    /* SVC input - memory overflow */
+            setcerr
+                (208, "");    /* SVC input - memory overflow */
             break;
         }
         sys->memory[sys->cpu->gr[1] + i] = buf[i];
@@ -672,8 +684,8 @@ void svc()
 
 void exec()
 {
-    clock_t clock_begin = 0;
-    clock_t clock_end = 0;
+    CLOCK clock_begin = 0;
+    CLOCK clock_end = 0;
     void (*cmdptr)() = NULL;
     char *s = NULL;
     const char *monmsg = "COMET II machine code monitor. Type ? for help.\n";

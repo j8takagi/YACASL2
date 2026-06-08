@@ -15,6 +15,15 @@ enum {
 };
 
 /**
+ * @brief クロック周波数を表す文字列を正しいかチェックし、正の整数値に変換
+  *
+ * @return クロック周波数を表す正の整数値
+ *
+ * @param str クロック周波数を表す文字列
+ */
+CLOCK clock_str2clock(const char *str);
+
+/**
  * @brief 実行エラーをエラーリストに追加する
  */
 void addcerrlist_exec();

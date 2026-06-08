@@ -55,10 +55,14 @@ int main(int argc, char *argv[])
     while((opt = getopt_long(argc, argv, "M:C:vh", longopts, NULL)) != -1) {
         switch(opt) {
         case 'M':
-            memsize = atoi(optarg);
+            if((memsize = memsize_str2word(optarg)) == 0) {
+                goto comet2monitorfin;
+            }
             break;
         case 'C':
-            clocks = atoi(optarg);
+            if((clocks = clock_str2clock(optarg)) == 0) {
+                goto comet2monitorfin;
+            }
             break;
         case 'v':
             fprintf(stdout, cmdversion, version);

@@ -9,14 +9,18 @@
 #include "cmem.h"
 #include "hash.h"
 
+typedef unsigned int CLOCK;
+
 /**
  * @brief COMET IIの規格値
  */
 enum {
     CMDSIZE = 4,              /**<命令の最大文字数 */
-    GRSIZE = 8,               /**<汎用レジスタの数。COMET II規格では、8（0から7） */
-    DEFAULT_MEMSIZE = 512,    /**<デフォルトのメモリ容量。COMET II規格では、65535語（word） */
-    DEFAULT_CLOCKS = 5000000, /**<デフォルトのクロック周波数。COMET II規格では、未定義 */
+    GRSIZE = 8,               /**<汎用レジスタの数。COMET II規格で、GR0〜GR7までの8 */
+    MAX_MEMSIZE = 65536,      /**<メモリ容量の最大値。COMET II規格で、アドレス0～65535の65536語（word） */
+    DEFAULT_MEMSIZE = 512,    /**<メモリ容量の初期値。COMET II規格では、アドレス0～65535の65536語（word） */
+    MAX_CLOCKS = 1000000,     /**<クロック周波数の最大値。POSIXのCLOCKS_PER_SECと同値 */
+    DEFAULT_CLOCKS = MAX_CLOCKS, /**<クロック周波数の初期値。最大値と同値 */
 };
 
 /**
@@ -44,8 +48,8 @@ typedef struct {
 typedef struct {
     CPU *cpu;        /**<CPU */
     WORD *memory;    /**<メモリ */
-    int memsize;     /**<メモリサイズ */
-    clock_t clocks;  /**<クロック周波数 */
+    WORD memsize;     /**<メモリサイズ */
+    CLOCK clocks;    /**<クロック周波数 */
 } SYSTEM;
 
 /**
@@ -162,13 +166,25 @@ extern EXECMODE execmode;
 char *grstr(WORD word);
 
 /**
- * COMET II仮想マシンのリセット
+ * @brief メモリーサイズとして受け取った文字列をに変換。1から65536までの範囲の整数に変換できない場合はエラー
+ *
+ * @return メモリーサイズの数値。1から65536までの範囲の整数
+ *
+ * @param str メモリーサイズ文字列
  */
-void comet2_init(int memsize, int clocks);
+WORD memsize_str2word(const char *str);
 
 /**
- * COMET II仮想マシンのCPUをリセット
+ * @brief COMET II仮想マシンの初期化
+ *
+ * @param memsize メモリーサイズ。1から65535までの範囲の整数
+ * @param clocks クロック数。1から1000000までの範囲の整数
  */
+void comet2_init(WORD memsize, CLOCK clocks);
+
+/**
+ * @brief COMET II仮想マシンのCPUをリセット
+  */
 void comet2_reset();
 
 /**
@@ -177,7 +193,7 @@ void comet2_reset();
 void comet2_resetall();
 
 /**
- * COMET II仮想マシンのシャットダウン
+ * @brief COMET II仮想マシンのシャットダウン
  */
 void comet2_shutdown();
 
