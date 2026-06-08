@@ -1,5 +1,25 @@
 #include "cmem.h"
 
+long str2l_range(const char *str, long min, long max, const char *name) {
+    char *endptr = NULL;
+    long val = strtol(str, &endptr, 10);
+    if(endptr == str) {
+        fprintf(stderr, "%s: Not specified.\n", name);
+        return 0;
+    } else if(*endptr != '\0') {
+        fprintf(stderr, "%s: `%s' is not integer.\n", name, str);
+        return 0;
+    } else if(val < min || max < val) {
+        if(max == LONG_MAX) {
+            fprintf(stderr, "%s: %s out of range: %ld -\n", str, name, min);
+        } else {
+            fprintf(stderr, "%s: %s out of range: %ld - %ld\n", str, name, min, max);
+        }
+        return 0;
+    }
+    return val;
+}
+
 void *malloc_chk(size_t size, const char *tag)
 {
     void *p = NULL;

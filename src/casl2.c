@@ -14,9 +14,9 @@ void addcerrlist_casl2();
  *
  * @return ファイル名
  *
- * @param *str ファイル名
+ * @param *name ファイル名
  */
-char *objfile_name(const char *str);
+char *objfile_name(const char *name);
 
 /**
  * @brief casl2コマンドのオプション
@@ -132,10 +132,14 @@ int main(int argc, char *argv[])
             execmode.step = true;
             break;
         case 'M':
-            memsize = atoi(optarg);
+            if((memsize = memsize_str2word(optarg)) == 0) {
+                goto casl2fin;
+            }
             break;
         case 'C':
-            clocks = atoi(optarg);
+            if((clocks = clock_str2clock(optarg)) == 0) {
+                goto casl2fin;
+            }
             break;
         case 'v':
             fprintf(stdout, cmdversion, version);

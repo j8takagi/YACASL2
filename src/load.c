@@ -30,6 +30,7 @@ WORD loadassemble(const char *file, WORD start)
     end = start + fread(sys->memory + start, sizeof(WORD), sys->memsize - start, fp);
     if(end == sys->memsize) {
         setcerr(210, file);    /* load - memory overflow */
+        fprintf(stderr, "Load error - %d: %s\n", cerr->num, cerr->msg);
     }
     fclose(fp);
     return end;
