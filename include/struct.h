@@ -166,11 +166,11 @@ extern EXECMODE execmode;
 char *grstr(WORD word);
 
 /**
- * @brief メモリーサイズとして受け取った文字列をに変換。1から65536までの範囲の整数に変換できない場合はエラー
+ * @brief メモリーサイズを表す数値文字列をWORD値に変換して返す。WORD値に変換できない場合は、エラーを表示して0を返す
  *
- * @return メモリーサイズの数値。1から65536までの範囲の整数
+ * @return メモリーサイズのWORD値である、1から65536までの範囲の整数。エラー時は0
  *
- * @param str メモリーサイズ文字列
+ * @param str メモリーサイズを表す数値文字列
  */
 WORD memsize_str2word(const char *str);
 
