@@ -1,23 +1,19 @@
-.PHONY: all clean doxyfile-update doxygen-clean gnu_global-clean cmetrics-clean
+.PHONY: all clean distclean doxygen-clean gnu_global-clean
 
 CD := cd
-CMETRICS := cmetrics
 CP := cp
 DOXYGEN := doxygen
 ECHO := echo
 HTAGS := htags
-INSTALL := install
+LS := ls
+MKDIR := mkdir
 MV := mv
-RMR := rm -rf
 SED := sed
 WHICH := which
 
-DOXYGEN_DIR := doxygen
-DOXYSRCDIR := ..
-GNU_GLOBAL_DIR := gnu_global
-GNU_GLOBAL_SRCDIR := ..
-CMETRICS_DIR := cmetrics
-CMETRICS_SRCDIR := ../src
+SRCDIR := ..
+DOXYGENSTAMP := doxygen___stamp
+GNUGLOBALSTAMP := gnu_global___stamp
 
 # chk_file_ext: 指定されたコマンドが実在する場合にターゲットを指定。
 # 用例: $(call chk_cmd_ext,cmd,target)
@@ -25,42 +21,44 @@ define chk_cmd_ext
     $(if $(strip $(shell $(WHICH) $1)),$2)
 endef
 
-all: $(call chk_cmd_ext,$(DOXYGEN),$(DOXYGEN_DIR)) $(call chk_cmd_ext,$(HTAGS),$(GNU_GLOBAL_DIR)) $(call chk_cmd_ext $(CMETRICS),$(CMETRICS_DIR))
+all: $(call chk_cmd_ext,$(DOXYGEN),doxygen___stamp) $(call chk_cmd_ext,$(HTAGS),gnu_global___stamp)
 
 # doxygenのHTMLドキュメント作成先は、
 # ../Doxyfileで設定された以下のディレクトリーの下のhtmlディレクトリー
 #   OUTPUT_DIRECTORY = doc_inner
-$(DOXYGEN_DIR): $(DOXYSRCDIR)/Doxyfile ../src ../include
-	$(INSTALL) -d $(DOXYGEN_DIR)
-	$(CD) $(DOXYSRCDIR) && $(DOXYGEN)
+doxygen___stamp: $(SRCDIR)/src $(SRCDIR)/include $(SRCDIR)/Doxyfile | doxygen
+	$(CD) $(SRCDIR) && $(DOXYGEN)
+	$(LS) -laR doxygen >$@
 
-doxyfile-update: Doxyfile
-	$(DOXYGEN) -u $<
+doxygen:
+	$(MKDIR) $@
 
-$(DOXYSRCDIR)/Doxyfile: doxyfile-update
-	@$(CP) -vf Doxyfile $(DOXYSRCDIR)/
+Doxyfile:
+	$(DOXYGEN) -u $@
+
+$(SRCDIR)/Doxyfile: | Doxyfile
+	@$(CP) -vf Doxyfile $(SRCDIR)/
 
 # htagsのHTMLドキュメント作成先は、
 # 引数DIRで指定されたディレクトリーの下のHTMLディレクトリー
-$(GNU_GLOBAL_DIR): ../src ../include
-	$(MAKE) -C $(GNU_GLOBAL_SRCDIR) gtags
-	$(CD) $(GNU_GLOBAL_SRCDIR) && $(HTAGS) -anos $(CURDIR) && $(RMR) $(CURDIR)/$@ && $(MV) $(CURDIR)/HTML $(CURDIR)/$@
+gnu_global___stamp: $(SRCDIR)/src $(SRCDIR)/include | gnu_global
+	$(MAKE) -C $(SRCDIR) gtags
+	$(CD) $(SRCDIR) && $(HTAGS) -anos $(CURDIR)
+	$(RM) -r gnu_global
+	$(MV) HTML gnu_global
+	$(LS) -laR gnu_global >$@
 
-$(CMETRICS_DIR):
-	$(INSTALL) -d $(CMETRICS_DIR)
-	$(CMETRICS) $(CMETRICS_SRCDIR) | $(SED) -e '1s/ \{2,\}/	/g' -e '2,$$s/  \{1,\}/	/g' >$(CMETRICS_DIR)/files.tsv
-	$(CMETRICS) -f $(CMETRICS_SRCDIR) | $(SED) -e '1s/ \{2,\}/	/g' -e '2,$$s/  \{1,\}/	/g' >$(CMETRICS_DIR)/functions.tsv
+gnu_global:
+	$(MKDIR) $@
 
-clean: doxygen-clean gnu_global-clean cmetrics-clean
+clean:
+	$(RM) *___stamp
 
-distclean: clean
+distclean: clean doxygen-clean gnu_global-clean
 
 doxygen-clean:
-	$(RMR) $(DOXYGEN_DIR)
+	$(RM) -r doxygen
 	$(RM) ../Doxyfile
 
 gnu_global-clean:
-	$(RMR) $(GNU_GLOBAL_DIR)
-
-cmetrics-clean:
-	$(RMR) $(CMETRICS_DIR)
+	$(RM) -r gnu_global

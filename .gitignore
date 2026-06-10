@@ -19,3 +19,4 @@ core
 *.bak
 fontconfig
 *.log.core*
+*___*
