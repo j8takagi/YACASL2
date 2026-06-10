@@ -3,6 +3,7 @@
         doc alldoc doc_inner \
         install uninstall \
         version gittag copyright \
+        gitpush gitpushorigin gitpushgithub \
         clean src-clean gtags-clean \
         test-clean doc-clean doc_inner-clean
 
@@ -90,6 +91,16 @@ $(VERSIONFILES): VERSION
 
 gittag:
 	if test `$(GIT) status -s | $(WC) -l` -gt 0; then $(ECHO) "Error: commit, first."; exit 1; fi; if test "$(VERSIONGITREF)" != "$(MAINGITREF)"; then $(GIT) tag $(VERSION); fi
+
+gitpush: gitpushorigin gitpushgithub
+
+gitpushorigin:
+	$(GIT) push origin main
+	$(GIT) push origin $(VERSION)
+
+gitpushgithub:
+	$(GIT) push github main
+	$(GIT) push github $(VERSION)
 
 copyright:
 	$(SED) -i.bak 's/Copyright (c) 2010-20[0-9][0-9]/Copyright (c) 2010-$(YEAR)/g' LICENSE README && $(RM) *.bak
