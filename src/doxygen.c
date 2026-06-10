@@ -40,23 +40,16 @@
  * \section sec_web Webサイト
  * http://www.j8takagi.net/yacasl2/
  *
- * \section sec_spec 外部仕様書（マニュアル）
- * http://www.j8takagi.net/yacasl2/doc/manual.html
+ * \section sec_spec 外部仕様書
+ * マニュアル http://www.j8takagi.net/yacasl2/doc/manual.html
  *
  * \section sec_casl2spec CASLII仕様書
- *
- *   情報処理技術者試験 アセンブラ言語の仕様
- *   https://www.j8takagi.net/yacasl2/doc/casl2_spec/casl2_spec.html
- *
- *   試験で使用する情報処理用語・プログラム言語など Ver 2.2（平成24年5月22日）</a>
- *   http://www.jitec.jp/1_13download/shiken_yougo_ver2_2.pdf （PDFファイル）
- *       別紙 1 アセンブラ言語の仕様
+ * 情報処理技術者試験 アセンブラ言語の仕様 https://www.j8takagi.net/yacasl2/doc/casl2_spec/casl2_spec.html
  *
  * \section sec_license ライセンス
  * \author j8takagi
  *
  * YACASL2 is licensed under the MIT license.
  *
- * MIT Licenseの詳細は、LICENSEファイルを参照してください。
- * http://www.j8takagi.net/yacasl2/doc/license.txt
+ * MIT Licenseの詳細は、LICENSEファイルを参照してください。 https://www.j8takagi.net/yacasl2/license.txt
  */
