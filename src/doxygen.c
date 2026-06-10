@@ -1,57 +1,62 @@
 /**
- * \mainpage YACASL2 内部仕様書
- * \section メイン関数
- * - src/casl2.c
- * - src/comet2.c
- * - src/comet2monitor.c
- * - src/dumpword.c
- * - src/casl2rev.c
- * - src/comet2monitor.c
+ * \mainpage YACASL2 内部仕様書 - Doxygen
+ * \section sec_main メイン関数
+ * - \ref "src/casl2.c"
+ * - \ref "src/comet2.c"
+ * - \ref "src/comet2monitor.c"
+ * - \ref "src/dumpword.c"
+ * - \ref "src/casl2rev.c"
  *
- * \section そのほかのソースファイル
- * - src/assemble.c
- * - src/cerr.c
- * - src/cmem.c
- * - src/disassemble.c
- * - src/dump.c
- * - src/exec.c
- * - src/hash.c
- * - src/label.c
- * - src/monitor.c
- * - src/struct.c
- * - src/token.c
- * - src/word.c
+ * \section sec_othersrc そのほかのソースファイル
+ * - \ref "src/assemble.c"
+ * - \ref "src/cerr.c"
+ * - \ref "src/cmem.c"
+ * - \ref "src/disassemble.c"
+ * - \ref "src/dump.c"
+ * - \ref "src/exec.c"
+ * - \ref "src/hash.c"
+ * - \ref "src/label.c"
+ * - \ref "src/load.c"
+ * - \ref "src/monitor.c"
+ * - \ref "src/struct.c"
+ * - \ref "src/token.c"
+ * - \ref "src/word.c"
  *
- * \section ヘッダファイル
- * - include/assemble.h
- * - include/cerr.h
- * - include/cmem.h
- * - include/disassemble.h
- * - include/exec.h
- * - include/hash.h
- * - include/monitor.h
- * - include/package.h
- * - include/struct.h
- * - include/token.h
- * - include/version.h
- * - include/word.h
+ * \section sec_header ヘッダファイル
+ * - \ref "include/assemble.h"
+ * - \ref "include/cerr.h"
+ * - \ref "include/cmem.h"
+ * - \ref "include/disassemble.h"
+ * - \ref "include/exec.h"
+ * - \ref "include/hash.h"
+ * - \ref "include/load.h"
+ * - \ref "include/monitor.h"
+ * - \ref "include/package.h"
+ * - \ref "include/struct.h"
+ * - \ref "include/token.h"
+ * - \ref "include/version.h"
+ * - \ref "include/word.h"
  *
- * \section Webサイト
+ * \section sec_web Webサイト
  * http://www.j8takagi.net/yacasl2/
  *
- * \section 外部仕様書（マニュアル）
+ * \section sec_spec 外部仕様書（マニュアル）
  * http://www.j8takagi.net/yacasl2/doc/manual.html
  *
- * \section CASLII仕様書
+ * \section sec_casl2spec CASLII仕様書
+ *
+ *   情報処理技術者試験 アセンブラ言語の仕様
+ *   https://www.j8takagi.net/yacasl2/doc/casl2_spec/casl2_spec.html
  *
  *   試験で使用する情報処理用語・プログラム言語など Ver 2.2（平成24年5月22日）</a>
  *   http://www.jitec.jp/1_13download/shiken_yougo_ver2_2.pdf （PDFファイル）
  *       別紙 1 アセンブラ言語の仕様
  *
- * \section ライセンス
+ * \section sec_license ライセンス
  * \author j8takagi
  *
  * YACASL2 is licensed under the MIT license.
  *
  * MIT Licenseの詳細は、LICENSEファイルを参照してください。
+ * http://www.j8takagi.net/yacasl2/doc/license.txt
  */
