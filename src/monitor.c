@@ -415,7 +415,9 @@ void monitor()
                 /* 前回実行したコマンドがなければ何もしない */
                 FREE(buf);
                 fprintf(stdout, ">\n");
+                continue;
             } else {
+                FREE(buf);
                 buf = strdup_chk(last_buf, "monitor.buf_repeat");
                 cmdtype = MONREPEAT;
             }
@@ -423,6 +425,7 @@ void monitor()
             strip_end(buf);        /* 文字列末尾の改行と空白を削除 */
             /* 履歴（ヒストリ）に追加 */
             add_history(buf);
+            FREE(last_buf);
             last_buf = strdup_chk(buf, "monitor.last_buf");
         }
         /* 実行コマンドをstdout に出力。ログに残すため */
@@ -441,5 +444,4 @@ void monitor()
         }
     } while(cmdtype == MONREPEAT);
     FREE(buf);
-    FREE(last_buf);
 }
