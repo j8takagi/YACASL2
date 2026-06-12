@@ -1,0 +1,1 @@
+printf "\n" | ../../../../comet2monitor | sed '/^(comet2 monitor) /d'
