@@ -10,6 +10,7 @@
 CAT := cat
 CP := cp -v
 DATE := date
+DIFF :=diff
 ECHO := /bin/echo
 EXPR := expr
 GIT := git
@@ -45,9 +46,6 @@ all: copyright INSTALL build gtags
 build: version
 	$(MAKE) -C src all
 	@(for f in $(CMDFILES); do if test ! -e $$f -o src/$$f -nt $$f; then $(CP) src/$$f $$f; fi; done)
-
-gtags:
-	$(if $(strip $(shell $(WHICH) $(GTAGS))),$(GTAGS),@$(ECHO) '$(GTAGS): not found')
 
 INSTALL: doc/install.txt
 	$(CP) $< $@
@@ -102,10 +100,18 @@ gitpushgithub:
 	$(GIT) push github main
 	$(GIT) push github $(VERSION)
 
-copyright:
-	$(SED) -i.bak 's/Copyright (c) 2010-20[0-9][0-9]/Copyright (c) 2010-$(YEAR)/g' LICENSE README && $(RM) *.bak
+copyright: LICENSE.copyright___stamp  README.copyright___stamp
 
-distclean: cmd-clean src-distclean gtags-clean version-clean clean
+%.copyright___stamp: %
+	$(SED) -i.sedbak 's/Copyright (c) 2010-20[0-9][0-9]/Copyright (c) 2010-$(YEAR)/g' && $(DIFF) $<.sedbak $< >$@ && $(RM) *.sedbak
+
+include git.mk
+
+gittag: gittag___stamp
+
+gitpush: gitpush___stamp
+
+distclean: cmd-clean src-distclean gitclean version-clean clean
 
 clean: src-clean doc-clean doc_inner-clean
 
@@ -117,9 +123,6 @@ src-clean:
 
 src-distclean:
 	$(MAKE) -sC src distclean
-
-gtags-clean:
-	$(RM) GPATH GRTAGS GSYMS GTAGS
 
 doc-clean:
 	$(MAKE) -sC doc clean
