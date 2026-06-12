@@ -303,7 +303,10 @@ WORD getadr(const char *prog, const char *str, PASS pass)
     } else {
         if(pass == SECOND) {
             if((adr = getlabel(prog, str)) == 0xFFFF) {
-                setcerr(103, str);    /* label not found */
+                adr = getlabel("", str);
+            }
+            if(adr == 0xFFFF) {
+                setcerr(103, str);    /* label not found */                setcerr(103, str);    /* label not found */
             }
         }
     }
@@ -397,6 +400,9 @@ void writedc(const char *str, PASS pass)
             adr = nh2word(str);
         } else {
             if(pass == SECOND && (adr = getlabel(asptr->prog, str)) == 0xFFFF) {
+                adr = getlabel("", str);
+            }
+            if(pass == SECOND && adr == 0xFFFF) {
                 setcerr(103, str);    /* label not found */
             }
         }

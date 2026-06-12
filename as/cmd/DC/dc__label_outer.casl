@@ -1,0 +1,10 @@
+MAIN    START
+        LAD     GR2,ADR2
+        LD      GR1,ADR1
+        RET
+ADR1    DC      ADR2
+        END
+ADR2    START
+        LAD     GR2,29
+        RET
+        END
