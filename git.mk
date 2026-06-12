@@ -6,7 +6,7 @@ SED := sed
 
 # VERSION FORMAT: v<VERSIONNO>p<PATCHNO> (Example: v0.1p00)
 VERSION = $(shell $(CAT) VERSION)
-VERSIONNO = $(shell $(CAT) VERSION | $(SED) 's/p.*$$//' )
+VERSIONNO = $(shell $(CAT) VERSION | $(SED) 's/v\([0-9]*\.[0-9]*\)p.*$$/\1/' )
 PATCHNO = $(shell $(CAT) VERSION | $(SED) 's/^.*p//' )
 
 gitpush___stamp: gittag___stamp
@@ -25,7 +25,7 @@ commit___stamp: version_up___stamp
 
 version_up___stamp: VERSION
 	if [ -n "$$($(GIT) status -s)" ]; then $(PRINTF) "Error: commit, first.\n"; exit 1; fi
-	while $(GIT) rev-parse -q --verify $(VERSION) >/dev/null 2>&1; do $(PRINTF) "v%sp%s\n" $(VERSIONNO) $$($(EXPR) $(PATCHNO) + 1) >$<; done
+	while $(GIT) rev-parse -q --verify $$($(CAT) VERSION) >/dev/null 2>&1; do $(PRINTF) "DEBUG - ver: %s; patch:%s;\n" $(VERSIONNO) $(PATCHNO); $(PRINTF) "v%sp%s\n" $(VERSIONNO) $$($(EXPR) $(PATCHNO) + 1) >$<; done
 	$(CAT) $< >$@
 
 gitclean:
