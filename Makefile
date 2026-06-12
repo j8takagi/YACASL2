@@ -103,7 +103,7 @@ gitpushgithub:
 copyright: LICENSE.copyright___stamp  README.copyright___stamp
 
 %.copyright___stamp: %
-	$(SED) -i.sedbak 's/Copyright (c) 2010-20[0-9][0-9]/Copyright (c) 2010-$(YEAR)/g' && $(DIFF) $<.sedbak $< >$@ && $(RM) *.sedbak
+	$(SED) -i.sedbak 's/Copyright (c) 2010-20[0-9][0-9]/Copyright (c) 2010-$(YEAR)/g' $< && $(DIFF) $<.sedbak $< >$@ && $(RM) *.sedbak
 
 include git.mk
 
