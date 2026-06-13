@@ -87,19 +87,6 @@ version: $(VERSIONFILES)
 $(VERSIONFILES): VERSION
 	@$(SED) -e "s/@@VERSION@@/$(VERSION)/g" $@.version >$@
 
-gittag:
-	if test `$(GIT) status -s | $(WC) -l` -gt 0; then $(ECHO) "Error: commit, first."; exit 1; fi; if test "$(VERSIONGITREF)" != "$(MAINGITREF)"; then $(GIT) tag $(VERSION); fi
-
-gitpush: gitpushorigin gitpushgithub
-
-gitpushorigin:
-	$(GIT) push origin main
-	$(GIT) push origin $(VERSION)
-
-gitpushgithub:
-	$(GIT) push github main
-	$(GIT) push github $(VERSION)
-
 copyright: LICENSE.copyright___stamp  README.copyright___stamp
 
 %.copyright___stamp: %

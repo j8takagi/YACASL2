@@ -25,7 +25,7 @@ commit___stamp: version_up___stamp
 
 version_up___stamp: VERSION
 	if [ -n "$$($(GIT) status -s)" ]; then $(PRINTF) "Error: commit, first.\n"; exit 1; fi
-	while $(GIT) rev-parse -q --verify $$($(CAT) VERSION) >/dev/null 2>&1; do $(PRINTF) "DEBUG - ver: %s; patch:%s;\n" $(VERSIONNO) $(PATCHNO); $(PRINTF) "v%sp%s\n" $(VERSIONNO) $$($(EXPR) $(PATCHNO) + 1) >$<; done
+	while $(GIT) rev-parse -q --verify $$($(CAT) VERSION) >/dev/null 2>&1; do $(PRINTF) "v%sp%s\n" $(VERSIONNO) $$($(EXPR) $(PATCHNO) + 1) >$<; done
 	$(CAT) $< >$@
 
 gitclean:
