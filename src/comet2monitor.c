@@ -8,6 +8,10 @@
  * comet2monitorコマンドのオプション
  */
 static struct option longopts[] = {
+    {"trace", no_argument, NULL, 't'},
+    {"tracearithmetic", no_argument, NULL, 't'},
+    {"tracelogical", no_argument, NULL, 'T'},
+    {"dump", no_argument, NULL, 'd'},
     {"memorysize", required_argument, NULL, 'M'},
     {"clocks", required_argument, NULL, 'C'},
     {"version", no_argument, NULL, 'v' },
@@ -43,7 +47,7 @@ int main(int argc, char *argv[])
     int stat = 0;
     const char *version = PACKAGE_VERSION;
     const char *cmdversion = "comet2monitor: COMET II machine code monitor of YACASL2 version %s\n";
-    const char *usage = "Usage: %s [-vh] [-M <MEMORYSIZE>] [-C <CLOCKS>]\n";
+    const char *usage = "Usage: %s [-tTdvh] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE\n";
 
     /* エラーの定義 */
     cerr_init();
@@ -52,8 +56,18 @@ int main(int argc, char *argv[])
     addcerrlist_comet2monitor();
 
     /* オプションの処理 */
-    while((opt = getopt_long(argc, argv, "M:C:vh", longopts, NULL)) != -1) {
+    while((opt = getopt_long(argc, argv, "tTdM:C:vh", longopts, NULL)) != -1) {
         switch(opt) {
+        case 't':
+            execmode.trace = true;
+            break;
+        case 'T':
+            execmode.trace = true;
+            execmode.logical = true;
+            break;
+        case 'd':
+            execmode.dump = true;
+            break;
         case 'M':
             if((memsize = memsize_str2word(optarg)) == 0) {
                 goto comet2monitorfin;
@@ -76,13 +90,16 @@ int main(int argc, char *argv[])
             goto comet2monitorfin;
         }
     }
+    create_cmdtable(HASH_CMDTYPE);
+    comet2_init(memsize, clocks);     /* COMET II仮想マシンの初期化 */
+    execptr->start = 0;
+    if(argv[optind] != NULL) {
+        execptr->end = loadassemble(argv[optind++], execptr->start);
+    }
     /* 残りの引数（オプション以外の引数）があるかチェック */
     if (optind < argc) {
         warn_ignore_arg(argc - optind, argv + optind);
     }
-    create_cmdtable(HASH_CMDTYPE);
-    comet2_init(memsize, clocks);     /* COMET II仮想マシンの初期化 */
-    execptr->start = 0;
     execmode.monitor = true;
     exec();                     /* プログラム実行 */
     comet2_shutdown();
