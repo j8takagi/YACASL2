@@ -88,7 +88,11 @@ int main(int argc, char *argv[])
     }
     comet2_init(memsize, clocks);     /* COMET II仮想マシンの初期化 */
     execptr->start = 0;
-    execptr->end = loadassemble(argv[optind], execptr->start);
+    execptr->end = loadassemble(argv[optind++], execptr->start);
+    if(optind < argc) {
+        warn_ignore_arg(argc - optind, argv + optind);
+    }
+    /* 残りの引数（オプション以外の引数）があるかチェック */
     if(execptr->end > 0 && cerr->num == 0) {
         exec();                 /* プログラム実行 */
     }

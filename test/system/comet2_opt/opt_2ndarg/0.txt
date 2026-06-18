@@ -1,0 +1,2 @@
+Hello, World!
+Info: arguments '../../../../as/sample/test.o ../../../../as/sample/test.o' are ignored.
