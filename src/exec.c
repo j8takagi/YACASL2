@@ -108,26 +108,25 @@ char *pr2str(WORD pr)
 
 void svcin()
 {
-    int i;
     char *buf = malloc_chk(INSIZE + 1, "svcin.buf");
 
     if(fgets(buf, INSIZE, stdin) == NULL) {
-        sys->memory[sys->cpu->gr[1]] = sys->memory[sys->cpu->gr[2]] = 0x0;
+        sys->memory[sys->cpu->gr[1]] = 0x0;
+        sys->memory[sys->cpu->gr[2]] = 0xFFFF;
+        FREE(buf);
         return;
     }
-    for(i = 0; i < INSIZE; i++) {
+    for(int i = 0; i < INSIZE; i++) {
         if(!buf[i] || buf[i] == '\n') {
-            --i;
             break;
         }
         if(sys->cpu->gr[1] + i > execptr->end) {
-            setcerr
-                (208, "");    /* SVC input - memory overflow */
+            setcerr(208, "");    /* SVC input - memory overflow */
             break;
         }
         sys->memory[sys->cpu->gr[1] + i] = buf[i];
+        sys->memory[sys->cpu->gr[2]] = i + 1;
     }
-    sys->memory[sys->cpu->gr[2]] = i + 1;
     FREE(buf);
 }
 
