@@ -137,9 +137,9 @@ void disassemble_ds(WORD wcnt, WORD pradr)
 
     cnt = fprintf(stdout, "        DS      %-5d ", wcnt);
     disassemble_puts_code(cnt, pradr, 1, (WORD []){0});
-    for(int i = 0; i < wcnt - 1; i++) {
+    for(int i = 1; i < wcnt; i++) {
         fprintf(stdout, "\n");
-        disassemble_puts_code(0, pradr+1, 1, (WORD []){0});
+        disassemble_puts_code(0, pradr+i, 1, (WORD []){0});
     }
 }
 
@@ -207,7 +207,7 @@ bool disassemble_file(const char *file)
                     i += zcnt - 1;
                 }
             }
-        } else if(cmd == 0) {
+        } else if(cmd == 0 || cmdname ==NULL) {
             disassemble_dc(word, i);
         } else {
             if(cmdtype == R_ADR_X || cmdtype == ADR_X) {

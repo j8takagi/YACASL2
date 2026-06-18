@@ -1,0 +1,7 @@
+MAIN    START
+        RET
+        DC      0
+        DC      1
+        DC      65535
+        DC      #FFFF
+        END
