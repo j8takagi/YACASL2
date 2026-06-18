@@ -82,4 +82,12 @@ char *getcerrmsg(int num);
  *
  */
 void freecerr();
+
+/**
+ * @brief 引数が無視されることを表示する
+ *
+ * @param argc 引数の配列数
+ * @param *argv 引数配列
+ */
+void warn_ignore_arg(int argc, char *argv[]);
 #endif

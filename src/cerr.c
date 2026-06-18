@@ -84,3 +84,15 @@ void freecerr()
         FREE(p);
     }
 }
+
+void warn_ignore_arg(int argc, char *argv[])
+{
+    fprintf(stderr, "Info: arguments '");
+    for(int i = 0; i < argc; i++) {
+        if(i > 0) {
+            fprintf(stderr, " ");
+        }
+        fprintf(stderr, "%s", argv[i]);
+    }
+    fprintf(stderr, "' are ignored.\n");
+}
