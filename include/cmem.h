@@ -19,7 +19,7 @@
  * @brief メモリを解放するマクロ
  */
 #ifndef FREE
-#define FREE(ptr) {free(ptr); ptr = NULL;}
+#define FREE(ptr) do { free(ptr); (ptr) = NULL; } while(0)
 #endif
 
 /**

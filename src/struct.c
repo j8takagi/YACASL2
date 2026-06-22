@@ -196,10 +196,10 @@ unsigned hash_code(WORD code)
 /**
  * 命令コードから命令の関数ポインタを返す
  */
-const void (*getcmdptr(WORD code))
+void (*getcmdptr(WORD code))
 {
     CMDTAB *t = NULL;
-    const void *ptr = NULL;
+    void *ptr = NULL;
 
     for(t = cmdtab[HASH_CODE][hash_code(code)]; t != NULL; t = t->next) {
         if(code == t->cmd->code) {

@@ -131,6 +131,7 @@ void freebps();
 /**
  * @brief モニター終了時の処理をする
  *
+ * @return エラーがない場合は0、エラーがある場合は1
  */
 int monquit();
 

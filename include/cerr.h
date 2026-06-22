@@ -75,7 +75,7 @@ void setcerr(int num, const char *str);
  *
  * @param num エラー番号
  */
-char *getcerrmsg(int num);
+const char *getcerrmsg(int num);
 
 /**
  * @brief エラーリストと現在のエラーを解放する

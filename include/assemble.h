@@ -1,16 +1,11 @@
 #ifndef YACASL2_ASSEMBLE_H_INCLUDED
 #define YACASL2_ASSEMBLE_H_INCLUDED
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <stdbool.h>
-#include <ctype.h>
-#include <assert.h>
-#include <errno.h>
 #include "cerr.h"
 #include "struct.h"
 #include "token.h"
+
 
 /**
  * @brief アセンブルモードを表すデータ型

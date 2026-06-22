@@ -1,4 +1,10 @@
 #include "assemble.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+#include <assert.h>
+#include <errno.h>
 
 /**
  * @brief ファイルストリームの現在行を番号付きで表示する
@@ -354,7 +360,7 @@ void writememory(WORD word, WORD adr, PASS pass)
     /* メモリオーバーの場合、エラー発生 */
     if(adr >= sys->memsize) {
         setcerr(119, (n = word2n(adr)));    /* out of COMET II memory */
-        FREE(n)
+        FREE(n);
         return;
     }
     (sys->memory)[adr] = word;

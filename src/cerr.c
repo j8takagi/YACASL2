@@ -55,7 +55,7 @@ void setcerr(int num, const char *str)
     }
 }
 
-char *getcerrmsg(int num)
+const char *getcerrmsg(int num)
 {
     CERRLIST *p = NULL;
     char *msg = "unknown error";

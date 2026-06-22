@@ -106,7 +106,7 @@ typedef enum {
  */
 typedef struct {
     char *name;                 /**<命令名 */
-    const void (*ptr);          /**<命令の関数ポインタ */
+    void (*ptr);                /**<命令の関数ポインタ */
 } CMD;
 
 /**
@@ -116,7 +116,7 @@ typedef struct {
     char *name;                 /**<命令名 */
     CMDTYPE type;               /**<命令タイプ */
     WORD code;                  /**<命令コード */
-    const void (*ptr);          /**<命令の関数ポインタ */
+    void (*ptr);          /**<命令の関数ポインタ */
 } COMET2CMD;
 
 /**
@@ -145,8 +145,8 @@ typedef struct {
     bool trace;           /**<レジストリの内容をステップごとに表示する場合はtrue */
     bool logical;         /**<レジストリの内容を論理値（0から65535）で表示する場合はtrue */
     bool dump;            /**<メモリの内容をステップごとに表示する場合はtrue */
-    int dump_start;       /**<メモリの内容をステップごとに表示する場合の開始アドレス */
-    int dump_end;         /**<メモリの内容をステップごとに表示する場合の終了アドレス */
+    WORD dump_start;      /**<メモリの内容をステップごとに表示する場合の開始アドレス */
+    WORD dump_end;        /**<メモリの内容をステップごとに表示する場合の終了アドレス */
     bool monitor;         /**<モニターモードの場合はtrue */
     bool step;            /**<ステップ実行の場合はtrue */
 } EXECMODE;
@@ -215,10 +215,11 @@ void free_cmdtable(CMDTAB_HASH hash);
  */
 WORD getcmdcode(const char *cmd, CMDTYPE type);
 
+
 /**
  * 命令コードから命令の関数ポインタを返す
  */
-const void (*getcmdptr(WORD code));
+void (*getcmdptr(WORD code));
 
 /**
  * 命令コードから命令のタイプを返す
