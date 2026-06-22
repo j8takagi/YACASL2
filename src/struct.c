@@ -16,44 +16,44 @@ EXECPTR *execptr = NULL;
  * システムCOMET IIの命令表
  */
 static const COMET2CMD comet2cmd[] = {
-    { "NOP", NONE, 0x0, nop },
-    { "LD", R_ADR_X, 0x1000, ld_r_adr_x },
-    { "ST", R_ADR_X, 0x1100, st },
-    { "LAD", R_ADR_X, 0x1200, lad },
-    { "LD", R1_R2, 0x1400, ld_r1_r2 },
-    { "ADDA", R_ADR_X, 0x2000, adda_r_adr_x },
-    { "SUBA", R_ADR_X, 0x2100, suba_r_adr_x },
-    { "ADDL", R_ADR_X, 0x2200, addl_r_adr_x },
-    { "SUBL", R_ADR_X, 0x2300, subl_r_adr_x },
-    { "ADDA", R1_R2, 0x2400, adda_r1_r2 },
-    { "SUBA", R1_R2, 0x2500, suba_r1_r2 },
-    { "ADDL", R1_R2, 0x2600, addl_r1_r2 },
-    { "SUBL", R1_R2, 0x2700, subl_r1_r2 },
-    { "AND", R_ADR_X, 0x3000, and_r_adr_x },
-    { "OR", R_ADR_X, 0x3100, or_r_adr_x },
-    { "XOR", R_ADR_X, 0x3200, xor_r_adr_x },
-    { "AND", R1_R2, 0x3400, and_r1_r2 },
-    { "OR", R1_R2, 0x3500, or_r1_r2 },
-    { "XOR", R1_R2, 0x3600, xor_r1_r2 },
-    { "CPA", R_ADR_X, 0x4000, cpa_r_adr_x },
-    { "CPL", R_ADR_X, 0x4100, cpl_r_adr_x },
-    { "CPA", R1_R2, 0x4400, cpa_r1_r2 },
-    { "CPL", R1_R2, 0x4500, cpl_r1_r2 },
-    { "SLA", R_ADR_X, 0x5000, sla },
-    { "SRA", R_ADR_X, 0x5100, sra },
-    { "SLL", R_ADR_X, 0x5200, sll },
-    { "SRL", R_ADR_X, 0x5300, srl },
-    { "JMI", ADR_X, 0x6100, jmi },
-    { "JNZ", ADR_X, 0x6200, jnz },
-    { "JZE", ADR_X, 0x6300, jze },
-    { "JUMP", ADR_X, 0x6400, jump },
-    { "JPL", ADR_X, 0x6500, jpl },
-    { "JOV", ADR_X, 0x6600, jov },
-    { "PUSH", ADR_X, 0x7000, push },
-    { "POP", R_, 0x7100, pop },
-    { "CALL", ADR_X, 0x8000, call },
-    { "SVC", ADR_X, 0xF000, svc },
-    { "RET", NONE, 0x8100, ret },
+    { "NOP", NONE, 0x0, nop, 1 },
+    { "LD", R_ADR_X, 0x1000, ld_r_adr_x, 2 },
+    { "ST", R_ADR_X, 0x1100, st, 2 },
+    { "LAD", R_ADR_X, 0x1200, lad, 2 },
+    { "LD", R1_R2, 0x1400, ld_r1_r2, 1 },
+    { "ADDA", R_ADR_X, 0x2000, adda_r_adr_x, 2 },
+    { "SUBA", R_ADR_X, 0x2100, suba_r_adr_x, 2 },
+    { "ADDL", R_ADR_X, 0x2200, addl_r_adr_x, 2 },
+    { "SUBL", R_ADR_X, 0x2300, subl_r_adr_x, 2 },
+    { "ADDA", R1_R2, 0x2400, adda_r1_r2, 1 },
+    { "SUBA", R1_R2, 0x2500, suba_r1_r2, 1 },
+    { "ADDL", R1_R2, 0x2600, addl_r1_r2, 1 },
+    { "SUBL", R1_R2, 0x2700, subl_r1_r2, 1 },
+    { "AND", R_ADR_X, 0x3000, and_r_adr_x, 2 },
+    { "OR", R_ADR_X, 0x3100, or_r_adr_x, 2 },
+    { "XOR", R_ADR_X, 0x3200, xor_r_adr_x, 2 },
+    { "AND", R1_R2, 0x3400, and_r1_r2, 1 },
+    { "OR", R1_R2, 0x3500, or_r1_r2, 1 },
+    { "XOR", R1_R2, 0x3600, xor_r1_r2, 1 },
+    { "CPA", R_ADR_X, 0x4000, cpa_r_adr_x, 2 },
+    { "CPL", R_ADR_X, 0x4100, cpl_r_adr_x, 2 },
+    { "CPA", R1_R2, 0x4400, cpa_r1_r2, 1 },
+    { "CPL", R1_R2, 0x4500, cpl_r1_r2, 1 },
+    { "SLA", R_ADR_X, 0x5000, sla, 2 },
+    { "SRA", R_ADR_X, 0x5100, sra, 2 },
+    { "SLL", R_ADR_X, 0x5200, sll, 2 },
+    { "SRL", R_ADR_X, 0x5300, srl, 2 },
+    { "JMI", ADR_X, 0x6100, jmi, 2 },
+    { "JNZ", ADR_X, 0x6200, jnz, 2 },
+    { "JZE", ADR_X, 0x6300, jze, 2 },
+    { "JUMP", ADR_X, 0x6400, jump, 2 },
+    { "JPL", ADR_X, 0x6500, jpl, 2 },
+    { "JOV", ADR_X, 0x6600, jov, 2 },
+    { "PUSH", ADR_X, 0x7000, push, 2 },
+    { "POP", R_, 0x7100, pop, 1 },
+    { "CALL", ADR_X, 0x8000, call, 2 },
+    { "RET", NONE, 0x8100, ret, 1 },
+    { "SVC", ADR_X, 0xF000, svc, 2 },
 };
 
 /**
@@ -174,6 +174,25 @@ WORD getcmdcode(const char *cmd, CMDTYPE type)
         }
     }
     return w;
+}
+
+/**
+ * 命令の名前とタイプから、命令語長を返す\n
+ * 無効な場合は0を返す
+ */
+WORD getcmdwordlen(const char *cmd, CMDTYPE type)
+{
+    CMDTAB *p = NULL;
+    int l = 0;
+
+    assert(cmd != NULL);
+    for(p = cmdtab[HASH_CMDTYPE][hash_cmdtype(cmd, type)]; p != NULL; p = p->next) {
+        if(strcmp(cmd, p->cmd->name) == 0 && type == p->cmd->type) {
+            l = p->cmd->wordlen;
+            break;
+        }
+    }
+    return l;
 }
 
 /**
@@ -312,8 +331,10 @@ void comet2_reset()
 {
     /* CASL2プログラム終了のアドレスを初期化 */
     execptr->stop = false;
-    /* CPUをリセット */
+   /* CPUをリセット */
     cpu_reset();
+    /* CPUとメモリを設定に応じて表示 */
+    dsp_trace_dump();
 }
 
 /**
@@ -327,6 +348,8 @@ void comet2_resetall()
     cpu_reset();
     /* メモリをリセット */
     memory_reset();
+    /* CPUとメモリを設定に応じて表示 */
+    dsp_trace_dump();
 }
 
 /**

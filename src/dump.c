@@ -55,3 +55,18 @@ void dspregister()
     FREE(pr);
     FREE(fr);
 }
+
+void dsp_trace_dump()
+{
+    if(execptr->stop == false && (execmode.dump || execmode.trace)) {      /* traceまたはdumpオプション指定時、改行を出力 */
+        if(execmode.trace) {                   /* traceオプション指定時、レジスタを出力 */
+            fprintf(stdout, "#%04X: Register::::\n", sys->cpu->pr);
+            dspregister();
+        }
+        if(execmode.dump) {                    /* dumpオプション指定時、メモリを出力 */
+            fprintf(stdout, "#%04X: Memory::::\n", sys->cpu->pr);
+            dumpmemory(execmode.dump_start, execmode.dump_end);
+        }
+        fprintf(stdout, "\n");
+    }
+}

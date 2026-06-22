@@ -327,4 +327,10 @@ void dumpmemory(WORD start, WORD end);
  */
 void dspregister();
 
+/**
+ * @brief COMET IIのレジスタとメモリを実行状況と設定に応じて表示する
+ *
+ */
+void dsp_trace_dump();
+
 #endif
