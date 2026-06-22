@@ -310,6 +310,8 @@ void memory_reset() {
  */
 void comet2_reset()
 {
+    /* CASL2プログラム終了のアドレスを初期化 */
+    execptr->stop = false;
     /* CPUをリセット */
     cpu_reset();
 }
@@ -319,6 +321,8 @@ void comet2_reset()
  */
 void comet2_resetall()
 {
+    /* CASL2プログラム終了のアドレスを初期化 */
+    execptr->stop = false;
     /* CPUをリセット */
     cpu_reset();
     /* メモリをリセット */
