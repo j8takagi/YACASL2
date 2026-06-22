@@ -116,7 +116,8 @@ typedef struct {
     char *name;                 /**<命令名 */
     CMDTYPE type;               /**<命令タイプ */
     WORD code;                  /**<命令コード */
-    void (*ptr);          /**<命令の関数ポインタ */
+    void (*ptr);                /**<命令の関数ポインタ */
+    int wordlen;                /**<命令語長 */
 } COMET2CMD;
 
 /**
@@ -134,6 +135,7 @@ typedef struct {
     WORD start;   /**<開始アドレス */
     WORD end;     /**<終了アドレス */
     bool stop;    /**<終了フラグ */
+    bool started; /**<開始済みフラグ */
 } EXECPTR;
 
 extern EXECPTR *execptr;
@@ -215,6 +217,11 @@ void free_cmdtable(CMDTAB_HASH hash);
  */
 WORD getcmdcode(const char *cmd, CMDTYPE type);
 
+/**
+ * 命令の名前とタイプから、命令語長を返す\n
+ * 無効な場合は0を返す
+ */
+WORD getcmdwordlen(const char *cmd, CMDTYPE type);
 
 /**
  * 命令コードから命令の関数ポインタを返す

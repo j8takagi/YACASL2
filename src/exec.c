@@ -225,35 +225,35 @@ void addcerrlist_exec()
 
 void nop()
 {
-    sys->cpu->pr += 1;
+    sys->cpu->pr += getcmdwordlen("NOP", NONE);
 }
 
 void ld_r_adr_x()
 {
     WORD w[] = {sys->memory[sys->cpu->pr], sys->memory[sys->cpu->pr + 1]};
     setfr(sys->cpu->gr[get_r_r1(w[0])] = get_val_adr_x(w[1], w[0]));
-    sys->cpu->pr += 2;
+    sys->cpu->pr += getcmdwordlen("LD", R_ADR_X);
 }
 
 void ld_r1_r2()
 {
     WORD w[] = {sys->memory[sys->cpu->pr]};
     setfr(sys->cpu->gr[get_r_r1(w[0])] = sys->cpu->gr[get_x_r2(w[0])]);
-    sys->cpu->pr += 1;
+    sys->cpu->pr += getcmdwordlen("LD", R1_R2);
 }
 
 void st()
 {
     WORD w[] = {sys->memory[sys->cpu->pr], sys->memory[sys->cpu->pr + 1]};
     sys->memory[get_adr_x(w[1], w[0])] = sys->cpu->gr[get_r_r1(w[0])];
-    sys->cpu->pr += 2;
+    sys->cpu->pr += getcmdwordlen("ST", R_ADR_X);
 }
 
 void lad()
 {
     WORD w[] = {sys->memory[sys->cpu->pr], sys->memory[sys->cpu->pr + 1]};
     sys->cpu->gr[get_r_r1(w[0])] = get_adr_x(w[1], w[0]);
-    sys->cpu->pr += 2;
+    sys->cpu->pr += getcmdwordlen("LAD", R_ADR_X);
 }
 
 void adda(WORD r, WORD val)
@@ -279,28 +279,28 @@ void adda_r_adr_x()
 {
     WORD w[] = {sys->memory[sys->cpu->pr], sys->memory[sys->cpu->pr + 1]};
     adda(get_r_r1(w[0]), get_val_adr_x(w[1], w[0]));
-    sys->cpu->pr += 2;
+    sys->cpu->pr += getcmdwordlen("ADDA", R_ADR_X);
 }
 
 void adda_r1_r2()
 {
     WORD w[] = {sys->memory[sys->cpu->pr]};
     adda(get_r_r1(w[0]), sys->cpu->gr[get_x_r2(w[0])]);
-    sys->cpu->pr += 1;
+    sys->cpu->pr += getcmdwordlen("ADDA", R1_R2);
 }
 
 void suba_r_adr_x()
 {
     WORD w[] = {sys->memory[sys->cpu->pr], sys->memory[sys->cpu->pr + 1]};
     adda(get_r_r1(w[0]), ~(get_val_adr_x(w[1], w[0])) + 1);
-    sys->cpu->pr += 2;
+    sys->cpu->pr += getcmdwordlen("SUBA", R_ADR_X);
 }
 
 void suba_r1_r2()
 {
     WORD w[] = {sys->memory[sys->cpu->pr]};
     adda(get_r_r1(w[0]), ~(sys->cpu->gr[get_x_r2(w[0])]) + 1);
-    sys->cpu->pr += 1;
+    sys->cpu->pr += getcmdwordlen("SUBA", R1_R2);
 }
 
 void addl_gr(WORD r, WORD val, bool add)
@@ -339,70 +339,70 @@ void addl_r_adr_x()
 {
     WORD w[] = {sys->memory[sys->cpu->pr], sys->memory[sys->cpu->pr + 1]};
     addl_gr(get_r_r1(w[0]), get_val_adr_x(w[1], w[0]), true);
-    sys->cpu->pr += 2;
+    sys->cpu->pr += getcmdwordlen("ADDL", R_ADR_X);
 }
 
 void addl_r1_r2()
 {
     WORD w[] = {sys->memory[sys->cpu->pr]};
     addl_gr(get_r_r1(w[0]), sys->cpu->gr[get_x_r2(w[0])], true);
-    sys->cpu->pr += 1;
+    sys->cpu->pr += getcmdwordlen("ADDL", R1_R2);
 }
 
 void subl_r_adr_x()
 {
     WORD w[] = {sys->memory[sys->cpu->pr], sys->memory[sys->cpu->pr + 1]};
     addl_gr(get_r_r1(w[0]), get_val_adr_x(w[1], w[0]), false);
-    sys->cpu->pr += 2;
+    sys->cpu->pr += getcmdwordlen("SUBL", R_ADR_X);
 }
 
 void subl_r1_r2()
 {
     WORD w[] = {sys->memory[sys->cpu->pr]};
     addl_gr(get_r_r1(w[0]), sys->cpu->gr[get_x_r2(w[0])], false);
-    sys->cpu->pr += 1;
+    sys->cpu->pr += getcmdwordlen("SUBL", R1_R2);
 }
 
 void and_r_adr_x()
 {
     WORD w[] = {sys->memory[sys->cpu->pr], sys->memory[sys->cpu->pr + 1]};
     setfr(sys->cpu->gr[get_r_r1(w[0])] &= get_val_adr_x(w[1], w[0]));
-    sys->cpu->pr += 2;
+    sys->cpu->pr += getcmdwordlen("AND", R_ADR_X);
 }
 
 void and_r1_r2()
 {
     WORD w[] = {sys->memory[sys->cpu->pr]};
     setfr(sys->cpu->gr[get_r_r1(w[0])] &= sys->cpu->gr[get_x_r2(w[0])]);
-    sys->cpu->pr += 1;
+    sys->cpu->pr += getcmdwordlen("AND", R1_R2);
 }
 
 void or_r_adr_x()
 {
     WORD w[] = {sys->memory[sys->cpu->pr], sys->memory[sys->cpu->pr + 1]};
     setfr(sys->cpu->gr[get_r_r1(w[0])] |= get_val_adr_x(w[1], w[0]));
-    sys->cpu->pr += 2;
+    sys->cpu->pr += getcmdwordlen("OR", R_ADR_X);
 }
 
 void or_r1_r2()
 {
     WORD w[] = {sys->memory[sys->cpu->pr]};
     setfr(sys->cpu->gr[get_r_r1(w[0])] |= sys->cpu->gr[get_x_r2(w[0])]);
-    sys->cpu->pr += 1;
+    sys->cpu->pr += getcmdwordlen("OR", R1_R2);
 }
 
 void xor_r_adr_x()
 {
     WORD w[] = {sys->memory[sys->cpu->pr], sys->memory[sys->cpu->pr + 1]};
     setfr(sys->cpu->gr[get_r_r1(w[0])] ^= get_val_adr_x(w[1], w[0]));
-    sys->cpu->pr += 2;
+    sys->cpu->pr += getcmdwordlen("XOR", R_ADR_X);
 }
 
 void xor_r1_r2()
 {
     WORD w[] = {sys->memory[sys->cpu->pr]};
     setfr(sys->cpu->gr[get_r_r1(w[0])] ^= sys->cpu->gr[get_x_r2(w[0])]);
-    sys->cpu->pr += 1;
+    sys->cpu->pr += getcmdwordlen("XOR", R1_R2);
 }
 
 void cpa(WORD r, WORD val)
@@ -419,14 +419,14 @@ void cpa_r_adr_x()
 {
     WORD w[] = {sys->memory[sys->cpu->pr], sys->memory[sys->cpu->pr + 1]};
     cpa(get_r_r1(w[0]), get_val_adr_x(w[1], w[0]));
-    sys->cpu->pr += 2;
+    sys->cpu->pr += getcmdwordlen("CPA", R_ADR_X);
 }
 
 void cpa_r1_r2()
 {
     WORD w[] = {sys->memory[sys->cpu->pr]};
     cpa(get_r_r1(w[0]), sys->cpu->gr[get_x_r2(w[0])]);
-    sys->cpu->pr += 1;
+    sys->cpu->pr += getcmdwordlen("CPA", R1_R2);
 }
 
 void cpl(WORD r, WORD val)
@@ -443,14 +443,14 @@ void cpl_r_adr_x()
 {
     WORD w[] = {sys->memory[sys->cpu->pr], sys->memory[sys->cpu->pr + 1]};
     cpl(get_r_r1(w[0]), get_val_adr_x(w[1], w[0]));
-    sys->cpu->pr += 2;
+    sys->cpu->pr += getcmdwordlen("CPL", R_ADR_X);
 }
 
 void cpl_r1_r2()
 {
     WORD w[] = {sys->memory[sys->cpu->pr]};
     cpl(get_r_r1(w[0]), sys->cpu->gr[get_x_r2(w[0])]);
-    sys->cpu->pr += 1;
+    sys->cpu->pr += getcmdwordlen("CPL", R1_R2);
 }
 
 void sla()
@@ -479,7 +479,7 @@ void sla()
     if(sys->cpu->gr[r] == 0x0) {
         sys->cpu->fr += ZF;
     }
-    sys->cpu->pr += 2;
+    sys->cpu->pr += getcmdwordlen("SLA", R_ADR_X);
 }
 
 void sra()
@@ -511,7 +511,7 @@ void sra()
     if(sys->cpu->gr[r] == 0x0) {
         sys->cpu->fr += ZF;
     }
-    sys->cpu->pr += 2;
+    sys->cpu->pr += getcmdwordlen("SRA", R_ADR_X);
 }
 
 void sll()
@@ -537,7 +537,7 @@ void sll()
     if(sys->cpu->gr[r] == 0x0) {
         sys->cpu->fr += ZF;
     }
-    sys->cpu->pr += 2;
+    sys->cpu->pr += getcmdwordlen("SLL", R_ADR_X);
 }
 
 void srl()
@@ -563,17 +563,7 @@ void srl()
     if(sys->cpu->gr[r] == 0x0) {
         sys->cpu->fr += ZF;
     }
-    sys->cpu->pr += 2;
-}
-
-void jpl()
-{
-    WORD w[] = {sys->memory[sys->cpu->pr], sys->memory[sys->cpu->pr + 1]};
-    if((sys->cpu->fr & (SF | ZF)) == 0) {
-        sys->cpu->pr = get_adr_x(w[1], w[0]);
-    } else {
-        sys->cpu->pr += 2;
-    }
+    sys->cpu->pr += getcmdwordlen("SRL", R_ADR_X);
 }
 
 void jmi()
@@ -582,7 +572,7 @@ void jmi()
     if((sys->cpu->fr & SF) > 0) {
         sys->cpu->pr = get_adr_x(w[1], w[0]);
     } else {
-        sys->cpu->pr += 2;
+        sys->cpu->pr += getcmdwordlen("JMI", ADR_X);
     }
 }
 
@@ -592,7 +582,7 @@ void jnz()
     if((sys->cpu->fr & ZF) == 0) {
         sys->cpu->pr = get_adr_x(w[1], w[0]);
     } else {
-        sys->cpu->pr += 2;
+        sys->cpu->pr += getcmdwordlen("JNZ", ADR_X);
     }
 }
 
@@ -602,17 +592,7 @@ void jze()
     if((sys->cpu->fr & ZF) > 0) {
         sys->cpu->pr = get_adr_x(w[1], w[0]);
     } else {
-        sys->cpu->pr += 2;
-    }
-}
-
-void jov()
-{
-    WORD w[] = {sys->memory[sys->cpu->pr], sys->memory[sys->cpu->pr + 1]};
-    if((sys->cpu->fr & OF) > 0) {
-        sys->cpu->pr = get_adr_x(w[1], w[0]);
-    } else {
-        sys->cpu->pr += 2;
+        sys->cpu->pr += getcmdwordlen("JZE", ADR_X);
     }
 }
 
@@ -622,12 +602,32 @@ void jump()
     sys->cpu->pr = get_adr_x(w[1], w[0]);
 }
 
+void jpl()
+{
+    WORD w[] = {sys->memory[sys->cpu->pr], sys->memory[sys->cpu->pr + 1]};
+    if((sys->cpu->fr & (SF | ZF)) == 0) {
+        sys->cpu->pr = get_adr_x(w[1], w[0]);
+    } else {
+        sys->cpu->pr += getcmdwordlen("JPL", ADR_X);
+    }
+}
+
+void jov()
+{
+    WORD w[] = {sys->memory[sys->cpu->pr], sys->memory[sys->cpu->pr + 1]};
+    if((sys->cpu->fr & OF) > 0) {
+        sys->cpu->pr = get_adr_x(w[1], w[0]);
+    } else {
+        sys->cpu->pr += getcmdwordlen("JOV", ADR_X);
+    }
+}
+
 void push()
 {
     assert(sys->cpu->sp > execptr->end && sys->cpu->sp <= sys->memsize);
     WORD w[] = {sys->memory[sys->cpu->pr], sys->memory[sys->cpu->pr + 1]};
     sys->memory[--(sys->cpu->sp)] = get_adr_x(w[1], w[0]);
-    sys->cpu->pr += 2;
+    sys->cpu->pr += getcmdwordlen("PUSH", ADR_X);
 }
 
 void pop()
@@ -641,7 +641,7 @@ void pop()
         FREE(s);
     } else {
         sys->cpu->gr[get_r_r1(w[0])] = sys->memory[(sys->cpu->sp)++];
-        sys->cpu->pr += 1;
+        sys->cpu->pr += getcmdwordlen("POP", R_);
     }
 }
 
@@ -678,7 +678,7 @@ void svc()
         svcout();
         break;
     }
-    sys->cpu->pr += 2;
+    sys->cpu->pr += getcmdwordlen("SVC", ADR_X);
 }
 
 void exec()
@@ -697,23 +697,13 @@ void exec()
     /* 機械語の実行 */
     for (sys->cpu->pr = execptr->start; ; ) {
         clock_begin = clock();                     /* クロック周波数設定のため、実行開始時間を格納 */
-        if(execmode.dump || execmode.trace) {      /* traceまたはdumpオプション指定時、改行を出力 */
-            if(execmode.trace) {                   /* traceオプション指定時、レジスタを出力 */
-                fprintf(stdout, "#%04X: Register::::\n", sys->cpu->pr);
-                dspregister();
-            }
-            if(execmode.dump) {                    /* dumpオプション指定時、メモリを出力 */
-                fprintf(stdout, "#%04X: Memory::::\n", sys->cpu->pr);
-                dumpmemory(execmode.dump_start, execmode.dump_end);
-            }
-            fprintf(stdout, "\n");
-        }
-        /* ステップモードまたはブレークポイントの場合、モニターを起動 */
-        if(
-            (execmode.monitor == true && sys->cpu->pr == execptr->start) ||
-            execmode.step == true || getbps(sys->cpu->pr) == true)
+        dsp_trace_dump();
+        /* モニターモードでCOMET II起動時、またはステップモードかブレークポイントの場合、モニターを起動 */
+        if((execmode.monitor == true && execptr->started == false) || execptr->stop == true || execmode.step == true || getbps(sys->cpu->pr) == true)
         {
-            if(sys->cpu->pr == execptr->start) {
+            /* モニターモードでCOMET II起動時、フラグを立て、メッセージを表示 */
+            if(execptr->started == false) {
+                execptr->started = true;
                 fprintf(stdout, "%s", monmsg);
             }
             monitor();
@@ -744,7 +734,6 @@ void exec()
         if(execptr->stop == true) {
             if(execmode.monitor == true) {
                 fprintf(stdout, "Return to top.\n");
-                monitor();
             } else {
                 break;
             }

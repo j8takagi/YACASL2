@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
             return 0;
         case 'h':
             fprintf(stdout, usage, argv[0]);
-            goto comet2monitorfin;
+            return 0;
         case '?':
             fprintf(stderr, usage, argv[0]);
             setcerr(212, "");    /* invalid option */
@@ -105,7 +105,6 @@ int main(int argc, char *argv[])
     comet2_shutdown();
 comet2monitorfin:
     free_cmdtable(HASH_CMDTYPE);
-    free_cmdtable(HASH_CODE);
     if(cerr->num > 0) {
         stat = 1;
     }

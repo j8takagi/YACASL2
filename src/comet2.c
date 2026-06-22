@@ -71,10 +71,10 @@ int main(int argc, char *argv[])
             break;
         case 'v':
             fprintf(stdout, cmdversion, version);
-            goto comet2fin;
+            return 0;
         case 'h':
             fprintf(stdout, usage, argv[0]);
-            goto comet2fin;
+            return 0;
         case '?':
             fprintf(stderr, usage, argv[0]);
             setcerr(212, "");    /* invalid option */
@@ -86,6 +86,7 @@ int main(int argc, char *argv[])
         fprintf(stderr, "comet2 error - %d: %s\n", cerr->num, cerr->msg);
         goto comet2fin;
     }
+    create_cmdtable(HASH_CMDTYPE);
     comet2_init(memsize, clocks);     /* COMET II仮想マシンの初期化 */
     execptr->start = 0;
     execptr->end = loadassemble(argv[optind++], execptr->start);
@@ -98,6 +99,7 @@ int main(int argc, char *argv[])
     }
     comet2_shutdown();          /* COMET II仮想マシンのシャットダウン */
 comet2fin:
+    free_cmdtable(HASH_CMDTYPE);
     if(cerr->num > 0) {
         stat = 1;
     }
