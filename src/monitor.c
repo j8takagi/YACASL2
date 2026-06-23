@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <readline/readline.h>
+#include <readline/history.h>
 #include "monitor.h"
 #include "disassemble.h"
 

@@ -5,5 +5,4 @@ breakpoint manipulate:
     b[reak] d[el] <address>
     b[reak] l[ist]
     b[reak] r[eset]
-
 Info: arguments '1' are ignored.
