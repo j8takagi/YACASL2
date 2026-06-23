@@ -1,8 +1,9 @@
 COMET II machine code monitor. Type ? for help.
-Info: arguments '1' are ignored.
 > b ? 1
 breakpoint manipulate:
     b[reak] a[dd] <address>
     b[reak] d[el] <address>
     b[reak] l[ist]
     b[reak] r[eset]
+
+Info: arguments '1' are ignored.

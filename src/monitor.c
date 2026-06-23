@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <readline/readline.h>
-#include <readline/history.h>
 #include "monitor.h"
 #include "disassemble.h"
 
@@ -375,11 +374,6 @@ int monquit()
     freebps();
     free_cmdtable(HASH_CMDTYPE);
     free_cmdtable(HASH_CODE);
-
-    /* Readline 関連のメモリを明示的に解放 */
-    rl_clear_history();
-    rl_cleanup_after_signal();
-    rl_free_line_state();
 
     if(cerr->num > 0) {
         stat = 1;
