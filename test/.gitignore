@@ -4,3 +4,5 @@
 create_a
 !system/*/*/sum_10.o
 !system/*/*/hello.o
+!system/casl2rev/dc/dc.o
+!system/casl2rev/ds/ds.o
