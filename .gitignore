@@ -7,6 +7,7 @@
 *.o.casl
 !as/sample/hello.o
 !as/sample/sum_10.o
+!as/sample/test.o
 include/version.h
 *~
 GPATH
