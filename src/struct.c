@@ -288,7 +288,6 @@ void comet2_init(WORD memsize, CLOCK clocks)
 {
     sys = malloc_chk(sizeof(SYSTEM), "sys");
     /* メモリサイズを設定 */
-    assert(0 < memsize && memsize <= MAX_MEMSIZE-1);
     sys->memsize = memsize;
     /* クロック周波数を設定 */
     assert(0 < clocks && clocks <= MAX_CLOCKS);
