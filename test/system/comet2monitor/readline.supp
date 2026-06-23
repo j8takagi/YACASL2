@@ -1,0 +1,35 @@
+{
+   readline_reachable_leak_generic
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   fun:readline
+   ...
+}
+
+{
+   ncurses_reachable_leak_generic
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   fun:tgetent_sp
+   ...
+}
+
+{
+   ncurses_setupterm_reachable_leak
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   fun:_nc_setupterm
+   ...
+}
+
+{
+   gnu_history_reachable_leak
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   fun:add_history
+   ...
+}

@@ -71,10 +71,10 @@ int main(int argc, char *argv[])
             break;
         case 'v':
             fprintf(stdout, cmdversion, version);
-            return 0;
+            goto comet2fin;
         case 'h':
             fprintf(stdout, usage, argv[0]);
-            return 0;
+            goto comet2fin;
         case '?':
             fprintf(stderr, usage, argv[0]);
             setcerr(212, "");    /* invalid option */
@@ -98,8 +98,8 @@ int main(int argc, char *argv[])
         exec();                 /* プログラム実行 */
     }
     comet2_shutdown();          /* COMET II仮想マシンのシャットダウン */
-comet2fin:
     free_cmdtable(HASH_CMDTYPE);
+comet2fin:
     if(cerr->num > 0) {
         stat = 1;
     }

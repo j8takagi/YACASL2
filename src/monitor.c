@@ -370,10 +370,17 @@ void free_moncmdline(MONCMDLINE *moncmdl)
 int monquit()
 {
     int stat = 0;
+
     comet2_shutdown();
     freebps();
     free_cmdtable(HASH_CMDTYPE);
     free_cmdtable(HASH_CODE);
+
+    /* Readline 関連のメモリを明示的に解放 */
+    rl_clear_history();
+    rl_cleanup_after_signal();
+    rl_free_line_state();
+
     if(cerr->num > 0) {
         stat = 1;
     }
@@ -389,10 +396,10 @@ void monitor()
     MONCMDTYPE cmdtype = MONREPEAT;
 
     do {
+        FREE(buf);
         buf = readline(monitor_prompt);
         /* EOFの処理 */
         if(buf == NULL) {
-            FREE(buf);
             FREE(last_buf);
             exit(monquit());
         }
@@ -400,11 +407,9 @@ void monitor()
         if(buf[0] == '\0') {
             if(last_buf == NULL) {
                 /* 前回実行したコマンドがなければ何もしない */
-                FREE(buf);
                 fprintf(stdout, ">\n");
                 continue;
             } else {
-                FREE(buf);
                 buf = strdup_chk(last_buf, "monitor.buf_repeat");
                 cmdtype = MONREPEAT;
             }

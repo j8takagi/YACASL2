@@ -4,6 +4,7 @@ void cerr_init()
 {
     cerr = malloc_chk(sizeof(CERR), "cerr");
     cerr->num = 0;
+    cerr->msg = NULL;
 }
 
 CERR *cerr = NULL;
@@ -46,6 +47,9 @@ void setcerr(int num, const char *str)
 {
     /* 現在のエラー番号を設定  */
     cerr->num = num;
+    if(cerr->msg != NULL) {
+        FREE(cerr->msg);
+    }
     /* 現在のエラーメッセージを設定 */
     cerr->msg = malloc_chk(CERRMSGSIZE + 1, "cerr.msg");
     if(0 < strlen(str) && strlen(str) <= CERRSTRSIZE) {
