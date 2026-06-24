@@ -74,8 +74,8 @@
 
     <g>
       <g font-size="10pt" font-family="monospace">
-        <text x="365" y="15">符号を除き(r)を実効アドレスで指定した</text>
-        <text x="355" y="30">ビット数だけ左又は右にシフトする。</text>
+        <text x="365" y="15">符号を除き(r)を実効アドレスで指定し</text>
+        <text x="355" y="30">たビット数だけ左又は右にシフトする。</text>
         <text x="365" y="45">シフトの結果，空いたビット位置には，</text>
         <text x="355" y="60">左シフトのときは0，右シフトのときは</text>
         <text x="355" y="75">符号と同じものが入る。</text>
@@ -87,8 +87,8 @@
     </g>
     <g transform="translate(0,80)">
       <g font-size="10pt" font-family="monospace">
-        <text x="365" y="15">符号を含み(r)を実効アドレスで指定した</text>
-        <text x="355" y="30">ビット数だけ左又は右にシフトする。</text>
+        <text x="365" y="15">符号を含み(r)を実効アドレスで指定し</text>
+        <text x="355" y="30">たビット数だけ左又は右にシフトする。</text>
         <text x="365" y="45">シフトの結果，空いたビット位置には，</text>
         <text x="355" y="60">0が入る。</text>
       </g>

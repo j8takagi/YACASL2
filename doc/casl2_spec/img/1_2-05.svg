@@ -106,8 +106,8 @@
 
     <g>
       <g font-size="10pt" font-family="monospace">
-        <text x="355" y="15">FRの値によって，実効アドレスに分岐する。</text>
-        <text x="355" y="30">分岐しないときは，次の命令に進む。</text>
+        <text x="355" y="15">FRの値によって，実効アドレスに分岐す</text>
+        <text x="355" y="30">る。分岐しないときは，次の命令に進む。</text>
       </g>
       <g  transform="translate(360,35)">
         <g stroke="black" stroke-width="1" fill="none">
