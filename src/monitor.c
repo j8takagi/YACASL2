@@ -316,7 +316,7 @@ MONCMDTYPE monitorcmd(char *cmd, MONARGS *args)
     } else if(stracmp(cmd, 1, (char* []){"resetall"})) {
         fprintf(stdout, "Reset COMET II CPU and memory.\n");
         comet2_resetall();     /* COMET II仮想マシンのCPUとメモリのリセット */
-    } else if(stracmp(cmd, 2, (char* []){"t", "trace", "T", "tracelogical"})) {
+    } else if(stracmp(cmd, 4, (char* []){"t", "trace", "T", "tracelogical"})) {
         if(stracmp(cmd, 2, (char* []){"t", "trace"})) {
             execmode.logical = false;
         } else {
