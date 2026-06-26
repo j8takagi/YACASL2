@@ -1,0 +1,1 @@
+../../../../comet2monitor -M16 ../../../../as/sample/addl.o <n4.monitor | sed '/^(comet2 monitor) /d'

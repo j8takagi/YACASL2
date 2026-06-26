@@ -1,1 +1,1 @@
-../../../../comet2monitor <break_help.monitor | sed '/^(comet2 monitor) /d'
+../../../../comet2monitor -q <break_help.monitor | sed '/^(comet2 monitor) /d'

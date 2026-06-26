@@ -1,1 +1,1 @@
-../../../../comet2monitor <dump_plus.monitor | sed '/^(comet2 monitor) /d'
+../../../../comet2monitor -q <dump_plus.monitor | sed '/^(comet2 monitor) /d'
