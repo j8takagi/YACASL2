@@ -149,12 +149,13 @@ typedef struct {
     bool dump;            /**<メモリの内容をステップごとに表示する場合はtrue */
     WORD dump_start;      /**<メモリの内容をステップごとに表示する場合の開始アドレス */
     WORD dump_end;        /**<メモリの内容をステップごとに表示する場合の終了アドレス */
+    bool reverse;         /**<逆アセンブルの結果をステップごとに表示する場合はtrue */
     bool monitor;         /**<モニターモードの場合はtrue */
     bool step;            /**<ステップ実行の場合はtrue */
 } EXECMODE;
 
 /**
- * @brief 実行モード: trace, logical, dump, monitor, step
+ * @brief 実行モード: trace, logical, dump, reverse, monitor, step
  */
 extern EXECMODE execmode;
 
@@ -239,3 +240,9 @@ CMDTYPE getcmdtype(WORD code);
 char *getcmdname(WORD code);
 
 #endif
+
+/**
+ * 命令コードから、命令語長を返す\n
+ * 無効な場合は0を返す
+ */
+WORD code2cmdwordlen(WORD code);

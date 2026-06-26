@@ -85,9 +85,9 @@ static CERR cerr_exec[] = {
 };
 
 /**
- * @brief 実行モード: trace, logical, dump, dump_start, dump_end,  monitor, step
+ * @brief 実行モード: trace, logical, dump, dump_start, dump_end, reverse, monitor, step
  */
-EXECMODE execmode = {false, false, false, 0, 0xFFFF, false, false};
+EXECMODE execmode = {false, false, false, 0, 0xFFFF, false, false, false};
 
 CLOCK clock_str2clock(const char *str) {
     long val = str2l_range(str, 1, LONG_MAX, "Clock");

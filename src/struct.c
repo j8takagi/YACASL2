@@ -183,16 +183,16 @@ WORD getcmdcode(const char *cmd, CMDTYPE type)
 WORD getcmdwordlen(const char *cmd, CMDTYPE type)
 {
     CMDTAB *p = NULL;
-    int l = 0;
+    int wl = 0;
 
     assert(cmd != NULL);
     for(p = cmdtab[HASH_CMDTYPE][hash_cmdtype(cmd, type)]; p != NULL; p = p->next) {
         if(strcmp(cmd, p->cmd->name) == 0 && type == p->cmd->type) {
-            l = p->cmd->wordlen;
+            wl = p->cmd->wordlen;
             break;
         }
     }
-    return l;
+    return wl;
 }
 
 /**
@@ -261,6 +261,24 @@ char *getcmdname(WORD code)
         }
     }
     return cmd;
+}
+
+/**
+ * 命令コードから、命令語長を返す\n
+ * 無効な場合は0を返す
+ */
+WORD code2cmdwordlen(WORD code)
+{
+    CMDTAB *t = NULL;
+    int wl = 0;
+
+    for(t = cmdtab[HASH_CODE][hash_code(code)]; t != NULL; t = t->next) {
+        if(code == t->cmd->code) {
+            wl = t->cmd->wordlen;
+            break;
+        }
+    }
+    return wl;
 }
 
 /**

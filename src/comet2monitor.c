@@ -12,6 +12,7 @@ static struct option longopts[] = {
     {"tracearithmetic", no_argument, NULL, 't'},
     {"tracelogical", no_argument, NULL, 'T'},
     {"dump", no_argument, NULL, 'd'},
+    {"reverse", no_argument, NULL, 'r'},
     {"memorysize", required_argument, NULL, 'M'},
     {"clocks", required_argument, NULL, 'C'},
     {"version", no_argument, NULL, 'v' },
@@ -47,7 +48,7 @@ int main(int argc, char *argv[])
     int stat = 0;
     const char *version = PACKAGE_VERSION;
     const char *cmdversion = "comet2monitor: COMET II machine code monitor of YACASL2 version %s\n";
-    const char *usage = "Usage: %s [-tTdvh] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE\n";
+    const char *usage = "Usage: %s [-tTdrvh] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE\n";
 
     /* エラーの定義 */
     cerr_init();
@@ -55,8 +56,9 @@ int main(int argc, char *argv[])
     addcerrlist_exec();
     addcerrlist_comet2monitor();
 
+    execmode.reverse = true;
     /* オプションの処理 */
-    while((opt = getopt_long(argc, argv, "tTdM:C:vh", longopts, NULL)) != -1) {
+    while((opt = getopt_long(argc, argv, "tTdqM:C:vh", longopts, NULL)) != -1) {
         switch(opt) {
         case 't':
             execmode.trace = true;
@@ -67,6 +69,9 @@ int main(int argc, char *argv[])
             break;
         case 'd':
             execmode.dump = true;
+            break;
+        case 'q':
+            execmode.reverse = false;
             break;
         case 'M':
             if((memsize = memsize_str2word(optarg)) == 0) {

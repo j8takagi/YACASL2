@@ -301,8 +301,14 @@ MONCMDTYPE monitorcmd(char *cmd, MONARGS *args)
         fprintf(stdout, "Quit: COMET II monitor\n");
         cmdtype = MONQUIT;
     } else if(stracmp(cmd, 2, (char* []){"r", "reverse"})) {
-        if(args->argc == 2) {
+        if(args->argc > 0 && stracmp(args->argv[0], 2, (char* []){"a", "auto"})) {
+            execmode.reverse = true;
+        } else if(args->argc > 0 && stracmp(args->argv[0], 2, (char* []){"n", "noauto"})) {
+            execmode.reverse = false;
+        } else if(args->argc == 2) {
             disassemble_memory(nh2word(args->argv[0]), nh2word(args->argv[1]));
+        } else {
+            disassemble_memory(execptr->start, execptr->end);
         }
     } else if(stracmp(cmd, 1, (char* []){"reset"})) {
         fprintf(stdout, "Reset COMET II CPU.\n");
@@ -310,21 +316,15 @@ MONCMDTYPE monitorcmd(char *cmd, MONARGS *args)
     } else if(stracmp(cmd, 1, (char* []){"resetall"})) {
         fprintf(stdout, "Reset COMET II CPU and memory.\n");
         comet2_resetall();     /* COMET II仮想マシンのCPUとメモリのリセット */
-    } else if(stracmp(cmd, 2, (char* []){"t", "trace"})) {
-        if(args->argc > 0 && stracmp(args->argv[0], 2, (char* []){"a", "auto"})) {
+    } else if(stracmp(cmd, 2, (char* []){"t", "trace", "T", "tracelogical"})) {
+        if(stracmp(cmd, 2, (char* []){"t", "trace"})) {
             execmode.logical = false;
-            execmode.trace = true;
-        } else if(args->argc > 0 && stracmp(args->argv[0], 2, (char* []){"no", "noauto"})) {
-            execmode.trace = false;
         } else {
-            fprintf(stdout, "#%04X: Register::::\n", sys->cpu->pr);
-            dspregister();
-        }
-    } else if(stracmp(cmd, 2, (char* []){"T", "tracelogical"})) {
-        if(args->argc > 0 && stracmp(args->argv[0], 2, (char* []){"a", "auto"})) {
             execmode.logical = true;
+        }
+        if(args->argc > 0 && stracmp(args->argv[0], 2, (char* []){"a", "auto"})) {
             execmode.trace = true;
-        } else if(args->argc > 0 && stracmp(args->argv[0], 2, (char* []){"no", "noauto"})) {
+        } else if(args->argc > 0 && stracmp(args->argv[0], 2, (char* []){"n", "noauto"})) {
             execmode.trace = false;
         } else {
             fprintf(stdout, "#%04X: Register::::\n", sys->cpu->pr);
@@ -340,10 +340,10 @@ MONCMDTYPE monitorcmd(char *cmd, MONARGS *args)
         fprintf(stdout, "q[uit] -- Quit running your program.\n");
         fprintf(stdout, "reset -- Reset COMET II CPU.\n");
         fprintf(stdout, "resetall -- Reset COMET II CPU and memory.\n");
-        fprintf(stdout, "r[everse] -- Disassemble memory. `r[everse] <start address> <end address>.\n");
+        fprintf(stdout, "r[everse] -- Disassemble memory. `r[everse] <start address> <end address>'. `r[everse] a[uto]/n[oauto]' set auto/noauto display.\n");
         fprintf(stdout, "s[ave] -- Save object from the memory to a file. `s[ave] <filepath> [<start address1> [<end address>]]' if <start address> and <end address> is omitted, save the whole memory. if <end address> is omitted, save the memory after <start address>.\n");
         fprintf(stdout, "t[race] -- Display CPU register. `t[race] a[uto]/n[oauto]' set auto/noauto display. \n");
-        fprintf(stdout, "T[race] -- Display CPU register as logical value. `t[race] a[uto]/n[oauto]' set auto/noauto display. \n");
+        fprintf(stdout, "T[race] -- Display CPU register as logical value. `t[race] a[uto]/n[oauto]' set auto/noauto display.\n");
         fprintf(stdout, "?/h[elp] -- Display this help.\n");
     }
     return cmdtype;
