@@ -54,16 +54,16 @@ endif
 	$(MAKEINFO) $(MAKEINFO_FLAGS) -o $@ $<
 
 %.html: %.texi
-	$(MAKEINFO) -o $@ --no-split --html --css-include=$(CSS) $<
+	$(MAKEINFO) -o $@ --no-split --html --css-include=$(CSS) --set-customization-variable FORMAT_MENU=nomenu $<
 	$(SED) -i'.org' -e 's%<img src="\([^"]*\)" *[^>]*>%<object type="image/svg+xml" data="\1">&</object>%g' $@
 	$(RM) $@.org
 
 %_html: %.texi
 	if test ! -e $@; then $(MKDIR) $@; fi
 	$(CP) $(CSS) $@/
-	$(MAKEINFO) -o $@ --html --css-ref=$(CSS) $<
-	$(SED) -i'.org' -e 's%<img src="\([^"]*\)" *[^>]*>%<object type="image/svg+xml" data="\1">&</object>%g' $@/*.html
-	$(RM) $@/*.html.org
+	$(MAKEINFO) -o $@ --html --css-ref=$(CSS) --set-customization-variable FORMAT_MENU=nomenu $<
+	$(SED) -i'.sedbak' -e 's%<img src="\([^"]*\)" *[^>]*>%<object type="image/svg+xml" data="\1">&</object>%g' $@/*.html
+	$(RM) $@/*.sedbak
 
 %.html %_html: $(CSS)
 
