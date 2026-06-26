@@ -20,9 +20,9 @@ Copyright @copyright{} 2010-2026 j8takagi
 @dircategory Programming
 @direntry
 * YACASL2: (yacasl2.info).                     CASL II 処理システム
-* casl2: (yacasl2.info)casl2 invocation.       casl2の呼び出し
-* comet2: (yacasl2.info)comet2 invocation.     comet2の呼び出し
-* dumpword: (yacasl2.info)dumpword invocation. dumpwordの呼び出し
+* casl2: (yacasl2.info)casl2 invocation.       casl2
+* comet2: (yacasl2.info)comet2 invocation.     comet2
+* dumpword: (yacasl2.info)dumpword invocation. dumpword
 @end direntry
 
 @titlepage
@@ -32,7 +32,7 @@ Copyright @copyright{} 2010-2026 j8takagi
 @insertcopying
 @end titlepage
 
-@node Top, Overview
+@node Top, Overview, (dir), (dir)
 @ifhtml
 @top YACASL2 - CASL II 処理システム
 @end ifhtml
@@ -40,9 +40,11 @@ Copyright @copyright{} 2010-2026 j8takagi
 @menu
 * Overview::                    YACASL2の概要
 * Sample usage::                YACASL2の使用例
-* casl2 invocation::            casl2の呼び出し
-* comet2 invocation::           comet2の呼び出し
-* dumpword invocation::         dumpwordの呼び出し
+* casl2 invocation::            casl2
+* comet2 invocation::           comet2
+* dumpword invocation::         dumpword
+
+* comet2monitor-invocation::
 
 @detailmenu
  --- The Detailed Node Listing ---
@@ -61,6 +63,12 @@ YACASL2の使用例
 * Register specify::            特定のレジスタを表示
 * End value::
 * Step count::                  プログラムのステップ数を表示
+
+@code{comet2monitor}
+
+* comet2monitor options::       オプション
+* monitor commands::            モニターコマンド
+* comet2monitor examples::      使用例
 
 @end detailmenu
 @end menu
@@ -313,7 +321,7 @@ addl.casl:   10:        END
 
 YACASL2では実行中のCPUのレジスタとメモリの内容をそれぞれ、@option{-t}と@option{-d}を指定することで表示できます。
 
-また、@option{-M}で、仮想マシンCOMET II のメモリ容量を語(16 ビット)単位で指定できます。
+また、@option{-M}で、仮想マシンCOMET II のメモリ容量を語(16ビット)単位で指定できます。
 小さいプログラムを実行するときは、メモリ容量を小さくすれば結果が見やすくなります。
 
 @menu
@@ -588,7 +596,7 @@ $ @kbd{casl2 addl_outl.casl ~/yacasl2/as/casl2lib/outl.casl}
 @end example
 
 @node casl2 invocation, comet2 invocation, Sample usage, Top
-@chapter @command{casl2}の呼び出し
+@chapter @command{casl2}
 
 @pindex casl2
 @cindex casl2
@@ -718,12 +726,11 @@ CASLファイルの内容を表示します。
 
 @item -M <MEMORYSIZE>
 @itemx --memorysize <MEMORYSIZE>
-アセンブルおよび実行時のメモリサイズ@option{<MEMORYSIZE>}を0から65535の範囲で指定します。
-指定しない場合、512です。
+アセンブルおよびCOMET II実行時のメモリサイズ@option{<MEMORYSIZE>}をWORD（16ビット）単位で1から65535の範囲で指定します。指定しない場合、512語です。小さいプログラムを実行するときは、メモリ容量を小さくすれば結果が見やすくなります。
 
 @item -C <CLOCKS>
 @itemx --clocks <CLOCKS>
-実行時のクロック周波数@option{<CLOCKS>}を0より大きい整数で指定します。
+COMET II実行時のクロック周波数@option{<CLOCKS>}を0より大きい整数で指定します。
 指定しない場合、クロック周波数は5000000です。
 
 @item -v
@@ -736,7 +743,7 @@ CASLファイルの内容を表示します。
 @end table
 
 @node comet2 invocation, dumpword invocation, casl2 invocation, Top
-@chapter @command{comet2}の呼び出し
+@chapter @command{comet2}
 
 @pindex comet2
 @cindex comet2
@@ -820,8 +827,7 @@ $ @kbd{comet2 hello.o}
 
 @item -M <MEMORYSIZE>
 @itemx --memorysize <MEMORYSIZE>
-実行時のメモリサイズ@option{<MEMORYSIZE>}を0から65535の範囲で指定します。
-指定しない場合、512です。
+COMET II実行時のメモリサイズ@option{<MEMORYSIZE>}をWORD（16ビット）単位で1から65535の範囲で指定します。指定しない場合、512語です。小さいプログラムを実行するときは、メモリ容量を小さくすれば結果が見やすくなります。
 
 @item -C <CLOCKS>
 @itemx --clocks <CLOCKS>
@@ -837,8 +843,8 @@ $ @kbd{comet2 hello.o}
 @command{comet2}の使用方法を表示して終了します。
 @end table
 
-@node dumpword invocation, , comet2 invocation, Top
-@chapter @command{dumpword}の呼び出し
+@node dumpword invocation, comet2monitor-invocation, comet2 invocation, Top
+@chapter @command{dumpword}
 
 @pindex dumpword
 @cindex dumpword
@@ -903,5 +909,243 @@ $ @kbd{dumpword '#0048'}
 @itemx --help
 @command{dumpword}の使用方法を表示して終了します。
 @end table
+
+@node comet2monitor-invocation,  , dumpword invocation, Top
+@chapter @code{comet2monitor}
+
+@code{comet2monitor}は、COMET II機械コードモニターです。
+オブジェクトファイルをロードし、対話的にステップ実行・逆アセンブル・レジスタやメモリの確認ができます。
+
+@example
+comet2monitor [-tTdqvh] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE
+@end example
+
+@menu
+* comet2monitor options::       オプション
+* monitor commands::            モニターコマンド
+* comet2monitor examples::      使用例
+@end menu
+
+@node comet2monitor options, monitor commands, comet2monitor-invocation, comet2monitor-invocation
+@section オプション
+
+@table @option
+@item -t
+@itemx --trace
+@itemx --tracearithmetic
+命令実行ごとにCPUレジスタの内容を表示します。
+値は算術（符号あり）表現で表示されます。
+
+@item -T
+@itemx --tracelogical
+命令実行ごとにCPUレジスタの内容を表示します。
+値は論理（符号なし）表現で表示されます。
+
+@item -d
+@itemx --dump
+命令実行ごとにメモリダンプを表示します。
+
+@item -q
+逆アセンブルの自動表示をOFFにします。
+デフォルトでは逆アセンブル自動表示はONです。
+
+@item -M @var{MEMORYSIZE}
+@itemx --memorysize=@var{MEMORYSIZE}
+COMET II実行時のメモリサイズ@option{<MEMORYSIZE>}をWORD（16ビット）単位で1から65535の範囲で指定します。指定しない場合、512語です。小さいプログラムを実行するときは、メモリ容量を小さくすれば結果が見やすくなります。
+
+@item -C @var{CLOCKS}
+@itemx --clocks=@var{CLOCKS}
+クロック数を指定します。
+
+@item -v
+@itemx --version
+バージョン情報を表示して終了します。
+
+@item -h
+@itemx --help
+使い方を表示して終了します。
+@end table
+
+@node monitor commands, comet2monitor examples, comet2monitor options, comet2monitor-invocation
+@section モニターコマンド
+
+@code{comet2monitor}は起動後、対話的にコマンドを受け付けます。
+コマンドは省略形でも指定できます。
+空行を入力すると、直前のコマンドをリピートします。
+@code{!}で始まる入力はシェルコマンドとして実行されます。
+
+@subsection 実行コマンド
+
+@table @code
+@item n
+@itemx next
+現在のPRアドレスの命令を1つ実行します。
+実行後、逆アセンブル・レジスタ・メモリが自動表示設定に従い表示されます。
+
+@item c
+@itemx continue
+プログラムが終了するか、ブレークポイントに達するまで実行します。
+@end table
+
+@subsection 表示コマンド
+
+@table @code
+@item r
+@itemx reverse
+メモリを逆アセンブルして表示します。
+引数なしではロードされたプログラム全体を表示します。
+
+@example
+r <start> <end>
+@end example
+
+アドレスを指定した場合は、@var{start}から@var{end}の範囲を表示します。
+アドレスは10進数または16進数（@code{#xxxx}形式）で指定できます。
+
+@example
+r auto
+r noauto
+@end example
+
+@code{auto}または@code{a}を指定すると逆アセンブルの自動表示をONに、
+@code{noauto}または@code{n}を指定するとOFFにします。
+
+@item t
+@itemx trace
+CPUレジスタの内容を算術（符号あり）表現で表示します。
+
+@example
+t auto
+t noauto
+@end example
+
+@code{auto}または@code{a}を指定するとレジスタの自動表示をONに、
+@code{noauto}または@code{n}を指定するとOFFにします。
+
+@item T
+@itemx Trace
+CPUレジスタの内容を論理（符号なし）表現で表示します。
+@code{auto}/@code{noauto}の指定は@code{t}と同様です。
+
+@item d
+@itemx dump
+メモリダンプを表示します。
+引数なしでは、ロードされたプログラムの範囲を表示します。
+
+@example
+d <start>
+d <start> <end>
+d <start> +<length>
+@end example
+
+@var{start}を指定した場合は@var{start}から@code{#0040}語分、
+@var{end}も指定した場合は@var{start}から@var{end}の範囲を表示します。
+@code{+}を付けた場合は@var{start}から@var{length}語分を表示します。
+
+@example
+d auto
+d noauto
+@end example
+
+@code{auto}または@code{a}を指定するとメモリダンプの自動表示をONに、
+@code{noauto}または@code{n}を指定するとOFFにします。
+@end table
+
+@subsection ブレークポイントコマンド
+
+@table @code
+@item b add @var{address}
+@itemx break add @var{address}
+@var{address}にブレークポイントを追加します。
+
+@item b del @var{address}
+@itemx break del @var{address}
+@var{address}のブレークポイントを削除します。
+
+@item b list
+@itemx break list
+設定中のブレークポイント一覧を表示します。
+
+@item b reset
+@itemx break reset
+すべてのブレークポイントを削除します。
+@end table
+
+@subsection その他のコマンド
+
+@table @code
+@item l @var{filepath} [@var{address}]
+@itemx load @var{filepath} [@var{address}]
+@var{filepath}のオブジェクトファイルをメモリにロードします。
+@var{address}を省略した場合は@code{#0000}番地にロードします。
+
+@item reset
+CPUをリセットします。メモリの内容は保持されます。
+
+@item resetall
+CPUとメモリをリセットします。
+
+@item q
+@itemx quit
+モニターを終了します。
+
+@item ?
+@itemx h
+@itemx help
+コマンドのヘルプを表示します。
+
+@item !@var{command}
+シェルコマンド@var{command}を実行します。
+@end table
+
+@node comet2monitor examples,  , monitor commands, comet2monitor-invocation
+@section 使用例
+
+@code{ldlad.o}を逆アセンブル表示つきで起動し、ステップ実行します。
+
+@example
+$ comet2monitor -M16 as/sample/ldlad.o
+Disassemble::::
+        LD      GR1,#000B       ; #0000: #1010 #000B
+        LAD     GR2,#000B       ; #0002: #1220 #000B
+        LAD     GR3,#0001       ; #0004: #1230 #0001
+        ST      GR1,#000C       ; #0006: #1110 #000C
+        ST      GR2,#000C,GR3   ; #0008: #1123 #000C
+        RET                     ; #000A: #8100
+#0000: Disassemble::::
+        LD      GR1,#000B       ; #0000: #1010 #000B
+
+COMET II machine code monitor. Type ? for help.
+(comet2 monitor) n
+> n
+#0002: Disassemble::::
+        LAD     GR2,#000B       ; #0002: #1220 #000B
+
+(comet2 monitor) n
+> n
+#0004: Disassemble::::
+        LAD     GR3,#0001       ; #0004: #1230 #0001
+
+(comet2 monitor) q
+> q
+Quit: COMET II monitor
+@end example
+
+レジスタトレースとメモリダンプを追加して起動する場合は@option{-T}と@option{-d}を指定します。
+
+@example
+$ comet2monitor -Td -M16 as/sample/ldlad.o
+@end example
+
+逆アセンブルの自動表示をOFFにして最後まで一気に実行する場合は、
+モニター起動後に@code{r noauto}を実行してから@code{c}を使います。
+
+@example
+(comet2 monitor) r noauto
+> r noauto
+(comet2 monitor) c
+> c
+Return to top.
+@end example
 
 @bye
