@@ -17,11 +17,10 @@ WORD fgetword(FILE *stream);
 /**
  * @brief WORDデータから、値が0のWORDがいくつ連続するか返す
  *
- * @param words WORDデータ
- * @param wardlen データのWORD数
  * @return 値が0の連続するWORD数
  *
- * @param stream ファイルストリーム
+ * @param data WORDデータ
+ * @param wordlen データのWORD数
  */
 WORD zero_data_cnt(const WORD *data, WORD wordlen);
 
