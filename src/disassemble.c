@@ -162,6 +162,7 @@ void disassemble_file(const char *file)
     assert(file != NULL);
     if((fp = fopen(file, "rb")) == NULL) {
         perror(file);
+        return;
     }
 
     buf = calloc_chk(MAX_MEMSIZE, sizeof(WORD), "disassemble_file");
