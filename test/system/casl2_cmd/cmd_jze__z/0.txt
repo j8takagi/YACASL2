@@ -26,8 +26,6 @@ Assemble ../../../../as/cmd/JZE/jze__z.casl (1)
 ../../../../as/cmd/JZE/jze__z.casl:   10:A       DC      0
 	#000C	#0000
 ../../../../as/cmd/JZE/jze__z.casl:   11:        END
-
-Executing machine codes
 #0000: Register::::
 #0000: GR0:      0 = #0000 = 0000000000000000
 #0000: GR1:      0 = #0000 = 0000000000000000

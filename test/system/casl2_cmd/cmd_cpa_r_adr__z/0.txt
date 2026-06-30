@@ -17,8 +17,6 @@ Assemble ../../../../as/cmd/CPA/cpa_r_adr__z.casl (1)
 ../../../../as/cmd/CPA/cpa_r_adr__z.casl:    7:B       DC      #5000
 	#0006	#5000
 ../../../../as/cmd/CPA/cpa_r_adr__z.casl:    8:        END
-
-Executing machine codes
 #0000: Register::::
 #0000: GR0:      0 = #0000 = 0000000000000000
 #0000: GR1:      0 = #0000 = 0000000000000000

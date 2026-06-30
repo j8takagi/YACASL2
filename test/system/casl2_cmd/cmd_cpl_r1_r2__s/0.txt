@@ -19,8 +19,6 @@ Assemble ../../../../as/cmd/CPL/cpl_r1_r2__s.casl (1)
 ../../../../as/cmd/CPL/cpl_r1_r2__s.casl:    8:B       DC      #7000
 	#0007	#7000
 ../../../../as/cmd/CPL/cpl_r1_r2__s.casl:    9:        END
-
-Executing machine codes
 #0000: Register::::
 #0000: GR0:      0 = #0000 = 0000000000000000
 #0000: GR1:      0 = #0000 = 0000000000000000

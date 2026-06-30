@@ -19,10 +19,11 @@ Copyright @copyright{} 2010-2026 j8takagi
 
 @dircategory Programming
 @direntry
-* YACASL2: (yacasl2.info).                     CASL II 処理システム
-* casl2: (yacasl2.info)casl2 invocation.       casl2
-* comet2: (yacasl2.info)comet2 invocation.     comet2
-* dumpword: (yacasl2.info)dumpword invocation. dumpword
+* YACASL2: (yacasl2.info).                          CASL II 処理システム
+* casl2: (yacasl2.info)casl2 invocation.            casl2
+* comet2: (yacasl2.info)comet2 invocation.          comet2
+* dumpword: (yacasl2.info)dumpword invocation.      dumpword
+* comet2monitor: (yacasl2.info)comet2monitor-invocation. comet2monitor
 @end direntry
 
 @titlepage
@@ -43,8 +44,7 @@ Copyright @copyright{} 2010-2026 j8takagi
 * casl2 invocation::            casl2
 * comet2 invocation::           comet2
 * dumpword invocation::         dumpword
-
-* comet2monitor-invocation::
+* comet2monitor-invocation::    comet2monitor
 
 @detailmenu
  --- The Detailed Node Listing ---
@@ -87,7 +87,7 @@ CASL IIは情報処理試験で用いられるアセンブラ言語で、
 @cartouche
 @end iftex
 @quotation
-@uref{https://www.ipa.go.jp/shiken/syllabus/ps6vr7000000i9g3-att/shiken_yougo_ver4_3.pdf, 情報処理技術者試験 情報処理安全確保支援士試験 試験で使用する情報技術に関する用語・プログラム言語など Ver 4.3}［PDFファイル］ @*
+@uref{https://www.ipa.go.jp/shiken/syllabus/ps6vr7000000i9g3-att/shiken_yougo_ver4_3.pdf, 情報処理技術者試験 情報処理安全確保支援士試験 試験で使用する情報技術に関する用語・プログラム言語など Ver 4.3}［PDFファイル］ @*
 別紙2 アセンブラ言語の仕様（5ページから12ページまで）
 @end quotation
 @iftex
@@ -911,9 +911,16 @@ $ @kbd{dumpword '#0048'}
 @end table
 
 @node comet2monitor-invocation,  , dumpword invocation, Top
-@chapter @code{comet2monitor}
+@chapter @command{comet2monitor}
 
-@code{comet2monitor}は、COMET II機械コードモニターです。
+@pindex comet2monitor
+@cindex comet2monitor
+@cindex invoking
+@cindex options
+@cindex usage
+@cindex help
+
+@command{comet2monitor}は、COMET II機械コードモニターです。
 オブジェクトファイルをロードし、対話的にステップ実行・逆アセンブル・レジスタやメモリの確認ができます。
 
 @example
@@ -955,7 +962,8 @@ COMET II実行時のメモリサイズ@option{<MEMORYSIZE>}をWORD（16ビット
 
 @item -C @var{CLOCKS}
 @itemx --clocks=@var{CLOCKS}
-クロック数を指定します。
+COMET II実行時のクロック周波数@option{<CLOCKS>}を0より大きい整数で指定します。
+指定しない場合、5000000です。
 
 @item -v
 @itemx --version
@@ -980,11 +988,12 @@ COMET II実行時のメモリサイズ@option{<MEMORYSIZE>}をWORD（16ビット
 @item n
 @itemx next
 現在のPRアドレスの命令を1つ実行します。
-実行後、逆アセンブル・レジスタ・メモリが自動表示設定に従い表示されます。
+実行後、レジスタ・メモリ・逆アセンブルが自動表示設定に従い表示されます。
 
 @item c
 @itemx continue
 プログラムが終了するか、ブレークポイントに達するまで実行します。
+実行中、各ステップで逆アセンブルが自動表示設定に従い表示されます。
 @end table
 
 @subsection 表示コマンド
@@ -996,7 +1005,7 @@ COMET II実行時のメモリサイズ@option{<MEMORYSIZE>}をWORD（16ビット
 引数なしではロードされたプログラム全体を表示します。
 
 @example
-r <start> <end>
+r @var{start} @var{end}
 @end example
 
 アドレスを指定した場合は、@var{start}から@var{end}の範囲を表示します。
@@ -1030,15 +1039,16 @@ CPUレジスタの内容を論理（符号なし）表現で表示します。
 @item d
 @itemx dump
 メモリダンプを表示します。
-引数なしでは、ロードされたプログラムの範囲を表示します。
+引数なしでは@code{#0000}から@code{#0040}の範囲を表示します。
+メモリサイズが@code{#0040}より小さい場合はメモリ全体を表示します。
 
 @example
-d <start>
-d <start> <end>
-d <start> +<length>
+d @var{start}
+d @var{start} @var{end}
+d @var{start} +@var{length}
 @end example
 
-@var{start}を指定した場合は@var{start}から@code{#0040}語分、
+@var{start}のみ指定した場合は@var{start}から@code{#0040}語分、
 @var{end}も指定した場合は@var{start}から@var{end}の範囲を表示します。
 @code{+}を付けた場合は@var{start}から@var{length}語分を表示します。
 
@@ -1101,30 +1111,32 @@ CPUとメモリをリセットします。
 @node comet2monitor examples,  , monitor commands, comet2monitor-invocation
 @section 使用例
 
-@code{ldlad.o}を逆アセンブル表示つきで起動し、ステップ実行します。
+@file{ldlad.o}をオプションなしで起動し、ステップ実行します。
+デフォルトで逆アセンブルの自動表示がONのため、起動時にプログラム全体の逆アセンブル結果と、
+最初に実行される命令が表示されます。
 
 @example
-$ comet2monitor -M16 as/sample/ldlad.o
-Disassemble::::
-        LD      GR1,#000B       ; #0000: #1010 #000B
+$ @kbd{comet2monitor -M32 as/sample/ldlad.o}
+        LAD     GR1,#0001       ; #0000: #1210 #0001
         LAD     GR2,#000B       ; #0002: #1220 #000B
-        LAD     GR3,#0001       ; #0004: #1230 #0001
-        ST      GR1,#000C       ; #0006: #1110 #000C
-        ST      GR2,#000C,GR3   ; #0008: #1123 #000C
+        LD      GR3,#000B       ; #0004: #1030 #000B
+        ST      GR2,#000C       ; #0006: #1120 #000C
+        ST      GR3,#000C,GR1   ; #0008: #1131 #000C
         RET                     ; #000A: #8100
-#0000: Disassemble::::
-        LD      GR1,#000B       ; #0000: #1010 #000B
+        DC      3               ; #000B: #0003 ::     3 = #0003 = 0000000000000011
+        DC      0               ; #000C: #0000 ::     0 = #0000 = 0000000000000000
+        DC      0               ; #000D: #0000 ::     0 = #0000 = 0000000000000000
+        DC      0               ; #000E: #0000 ::     0 = #0000 = 0000000000000000
+#0000: Disassemble::::        LAD     GR1,#0001       ; #0000: #1210 #0001
 
 COMET II machine code monitor. Type ? for help.
 (comet2 monitor) n
 > n
-#0002: Disassemble::::
-        LAD     GR2,#000B       ; #0002: #1220 #000B
+#0002: Disassemble::::        LAD     GR2,#000B       ; #0002: #1220 #000B
 
 (comet2 monitor) n
 > n
-#0004: Disassemble::::
-        LAD     GR3,#0001       ; #0004: #1230 #0001
+#0004: Disassemble::::        LD      GR3,#000B       ; #0004: #1030 #000B
 
 (comet2 monitor) q
 > q
@@ -1134,7 +1146,7 @@ Quit: COMET II monitor
 レジスタトレースとメモリダンプを追加して起動する場合は@option{-T}と@option{-d}を指定します。
 
 @example
-$ comet2monitor -Td -M16 as/sample/ldlad.o
+$ @kbd{comet2monitor -Td -M32 as/sample/ldlad.o}
 @end example
 
 逆アセンブルの自動表示をOFFにして最後まで一気に実行する場合は、

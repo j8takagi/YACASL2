@@ -195,8 +195,6 @@ Assemble ../../../../as/cmd/DC/dc__c0.casl (1)
 ../../../../as/cmd/DC/dc__c0.casl:   97:        DC      '~'
 	#005E	#007E
 ../../../../as/cmd/DC/dc__c0.casl:   98:    END
-
-Executing machine codes
 #0000: Register::::
 #0000: GR0:      0 = #0000 = 0000000000000000
 #0000: GR1:      0 = #0000 = 0000000000000000

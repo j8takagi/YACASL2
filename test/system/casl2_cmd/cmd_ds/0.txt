@@ -35,8 +35,6 @@ Assemble ../../../../as/cmd/DS/ds.casl (1)
 ../../../../as/cmd/DS/ds.casl:   13:E       DC      #FFFF
 	#0012	#FFFF
 ../../../../as/cmd/DS/ds.casl:   14:        END
-
-Executing machine codes
 #0000: Register::::
 #0000: GR0:      0 = #0000 = 0000000000000000
 #0000: GR1:      0 = #0000 = 0000000000000000

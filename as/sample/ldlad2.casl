@@ -1,0 +1,13 @@
+MAIN    START
+        LAD     GR1,1
+        LD      GR2,A
+        LAD     GR3,A
+        LD      GR2,A,GR1
+        LAD     GR3,A,GR1
+        ST      GR2,C
+        ST      GR3,C,GR1
+        RET
+A       DC      3
+B       DC      7
+C       DS      2
+        END

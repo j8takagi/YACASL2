@@ -48,8 +48,6 @@ sum_10.casl:   19:STEP    DC      1               ; 公差
 sum_10.casl:   20:RST     DS      1               ; 結果
 	#0038	#0000
 sum_10.casl:   21:        END
-
-Executing machine codes
 #0020: Register::::
 #0020: GR0:      0 = #0000 = 0000000000000000
 #0020: GR1:      0 = #0000 = 0000000000000000

@@ -19,8 +19,6 @@ Assemble ../../../../as/cmd/OR/or_r1_r2.casl (1)
 ../../../../as/cmd/OR/or_r1_r2.casl:    8:B       DC      #4FFF
 	#0007	#4FFF
 ../../../../as/cmd/OR/or_r1_r2.casl:    9:        END
-
-Executing machine codes
 #0000: Register::::
 #0000: GR0:      0 = #0000 = 0000000000000000
 #0000: GR1:      0 = #0000 = 0000000000000000

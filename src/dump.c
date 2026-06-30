@@ -62,8 +62,7 @@ void dsp_trace_dump()
 {
     if(execptr->stop == false && (execmode.dump == true || execmode.trace == true || execmode.reverse == true)) {      /* traceまたはdumpオプション指定時、改行を出力 */
         if(sys->cpu->pr == execptr->start && execmode.reverse == true) { /* reverseオプション指定時、スタート時にプログラム全体を逆アセンブル */
-            fprintf(stdout, "Disassemble::::\n");
-            disassemble_memory(execptr->start, execptr->end);
+            disassemble_memory(sys->memory, execptr->start, (execptr->end)-1);
         }
         if(execmode.trace == true) { /* traceオプション指定時、レジスタを出力 */
             fprintf(stdout, "#%04X: Register::::\n", sys->cpu->pr);
@@ -74,8 +73,8 @@ void dsp_trace_dump()
             dumpmemory(execmode.dump_start, execmode.dump_end);
         }
         if(execmode.reverse == true) { /* reverseオプション指定時、ステップごとに語長分を逆アセンブル */
-            fprintf(stdout, "#%04X: Disassemble::::\n", sys->cpu->pr);
-            disassemble_memory(sys->cpu->pr, sys->cpu->pr + code2cmdwordlen(sys->memory[sys->cpu->pr] & 0xFF00) - 1);
+            fprintf(stdout, "#%04X: Disassemble::::", sys->cpu->pr);
+            disassemble_memory(sys->memory, sys->cpu->pr, sys->cpu->pr + code2cmdwordlen(sys->memory[sys->cpu->pr] & 0xFF00) - 1);
         }
         fprintf(stdout, "\n");
     }

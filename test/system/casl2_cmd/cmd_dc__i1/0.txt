@@ -30,8 +30,6 @@ Assemble ../../../../as/cmd/DC/dc__i1.casl (1)
 	#0015	#000F
 	#0016	#FFFF
 ../../../../as/cmd/DC/dc__i1.casl:    5:        END
-
-Executing machine codes
 #0000: Register::::
 #0000: GR0:      0 = #0000 = 0000000000000000
 #0000: GR1:      0 = #0000 = 0000000000000000

@@ -26,8 +26,6 @@ Assemble ../../../../as/cmd/JUMP/jump__p.casl (1)
 ../../../../as/cmd/JUMP/jump__p.casl:   10:A       DC      1
 	#000C	#0001
 ../../../../as/cmd/JUMP/jump__p.casl:   11:        END
-
-Executing machine codes
 #0000: Register::::
 #0000: GR0:      0 = #0000 = 0000000000000000
 #0000: GR1:      0 = #0000 = 0000000000000000

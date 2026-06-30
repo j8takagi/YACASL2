@@ -13,8 +13,6 @@ Assemble ../../../../as/cmd/SRL/srl.casl (1)
 ../../../../as/cmd/SRL/srl.casl:    5:        RET
 	#0004	#8100
 ../../../../as/cmd/SRL/srl.casl:    6:        END
-
-Executing machine codes
 #0000: Register::::
 #0000: GR0:      0 = #0000 = 0000000000000000
 #0000: GR1:      0 = #0000 = 0000000000000000

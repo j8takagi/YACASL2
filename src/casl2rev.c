@@ -52,11 +52,13 @@ int main(int argc, char *argv[])
         fprintf(stderr, "disassemble error - %d: %s\n", cerr->num, cerr->msg);
         goto casl2revfin;
     }
-    disassemble_file(argv[optind]);                /* プログラム実行 */
+    create_cmdtable(HASH_CODE); /* 命令コードがキーのハッシュ表を作成 */
+    disassemble_file(argv[optind]); /* プログラム実行 */
 casl2revfin:
     if(cerr->num > 0) {
         stat = 1;
     }
-    freecerr();                 /* エラーの解放 */
+    free_cmdtable(HASH_CODE); /* 命令のコードとタイプがキーのハッシュ表を解放 */
+    freecerr();               /* エラーの解放 */
     return stat;
 }

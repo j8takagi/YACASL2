@@ -15,20 +15,15 @@ int codecol = 32;
 WORD fgetword(FILE *stream);
 
 /**
- * @brief ファイルストリームを1ワード戻す
+ * @brief WORDデータから、値が0のWORDがいくつ連続するか返す
  *
- * @param stream ファイルストリーム
- */
-void fungetword(FILE *stream);
-
-/**
- * @brief ファイルストリームから、値が0の連続するWORD数を返す
- *
+ * @param words WORDデータ
+ * @param wardlen データのWORD数
  * @return 値が0の連続するWORD数
  *
  * @param stream ファイルストリーム
  */
-WORD zero_data_cnt(FILE *stream);
+WORD zero_data_cnt(const WORD *data, WORD wordlen);
 
 /**
  * @brief 機械コードをコメントとして標準出力へ出力する
@@ -80,6 +75,7 @@ void disassemble_puts_code(int ascol, WORD pradr, int wordc, WORD wordv[])
         fprintf(stdout, "; #%04X: #%04X #%04X", pradr, wordv[0], wordv[1]);
     }
 }
+
 void disassemble_cmd_adr_x(CMDTYPE cmdtype, const char *cmdname, WORD word, WORD adr, WORD pradr)
 {
     WORD x = 0;
@@ -150,56 +146,55 @@ WORD fgetword(FILE *stream)
     return aword;
 }
 
-void fungetword(FILE *stream)
+WORD zero_data_cnt(const WORD *data, WORD wordlen)
 {
-    fseek(stream, -sizeof(WORD), SEEK_CUR);
-}
-
-WORD zero_data_cnt(FILE *stream)
-{
-    WORD cnt = 0;
-    WORD word = 0;
-
-    while(!feof(stream) && word == 0) {
-        word = fgetword(stream);
+    WORD cnt = 1;
+    while(cnt < wordlen && data[cnt] == 0)
         cnt++;
-    }
-    if(!feof(stream)) {
-        fungetword(stream);
-    }
     return cnt;
 }
 
-bool disassemble_file(const char *file)
+void disassemble_file(const char *file)
 {
-    bool stat = true;
+    WORD *buf = NULL;
+    int len = 0;
     FILE *fp = NULL;
-    WORD i = 0;
-    WORD word = 0;
-    WORD cmd = 0;
-    WORD zcnt = 0;
-    CMDTYPE cmdtype = 0;
-    const char *cmdname = NULL;
-    bool inst = true;
 
     assert(file != NULL);
     if((fp = fopen(file, "rb")) == NULL) {
         perror(file);
-        return false;
     }
 
-    create_cmdtable(HASH_CODE);                   /* 命令のコードとタイプがキーのハッシュ表を作成 */
-
+    buf = calloc_chk(MAX_MEMSIZE, sizeof(WORD), "disassemble_file");
+    for(int i = 0; !feof(fp) && i < MAX_MEMSIZE; i++) {
+        buf[i] = fgetword(fp);
+        len = i;
+    }
+    len--;
+    fclose(fp);
     fprintf(stdout, "MAIN    START\n");
-    for(word = fgetword(fp); !feof(fp); i++, word = fgetword(fp)) {
-        cmd = word & 0xFF00;
+    disassemble_memory(buf, 0, len);
+    fprintf(stdout, "        END\n");
+}
+
+void disassemble_memory(WORD *memory, WORD start, WORD end)
+{
+    WORD cmd = 0;
+    CMDTYPE cmdtype = 0;
+    const char *cmdname = NULL;
+    bool inprogram = true;
+    WORD zcnt = 0;
+
+    for(int i = start; i <= end; i++) {
+        cmd = memory[i] & 0xFF00;
         cmdname = getcmdname(cmd);
         cmdtype = getcmdtype(cmd);
-        if(word == 0){
-            if(inst == true) {  /* プログラム領域の場合  */
+        if(memory[i] == 0) {
+            if(inprogram == true) {  /* プログラム領域の場合  */
                 disassemble_cmd_r(NONE, "nop", 0, i);
             } else {            /* データ領域の場合 */
-                zcnt = zero_data_cnt(fp);
+                zcnt = zero_data_cnt(memory+i, end-i+1);
+                /* fprintf(stdout, "DEBUG:::: i:%d; end:%04X\n", i,  end); */
                 if(zcnt == 1) { /* 1つだけの0はDCとみなす */
                     disassemble_dc(0, i);
                 } else {        /* 連続する0はDSとみなす */
@@ -208,50 +203,15 @@ bool disassemble_file(const char *file)
                 }
             }
         } else if(cmd == 0 || cmdname ==NULL) {
-            disassemble_dc(word, i);
+            disassemble_dc(memory[i], i);
         } else {
             if(cmdtype == R_ADR_X || cmdtype == ADR_X) {
-                disassemble_cmd_adr_x(cmdtype, cmdname, word, fgetword(fp), i++);
-            } else {
-                disassemble_cmd_r(cmdtype, cmdname, word, i);
-            }
-            inst = (cmd != 0x8100) ? true : false;
-        }
-        fprintf(stdout, "\n");
-    }
-    fprintf(stdout, "        END\n");
-    free_cmdtable(HASH_CODE);
-    fclose(fp);
-    return stat;
-}
-
-void disassemble_memory(WORD start, WORD end)
-{
-    WORD cmd = 0;
-    CMDTYPE cmdtype = 0;
-    const char *cmdname = NULL;
-    bool inst = true;
-
-    for(int i = start; i <= end; i++) {
-        cmd = sys->memory[i] & 0xFF00;
-        cmdname = getcmdname(cmd);
-        cmdtype = getcmdtype(cmd);
-        if(sys->memory[i] == 0) {
-            if(inst == true) {  /* プログラム領域の場合  */
-                disassemble_cmd_r(NONE, "nop", 0, i);
-            } else {            /* データ領域の場合。メモリーでは、DC 0とみなす */
-                disassemble_dc(0, i);
-            }
-        } else if(cmd == 0) {
-            disassemble_dc(sys->memory[i], i);
-        } else {
-            if(cmdtype == R_ADR_X || cmdtype == ADR_X) {
-                disassemble_cmd_adr_x(cmdtype, cmdname, sys->memory[i], sys->memory[i+1], i);
+                disassemble_cmd_adr_x(cmdtype, cmdname, memory[i], memory[i+1], i);
                 i++;
             } else {
-                disassemble_cmd_r(cmdtype, cmdname, sys->memory[i], i);
+                disassemble_cmd_r(cmdtype, cmdname, memory[i], i);
             }
-            inst = (cmd != 0x8100) ? true : false;
+            inprogram = (cmd != 0x8100) ? true : false;
         }
         fprintf(stdout, "\n");
     }

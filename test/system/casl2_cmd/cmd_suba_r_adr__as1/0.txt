@@ -17,8 +17,6 @@ Assemble ../../../../as/cmd/SUBA/suba_r_adr__as1.casl (1)
 ../../../../as/cmd/SUBA/suba_r_adr__as1.casl:    7:B       DC      #FFF6           ; -10
 	#0006	#FFF6
 ../../../../as/cmd/SUBA/suba_r_adr__as1.casl:    8:        END
-
-Executing machine codes
 #0000: Register::::
 #0000: GR0:      0 = #0000 = 0000000000000000
 #0000: GR1:      0 = #0000 = 0000000000000000

@@ -81,8 +81,10 @@ install-info:
 uninstall: uninstall-info
 	$(RM) $(prefix $(bindir)/,$(CMDFILES))
 
-version: $(VERSIONFILES)
-	@$(ECHO) "YACASL2 Version: $(VERSION)"
+version: version___stamp
+
+version___stamp: $(VERSIONFILES)
+	@$(PRINTF) "YACASL2 Version: %s\n" $(VERSION) >$@
 
 $(VERSIONFILES): VERSION
 	@$(SED) -e "s/@@VERSION@@/$(VERSION)/g" $@.version >$@

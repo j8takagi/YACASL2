@@ -379,8 +379,6 @@ Assemble ../../../../as/cmd/LD/ld_r_adr__l.casl (1)
 ../../../../as/cmd/LD/ld_r_adr__l.casl:   96:        RET
 	#00BA	#8100
 ../../../../as/cmd/LD/ld_r_adr__l.casl:   97:        END
-
-Executing machine codes
 #0000: Register::::
 #0000: GR0:      0 = #0000 = 0000000000000000
 #0000: GR1:      0 = #0000 = 0000000000000000

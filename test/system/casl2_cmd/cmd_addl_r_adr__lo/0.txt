@@ -17,8 +17,6 @@ Assemble ../../../../as/cmd/ADDL/addl_r_adr__lo.casl (1)
 ../../../../as/cmd/ADDL/addl_r_adr__lo.casl:    7:B       DC      #000F           ; 15
 	#0006	#000F
 ../../../../as/cmd/ADDL/addl_r_adr__lo.casl:    8:        END
-
-Executing machine codes
 #0000: Register::::
 #0000: GR0:      0 = #0000 = 0000000000000000
 #0000: GR1:      0 = #0000 = 0000000000000000

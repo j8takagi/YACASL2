@@ -19,8 +19,6 @@ Assemble ../../../../as/cmd/CALL/call__outer.casl (1)
 ../../../../as/cmd/CALL/call__outer.casl:    9:        RET
 	#0006	#8100
 ../../../../as/cmd/CALL/call__outer.casl:   10:        END
-
-Executing machine codes
 #0000: Register::::
 #0000: GR0:      0 = #0000 = 0000000000000000
 #0000: GR1:      0 = #0000 = 0000000000000000

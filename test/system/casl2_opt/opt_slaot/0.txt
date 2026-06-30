@@ -64,8 +64,6 @@ Assemble ../../../../as/sample/sum_10.casl (1)
 ../../../../as/sample/sum_10.casl:   16:RST     DS      1               ; 結果
 	#0012	#0000
 ../../../../as/sample/sum_10.casl:   17:        END
-
-Executing machine codes
 #0000: Register::::
 #0000: GR0:      0 = #0000 = 0000000000000000
 #0000: GR1:      0 = #0000 = 0000000000000000

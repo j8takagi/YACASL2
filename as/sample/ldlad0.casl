@@ -1,0 +1,10 @@
+MAIN    START
+        LAD     GR1,X
+        LD      GR2,X
+        ST      GR1,Y
+        ST      GR2,Z
+        RET
+X       DC      3
+Y       DS      1
+Z       DS      1
+        END

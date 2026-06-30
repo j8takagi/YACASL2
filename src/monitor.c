@@ -306,9 +306,9 @@ MONCMDTYPE monitorcmd(char *cmd, MONARGS *args)
         } else if(args->argc > 0 && stracmp(args->argv[0], 2, (char* []){"n", "noauto"})) {
             execmode.reverse = false;
         } else if(args->argc == 2) {
-            disassemble_memory(nh2word(args->argv[0]), nh2word(args->argv[1]));
+            disassemble_memory(sys->memory, nh2word(args->argv[0]), nh2word(args->argv[1]));
         } else {
-            disassemble_memory(execptr->start, execptr->end);
+            disassemble_memory(sys->memory, execptr->start, (execptr->end)-1);
         }
     } else if(stracmp(cmd, 1, (char* []){"reset"})) {
         fprintf(stdout, "Reset COMET II CPU.\n");

@@ -15,8 +15,6 @@ Assemble ../../../../as/cmd/LAD/lad_r_adr_x.casl (1)
 ../../../../as/cmd/LAD/lad_r_adr_x.casl:    6:A       DC      3
 	#0005	#0003
 ../../../../as/cmd/LAD/lad_r_adr_x.casl:    7:        END
-
-Executing machine codes
 #0000: Register::::
 #0000: GR0:      0 = #0000 = 0000000000000000
 #0000: GR1:      0 = #0000 = 0000000000000000

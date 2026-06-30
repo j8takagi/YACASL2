@@ -20,8 +20,6 @@ Assemble ../../../../as/cmd/AND/and_r_adr_x.casl (1)
 ../../../../as/cmd/AND/and_r_adr_x.casl:    8:        DC      #4FFF
 	#0008	#4FFF
 ../../../../as/cmd/AND/and_r_adr_x.casl:    9:        END
-
-Executing machine codes
 #0000: Register::::
 #0000: GR0:      0 = #0000 = 0000000000000000
 #0000: GR1:      0 = #0000 = 0000000000000000

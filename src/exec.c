@@ -120,7 +120,7 @@ void svcin()
         if(!buf[i] || buf[i] == '\n') {
             break;
         }
-        if(sys->cpu->gr[1] + i > execptr->end) {
+        if(sys->cpu->gr[1] + i >= execptr->end) {
             setcerr(208, "");    /* SVC input - memory overflow */
             break;
         }
@@ -136,7 +136,7 @@ void svcout()
     WORD w;
 
     for(i = 0; i < sys->memory[sys->cpu->gr[2]]; i++) {
-        if(sys->cpu->gr[1] + i > execptr->end) {
+        if(sys->cpu->gr[1] + i >= execptr->end) {
             setcerr(209, "");    /* SVC output - memory overflow */
             return;
         }
@@ -689,11 +689,8 @@ void exec()
     char *s = NULL;
     const char *monmsg = "COMET II machine code monitor. Type ? for help.\n";
 
-    create_cmdtable(HASH_CODE);                 /* 命令のコードとタイプがキーのハッシュ表を作成 */
+    create_cmdtable(HASH_CODE);                 /* 命令コードがキーのハッシュ表を作成 */
 
-    if(execmode.trace == true) {
-        fprintf(stdout, "\nExecuting machine codes\n");
-    }
     /* 機械語の実行 */
     for (sys->cpu->pr = execptr->start; ; ) {
         clock_begin = clock();                     /* クロック周波数設定のため、実行開始時間を格納 */

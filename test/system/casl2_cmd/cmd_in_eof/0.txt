@@ -43,8 +43,6 @@ Assemble ../../../../as/cmd/IN/in.casl (1)
 ../../../../as/cmd/IN/in.casl:    6:ILEN    DS      1
 	#0021	#0000
 ../../../../as/cmd/IN/in.casl:    7:        END
-
-Executing machine codes
 #0000: Register::::
 #0000: GR0:      0 = #0000 = 0000000000000000
 #0000: GR1:      0 = #0000 = 0000000000000000
