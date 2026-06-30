@@ -21,7 +21,7 @@ gittag___stamp: commit___stamp
 commit___stamp: version_up___stamp
 	$(GIT) add VERSION
 	$(GIT) commit -m "version up"
-	$(GIT) rev-parse HEAD > $@
+	$(GIT) rev-parse HEAD >$@
 
 version_up___stamp: VERSION
 	if [ -n "$$($(GIT) status -s)" ]; then $(PRINTF) "Error: commit, first.\n"; exit 1; fi
