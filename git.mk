@@ -4,7 +4,7 @@ GIT := git
 PRINTF := printf
 SED := sed
 
-# VERSION FORMAT: v<VERSIONNO>p<PATCHNO> (Example: v0.1p00)
+# VERSION FORMAT: v<VERSIONNO>p<PATCHNO> (Example: v0.1p0)
 VERSION = $(shell $(CAT) VERSION)
 VERSIONNO = $(shell $(CAT) VERSION | $(SED) 's/v\([0-9]*\.[0-9]*\)p.*$$/\1/' )
 PATCHNO = $(shell $(CAT) VERSION | $(SED) 's/^.*p//' )
@@ -20,7 +20,7 @@ gittag___stamp: commit___stamp
 
 commit___stamp: version_up___stamp
 	$(GIT) add VERSION
-	$(GIT) commit
+	$(GIT) commit -m "version up"
 	$(GIT) rev-parse HEAD > $@
 
 version_up___stamp: VERSION
