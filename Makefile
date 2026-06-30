@@ -94,6 +94,9 @@ copyright: LICENSE.copyright___stamp  README.copyright___stamp
 %.copyright___stamp: %
 	$(SED) -i.sedbak 's/Copyright (c) 2010-20[0-9][0-9]/Copyright (c) 2010-$(YEAR)/g' $< && $(DIFF) $<.sedbak $< >$@ && $(RM) *.sedbak
 
+gtags:
+	$(if $(strip $(shell $(WHICH) $(GTAGS))),$(GTAGS),@$(ECHO) '$(GTAGS): not found')
+
 include git.mk
 
 gittag: gittag___stamp
