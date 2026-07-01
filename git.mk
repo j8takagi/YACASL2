@@ -10,8 +10,8 @@ VERSIONNO = $(shell $(CAT) VERSION | $(SED) 's/v\([0-9]*\.[0-9]*\)p.*$$/\1/' )
 PATCHNO = $(shell $(CAT) VERSION | $(SED) 's/^.*p//' )
 
 gitpush___stamp: gittag___stamp
-	$(GIT) push origin main --follow-tags
-	$(GIT) push github main --follow-tags
+	$(GIT) push origin main --tags
+	$(GIT) push github main --tags
 	$(GIT) rev-parse HEAD > $@
 
 gittag___stamp: commit___stamp
