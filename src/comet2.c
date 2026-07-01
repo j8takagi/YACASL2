@@ -7,18 +7,18 @@
  * comet2コマンドのオプション
  */
 static struct option longopts[] = {
-    {"trace", no_argument, NULL, 't'},
-    {"tracearithmetic", no_argument, NULL, 't'},
-    {"tracelogical", no_argument, NULL, 'T'},
-    {"dump", no_argument, NULL, 'd'},
-    {"monitor", no_argument, NULL, 'm'},
-    {"memorysize", required_argument, NULL, 'M'},
-    {"clocks", required_argument, NULL, 'C'},
-    {"version", no_argument, NULL, 'v' },
-    {"help", no_argument, NULL, 'h'},
-    {0, 0, 0, 0},
+    { "trace", no_argument, NULL, 't' },
+    { "tracearithmetic", no_argument, NULL, 't' },
+    { "tracelogical", no_argument, NULL, 'T' },
+    { "dump", no_argument, NULL, 'd' },
+    { "monitor", no_argument, NULL, 'm' },
+    { "reverse", no_argument, NULL, 'r' },
+    { "memorysize", required_argument, NULL, 'M'},
+    { "clocks", required_argument, NULL, 'C' },
+    { "version", no_argument, NULL, 'v' },
+    { "help", no_argument, NULL, 'h' },
+    { 0, 0, 0, 0},
 };
-
 
 /**
  * @brief comet2コマンドのメイン
@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
     int stat = 0;
     const char *version = PACKAGE_VERSION;
     const char *cmdversion = "comet2 of YACASL2 version %s\n";
-    const char *usage = "Usage: %s [-tTdmvh] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE\n";
+    const char *usage = "Usage: %s [-tTdmrvh] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE\n";
 
     /* エラーの定義 */
     cerr_init();
@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
     addcerrlist_exec();
 
     /* オプションの処理 */
-    while((opt = getopt_long(argc, argv, "tTdmM:C:vh", longopts, NULL)) != -1) {
+    while((opt = getopt_long(argc, argv, "tTdmrM:C:vh", longopts, NULL)) != -1) {
         switch(opt) {
         case 't':
             execmode.trace = true;
@@ -58,6 +58,10 @@ int main(int argc, char *argv[])
             break;
         case 'm':
             execmode.monitor = true;
+            execmode.reverse = true;
+            break;
+        case 'r':
+            execmode.reverse = true;
             break;
         case 'M':
             if((memsize = memsize_str2word(optarg)) == 0) {

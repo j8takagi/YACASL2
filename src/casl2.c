@@ -34,6 +34,7 @@ static struct option longopts[] = {
     { "tracelogical", no_argument, NULL, 'T' },
     { "dump", no_argument, NULL, 'd' },
     { "monitor", no_argument, NULL, 'm' },
+    { "reverse", no_argument, NULL, 'r' },
     { "memorysize", required_argument, NULL, 'M' },
     { "clocks", required_argument, NULL, 'C' },
     { "version", no_argument, NULL, 'v' },
@@ -83,7 +84,7 @@ int main(int argc, char *argv[])
     const char *version = PACKAGE_VERSION;
     const char *cmdversion = "casl2 of YACASL2 version %s\n";
     const char *usage =
-        "Usage: %s [-slLaAtTdmvh] [-oO[<OBJECTFILE>]] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE1[ FILE2  ...]\n";
+        "Usage: %s [-slLaAtTdmrvh] [-oO[<OBJECTFILE>]] [-M <MEMORYSIZE>] [-C <CLOCKS>] FILE1[ FILE2  ...]\n";
 
     /* エラーの定義 */
     cerr_init();
@@ -92,7 +93,7 @@ int main(int argc, char *argv[])
     addcerrlist_exec();
 
     /* オプションの処理 */
-    while((opt = getopt_long(argc, argv, "tTdslLmao::O::AM:C:vh", longopts, NULL)) != -1) {
+    while((opt = getopt_long(argc, argv, "tTdslLmaro::O::AM:C:vh", longopts, NULL)) != -1) {
         switch(opt) {
         case 's':
             asmode.src = true;
@@ -130,6 +131,10 @@ int main(int argc, char *argv[])
             break;
         case 'm':
             execmode.step = true;
+            execmode.reverse = true;
+            break;
+        case 'r':
+            execmode.reverse = true;
             break;
         case 'M':
             if((memsize = memsize_str2word(optarg)) == 0) {
