@@ -219,7 +219,12 @@ void free_cmdtable(CMDTAB_HASH hash);
 WORD getcmdcode(const char *cmd, CMDTYPE type);
 
 /**
- * 命令の名前とタイプから、命令語長を返す\n
+ * コードが命令コードでR/R1またはR2/XのGRが範囲外の場合はfalse、それ以外はtrueを返す
+ */
+bool code_gr_valid(WORD code);
+
+/**
+ * 命令の名前とタイプから、命令語長を返す
  * 無効な場合は0を返す
  */
 WORD getcmdwordlen(const char *cmd, CMDTYPE type);

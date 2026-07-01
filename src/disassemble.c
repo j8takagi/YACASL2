@@ -147,9 +147,10 @@ WORD fgetword(FILE *stream)
 
 WORD zero_data_cnt(const WORD *data, WORD wordlen)
 {
-    WORD cnt = 1;
-    while(cnt < wordlen && data[cnt] == 0)
-        cnt++;
+    WORD cnt = 0;
+    for(cnt = 0; data[cnt] == 0 && cnt < wordlen; cnt++) {
+        ;
+    }
     return cnt;
 }
 
@@ -168,9 +169,8 @@ void disassemble_file(const char *file)
     buf = calloc_chk(MAX_MEMSIZE, sizeof(WORD), "disassemble_file");
     for(int i = 0; !feof(fp) && i < MAX_MEMSIZE; i++) {
         buf[i] = fgetword(fp);
-        len = i;
+        len = i - 1;
     }
-    len--;
     fclose(fp);
     fprintf(stdout, "MAIN    START\n");
     disassemble_memory(buf, 0, len);
@@ -185,33 +185,33 @@ void disassemble_memory(WORD *memory, WORD start, WORD end)
     bool inprogram = true;
     WORD zcnt = 0;
 
-    for(int i = start; i <= end; i++) {
-        cmd = memory[i] & 0xFF00;
+    WORD ptr = start;
+    while(ptr <= end) {
+        cmd = memory[ptr] & 0xFF00;
         cmdname = getcmdname(cmd);
         cmdtype = getcmdtype(cmd);
-        if(memory[i] == 0) {
-            if(inprogram == true) {  /* プログラム領域の場合  */
-                disassemble_cmd_r(NONE, "nop", 0, i);
-            } else {            /* データ領域の場合 */
-                zcnt = zero_data_cnt(memory+i, end-i+1);
-                /* fprintf(stdout, "DEBUG:::: i:%d; end:%04X\n", i,  end); */
-                if(zcnt == 1) { /* 1つだけの0はDCとみなす */
-                    disassemble_dc(0, i);
-                } else {        /* 連続する0はDSとみなす */
-                    disassemble_ds(zcnt, i);
-                    i += zcnt - 1;
-                }
-            }
-        } else if(cmd == 0 || cmdname ==NULL) {
-            disassemble_dc(memory[i], i);
-        } else {
-            if(cmdtype == R_ADR_X || cmdtype == ADR_X) {
-                disassemble_cmd_adr_x(cmdtype, cmdname, memory[i], memory[i+1], i);
-                i++;
+        if(inprogram == true) {  /* プログラム領域の場合  */
+            if(cmdname == NULL || code_gr_valid(memory[ptr]) == false) {
+                disassemble_dc(memory[ptr], ptr);
+                ptr++;
             } else {
-                disassemble_cmd_r(cmdtype, cmdname, memory[i], i);
+                if(cmdtype == R_ADR_X || cmdtype == ADR_X) {
+                    disassemble_cmd_adr_x(cmdtype, cmdname, memory[ptr], memory[ptr + 1], ptr);
+                } else {
+                    disassemble_cmd_r(cmdtype, cmdname, memory[ptr], ptr);
+                }
+                ptr += code2cmdwordlen(cmd);
             }
             inprogram = (cmd != 0x8100) ? true : false;
+        } else {
+            /* if(memory[ptr] == 0 && ((zcnt = zero_data_cnt(memory + ptr, end - ptr + 1)) > 1 || ptr == end)) { /\* 0が2つ以上の場合とメモリー末尾の場合、DSとみなす *\/ */
+            if(memory[ptr] == 0 && (zcnt = zero_data_cnt(memory + ptr, end - ptr + 1)) > 1) { /* 0が2つ以上の場合、DSとみなす */
+                disassemble_ds(zcnt, ptr);
+                ptr += zcnt;
+            } else {
+                disassemble_dc(memory[ptr], ptr);
+                ptr += 1;
+            }
         }
         fprintf(stdout, "\n");
     }

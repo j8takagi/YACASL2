@@ -264,7 +264,31 @@ char *getcmdname(WORD code)
 }
 
 /**
- * 命令コードから、命令語長を返す\n
+ * 命令コードから、GRの範囲が正常な場合はtrue 異常な場合はfalseを返す
+ */
+bool code_gr_valid(WORD code)
+{
+    bool res = true;
+    CMDTYPE cmdtype = getcmdtype(code & 0xFF00);
+    WORD gr = 0;
+    if(cmdtype == R_ADR_X || cmdtype == R1_R2 || cmdtype == R_) {
+        gr = (code & 0x00F0) >> 4;
+        if(gr < 0 || GRSIZE <= gr) {
+            res = false;
+        }
+    }
+    if(cmdtype == R_ADR_X || cmdtype == R1_R2 || cmdtype == ADR_X) {
+        gr = code & 0x000F;
+        if(GRSIZE <= gr) {
+            res = false;
+        }
+
+    }
+    return res;
+}
+
+/**
+ * 命令コードから、命令語長を返す
  * 無効な場合は0を返す
  */
 WORD code2cmdwordlen(WORD code)
