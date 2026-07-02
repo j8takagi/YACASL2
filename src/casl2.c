@@ -130,7 +130,7 @@ int main(int argc, char *argv[])
             execmode.dump = true;
             break;
         case 'm':
-            execmode.step = true;
+            execmode.monitor = true;
             execmode.reverse = true;
             break;
         case 'r':
