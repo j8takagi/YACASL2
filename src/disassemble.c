@@ -148,7 +148,7 @@ WORD fgetword(FILE *stream)
 WORD zero_data_cnt(const WORD *data, WORD wordlen)
 {
     WORD cnt = 0;
-    for(cnt = 0; data[cnt] == 0 && cnt < wordlen; cnt++) {
+    for(cnt = 0; cnt < wordlen && data[cnt] == 0; cnt++) {
         ;
     }
     return cnt;
@@ -190,27 +190,21 @@ void disassemble_memory(WORD *memory, WORD start, WORD end)
         cmd = memory[ptr] & 0xFF00;
         cmdname = getcmdname(cmd);
         cmdtype = getcmdtype(cmd);
-        if(inprogram == true) {  /* プログラム領域の場合  */
-            if(cmdname == NULL || code_gr_valid(memory[ptr]) == false) {
-                disassemble_dc(memory[ptr], ptr);
-                ptr++;
+        if((cmd > 0 && cmdname != NULL && code_gr_valid(memory[ptr]) == true) || (inprogram == true && memory[ptr] == 0)) {
+            if(cmdtype == R_ADR_X || cmdtype == ADR_X) {
+                disassemble_cmd_adr_x(cmdtype, cmdname, memory[ptr], memory[ptr + 1], ptr);
             } else {
-                if(cmdtype == R_ADR_X || cmdtype == ADR_X) {
-                    disassemble_cmd_adr_x(cmdtype, cmdname, memory[ptr], memory[ptr + 1], ptr);
-                } else {
-                    disassemble_cmd_r(cmdtype, cmdname, memory[ptr], ptr);
-                }
-                ptr += code2cmdwordlen(cmd);
+                disassemble_cmd_r(cmdtype, cmdname, memory[ptr], ptr);
             }
+            ptr += code2cmdwordlen(cmd);
             inprogram = (cmd != 0x8100) ? true : false;
         } else {
-            /* if(memory[ptr] == 0 && ((zcnt = zero_data_cnt(memory + ptr, end - ptr + 1)) > 1 || ptr == end)) { /\* 0が2つ以上の場合とメモリー末尾の場合、DSとみなす *\/ */
-            if(memory[ptr] == 0 && (zcnt = zero_data_cnt(memory + ptr, end - ptr + 1)) > 1) { /* 0が2つ以上の場合、DSとみなす */
+            if(memory[ptr] == 0 && ((zcnt = zero_data_cnt(memory + ptr, end - ptr + 1)) > 1 || ptr == end)) { /* 0が2つ以上の場合とメモリー末尾の場合は、DSとみなす */
                 disassemble_ds(zcnt, ptr);
                 ptr += zcnt;
             } else {
                 disassemble_dc(memory[ptr], ptr);
-                ptr += 1;
+                ptr++;
             }
         }
         fprintf(stdout, "\n");
