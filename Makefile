@@ -4,6 +4,7 @@
         install uninstall \
         version gittag copyright \
         gitpush gitpushorigin gitpushgithub \
+        version_up___stamp \
         clean src-clean gtags-clean \
         test-clean doc-clean doc_inner-clean
 
