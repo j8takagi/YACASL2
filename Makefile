@@ -106,7 +106,10 @@ gitpush: gitpush___stamp
 
 distclean: cmd-clean src-distclean gitclean version-clean clean
 
-clean: src-clean doc-clean doc_inner-clean
+clean: stamp-clean src-clean doc-clean doc_inner-clean
+
+stamp-clean:
+	$(RM) *___stamp
 
 cmd-clean:
 	$(RM) $(CMDFILES)
