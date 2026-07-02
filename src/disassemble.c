@@ -6,15 +6,6 @@
 int codecol = 32;
 
 /**
- * @brief ファイルストリームから1ワードを取得する
- *
- * @return 取得した1ワード
- *
- * @param stream ファイルストリーム
- */
-WORD fgetword(FILE *stream);
-
-/**
  * @brief WORDデータから、値が0のWORDがいくつ連続するか返す
  *
  * @return 値が0の連続するWORD数
@@ -138,13 +129,6 @@ void disassemble_ds(WORD wcnt, WORD pradr)
     }
 }
 
-WORD fgetword(FILE *stream)
-{
-    WORD aword;
-    fread(&aword, sizeof(WORD), 1, stream);
-    return aword;
-}
-
 WORD zero_data_cnt(const WORD *data, WORD wordlen)
 {
     WORD cnt = 0;
@@ -158,6 +142,7 @@ void disassemble_file(const char *file)
 {
     WORD *buf = NULL;
     WORD endptr = 0;
+    WORD w = 0;
     FILE *fp = NULL;
 
     assert(file != NULL);
@@ -167,15 +152,18 @@ void disassemble_file(const char *file)
     }
 
     buf = calloc_chk(MAX_MEMSIZE, sizeof(WORD), "disassemble_file");
-    for(WORD i = 0; !feof(fp); i++) {
-        buf[i] = fgetword(fp);
-        endptr = i;
+    while(fread(&w, sizeof(WORD), 1, fp) == 1) {
+        buf[endptr++] = w;
     }
     fclose(fp);
-    endptr--;
-    fprintf(stdout, "MAIN    START\n");
-    disassemble_memory(buf, 0, endptr);
-    fprintf(stdout, "        END\n");
+   if (endptr == 0) {
+       fprintf(stderr, "%s: empty or unreadable file\n", file);
+   } else {
+       fprintf(stdout, "MAIN    START\n");
+       disassemble_memory(buf, 0, endptr - 1);
+       fprintf(stdout, "        END\n");
+   }
+   free(buf);
 }
 
 void disassemble_memory(WORD *memory, WORD start, WORD end)
