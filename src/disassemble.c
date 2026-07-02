@@ -157,7 +157,7 @@ WORD zero_data_cnt(const WORD *data, WORD wordlen)
 void disassemble_file(const char *file)
 {
     WORD *buf = NULL;
-    int len = 0;
+    WORD endptr = 0;
     FILE *fp = NULL;
 
     assert(file != NULL);
@@ -167,13 +167,14 @@ void disassemble_file(const char *file)
     }
 
     buf = calloc_chk(MAX_MEMSIZE, sizeof(WORD), "disassemble_file");
-    for(int i = 0; !feof(fp) && i < MAX_MEMSIZE; i++) {
+    for(WORD i = 0; !feof(fp); i++) {
         buf[i] = fgetword(fp);
-        len = i - 1;
+        endptr = i;
     }
     fclose(fp);
+    endptr--;
     fprintf(stdout, "MAIN    START\n");
-    disassemble_memory(buf, 0, len);
+    disassemble_memory(buf, 0, endptr);
     fprintf(stdout, "        END\n");
 }
 

@@ -30,8 +30,8 @@ PRT     ST      GR4,LEN         ; LEN <- GR4
         OUT     STR,LEN         ; 文字列を出力
         RPOP
         RET
-STR     DS      17              ; 符号付き2進数で表記した場合を想定し、17けた分のメモリを確保
 LEN     DS      1
+STR     DS      17              ; 符号付き2進数で表記した場合を想定し、17けた分のメモリを確保
 NCHAR   DC      '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
         END
 ;;; 0〜65535の範囲にある正数の割算（筆算方式）を行う
