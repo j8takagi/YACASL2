@@ -163,7 +163,7 @@ void disassemble_file(const char *file)
        disassemble_memory(buf, 0, endptr - 1);
        fprintf(stdout, "        END\n");
    }
-   free(buf);
+   FREE(buf);
 }
 
 void disassemble_memory(WORD *memory, WORD start, WORD end)
