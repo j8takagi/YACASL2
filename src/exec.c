@@ -704,6 +704,9 @@ void exec()
                 fprintf(stdout, "%s", monmsg);
             }
             monitor();
+            if(execmode.monitor == false && (execptr->start == false || execptr->stop == true)) {
+                break;
+            }
         }
         /* プログラムレジスタをチェック */
         if(sys->cpu->pr >= sys->memsize) {

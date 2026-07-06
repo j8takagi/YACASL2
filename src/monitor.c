@@ -367,20 +367,11 @@ void free_moncmdline(MONCMDLINE *moncmdl)
     }
 }
 
-int monquit()
+void monquit()
 {
-    int stat = 0;
-
-    comet2_shutdown();
+    execmode.monitor = false;
+    execmode.step = false;
     freebps();
-    free_cmdtable(HASH_CMDTYPE);
-    free_cmdtable(HASH_CODE);
-
-    if(cerr->num > 0) {
-        stat = 1;
-    }
-    freecerr();
-    return stat;
 }
 
 void monitor()
@@ -396,7 +387,8 @@ void monitor()
         /* EOFの処理 */
         if(buf == NULL) {
             FREE(last_buf);
-            exit(monquit());
+            monquit();
+            break;
         }
         /* 空行（Enterだけ）の場合は、前回のコマンドをリピート */
         if(buf[0] == '\0') {
@@ -427,7 +419,8 @@ void monitor()
         if(cmdtype == MONQUIT) {
             FREE(buf);
             FREE(last_buf);
-            exit(monquit());
+            monquit();
+            break;
         }
     } while(cmdtype == MONREPEAT);
     FREE(buf);

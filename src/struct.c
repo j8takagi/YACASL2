@@ -273,7 +273,7 @@ bool code_gr_valid(WORD code)
     WORD gr = 0;
     if(cmdtype == R_ADR_X || cmdtype == R1_R2 || cmdtype == R_) {
         gr = (code & 0x00F0) >> 4;
-        if(gr < 0 || GRSIZE <= gr) {
+        if(gr >= GRSIZE) {
             res = false;
         }
     }
