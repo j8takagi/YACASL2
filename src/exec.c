@@ -692,7 +692,8 @@ void exec()
     create_cmdtable(HASH_CODE);                 /* 命令コードがキーのハッシュ表を作成 */
 
     /* 機械語の実行 */
-    for (sys->cpu->pr = execptr->start; ; ) {
+    sys->cpu->pr = execptr->start;
+    do {
         clock_begin = clock();                     /* クロック周波数設定のため、実行開始時間を格納 */
         dsp_trace_dump();
         /* モニターモードでCOMET II起動時、またはステップモードかブレークポイントの場合、モニターを起動 */
@@ -742,7 +743,7 @@ void exec()
         do {
             clock_end = clock();
         } while(clock_end - clock_begin < CLOCKS_PER_SEC / sys->clocks);
-    }
+    } while(1);
 execfin:
     FREE(s);
     freebps();

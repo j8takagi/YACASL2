@@ -371,6 +371,7 @@ void monquit()
 {
     execmode.monitor = false;
     execmode.step = false;
+    execptr->stop = true;
     freebps();
 }
 
