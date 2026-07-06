@@ -26,7 +26,6 @@
 #0000: Disassemble::::        LD      GR1,#000B       ; #0000: #1010 #000B
 
 COMET II machine code monitor. Type ? for help.
-(comet2 monitor) n
 > n
 #0002: Register::::
 #0002: GR0:      0 = #0000 = 0000000000000000
@@ -46,7 +45,6 @@ COMET II machine code monitor. Type ? for help.
 #0002: 0000: 1010 000B 1220 000B 1230 0001 1110 000C 1123 000C 8100 0003 0000 0000 0000 0000
 #0002: Disassemble::::        LAD     GR2,#000B       ; #0002: #1220 #000B
 
-(comet2 monitor) n
 > n
 #0004: Register::::
 #0004: GR0:      0 = #0000 = 0000000000000000
@@ -66,7 +64,6 @@ COMET II machine code monitor. Type ? for help.
 #0004: 0000: 1010 000B 1220 000B 1230 0001 1110 000C 1123 000C 8100 0003 0000 0000 0000 0000
 #0004: Disassemble::::        LAD     GR3,#0001       ; #0004: #1230 #0001
 
-(comet2 monitor) n
 > n
 #0006: Register::::
 #0006: GR0:      0 = #0000 = 0000000000000000
@@ -86,7 +83,6 @@ COMET II machine code monitor. Type ? for help.
 #0006: 0000: 1010 000B 1220 000B 1230 0001 1110 000C 1123 000C 8100 0003 0000 0000 0000 0000
 #0006: Disassemble::::        ST      GR1,#000C       ; #0006: #1110 #000C
 
-(comet2 monitor) n
 > n
 #0008: Register::::
 #0008: GR0:      0 = #0000 = 0000000000000000
@@ -106,7 +102,6 @@ COMET II machine code monitor. Type ? for help.
 #0008: 0000: 1010 000B 1220 000B 1230 0001 1110 000C 1123 000C 8100 0003 0003 0000 0000 0000
 #0008: Disassemble::::        ST      GR2,#000C,GR3   ; #0008: #1123 #000C
 
-(comet2 monitor) n
 > n
 #000A: Register::::
 #000A: GR0:      0 = #0000 = 0000000000000000
@@ -126,12 +121,9 @@ COMET II machine code monitor. Type ? for help.
 #000A: 0000: 1010 000B 1220 000B 1230 0001 1110 000C 1123 000C 8100 0003 0003 000B 0000 0000
 #000A: Disassemble::::        RET                     ; #000A: #8100
 
-(comet2 monitor) n
 > n
 Return to top.
-(comet2 monitor) n
 > n
 Return to top.
-(comet2 monitor) q
 > q
 Quit: COMET II monitor
