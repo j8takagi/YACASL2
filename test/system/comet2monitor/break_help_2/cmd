@@ -1,2 +1,2 @@
-../../../../comet2monitor -q <break_help_2.monitor 2>tmp.log | sed -e '/^(comet2 monitor) /d' | cat - tmp.log && rm tmp.log
+stdbuf -oL ../../../../comet2monitor -q <break_help_2.monitor 2>&1 | sed -e '/^(comet2 monitor) /d'
 

@@ -42,7 +42,7 @@ TIME := time
 TR := tr
 VALGRIND := valgrind
 VALGRIND_LOGFILE := _valgrind.log
-VALGRINDFLAG :=  -q --leak-check=full --show-leak-kinds=all --log-file=$(VALGRIND_LOGFILE)
+VALGRINDFLAG :=  -q --leak-check=full --show-leak-kinds=all --suppressions=../../readline.supp --log-file=$(VALGRIND_LOGFILE)
 VALGRIND_CMDLOGFILE := valgrind.log
 
 ######################################################################

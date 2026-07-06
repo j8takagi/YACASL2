@@ -1,1 +1,1 @@
-../../../../comet2monitor -q <dump_3.monitor 2>tmp.log | sed -e '/^(comet2 monitor) /d' | cat - tmp.log && rm tmp.log
+stdbuf -oL ../../../../comet2monitor -q <dump_3.monitor 2>&1 | sed -e '/^(comet2 monitor) /d'
