@@ -5,7 +5,10 @@
 /comet2monitor
 *.o
 *.o.casl
+!as/sample/addl.o
 !as/sample/hello.o
+!as/sample/ldlad.o
+!as/sample/outl.o
 !as/sample/sum_10.o
 !as/sample/test.o
 include/version.h
