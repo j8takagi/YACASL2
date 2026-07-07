@@ -10,6 +10,7 @@ GIT := git
 GREP := grep
 GTAGS := gtags
 INSTALL := install
+PRINTF := printf
 SED := sed
 WC := wc
 WHICH := which
@@ -76,11 +77,26 @@ copyright: LICENSE.copyright___stamp  README.copyright___stamp
 gtags:
 	$(if $(strip $(shell $(WHICH) $(GTAGS))),$(GTAGS),@$(ECHO) '$(GTAGS): not found')
 
-include git.mk
-
 gittag: gittag___stamp
 
 gitpush: gitpush___stamp
+
+
+gitpush___stamp: gittag___stamp
+	$(GIT) push origin main --tags
+	$(GIT) push github main --tags
+	$(GIT) rev-parse HEAD > $@
+
+gittag___stamp: patchup___stamp
+	$(GIT) tag --points-at HEAD | $(GREP) -qx "$$($(CAT) VERSION)" || $(GIT) tag $$($(CAT) VERSION) main
+	$(PRINTF) "%s\n" "$$($(CAT) VERSION)" > $@
+
+patchup___stamp:
+	$(GIT) diff-index --quiet HEAD -- || ($(PRINTF) "Error: commit, first.\n"; exit 1)
+# VERSION FORMAT: v<VERSIONNO>p<PATCHNO> (Example: v0.1p0)
+	$(GIT) tag --points-at HEAD | $(GREP) -qx "$$(cat VERSION)" && exit 0 || while $(GIT) rev-parse -q --verify $$(cat VERSION) >/dev/null 2>&1; do $(PRINTF) "v%.1fp%02d\n" $$($(SED) 's/v\([0-9]*\.[0-9]*\)p.*$$/\1/' VERSION) $$($(EXPR) $$($(SED) 's/^.*p//' VERSION)  + 1) >VERSION; done;
+	$(GIT) diff-index --quiet HEAD -- || $(GIT) commit -a -m "version up to $$($(CAT) VERSION)"
+	$(PRINTF) "%s\n" "$$($(CAT) VERSION)" >$@
 
 distclean: cmd-clean src-distclean gitclean version-clean clean
 
