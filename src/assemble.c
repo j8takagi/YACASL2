@@ -185,7 +185,6 @@ void assemble_rpush(const CMDLINE *cmdl, PASS pass);
  *      POP GR5
  *      POP GR4
  *      POP GR3
- *      POP GR3
  *      POP GR2
  *      POP GR1
  * @endcode
