@@ -1,12 +1,4 @@
-.PHONY: all srcall gtags \
-        check valgrind \
-        doc alldoc doc_inner \
-        install uninstall \
-        version gittag copyright \
-        gitpush gitpushorigin gitpushgithub \
-        version_up___stamp gittag___stamp \
-        clean src-clean gtags-clean \
-        test-clean doc-clean doc_inner-clean
+.PHONY: all gtags check valgrind doc doc_inner copyright install uninstall patchup___stamp gittag gitpush clean src-clean gtags-clean test-clean doc-clean doc_inner-clean
 
 CAT := cat
 CP := cp -v
@@ -33,10 +25,7 @@ VERSIONGITREF = $(shell $(GIT) show-ref -s --tags $(VERSION))
 
 MAINGITREF = $(shell $(GIT) show-ref -s refs/heads/main)
 
-VERSIONFILES := include/version.h \
-        test/system/casl2_opt/opt_v/0.txt \
-        test/system/comet2_opt/opt_v/0.txt \
-        test/system/dumpword/opt_v/0.txt
+VERSIONFILES := include/version.h test/system/casl2_opt/opt_v/0.txt test/system/comet2_opt/opt_v/0.txt test/system/dumpword/opt_v/0.txt
 
 CMDFILES := casl2 comet2 dumpword casl2rev comet2monitor
 
@@ -54,7 +43,7 @@ INSTALL: doc/install.txt
 doc/install.txt:
 	$(MAKE) -C doc base
 
-alldoc:
+doc:
 	$(MAKE) -C doc all
 
 doc_inner:
@@ -81,11 +70,6 @@ install-info:
 
 uninstall: uninstall-info
 	$(RM) $(prefix $(bindir)/,$(CMDFILES))
-
-version: version___stamp
-
-version___stamp: $(VERSIONFILES)
-	@$(PRINTF) "YACASL2 Version: %s\n" $(VERSION) >$@
 
 $(VERSIONFILES): VERSION
 	@$(SED) -e "s/@@VERSION@@/$(VERSION)/g" $@.version >$@

@@ -15,16 +15,15 @@ gitpush___stamp: gittag___stamp
 	$(GIT) push github main --tags
 	$(GIT) rev-parse HEAD > $@
 
-gittag___stamp:
-	$(GIT) tag --points-at main | $(GREP) -qx "$(VERSION)" || $(GIT) tag $(VERSION) main
+gittag___stamp: patchup___stamp
+	$(GIT) tag --points-at HEAD | $(GREP) -qx "$(VERSION)" || $(GIT) tag $(VERSION) main
 	$(PRINTF) "%s\n" "$(VERSION)" > $@
 
-version_up___stamp: VERSION
-	if [ -n "$$($(GIT) status -s)" ]; then $(PRINTF) "Error: commit, first.\n"; exit 1; fi
-	while $(GIT) rev-parse -q --verify $$($(CAT) VERSION) >/dev/null 2>&1; do $(PRINTF) "v%.1fp%02d\n" $(VERSIONNO) $$($(EXPR) $(PATCHNO) + 1) >$<; done
-	$(GIT) add VERSION
-	$(GIT) commit -m "version up"
-	$(CAT) $< >$@
+patchup___stamp:
+	git diff-index --quiet HEAD -- || ($(PRINTF) "Error: commit, first.\n"; exit 1)
+	$(GIT) tag --points-at HEAD | $(GREP) -qx "$(VERSION)" && exit 0 || while $(GIT) rev-parse -q --verify $(VERSION) >/dev/null 2>&1; do $(PRINTF) "v%.1fp%02d\n" $(VERSIONNO) $$($(EXPR) $(PATCHNO) + 1) >VERSION; done;
+	git diff-index --quiet HEAD -- || $(GIT) commit -a -m "version up to $(VERSION)"
+	$(PRINTF) "%s\n" "$(VERSION)" >$@
 
 gitclean:
 	$(RM) *___stamp
