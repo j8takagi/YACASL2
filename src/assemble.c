@@ -341,13 +341,24 @@ WORD grword(const char *str, bool is_x)
 WORD getliteral(const char *str, PASS pass)
 {
     assert(str[0] == '=');
-    WORD adr = asptr->lptr;
-
     str++;
-    if(str[0] == '\'') {    /* 文字定数 */
-        writestr(str, true, pass);
+    WORD val = (str[0] == '\'') ? (WORD)str[1] : nh2word(str);
+    WORD adr = 0;
+    /* PASS FIRSTでは、lptrがまだ確定していない（ENDで初めて確定する）ため、
+     * 重複排除の登録・検索は行わず、従来通りダミーの書き込みのみ行う */
+    if(pass == FIRST) {
+        adr = asptr->lptr;
+        writememory(val, (asptr->lptr)++, pass);
     } else {
-        writememory(nh2word(str), (asptr->lptr)++, pass);
+        /* PASS SECONDでは、lptrはEND処理で正しく確定済みなので、重複排除が有効 */
+        char llabel[LITERALSIZE + 1];
+        sprintf(llabel, "=%04X", val);
+        adr = getlabel("", llabel);
+        if(adr == 0xFFFF) {
+            adr = asptr->lptr;
+            writememory(val, (asptr->lptr)++, pass);
+            addlabel("", llabel, adr);
+        }
     }
     return adr;
 }
