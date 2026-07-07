@@ -9,7 +9,7 @@ INCLUDEDIR := ../include
 
 # コマンド
 CC := gcc
-CFLAGS := -g -Wall -Wextra -I$(INCLUDEDIR)
+CFLAGS := -g -Wall -Wextra -Wshadow -I$(INCLUDEDIR)
 LDFLAGS :=  -lreadline
 CTAGS := ctags
 ETAGS := etags
