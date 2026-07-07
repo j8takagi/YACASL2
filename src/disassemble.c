@@ -142,7 +142,6 @@ void disassemble_file(const char *file)
 {
     WORD *buf = NULL;
     WORD endptr = 0;
-    WORD w = 0;
     FILE *fp = NULL;
 
     assert(file != NULL);
@@ -152,9 +151,7 @@ void disassemble_file(const char *file)
     }
 
     buf = calloc_chk(MAX_MEMSIZE, sizeof(WORD), "disassemble_file");
-    while(fread(&w, sizeof(WORD), 1, fp) == 1) {
-        buf[endptr++] = w;
-    }
+    endptr = (WORD)fread(buf, sizeof(WORD), MAX_MEMSIZE, fp);
     fclose(fp);
    if (endptr == 0) {
        fprintf(stderr, "%s: empty or unreadable file\n", file);
