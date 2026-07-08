@@ -263,7 +263,7 @@ static CERR cerr_assemble[] = {
     { 122, "cannot create hash table" },
     { 124, "more than one character in literal" },
     { 125, "not GR in operand x" },
-    { 128, "syntax error in literal" },
+    { 126, "syntax error in literal" },
 };
 
 /**
@@ -347,7 +347,7 @@ WORD getliteral(const char *str, PASS pass)
 
     if(str[0] == '\'') {
         if(str[1] == '\'' && str[2] != '\'') {
-            setcerr(128, str);    /* syntax error in literal */
+            setcerr(126, str);    /* syntax error in literal */
             return 0;
         } else if((str[1] == '\'' && str[2] == '\'' && str[3] == '\0') || str[2] == '\0' ) {
             setcerr(123, str);    /* unclosed quote */

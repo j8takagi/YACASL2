@@ -1,1 +1,2 @@
-casl2 error - 126: no source file
+Assemble error - 126: '': syntax error in literal
+../../../../as/err/err_128.casl:    2:        LAD     GR1,=''
