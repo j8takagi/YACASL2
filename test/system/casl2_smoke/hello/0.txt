@@ -54,4 +54,9 @@ Assemble ../../../../as/sample/hello.casl (1)
 ../../../../as/sample/hello.casl:    5:LEN     DC      13
 	#0020	#000D
 ../../../../as/sample/hello.casl:    6:        END
+
+Literal::::
+=000A ---> #0021
+=0001 ---> #0022
+
 Hello, World!

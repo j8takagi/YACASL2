@@ -103,6 +103,12 @@ bool addlabel(const char *prog, const char *label, WORD adr);
 void printlabel();
 
 /**
+ * @brief リテラルを表示する
+ *
+ */
+void printliteral();
+
+/**
  * @brief ラベル表を解放する
  *
  */

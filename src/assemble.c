@@ -66,10 +66,9 @@ void writememory(WORD word, WORD adr, PASS pass);
  * @brief 文字をメモリに書き込む
  *
  * @param *str アドレスを表す文字列。リテラル／10進定数／16進定数／アドレス定数が含まれる
- * @param literal リテラルの場合はtrue
  * @param pass アセンブラが何回目かを表す数
  */
-void writestr(const char *str, bool literal, PASS pass);
+void writestr(const char *str, PASS pass);
 
 /**
  * @brief DC命令を書込
@@ -264,6 +263,7 @@ static CERR cerr_assemble[] = {
     { 122, "cannot create hash table" },
     { 124, "more than one character in literal" },
     { 125, "not GR in operand x" },
+    { 128, "syntax error in literal" },
 };
 
 /**
@@ -342,8 +342,24 @@ WORD getliteral(const char *str, PASS pass)
 {
     assert(str[0] == '=');
     str++;
-    WORD val = (str[0] == '\'') ? (WORD)str[1] : nh2word(str);
+    WORD val = 0;
     WORD adr = 0;
+
+    if(str[0] == '\'') {
+        if(str[1] == '\'' && str[2] != '\'') {
+            setcerr(128, str);    /* syntax error in literal */
+            return 0;
+        } else if((str[1] == '\'' && str[2] == '\'' && str[3] == '\0') || str[2] == '\0' ) {
+            setcerr(123, str);    /* unclosed quote */
+            return 0;
+        } else if((str[1] == '\'' && str[2] == '\'' && str[3] != '\'') || str[2] != '\'') {
+            setcerr(124, str);    /* more than one character in literal */
+            return 0;
+        }
+        val = (WORD)str[1];
+    } else {
+        val = nh2word(str);
+    }
     /* PASS FIRSTでは、lptrがまだ確定していない（ENDで初めて確定する）ため、
      * 重複排除の登録・検索は行わず、従来通りダミーの書き込みのみ行う */
     if(pass == FIRST) {
@@ -379,29 +395,18 @@ void writememory(WORD word, WORD adr, PASS pass)
     }
 }
 
-void writestr(const char *str, bool literal, PASS pass)
+void writestr(const char *str, PASS pass)
 {
     assert(str[0] == '\'');
-    bool lw = false;
 
-    /* 「'」の場合、1文字スキップし、次の文字が「'」でなければ正常終了 */
+    /* 「'」1文字スキップし、次の文字が「'」でなければ正常終了 */
     for(int i = 1; str[i] != '\'' || str[++i] == '\''; i++) {
         /* 「'」が閉じないまま文字列が終了した場合はエラー */
         if(!str[i]) {
             setcerr(123, str);    /* unclosed quote */
             break;
         }
-        if(literal == true && lw == true) {
-            setcerr(124, str);    /* more than one character in literal */
-            break;
-        }
-        /*リテラルの場合はリテラル領域に書込 */
-        if(literal == true) {
-            writememory(str[i], (asptr->lptr)++, pass);
-            lw = true;
-        } else {
-            writememory(str[i], (asptr->ptr)++, pass);
-        }
+        writememory(str[i], (asptr->ptr)++, pass);
     }
 }
 
@@ -410,7 +415,7 @@ void writedc(const char *str, PASS pass)
     WORD adr = 0;
 
     if(*str == '\'') {
-        writestr(str, false, pass);
+        writestr(str, pass);
     } else {
         if(str[0] == '#' || isdigit(str[0]) || str[0] == '-') {
             adr = nh2word(str);
@@ -776,11 +781,15 @@ bool assemble(int filec, char *filev[], WORD adr)
                 goto asfin;
             }
         }
-        if(pass == FIRST && asmode.label == true) {
-            fprintf(stdout, "\nLabel::::\n");
-            printlabel();
-            if(asmode.onlylabel == true) {
-                break;
+        if(asmode.label == true) {
+            if(pass == FIRST) {
+                printlabel();
+                if(asmode.onlylabel == true) {
+                    break;
+                }
+            }
+            if(pass == SECOND) {
+                printliteral();
             }
         }
     }

@@ -30,6 +30,15 @@ unsigned labelhash(const char *prog, const char *label);
 int compare_adr(const void *a, const void *b);
 
 /**
+ * 定義されているラベルまたはリテラルの一覧を表示する
+ *
+ * @return ラベルが同一の場合は0、異なる場合は0以外
+ *
+ * @param literal リテラルの場合はtrue、それ以外はfalse
+ */
+void printlabel_full(bool literal);
+
+/**
  * @brief ラベル数
  */
 static int labelcnt = 0;
@@ -78,6 +87,37 @@ unsigned labelhash(const char *prog, const char *label)
 int compare_adr(const void *a, const void *b)
 {
     return (**(LABELARRAY **)a).adr - (**(LABELARRAY **)b).adr;
+}
+
+void printlabel_full(bool literal)
+{
+    int s = 0;
+    LABELTAB *p = NULL;
+    LABELARRAY **l = NULL;
+
+    l = calloc_chk(labelcnt, sizeof(LABELARRAY *), "printlabel_full");
+    for(int i = 0; i < LABELTABSIZE; i++) {
+        for(p = labels[i]; p != NULL; p = p->next) {
+            assert(p->label->label != NULL);
+            if((literal == true && p->label->label[0] == '=') || (literal == false && p->label->label[0] != '=')) {
+                l[s++] = p->label;
+            }
+        }
+    }
+    if(s > 0) {
+        qsort(l, s, sizeof(*l), compare_adr);
+        fprintf(stdout, "\n%s::::\n", (literal == true) ? "Literal" : "Label");
+        for(int i = 0; i < s; i++) {
+            if(l[i]->prog[0]) {
+                fprintf(stdout, "%s.", l[i]->prog);
+            }
+            fprintf(stdout, "%s ---> #%04X\n", l[i]->label, l[i]->adr);
+        }
+        if(literal == true) {
+            fprintf(stdout, "\n");
+        }
+    }
+    FREE(l);
 }
 
 /* assemble.hで定義された関数群 */
@@ -134,25 +174,12 @@ bool addlabel(const char *prog, const char *label, WORD adr)
 
 void printlabel()
 {
-    int s = 0;
-    LABELTAB *p = NULL;
-    LABELARRAY **l = {NULL};
+    printlabel_full(false);
+}
 
-    l = calloc_chk(labelcnt, sizeof(LABELARRAY **), "labels");
-    for(int i = 0; i < LABELTABSIZE; i++) {
-        for(p = labels[i]; p != NULL; p = p->next) {
-            assert(p->label != NULL);
-            l[s++] = p->label;
-        }
-    }
-    qsort(l, s, sizeof(*l), compare_adr);
-    for(int i = 0; i < s; i++) {
-        if(l[i]->prog[0]) {
-            fprintf(stdout, "%s.", l[i]->prog);
-        }
-        fprintf(stdout, "%s ---> #%04X\n", l[i]->label, l[i]->adr);
-    }
-    FREE(l);
+void printliteral()
+{
+    printlabel_full(true);
 }
 
 void freelabel()
