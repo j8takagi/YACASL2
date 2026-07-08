@@ -1,4 +1,4 @@
-.PHONY: all gtags check valgrind doc doc_inner copyright install uninstall patchup___stamp gittag gitpush clean src-clean gtags-clean test-clean doc-clean doc_inner-clean
+.PHONY: all gtags check valgrind doc doc_inner copyright install uninstall varsion patchup___stamp gittag gitpush clean src-clean gtags-clean test-clean doc-clean doc_inner-clean
 
 CAT := cat
 CP := cp -v
@@ -66,6 +66,11 @@ install-info:
 uninstall: uninstall-info
 	$(RM) $(prefix $(bindir)/,$(CMDFILES))
 
+version: version___stamp
+
+version___stamp: $(VERSIONFILES)
+	@$(PRINTF) "YACASL2 Version: %s\n" $(VERSION) >$@
+
 $(VERSIONFILES): VERSION
 	@$(SED) -e "s/@@VERSION@@/$(VERSION)/g" $@.version >$@
 
@@ -80,7 +85,6 @@ gtags:
 gittag: gittag___stamp
 
 gitpush: gitpush___stamp
-
 
 gitpush___stamp: gittag___stamp
 	$(GIT) push origin main --tags
