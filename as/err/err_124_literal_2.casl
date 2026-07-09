@@ -1,0 +1,5 @@
+MAIN    START
+        LAD     GR1,=''''
+        LAD     GR2,='''a'
+END     RET
+        END

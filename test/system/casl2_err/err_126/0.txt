@@ -1,2 +1,2 @@
-Assemble error - 126: '': syntax error in literal
-../../../../as/err/err_128.casl:    2:        LAD     GR1,=''
+Assemble error - 126: 'a'b': syntax error in character constant. In CASL II, two consecutive apostrophes ('') represent a single apostrophe (').
+../../../../as/err/err_126.casl:    3:        DC 'a'b'

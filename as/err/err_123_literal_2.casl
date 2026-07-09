@@ -1,4 +1,4 @@
 MAIN    START
-        LAD     GR1,=''
+        LAD     GR1,='
 END     RET
         END

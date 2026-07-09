@@ -1,1 +1,4 @@
-casl2 error - 127: no source file
+
+Assemble ../../../../as/cmd/DC/dc__c2.casl (0)
+Assemble error - 127: '': empty character constant
+../../../../as/cmd/DC/dc__c2.casl:    4:        DC      ''

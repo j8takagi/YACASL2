@@ -1,0 +1,2 @@
+Assemble error - 124: '''a': more than one character in literal
+../../../../as/err/err_124_literal_2.casl:    3:        LAD     GR2,='''a'

@@ -1,7 +1,7 @@
 #include "assemble.h"
 
 /**
- * ラベルのハッシュ値をセットしたキーを返す
+ * @brief ラベルのハッシュ値をセットしたキーを返す
  *
  * @return ハッシュ値をセットしたキー
  *
@@ -10,7 +10,7 @@
 HKEY *label_hashkey(const char *value);
 
 /**
- * プログラム名とラベルに対応するハッシュ値を返す
+ * @brief プログラム名とラベルに対応するハッシュ値を返す
  *
  * @return ハッシュ値
  *
@@ -20,7 +20,7 @@ HKEY *label_hashkey(const char *value);
 unsigned labelhash(const char *prog, const char *label);
 
 /**
- * ラベルを比較した結果を返す。qsort内で使われる関数
+ * @brief ラベルを比較した結果を返す。qsort内で使われる関数
  *
  * @return ラベルが同一の場合は0、異なる場合は0以外
  *
@@ -30,9 +30,7 @@ unsigned labelhash(const char *prog, const char *label);
 int compare_adr(const void *a, const void *b);
 
 /**
- * 定義されているラベルまたはリテラルの一覧を表示する
- *
- * @return ラベルが同一の場合は0、異なる場合は0以外
+ * @brief 定義されているラベルまたはリテラルの一覧を表示する
  *
  * @param literal リテラルの場合はtrue、それ以外はfalse
  */

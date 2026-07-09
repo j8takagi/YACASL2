@@ -271,7 +271,8 @@ static CERR cerr_assemble[] = {
     { 122, "cannot create hash table" },
     { 124, "more than one character in literal" },
     { 125, "not GR in operand x" },
-    { 126, "syntax error in literal" },
+    { 126, "syntax error in character constant. In CASL II, two consecutive apostrophes ('') represent a single apostrophe (')." },
+    { 127, "empty character constant" },
 };
 
 /**
@@ -384,12 +385,14 @@ WORD getliteralquote(const char *str)
     assert(str[0] == '\'');
     size_t len = strlen(str);
     WORD val = 0;
-    if (len < 2 || str[len - 1] != '\'' || (str[1] == '\'' && len == 3)) {
+    if(str[1] == '\'' && len == 2) {
+        setcerr(127, str);    /* empty character constant */
+    } else if (len == 1 || str[len - 1] != '\'') {
         setcerr(123, str);    /* unclosed quote */
     } else if((str[1] != '\'' && len > 3) || (str[1] == '\'' && len > 4)) {
         setcerr(124, str);    /* more than one character in literal */
-    } else if(len ==2 && !strcmp(str, "''")) {
-        setcerr(126, str);    /* syntax error in literal */
+    } else if(str[1] == '\'' && len == 3 && str[2] == '\'') {
+        setcerr(126, str);    /* syntax error in character constant. In CASL II, two consecutive apostrophes ('') represent a single apostrophe ('). */
     } else {
         val = (WORD)str[1];
     }
@@ -416,14 +419,32 @@ void writestr(const char *str, PASS pass)
 {
     assert(str[0] == '\'');
 
-    /* 「'」1文字スキップし、次の文字が「'」でなければ正常終了 */
-    for(int i = 1; str[i] != '\'' || str[++i] == '\''; i++) {
-        /* 「'」が閉じないまま文字列が終了した場合はエラー */
-        if(!str[i]) {
-            setcerr(123, str);    /* unclosed quote */
-            break;
-        }
-        writememory(str[i], (asptr->ptr)++, pass);
+    /* 空文字列（DC ''）はエラー */
+    if(str[1] == '\'' && str[2] == '\0') {
+        setcerr(127, str);    /* empty character constant */
+    } else {
+        int i = 1;
+        do {
+            if(str[i] == '\0') {
+                /* 閉じクォートがないまま文字列が終了の場合 */
+                setcerr(123, str);    /* unclosed quote */
+                break;
+            }
+            if(str[i] == '\'') {
+                if(str[i + 1] != '\0' && str[i + 1] != '\'') {
+                    setcerr(126, str);    /* syntax error in character constant. In CASL II, two consecutive apostrophes ('') represent a single apostrophe ('). */
+                    break;
+                } else if(str[i + 1] == '\0') {
+                    break;         /* 正常終了 */
+                } else {
+                    /* エスケープされたアポストロフィ：1文字として書き込み、2文字分進める */
+                    writememory('\'', (asptr->ptr)++, pass);
+                    i += 2;
+                }
+            } else {
+                writememory(str[i++], (asptr->ptr)++, pass);
+            }
+        } while(1);
     }
 }
 

@@ -1,2 +1,0 @@
-Assemble error - 123: GR1,='a: unclosed quote
-../../../../as/err/err_123_literal.casl:    2:        LAD     GR1,='a
