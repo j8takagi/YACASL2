@@ -31,10 +31,8 @@ WORD getadr(const char *prog, const char *str, PASS pass);
 
 /**
  * @brief 汎用レジスタを表す文字列からレジスタ番号を返す
- *
  * @brief 文字列が汎用レジスタを表さない場合は、0xFFFFを返す
- *
- * is_xがtrueの場合は指標レジスタとなり、GR0が指定された場合はCOMET IIの仕様によりエラー発生
+ * @brief is_xがtrueの場合は指標レジスタとなり、GR0が指定された場合はCOMET IIの仕様によりエラー発生
  *
  * @return レジスタ番号[0-7]を表すWORD値
  *
@@ -52,6 +50,16 @@ WORD grword(const char *str, bool is_x);
  * @param pass アセンブラが何回目かを表す数
  */
 WORD getliteral(const char *str, PASS pass);
+
+/**
+ * @brief 'ではじまる文字列からWORD値を返す
+ * @brief 'が閉じていない場合や、2文字以上の場合はエラーを発生させ、0を返す
+ *
+ * @return WORD値
+ *
+ * @param *str 'ではじまる文字列
+ */
+WORD getliteralquote(const char *str);
 
 /**
  * @brief アドレス値をメモリに書き込む
@@ -311,7 +319,7 @@ WORD getadr(const char *prog, const char *str, PASS pass)
                 adr = getlabel("", str);
             }
             if(adr == 0xFFFF) {
-                setcerr(103, str);    /* label not found */                setcerr(103, str);    /* label not found */
+                setcerr(103, str);    /* label not found */
             }
         }
     }
@@ -346,37 +354,46 @@ WORD getliteral(const char *str, PASS pass)
     WORD adr = 0;
 
     if(str[0] == '\'') {
-        if(str[1] == '\'' && str[2] != '\'') {
-            setcerr(126, str);    /* syntax error in literal */
-            return 0;
-        } else if((str[1] == '\'' && str[2] == '\'' && str[3] == '\0') || str[2] == '\0' ) {
-            setcerr(123, str);    /* unclosed quote */
-            return 0;
-        } else if((str[1] == '\'' && str[2] == '\'' && str[3] != '\'') || str[2] != '\'') {
-            setcerr(124, str);    /* more than one character in literal */
-            return 0;
-        }
-        val = (WORD)str[1];
+        val = getliteralquote(str);
     } else {
         val = nh2word(str);
     }
-    /* PASS FIRSTでは、lptrがまだ確定していない（ENDで初めて確定する）ため、
-     * 重複排除の登録・検索は行わず、従来通りダミーの書き込みのみ行う */
-    if(pass == FIRST) {
-        adr = asptr->lptr;
-        writememory(val, (asptr->lptr)++, pass);
-    } else {
-        /* PASS SECONDでは、lptrはEND処理で正しく確定済みなので、重複排除が有効 */
-        char llabel[LITERALSIZE + 1];
-        sprintf(llabel, "=%04X", val);
-        adr = getlabel("", llabel);
-        if(adr == 0xFFFF) {
+    if(cerr->num == 0) {
+        /* PASS FIRSTでは、lptrがまだ確定していない（ENDで初めて確定する）ため、
+         * 重複排除の登録・検索は行わず、従来通りダミーの書き込みのみ行う */
+        if(pass == FIRST) {
             adr = asptr->lptr;
             writememory(val, (asptr->lptr)++, pass);
-            addlabel("", llabel, adr);
+        } else {
+            /* PASS SECONDでは、lptrはEND処理で正しく確定済みなので、重複排除が有効 */
+            char llabel[LITERALSIZE + 1];
+            sprintf(llabel, "=%04X", val);
+            adr = getlabel("", llabel);
+            if(adr == 0xFFFF) {
+                adr = asptr->lptr;
+                writememory(val, (asptr->lptr)++, pass);
+                addlabel("", llabel, adr);
+            }
         }
     }
     return adr;
+}
+
+WORD getliteralquote(const char *str)
+{
+    assert(str[0] == '\'');
+    size_t len = strlen(str);
+    WORD val = 0;
+    if (len < 2 || str[len - 1] != '\'' || (str[1] == '\'' && len == 3)) {
+        setcerr(123, str);    /* unclosed quote */
+    } else if((str[1] != '\'' && len > 3) || (str[1] == '\'' && len > 4)) {
+        setcerr(124, str);    /* more than one character in literal */
+    } else if(len ==2 && !strcmp(str, "''")) {
+        setcerr(126, str);    /* syntax error in literal */
+    } else {
+        val = (WORD)str[1];
+    }
+    return val;
 }
 
 void writememory(WORD word, WORD adr, PASS pass)
