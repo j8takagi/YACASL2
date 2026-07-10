@@ -33,7 +33,7 @@ Copyright @copyright{} 2010-2026 j8takagi
 @insertcopying
 @end titlepage
 
-@node Top, Overview, (dir), (dir)
+@node Top, Overview
 @ifhtml
 @top YACASL2 - CASL II 処理システム
 @end ifhtml
@@ -53,18 +53,24 @@ YACASL2の使用例
 
 * Simple output::               実行結果の出力だけを表示
 * Assemble result::             アセンブル結果の確認
-* Register and memory::         実行時のレジスタとメモリを表示
+* Step execution::              モニターでステップ実行を確認する
+* Batch trace::                 実行結果をまとめて確認する
 * Only assemble::               アセンブルと実行を別に行う
 * Analyze word::                1語の解析
 * Use CASL2LIB::                CASL IIライブラリの使用
 
-実行時のレジスタとメモリを表示
+モニターでステップ実行を確認する
+
+* Monitor basics::              起動とステップ実行
+* Monitor continue::            継続実行とブレークポイント
+
+実行結果をまとめて確認する
 
 * Register specify::            特定のレジスタを表示
 * End value::
 * Step count::                  プログラムのステップ数を表示
 
-@code{comet2monitor}
+@command{comet2monitor}
 
 * comet2monitor options::       オプション
 * monitor commands::            モニターコマンド
@@ -161,7 +167,8 @@ YACASL2 は、テキストファイルに記述されたCASLプログラムを�
 @menu
 * Simple output::               実行結果の出力だけを表示
 * Assemble result::             アセンブル結果の確認
-* Register and memory::         実行時のレジスタとメモリを表示
+* Step execution::              モニターでステップ実行を確認する
+* Batch trace::                 実行結果をまとめて確認する
 * Only assemble::               アセンブルと実行を別に行う
 * Analyze word::                1語の解析
 * Use CASL2LIB::                CASL IIライブラリの使用
@@ -213,7 +220,7 @@ $
 
 実行内容を確認するには、後述のようにCPU 内にあるレジスタやメモリの内容を表示するか、結果を出力するための処理を追加する必要があります。
 
-@node Assemble result, Register and memory, Simple output, Sample usage
+@node Assemble result, Step execution, Simple output, Sample usage
 @section アセンブル結果の確認
 
 casl2の処理途中で行われるアセンブルの結果を表示するには、オプション@option{-a}を指定します。
@@ -228,52 +235,57 @@ $ @kbd{casl2 -a -l hello.casl}
 Assemble hello.casl (0)
 
 Label::::
-MAIN.LEN ---> #0020
 MAIN ---> #0000
 MAIN.OBUF ---> #0013
+MAIN.LEN ---> #0020
 
-Assemble hello.casl (1)
-hello.casl:    1:MAIN    START
-hello.casl:    2:        OUT     OBUF,LEN
-    #0000   #7001
-    #0001   #0000
-    #0002   #7002
-    #0003   #0000
-    #0004   #1210
-    #0005   #0013
-    #0006   #1220
-    #0007   #0020
-    #0008   #F000
-    #0009   #0002
-    #000A   #1210
-    #000B   #0021
-    #0021   #000A
-    #000C   #1220
-    #000D   #0022
-    #0022   #0001
-    #000E   #F000
-    #000F   #0002
-    #0010   #7120
-    #0011   #7110
-hello.casl:    3:        RET
-    #0012   #8100
-hello.casl:    4:OBUF    DC      'Hello, World!'
-    #0013   #0048
-    #0014   #0065
-    #0015   #006C
-    #0016   #006C
-    #0017   #006F
-    #0018   #002C
-    #0019   #0020
-    #001A   #0057
-    #001B   #006F
-    #001C   #0072
-    #001D   #006C
-    #001E   #0064
-    #001F   #0021
-hello.casl:    5:LEN     DC      13
-    #0020   #000D
-hello.casl:    6:        END
+Assemble as/sample/hello.casl (1)
+as/sample/hello.casl:    1:MAIN    START
+as/sample/hello.casl:    2:        OUT     OBUF,LEN
+	#0000	#7001
+	#0001	#0000
+	#0002	#7002
+	#0003	#0000
+	#0004	#1210
+	#0005	#0013
+	#0006	#1220
+	#0007	#0020
+	#0008	#F000
+	#0009	#0002
+	#0021	#000A
+	#000A	#1210
+	#000B	#0021
+	#0022	#0001
+	#000C	#1220
+	#000D	#0022
+	#000E	#F000
+	#000F	#0002
+	#0010	#7120
+	#0011	#7110
+as/sample/hello.casl:    3:        RET
+	#0012	#8100
+as/sample/hello.casl:    4:OBUF    DC      'Hello, World!'
+	#0013	#0048
+	#0014	#0065
+	#0015	#006C
+	#0016	#006C
+	#0017	#006F
+	#0018	#002C
+	#0019	#0020
+	#001A	#0057
+	#001B	#006F
+	#001C	#0072
+	#001D	#006C
+	#001E	#0064
+	#001F	#0021
+as/sample/hello.casl:    5:LEN     DC      13
+	#0020	#000D
+as/sample/hello.casl:    6:        END
+
+Literal::::
+=000A ---> #0021
+=0001 ---> #0022
+
 Hello, World!
 @end example
 
@@ -316,8 +328,276 @@ addl.casl:   10:        END
 なお、オプション@option{-A}を指定すると、アセンブル結果が表示される時点で処理が終了します。
 仮想マシンCOMET IIでのプログラム実行はされません。
 
-@node Register and memory, Only assemble, Assemble result, Sample usage
-@section 実行時のレジスタとメモリを表示
+@node Step execution, Batch trace, Assemble result, Sample usage
+@section モニターでステップ実行を確認する
+@command{casl2}に@option{-m}を指定すると、アセンブルに続けてそのまま、
+1命令ずつ実行を止めながらレジスタやメモリの内容を確認できる、
+対話的なモニターを起動できます。
+@option{-O}でオブジェクトファイルをあらかじめ作成しておく必要はありません。
+オプションの詳細は@ref{casl2 invocation}を参照してください。
+ここでは、ループを含む@file{sum_10.casl}を例に、実行の流れを確認しながら使い方を説明します。
+@file{sum_10.casl}は、1から10までの整数の和を求め、GR2に格納してからメモリにストア（書き込み）します。
+@example
+$ @kbd{cat sum_10.casl}
+;;; sum_10.casl
+;;; 1から10までの整数をすべて加算した値をメモリーに格納する
+MAIN    START
+        XOR     GR2,GR2         ; GR2を初期化
+        LD      GR1,FST         ; GR1に初項をメモリーから転送
+LOOP    ADDL    GR2,GR1         ; ループ先頭。GR2 <- GR2 + GR1
+        ADDL    GR1,STEP        ; GR1 <- GR1 + 公差
+        CPL     GR1,LST         ; GR1が末項より大きい場合は終了
+        JPL     FIN             ; ↓
+        JUMP    LOOP            ; ループ終端
+FIN     ST      GR2,RST         ; GR2の結果をメモリーに転送
+        RET
+FST     DC      1               ; 初項
+LST     DC      10              ; 末項
+STEP    DC      1               ; 公差
+RST     DS      1               ; 結果
+        END
+@end example
+@menu
+* Monitor basics::              起動とステップ実行
+* Monitor continue::            継続実行とブレークポイント
+@end menu
+
+@node Monitor basics, Monitor continue, Step execution, Step execution
+@subsection 起動とステップ実行
+@option{-m}のあとに続けて@code{T}・@code{d}の文字を指定すると、
+モニターに入った時点で、レジスタ（論理値表示）・メモリダンプの自動表示が、
+それぞれ有効になります。
+逆アセンブル結果の自動表示は、これらのフラグの指定に関わらず常にONです
+（@command{comet2monitor}のデフォルト動作と同じです）。
+@option{-M32}は、メモリサイズを32語に指定するオプションです。
+@example
+$ @kbd{casl2 -M32 -mTd sum_10.casl}
+
+Assemble sum_10.casl (0)
+
+Assemble sum_10.casl (1)
+sum_10.casl:    1:;;; sum_10.casl
+sum_10.casl:    2:;;; 1から10までの整数をすべて加算した値をメモリーに格納する
+sum_10.casl:    3:MAIN    START
+sum_10.casl:    4:        XOR     GR2,GR2         ; GR2を初期化
+    #0000   #3622
+sum_10.casl:    5:        LD      GR1,FST         ; GR1に初項をメモリーから転送
+    #0001   #1010
+    #0002   #000F
+sum_10.casl:    6:LOOP    ADDL    GR2,GR1         ; ループ先頭。GR2 <- GR2 + GR1
+    #0003   #2621
+sum_10.casl:    7:        ADDL    GR1,STEP        ; GR1 <- GR1 + 公差
+    #0004   #2210
+    #0005   #0011
+sum_10.casl:    8:        CPL     GR1,LST         ; GR1が末項より大きい場合は終了
+    #0006   #4110
+    #0007   #0010
+sum_10.casl:    9:        JPL     FIN             ; ↓
+    #0008   #6500
+    #0009   #000C
+sum_10.casl:   10:        JUMP    LOOP            ; ループ終端
+    #000A   #6400
+    #000B   #0003
+sum_10.casl:   11:FIN     ST      GR2,RST         ; GR2の結果をメモリーに転送
+    #000C   #1120
+    #000D   #0012
+sum_10.casl:   12:        RET
+    #000E   #8100
+sum_10.casl:   13:FST     DC      1               ; 初項
+    #000F   #0001
+sum_10.casl:   14:LST     DC      10              ; 末項
+    #0010   #000A
+sum_10.casl:   15:STEP    DC      1               ; 公差
+    #0011   #0001
+sum_10.casl:   16:RST     DS      1               ; 結果
+    #0012   #0000
+sum_10.casl:   17:        END
+
+#0000: Register::::
+#0000: GR0:      0 = #0000 = 0000000000000000
+#0000: GR1:      0 = #0000 = 0000000000000000
+#0000: GR2:      0 = #0000 = 0000000000000000
+#0000: GR3:      0 = #0000 = 0000000000000000
+#0000: GR4:      0 = #0000 = 0000000000000000
+#0000: GR5:      0 = #0000 = 0000000000000000
+#0000: GR6:      0 = #0000 = 0000000000000000
+#0000: GR7:      0 = #0000 = 0000000000000000
+#0000: SP:      32 = #0020 = 0000000000100000
+#0000: PR:       0 = #0000 = 0000000000000000
+#0000: FR (OF SF ZF): 000
+#0000: Memory::::
+#0000: adr : 0000 0001 0002 0003 0004 0005 0006 0007 0008 0009 000A 000B 000C 000D 000E 000F
+       -------------------------------------------------------------------------------------
+#0000: 0000: 3622 1010 000F 2621 2210 0011 4110 0010 6500 000C 6400 0003 1120 0012 8100 0001
+#0000: 0010: 000A 0001 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000
+#0000: Disassemble::::        XOR     GR2,GR2         ; #0000: #3622
+
+COMET II machine code monitor. Type ? for help.
+(comet2 monitor)
+@end example
+アセンブルが終わると、プロンプト@code{(comet2 monitor)}が表示され、
+コマンドを受け付ける状態になります。
+@code{n}（@code{next}）を入力すると、1命令だけ実行し、実行直後のレジスタ・メモリ・
+次に実行される命令の逆アセンブル結果を表示します。
+@example
+(comet2 monitor) @kbd{n}
+#0001: Register::::
+#0001: GR0:      0 = #0000 = 0000000000000000
+#0001: GR1:      0 = #0000 = 0000000000000000
+#0001: GR2:      0 = #0000 = 0000000000000000
+#0001: GR3:      0 = #0000 = 0000000000000000
+#0001: GR4:      0 = #0000 = 0000000000000000
+#0001: GR5:      0 = #0000 = 0000000000000000
+#0001: GR6:      0 = #0000 = 0000000000000000
+#0001: GR7:      0 = #0000 = 0000000000000000
+#0001: SP:      32 = #0020 = 0000000000100000
+#0001: PR:       1 = #0001 = 0000000000000001
+#0001: FR (OF SF ZF): 001
+#0001: Memory::::
+#0001: adr : 0000 0001 0002 0003 0004 0005 0006 0007 0008 0009 000A 000B 000C 000D 000E 000F
+       -------------------------------------------------------------------------------------
+#0001: 0000: 3622 1010 000F 2621 2210 0011 4110 0010 6500 000C 6400 0003 1120 0012 8100 0001
+#0001: 0010: 000A 0001 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000
+#0001: Disassemble::::        LD      GR1,#000F       ; #0001: #1010 #000F
+
+(comet2 monitor) @kbd{n}
+#0003: Register::::
+#0003: GR0:      0 = #0000 = 0000000000000000
+#0003: GR1:      1 = #0001 = 0000000000000001
+#0003: GR2:      0 = #0000 = 0000000000000000
+#0003: GR3:      0 = #0000 = 0000000000000000
+#0003: GR4:      0 = #0000 = 0000000000000000
+#0003: GR5:      0 = #0000 = 0000000000000000
+#0003: GR6:      0 = #0000 = 0000000000000000
+#0003: GR7:      0 = #0000 = 0000000000000000
+#0003: SP:      32 = #0020 = 0000000000100000
+#0003: PR:       3 = #0003 = 0000000000000011
+#0003: FR (OF SF ZF): 000
+#0003: Memory::::
+#0003: adr : 0000 0001 0002 0003 0004 0005 0006 0007 0008 0009 000A 000B 000C 000D 000E 000F
+       -------------------------------------------------------------------------------------
+#0003: 0000: 3622 1010 000F 2621 2210 0011 4110 0010 6500 000C 6400 0003 1120 0012 8100 0001
+#0003: 0010: 000A 0001 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000
+#0003: Disassemble::::        ADDL    GR2,GR1         ; #0003: #2621
+@end example
+@code{n}を繰り返すたびにPRが進み、GR1・GR2の値が変化していく様子を、
+1命令ずつ確認できます。
+
+@node Monitor continue,  , Monitor basics, Step execution
+@subsection 継続実行とブレークポイント
+@file{sum_10.casl}はループを含むため、@code{n}をループの回数だけ繰り返す必要があります。
+ループの中身を1回ずつ確認したあとは、@code{c}（@code{continue}）でプログラムの終わりまで
+一気に実行できます。
+@code{c}を実行すると、途中の各ステップの状態が@code{n}と同じ形式で連続して表示され、
+最後に、@code{RET}が実行されてプログラム先頭に戻ったところで停止します。
+@example
+(comet2 monitor) @kbd{c}
+@r{（……ループの残りのステップが、nと同じ形式で連続して表示される……）}
+#000E: Register::::
+#000E: GR0:      0 = #0000 = 0000000000000000
+#000E: GR1:     11 = #000B = 0000000000001011
+#000E: GR2:     55 = #0037 = 0000000000110111 = '7'
+#000E: GR3:      0 = #0000 = 0000000000000000
+#000E: GR4:      0 = #0000 = 0000000000000000
+#000E: GR5:      0 = #0000 = 0000000000000000
+#000E: GR6:      0 = #0000 = 0000000000000000
+#000E: GR7:      0 = #0000 = 0000000000000000
+#000E: SP:      32 = #0020 = 0000000000100000
+#000E: PR:      14 = #000E = 0000000000001110
+#000E: FR (OF SF ZF): 000
+#000E: Memory::::
+#000E: adr : 0000 0001 0002 0003 0004 0005 0006 0007 0008 0009 000A 000B 000C 000D 000E 000F
+       -------------------------------------------------------------------------------------
+#000E: 0000: 3622 1010 000F 2621 2210 0011 4110 0010 6500 000C 6400 0003 1120 0012 8100 0001
+#000E: 0010: 000A 0001 0037 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000
+#000E: Disassemble::::        RET                     ; #000E: #8100
+
+Return to top.
+(comet2 monitor) @kbd{q}
+Quit: COMET II monitor
+@end example
+GR2に55（1から10までの和）が格納されていること、
+その値がメモリの@code{#0012}番地（@code{RST}のアドレス）に書き込まれていることが確認できます。
+
+@subsubheading ブレークポイントでループを1周ずつ確認する
+ループの先頭、つまり@code{LOOP}（@code{#0003}番地）にブレークポイントを設定すると、
+@code{c}を実行するたびにループを1周だけ進めて、そこで実行を止められます。
+@code{n}をループの回数だけ繰り返さなくても、GR2に合計が積み上がっていく様子を
+1周ごとに確認できます。
+@code{b}（@code{break}）に続けて@code{a} または （@code{add}）とアドレスを指定すると、
+ブレークポイントが追加されます。
+@example
+(comet2 monitor) @kbd{b a #0003}
+#0003: breakpoint added
+(comet2 monitor) @kbd{n}
+#0004: Register::::
+#0004: GR0:      0 = #0000 = 0000000000000000
+#0004: GR1:      2 = #0002 = 0000000000000010
+#0004: GR2:      3 = #0003 = 0000000000000011
+#0004: GR3:      0 = #0000 = 0000000000000000
+#0004: GR4:      0 = #0000 = 0000000000000000
+#0004: GR5:      0 = #0000 = 0000000000000000
+#0004: GR6:      0 = #0000 = 0000000000000000
+#0004: GR7:      0 = #0000 = 0000000000000000
+#0004: SP:      32 = #0020 = 0000000000100000
+#0004: PR:       4 = #0004 = 0000000000000100
+#0004: FR (OF SF ZF): 000
+#0004: Memory::::
+#0004: adr : 0000 0001 0002 0003 0004 0005 0006 0007 0008 0009 000A 000B 000C 000D 000E 000F
+       -------------------------------------------------------------------------------------
+#0004: 0000: 3622 1010 000F 2621 2210 0011 4110 0010 6500 000C 6400 0003 1120 0012 8100 0001
+#0004: 0010: 000A 0001 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000
+#0004: Disassemble::::        ADDL    GR1,#0011       ; #0004: #2210 #0011
+
+(comet2 monitor) @kbd{c}
+@r{（……途中のステップが、nと同じ形式で連続して表示される……）}
+#0003: Register::::
+#0003: GR0:      0 = #0000 = 0000000000000000
+#0003: GR1:      3 = #0003 = 0000000000000011
+#0003: GR2:      3 = #0003 = 0000000000000011
+#0003: GR3:      0 = #0000 = 0000000000000000
+#0003: GR4:      0 = #0000 = 0000000000000000
+#0003: GR5:      0 = #0000 = 0000000000000000
+#0003: GR6:      0 = #0000 = 0000000000000000
+#0003: GR7:      0 = #0000 = 0000000000000000
+#0003: SP:      32 = #0020 = 0000000000100000
+#0003: PR:       3 = #0003 = 0000000000000011
+#0003: FR (OF SF ZF): 010
+#0003: Memory::::
+#0003: adr : 0000 0001 0002 0003 0004 0005 0006 0007 0008 0009 000A 000B 000C 000D 000E 000F
+       -------------------------------------------------------------------------------------
+#0003: 0000: 3622 1010 000F 2621 2210 0011 4110 0010 6500 000C 6400 0003 1120 0012 8100 0001
+#0003: 0010: 000A 0001 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000
+#0003: Disassemble::::        ADDL    GR2,GR1         ; #0003: #2621
+@end example
+@code{c}を実行するたびに、ブレークポイントを設定した@code{#0003}番地で実行が止まります。
+ブレークポイントに達したときも、特別なメッセージは表示されず、
+通常の実行結果と同じ形式でその時点の状態が表示されます。
+そのまま@code{c}を繰り返すと、GR2に1から10までの合計が積み上がっていく様子が、
+1周ごとに確認できます。
+@multitable @columnfractions .2 .2 .6
+@item GR1 @tab GR2 @tab 意味
+@item 3 @tab 3 @tab 1+2
+@item 4 @tab 6 @tab 1+2+3
+@item 5 @tab 10 @tab 1+2+3+4
+@item 6 @tab 15 @tab 1+2+3+4+5
+@item 7 @tab 21 @tab 1+2+3+4+5+6
+@item 8 @tab 28 @tab 1+2+3+4+5+6+7
+@item 9 @tab 36 @tab 1+2+3+4+5+6+7+8
+@item 10 @tab 45 @tab 1+2+3+4+5+6+7+8+9
+@end multitable
+GR1がLST（10）を超えると、CPLの結果によりループを抜けて@code{FIN}に進むため、
+最後の@code{c}ではブレークポイントに達せず、そのままプログラムの終わり（GR2=55）まで
+実行されて@code{Return to top.}と表示されます。
+
+@node Batch trace, Only assemble, Step execution, Sample usage
+@section 実行結果をまとめて確認する
+
+前節のモニターは、1命令ずつ実行を止めながら確認するのに向いています。
+一方で、テストスクリプトなどでプログラムの動作をまとめて自動的に確認したい場合や、
+実行結果全体を一度に見比べたい場合は、@option{-t}・@option{-d}オプションと、
+GNU/Linuxのコマンド（@command{grep}・@command{tail}・@command{wc}など）を
+組み合わせる方法が便利です。
 
 YACASL2では実行中のCPUのレジスタとメモリの内容をそれぞれ、@option{-t}と@option{-d}を指定することで表示できます。
 
@@ -409,7 +689,7 @@ Executing machine codes
 #0006: 0000: 1010 0007 2210 0008 1110 0009 8100 0003 0002 0005 0000 0000 0000 0000 0000 0000
 @end example
 
-@node Register specify, End value, Register and memory, Register and memory
+@node Register specify, End value, Batch trace, Batch trace
 @subsection 特定のレジスタを表示
 
 @file{addl.casl}のレジスタやメモリの中で、実行中に値が変化しているのはGR1だけです。
@@ -442,7 +722,7 @@ $ @kbd{casl2 -t addl.casl | grep 'GR1:'}
 @tab @code{ST GR1,C}
 @end multitable
 
-@node End value, Step count, Register specify, Register and memory
+@node End value, Step count, Register specify, Batch trace
 @subsection プログラム終了時の値を表示
 
 @command{grep}と@command{tail}を組み合わせれば、プログラム終了時の値を表示できます。
@@ -453,30 +733,6 @@ $ @kbd{casl2 -t addl.casl | grep 'GR1:'}
 $ @kbd{casl2 -t addl.casl | grep 'GR1:' | tail -1}
 #0006: GR1:      5 = #0005 = 0000000000000101
 @end example
-
-@file{sum_10.casl}は、1から10までの整数の和を求め、GR2に格納してからメモリにストア（書き込み）します。
-
-@example
-$ @kbd{cat sum_10.casl}
-;;; sum_10.casl
-;;; 1から10までの整数をすべて加算した値をメモリーに格納する
-MAIN    START
-        XOR     GR2,GR2         ; GR2を初期化
-        LD      GR1,FST         ; GR1に初項をメモリーから転送
-LOOP    ADDL    GR2,GR1         ; ループ先頭。GR2 <- GR2 + GR1
-        ADDL    GR1,STEP        ; GR1 <- GR1 + 公差
-        CPL     GR1,LST         ; GR1が末項より大きい場合は終了
-        JPL     FIN             ; ↓
-        JUMP    LOOP            ; ループ終端
-FIN     ST      GR2,RST         ; GR2の結果をメモリーに転送
-        RET
-FST     DC      1               ; 初項
-LST     DC      10              ; 末項
-STEP    DC      1               ; 公差
-RST     DS      1               ; 結果
-        END
-@end example
-
 @file{sum_10.casl}でプログラム終了時のGR2の値を確認するには、次のようにします。
 
 @example
@@ -484,7 +740,10 @@ $ @kbd{casl2 -t sum_10.casl | grep 'GR2:' | tail -1}
 #000E: GR2:     55 = #0037 = 0000000000110111 = '7'
 @end example
 
-@node Step count,  , End value, Register and memory
+複数のテストケースをまとめて自動実行したい場合は、このようにコマンドラインツールを
+組み合わせる方法も便利です。同様の結果は、前節のモニターのブレークポイント機能でも確認できます。
+
+@node Step count,  , End value, Batch trace
 @subsection プログラムのステップ数を表示
 
 @command{grep}と@command{wc}を組み合わせれば、プログラムのステップ数を表示できます。
@@ -506,7 +765,7 @@ $ @kbd{casl2 -t sum_10.casl | grep 'GR2:' | wc -l}
 53
 @end example
 
-@node Only assemble, Analyze word, Register and memory, Sample usage
+@node Only assemble, Analyze word, Batch trace, Sample usage
 @section アセンブルと実行を別に行う
 
 @command{casl2}に@option{-O}@file{ファイル名}を指定すると、オブジェクトファイルを作成できます。
@@ -534,6 +793,10 @@ $ @kbd{od -t x2 hello.o}
 $ @kbd{comet2 hello.o}
 Hello, World!
 @end example
+
+すでに作成済みのオブジェクトファイルに対して、@code{casl2 -m}と同じように
+1命令ずつステップ実行を確認したい場合は、@code{comet2 -m} または @command{comet2monitor}を使います
+（@pxref{comet2monitor-invocation}）。
 
 @node Analyze word, Use CASL2LIB, Only assemble, Sample usage
 @section 1語の解析
@@ -724,6 +987,14 @@ CASLファイルの内容を表示します。
 @itemx --dump
 メモリの内容をすべて表示します。
 
+@item -m
+アセンブル後、実行を1命令ごとに止めながら確認できる、対話的なモニターを起動します。
+プロンプトは@code{(comet2 monitor)}で、
+コマンドの詳細は@ref{comet2monitor-invocation}の「モニターコマンド」を参照してください。
+@code{<フラグ>}には@code{T}・@code{d}を組み合わせて指定でき、
+それぞれレジスタ（論理値）・メモリダンプの自動表示を有効にします。
+逆アセンブル結果の自動表示は、フラグの指定に関わらず常にONです。
+
 @item -M <MEMORYSIZE>
 @itemx --memorysize <MEMORYSIZE>
 アセンブルおよびCOMET II実行時のメモリサイズ@option{<MEMORYSIZE>}をWORD（16ビット）単位で1から65535の範囲で指定します。指定しない場合、512語です。小さいプログラムを実行するときは、メモリ容量を小さくすれば結果が見やすくなります。
@@ -824,6 +1095,13 @@ $ @kbd{comet2 hello.o}
 @item -d
 @itemx --dump
 メモリの内容をすべて表示します。
+
+@item -m
+アセンブル後、実行を1命令ごとに止めながら確認できる、対話的なモニターを起動します。
+プロンプトは@code{(comet2 monitor)}で、
+コマンドの詳細は@ref{comet2monitor-invocation}の「モニターコマンド」を参照してください。
+@code{<フラグ>}には@code{T}・@code{d}を組み合わせて指定でき、
+それぞれレジスタ（論理値）・メモリダンプの自動表示を有効にします。
 
 @item -M <MEMORYSIZE>
 @itemx --memorysize <MEMORYSIZE>
