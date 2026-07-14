@@ -69,10 +69,10 @@ uninstall: uninstall-info
 version: version___stamp
 
 version___stamp: $(VERSIONFILES)
-	@$(PRINTF) "YACASL2 Version: %s\n" $(VERSION) >$@
+	@$(PRINTF) "YACASL2 Version: %s\n" $$($(CAT) VERSION) >$@
 
 $(VERSIONFILES): VERSION
-	@$(SED) -e "s/@@VERSION@@/$(VERSION)/g" $@.version >$@
+	@$(SED) -e "s/@@VERSION@@/$$($(CAT) VERSION)/g" $@.version >$@
 
 copyright: LICENSE.copyright___stamp  README.copyright___stamp
 
