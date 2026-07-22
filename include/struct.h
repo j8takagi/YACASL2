@@ -117,7 +117,7 @@ typedef struct {
     CMDTYPE type;               /**<命令タイプ */
     WORD code;                  /**<命令コード */
     void (*ptr);                /**<命令の関数ポインタ */
-    int wordlen;                /**<命令語長 */
+    WORD wordlen;                /**<命令語長 */
 } COMET2CMD;
 
 /**

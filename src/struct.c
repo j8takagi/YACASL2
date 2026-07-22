@@ -177,13 +177,13 @@ WORD getcmdcode(const char *cmd, CMDTYPE type)
 }
 
 /**
- * 命令の名前とタイプから、命令語長を返す\n
+ * 命令の名前とタイプから、命令語長を返す
  * 無効な場合は0を返す
  */
 WORD getcmdwordlen(const char *cmd, CMDTYPE type)
 {
     CMDTAB *p = NULL;
-    int wl = 0;
+    WORD wl = 0;
 
     assert(cmd != NULL);
     for(p = cmdtab[HASH_CMDTYPE][hash_cmdtype(cmd, type)]; p != NULL; p = p->next) {
@@ -294,8 +294,7 @@ bool code_gr_valid(WORD code)
 WORD code2cmdwordlen(WORD code)
 {
     CMDTAB *t = NULL;
-    int wl = 0;
-
+    WORD wl = 0;
     for(t = cmdtab[HASH_CODE][hash_code(code)]; t != NULL; t = t->next) {
         if(code == t->cmd->code) {
             wl = t->cmd->wordlen;

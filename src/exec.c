@@ -225,40 +225,51 @@ void addcerrlist_exec()
 
 void nop()
 {
-    sys->cpu->pr += getcmdwordlen("NOP", NONE);
+    WORD w[] = {sys->memory[sys->cpu->pr]};
+    WORD wl = code2cmdwordlen(w[0] & 0xFF00);
+    assert(ARRAYSIZE(w) == wl);
+    sys->cpu->pr += wl;
 }
 
 void ld_r_adr_x()
 {
     WORD w[] = {sys->memory[sys->cpu->pr], sys->memory[sys->cpu->pr + 1]};
+    WORD wl = code2cmdwordlen(w[0] & 0xFF00);
+    assert(ARRAYSIZE(w) == wl);
     setfr(sys->cpu->gr[get_r_r1(w[0])] = get_val_adr_x(w[1], w[0]));
-    sys->cpu->pr += getcmdwordlen("LD", R_ADR_X);
+    sys->cpu->pr += wl;
 }
 
 void ld_r1_r2()
 {
     WORD w[] = {sys->memory[sys->cpu->pr]};
+    WORD wl = code2cmdwordlen(w[0] & 0xFF00);
+    assert(ARRAYSIZE(w) == wl);
     setfr(sys->cpu->gr[get_r_r1(w[0])] = sys->cpu->gr[get_x_r2(w[0])]);
-    sys->cpu->pr += getcmdwordlen("LD", R1_R2);
+    sys->cpu->pr += wl;
 }
 
 void st()
 {
     WORD w[] = {sys->memory[sys->cpu->pr], sys->memory[sys->cpu->pr + 1]};
+    WORD wl = code2cmdwordlen(w[0] & 0xFF00);
+    assert(ARRAYSIZE(w) == wl);
     sys->memory[get_adr_x(w[1], w[0])] = sys->cpu->gr[get_r_r1(w[0])];
-    sys->cpu->pr += getcmdwordlen("ST", R_ADR_X);
+    sys->cpu->pr += wl;
 }
 
 void lad()
 {
     WORD w[] = {sys->memory[sys->cpu->pr], sys->memory[sys->cpu->pr + 1]};
+    WORD wl = code2cmdwordlen(w[0] & 0xFF00);
+    assert(ARRAYSIZE(w) == wl);
     sys->cpu->gr[get_r_r1(w[0])] = get_adr_x(w[1], w[0]);
-    sys->cpu->pr += getcmdwordlen("LAD", R_ADR_X);
+    sys->cpu->pr += wl;
 }
 
 void adda(WORD r, WORD val)
 {
-    long tmp;
+    long tmp = 0;
 
     sys->cpu->fr = 0x0;
     /* 引数の値を16ビット符号付整数として加算し、オーバーフローをチェック */
@@ -278,29 +289,37 @@ void adda(WORD r, WORD val)
 void adda_r_adr_x()
 {
     WORD w[] = {sys->memory[sys->cpu->pr], sys->memory[sys->cpu->pr + 1]};
+    WORD wl = code2cmdwordlen(w[0] & 0xFF00);
+    assert(ARRAYSIZE(w) == wl);
     adda(get_r_r1(w[0]), get_val_adr_x(w[1], w[0]));
-    sys->cpu->pr += getcmdwordlen("ADDA", R_ADR_X);
+    sys->cpu->pr += wl;
 }
 
 void adda_r1_r2()
 {
     WORD w[] = {sys->memory[sys->cpu->pr]};
+    WORD wl = code2cmdwordlen(w[0] & 0xFF00);
+    assert(ARRAYSIZE(w) == wl);
     adda(get_r_r1(w[0]), sys->cpu->gr[get_x_r2(w[0])]);
-    sys->cpu->pr += getcmdwordlen("ADDA", R1_R2);
+    sys->cpu->pr += wl;
 }
 
 void suba_r_adr_x()
 {
     WORD w[] = {sys->memory[sys->cpu->pr], sys->memory[sys->cpu->pr + 1]};
+    WORD wl = code2cmdwordlen(w[0] & 0xFF00);
+    assert(ARRAYSIZE(w) == wl);
     adda(get_r_r1(w[0]), ~(get_val_adr_x(w[1], w[0])) + 1);
-    sys->cpu->pr += getcmdwordlen("SUBA", R_ADR_X);
+    sys->cpu->pr += wl;
 }
 
 void suba_r1_r2()
 {
     WORD w[] = {sys->memory[sys->cpu->pr]};
+    WORD wl = code2cmdwordlen(w[0] & 0xFF00);
+    assert(ARRAYSIZE(w) == wl);
     adda(get_r_r1(w[0]), ~(sys->cpu->gr[get_x_r2(w[0])]) + 1);
-    sys->cpu->pr += getcmdwordlen("SUBA", R1_R2);
+    sys->cpu->pr += wl;
 }
 
 void addl_gr(WORD r, WORD val, bool add)
@@ -338,71 +357,91 @@ void addl_gr(WORD r, WORD val, bool add)
 void addl_r_adr_x()
 {
     WORD w[] = {sys->memory[sys->cpu->pr], sys->memory[sys->cpu->pr + 1]};
+    WORD wl = code2cmdwordlen(w[0] & 0xFF00);
+    assert(ARRAYSIZE(w) == wl);
     addl_gr(get_r_r1(w[0]), get_val_adr_x(w[1], w[0]), true);
-    sys->cpu->pr += getcmdwordlen("ADDL", R_ADR_X);
+    sys->cpu->pr += wl;
 }
 
 void addl_r1_r2()
 {
     WORD w[] = {sys->memory[sys->cpu->pr]};
+    WORD wl = code2cmdwordlen(w[0] & 0xFF00);
+    assert(ARRAYSIZE(w) == wl);
     addl_gr(get_r_r1(w[0]), sys->cpu->gr[get_x_r2(w[0])], true);
-    sys->cpu->pr += getcmdwordlen("ADDL", R1_R2);
+    sys->cpu->pr += wl;
 }
 
 void subl_r_adr_x()
 {
     WORD w[] = {sys->memory[sys->cpu->pr], sys->memory[sys->cpu->pr + 1]};
+    WORD wl = code2cmdwordlen(w[0] & 0xFF00);
+    assert(ARRAYSIZE(w) == wl);
     addl_gr(get_r_r1(w[0]), get_val_adr_x(w[1], w[0]), false);
-    sys->cpu->pr += getcmdwordlen("SUBL", R_ADR_X);
+    sys->cpu->pr += wl;
 }
 
 void subl_r1_r2()
 {
     WORD w[] = {sys->memory[sys->cpu->pr]};
+    WORD wl = code2cmdwordlen(w[0] & 0xFF00);
+    assert(ARRAYSIZE(w) == wl);
     addl_gr(get_r_r1(w[0]), sys->cpu->gr[get_x_r2(w[0])], false);
-    sys->cpu->pr += getcmdwordlen("SUBL", R1_R2);
+    sys->cpu->pr += wl;
 }
 
 void and_r_adr_x()
 {
     WORD w[] = {sys->memory[sys->cpu->pr], sys->memory[sys->cpu->pr + 1]};
+    WORD wl = code2cmdwordlen(w[0] & 0xFF00);
+    assert(ARRAYSIZE(w) == wl);
     setfr(sys->cpu->gr[get_r_r1(w[0])] &= get_val_adr_x(w[1], w[0]));
-    sys->cpu->pr += getcmdwordlen("AND", R_ADR_X);
+    sys->cpu->pr += wl;
 }
 
 void and_r1_r2()
 {
     WORD w[] = {sys->memory[sys->cpu->pr]};
+    WORD wl = code2cmdwordlen(w[0] & 0xFF00);
+    assert(ARRAYSIZE(w) == wl);
     setfr(sys->cpu->gr[get_r_r1(w[0])] &= sys->cpu->gr[get_x_r2(w[0])]);
-    sys->cpu->pr += getcmdwordlen("AND", R1_R2);
+    sys->cpu->pr += wl;
 }
 
 void or_r_adr_x()
 {
     WORD w[] = {sys->memory[sys->cpu->pr], sys->memory[sys->cpu->pr + 1]};
+    WORD wl = code2cmdwordlen(w[0] & 0xFF00);
+    assert(ARRAYSIZE(w) == wl);
     setfr(sys->cpu->gr[get_r_r1(w[0])] |= get_val_adr_x(w[1], w[0]));
-    sys->cpu->pr += getcmdwordlen("OR", R_ADR_X);
+    sys->cpu->pr += wl;
 }
 
 void or_r1_r2()
 {
     WORD w[] = {sys->memory[sys->cpu->pr]};
+    WORD wl = code2cmdwordlen(w[0] & 0xFF00);
+    assert(ARRAYSIZE(w) == wl);
     setfr(sys->cpu->gr[get_r_r1(w[0])] |= sys->cpu->gr[get_x_r2(w[0])]);
-    sys->cpu->pr += getcmdwordlen("OR", R1_R2);
+    sys->cpu->pr += wl;
 }
 
 void xor_r_adr_x()
 {
     WORD w[] = {sys->memory[sys->cpu->pr], sys->memory[sys->cpu->pr + 1]};
+    WORD wl = code2cmdwordlen(w[0] & 0xFF00);
+    assert(ARRAYSIZE(w) == wl);
     setfr(sys->cpu->gr[get_r_r1(w[0])] ^= get_val_adr_x(w[1], w[0]));
-    sys->cpu->pr += getcmdwordlen("XOR", R_ADR_X);
+    sys->cpu->pr += wl;
 }
 
 void xor_r1_r2()
 {
     WORD w[] = {sys->memory[sys->cpu->pr]};
+    WORD wl = code2cmdwordlen(w[0] & 0xFF00);
+    assert(ARRAYSIZE(w) == wl);
     setfr(sys->cpu->gr[get_r_r1(w[0])] ^= sys->cpu->gr[get_x_r2(w[0])]);
-    sys->cpu->pr += getcmdwordlen("XOR", R1_R2);
+    sys->cpu->pr += wl;
 }
 
 void cpa(WORD r, WORD val)
@@ -418,15 +457,19 @@ void cpa(WORD r, WORD val)
 void cpa_r_adr_x()
 {
     WORD w[] = {sys->memory[sys->cpu->pr], sys->memory[sys->cpu->pr + 1]};
+    WORD wl = code2cmdwordlen(w[0] & 0xFF00);
+    assert(ARRAYSIZE(w) == wl);
     cpa(get_r_r1(w[0]), get_val_adr_x(w[1], w[0]));
-    sys->cpu->pr += getcmdwordlen("CPA", R_ADR_X);
+    sys->cpu->pr += wl;
 }
 
 void cpa_r1_r2()
 {
     WORD w[] = {sys->memory[sys->cpu->pr]};
+    WORD wl = code2cmdwordlen(w[0] & 0xFF00);
+    assert(ARRAYSIZE(w) == wl);
     cpa(get_r_r1(w[0]), sys->cpu->gr[get_x_r2(w[0])]);
-    sys->cpu->pr += getcmdwordlen("CPA", R1_R2);
+    sys->cpu->pr += wl;
 }
 
 void cpl(WORD r, WORD val)
@@ -442,20 +485,26 @@ void cpl(WORD r, WORD val)
 void cpl_r_adr_x()
 {
     WORD w[] = {sys->memory[sys->cpu->pr], sys->memory[sys->cpu->pr + 1]};
+    WORD wl = code2cmdwordlen(w[0] & 0xFF00);
+    assert(ARRAYSIZE(w) == wl);
     cpl(get_r_r1(w[0]), get_val_adr_x(w[1], w[0]));
-    sys->cpu->pr += getcmdwordlen("CPL", R_ADR_X);
+    sys->cpu->pr += wl;
 }
 
 void cpl_r1_r2()
 {
     WORD w[] = {sys->memory[sys->cpu->pr]};
+    WORD wl = code2cmdwordlen(w[0] & 0xFF00);
+    assert(ARRAYSIZE(w) == wl);
     cpl(get_r_r1(w[0]), sys->cpu->gr[get_x_r2(w[0])]);
-    sys->cpu->pr += getcmdwordlen("CPL", R1_R2);
+    sys->cpu->pr += wl;
 }
 
 void sla()
 {
     WORD w[] = {sys->memory[sys->cpu->pr], sys->memory[sys->cpu->pr + 1]};
+    WORD wl = code2cmdwordlen(w[0] & 0xFF00);
+    assert(ARRAYSIZE(w) == wl);
     WORD r = get_r_r1(w[0]);
     WORD sign = sys->cpu->gr[r] & 0x8000;
     WORD last = 0;
@@ -479,12 +528,14 @@ void sla()
     if(sys->cpu->gr[r] == 0x0) {
         sys->cpu->fr += ZF;
     }
-    sys->cpu->pr += getcmdwordlen("SLA", R_ADR_X);
+    sys->cpu->pr += wl;
 }
 
 void sra()
 {
     WORD w[] = {sys->memory[sys->cpu->pr], sys->memory[sys->cpu->pr + 1]};
+    WORD wl = code2cmdwordlen(w[0] & 0xFF00);
+    assert(ARRAYSIZE(w) == wl);
     WORD r = get_r_r1(w[0]);
     WORD sign = sys->cpu->gr[r] & 0x8000;
     WORD last = 0;
@@ -511,12 +562,14 @@ void sra()
     if(sys->cpu->gr[r] == 0x0) {
         sys->cpu->fr += ZF;
     }
-    sys->cpu->pr += getcmdwordlen("SRA", R_ADR_X);
+    sys->cpu->pr += wl;
 }
 
 void sll()
 {
     WORD w[] = {sys->memory[sys->cpu->pr], sys->memory[sys->cpu->pr + 1]};
+    WORD wl = code2cmdwordlen(w[0] & 0xFF00);
+    assert(ARRAYSIZE(w) == wl);
     WORD last = 0;
     WORD r = get_r_r1(w[0]);
 
@@ -537,12 +590,14 @@ void sll()
     if(sys->cpu->gr[r] == 0x0) {
         sys->cpu->fr += ZF;
     }
-    sys->cpu->pr += getcmdwordlen("SLL", R_ADR_X);
+    sys->cpu->pr += wl;
 }
 
 void srl()
 {
     WORD w[] = {sys->memory[sys->cpu->pr], sys->memory[sys->cpu->pr + 1]};
+    WORD wl = code2cmdwordlen(w[0] & 0xFF00);
+    assert(ARRAYSIZE(w) == wl);
     WORD last = 0;
     WORD r = get_r_r1(w[0]);
 
@@ -563,62 +618,74 @@ void srl()
     if(sys->cpu->gr[r] == 0x0) {
         sys->cpu->fr += ZF;
     }
-    sys->cpu->pr += getcmdwordlen("SRL", R_ADR_X);
+    sys->cpu->pr += wl;
 }
 
 void jmi()
 {
     WORD w[] = {sys->memory[sys->cpu->pr], sys->memory[sys->cpu->pr + 1]};
+    WORD wl = code2cmdwordlen(w[0] & 0xFF00);
+    assert(ARRAYSIZE(w) == wl);
     if((sys->cpu->fr & SF) > 0) {
         sys->cpu->pr = get_adr_x(w[1], w[0]);
     } else {
-        sys->cpu->pr += getcmdwordlen("JMI", ADR_X);
+        sys->cpu->pr += wl;
     }
 }
 
 void jnz()
 {
     WORD w[] = {sys->memory[sys->cpu->pr], sys->memory[sys->cpu->pr + 1]};
+    WORD wl = code2cmdwordlen(w[0] & 0xFF00);
+    assert(ARRAYSIZE(w) == wl);
     if((sys->cpu->fr & ZF) == 0) {
         sys->cpu->pr = get_adr_x(w[1], w[0]);
     } else {
-        sys->cpu->pr += getcmdwordlen("JNZ", ADR_X);
+        sys->cpu->pr += wl;
     }
 }
 
 void jze()
 {
     WORD w[] = {sys->memory[sys->cpu->pr], sys->memory[sys->cpu->pr + 1]};
+    WORD wl = code2cmdwordlen(w[0] & 0xFF00);
+    assert(ARRAYSIZE(w) == wl);
     if((sys->cpu->fr & ZF) > 0) {
         sys->cpu->pr = get_adr_x(w[1], w[0]);
     } else {
-        sys->cpu->pr += getcmdwordlen("JZE", ADR_X);
+        sys->cpu->pr += wl;
     }
 }
 
 void jump()
 {
     WORD w[] = {sys->memory[sys->cpu->pr], sys->memory[sys->cpu->pr + 1]};
+    WORD wl = code2cmdwordlen(w[0] & 0xFF00);
+    assert(ARRAYSIZE(w) == wl);
     sys->cpu->pr = get_adr_x(w[1], w[0]);
 }
 
 void jpl()
 {
     WORD w[] = {sys->memory[sys->cpu->pr], sys->memory[sys->cpu->pr + 1]};
+    WORD wl = code2cmdwordlen(w[0] & 0xFF00);
+    assert(ARRAYSIZE(w) == wl);
     if((sys->cpu->fr & (SF | ZF)) == 0) {
         sys->cpu->pr = get_adr_x(w[1], w[0]);
     } else {
-        sys->cpu->pr += getcmdwordlen("JPL", ADR_X);
+        sys->cpu->pr += wl;
     }
 }
 
 void jov()
 {
     WORD w[] = {sys->memory[sys->cpu->pr], sys->memory[sys->cpu->pr + 1]};
+    WORD wl = code2cmdwordlen(w[0] & 0xFF00);
+    assert(ARRAYSIZE(w) == wl);
     if((sys->cpu->fr & OF) > 0) {
         sys->cpu->pr = get_adr_x(w[1], w[0]);
     } else {
-        sys->cpu->pr += getcmdwordlen("JOV", ADR_X);
+        sys->cpu->pr += wl;
     }
 }
 
@@ -626,14 +693,18 @@ void push()
 {
     assert(sys->cpu->sp > execptr->end && sys->cpu->sp <= sys->memsize);
     WORD w[] = {sys->memory[sys->cpu->pr], sys->memory[sys->cpu->pr + 1]};
+    WORD wl = code2cmdwordlen(w[0] & 0xFF00);
+    assert(ARRAYSIZE(w) == wl);
     sys->memory[--(sys->cpu->sp)] = get_adr_x(w[1], w[0]);
-    sys->cpu->pr += getcmdwordlen("PUSH", ADR_X);
+    sys->cpu->pr += wl;
 }
 
 void pop()
 {
     assert(sys->cpu->sp > execptr->end);
     WORD w[] = {sys->memory[sys->cpu->pr]};
+    WORD wl = code2cmdwordlen(w[0] & 0xFF00);
+    assert(ARRAYSIZE(w) == wl);
     char *s = NULL;
 
     if(sys->cpu->sp >= sys->memsize) {
@@ -641,7 +712,7 @@ void pop()
         FREE(s);
     } else {
         sys->cpu->gr[get_r_r1(w[0])] = sys->memory[(sys->cpu->sp)++];
-        sys->cpu->pr += getcmdwordlen("POP", R_);
+        sys->cpu->pr += wl;
     }
 }
 
@@ -649,6 +720,8 @@ void call()
 {
     assert(sys->cpu->sp > execptr->end && sys->cpu->sp <= sys->memsize);
     WORD w[] = {sys->memory[sys->cpu->pr], sys->memory[sys->cpu->pr + 1]};
+    WORD wl = code2cmdwordlen(w[0] & 0xFF00);
+    assert(ARRAYSIZE(w) == wl);
     sys->memory[--(sys->cpu->sp)] = sys->cpu->pr + 1;
     sys->cpu->pr = get_adr_x(w[1], w[0]);
 }
@@ -666,6 +739,8 @@ void ret()
 void svc()
 {
     WORD w[] = {sys->memory[sys->cpu->pr], sys->memory[sys->cpu->pr + 1]};
+    WORD wl = code2cmdwordlen(w[0] & 0xFF00);
+    assert(ARRAYSIZE(w) == wl);
     switch(get_adr_x(w[1], w[0]))
     {
     case 0x0:                   /* STOP */
@@ -678,13 +753,14 @@ void svc()
         svcout();
         break;
     }
-    sys->cpu->pr += getcmdwordlen("SVC", ADR_X);
+    sys->cpu->pr += wl;
 }
 
 void exec()
 {
     CLOCK clock_begin = 0;
     CLOCK clock_end = 0;
+    WORD cmd = 0;
     void (*cmdptr)() = NULL;
     char *s = NULL;
     const char *monmsg = "COMET II machine code monitor. Type ? for help.\n";
@@ -721,7 +797,9 @@ void exec()
         }
         /* コードから命令を取得 */
         /* 取得できない場合はエラー終了 */
-        if((cmdptr = getcmdptr(sys->memory[sys->cpu->pr] & 0xFF00)) == NULL) {
+        cmd = sys->memory[sys->cpu->pr] & 0xFF00;
+        cmdptr = getcmdptr(cmd);
+        if(cmdptr == NULL) {
             setcerr(204, s = pr2str(sys->cpu->pr));            /* OP in word #1 - not command code */
             goto execfin;
         }
