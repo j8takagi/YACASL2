@@ -22,6 +22,7 @@ Copyright @copyright{} 2010-2026 j8takagi
 * YACASL2: (yacasl2.info).                          CASL II 処理システム
 * casl2: (yacasl2.info)casl2 invocation.            casl2
 * comet2: (yacasl2.info)comet2 invocation.          comet2
+* casl2rev: (yacasl2.info)casl2rev invocation.      casl2rev
 * dumpword: (yacasl2.info)dumpword invocation.      dumpword
 * comet2monitor: (yacasl2.info)comet2monitor-invocation. comet2monitor
 @end direntry
@@ -43,40 +44,9 @@ Copyright @copyright{} 2010-2026 j8takagi
 * Sample usage::                YACASL2の使用例
 * casl2 invocation::            casl2
 * comet2 invocation::           comet2
+* casl2rev invocation::         casl2rev
 * dumpword invocation::         dumpword
 * comet2monitor-invocation::    comet2monitor
-
-@detailmenu
- --- The Detailed Node Listing ---
-
-YACASL2の使用例
-
-* Simple output::               実行結果の出力だけを表示
-* Assemble result::             アセンブル結果の確認
-* Step execution::              モニターでステップ実行を確認する
-* Batch trace::                 実行結果をまとめて確認する
-* Only assemble::               アセンブルと実行を別に行う
-* Analyze word::                1語の解析
-* Use CASL2LIB::                CASL IIライブラリの使用
-
-モニターでステップ実行を確認する
-
-* Monitor basics::              起動とステップ実行
-* Monitor continue::            継続実行とブレークポイント
-
-実行結果をまとめて確認する
-
-* Register specify::            特定のレジスタを表示
-* End value::
-* Step count::                  プログラムのステップ数を表示
-
-@command{comet2monitor}
-
-* comet2monitor options::       オプション
-* monitor commands::            モニターコマンド
-* comet2monitor examples::      使用例
-
-@end detailmenu
 @end menu
 
 @contents
@@ -169,7 +139,8 @@ YACASL2 は、テキストファイルに記述されたCASLプログラムを�
 * Assemble result::             アセンブル結果の確認
 * Step execution::              モニターでステップ実行を確認する
 * Batch trace::                 実行結果をまとめて確認する
-* Only assemble::               アセンブルと実行を別に行う
+* Create object file::          オブジェクトファイルの作成
+* Look object file::            オブジェクトファイルの確認
 * Analyze word::                1語の解析
 * Use CASL2LIB::                CASL IIライブラリの使用
 @end menu
@@ -335,7 +306,149 @@ addl.casl:   10:        END
 対話的なモニターを起動できます。
 @option{-O}でオブジェクトファイルをあらかじめ作成しておく必要はありません。
 オプションの詳細は@ref{casl2 invocation}を参照してください。
-ここでは、ループを含む@file{sum_10.casl}を例に、実行の流れを確認しながら使い方を説明します。
+@menu
+* Monitor basics::              起動とステップ実行
+* Monitor loop::                ループを含むプログラムの実行
+* Monitor continue::            継続実行とブレークポイント
+* Set breakpoints::
+@end menu
+
+@node Monitor basics, Monitor loop, Step execution, Step execution
+@subsection 起動とステップ実行
+まず、出力命令のない@file{addl.casl}（3と1の和を求めるプログラム）を例に、
+基本的な使い方を確認します。
+@option{-m}のあとに続けて@code{T}・@code{d}の文字を指定すると、
+モニターに入った時点で、レジスタ（論理値表示）・メモリダンプの自動表示が、
+それぞれ有効になります。
+逆アセンブル結果の自動表示は、これらのフラグの指定に関わらず常にONです
+（@command{comet2monitor}のデフォルト動作と同じです）。
+@option{-M16}は、メモリサイズを16語に指定するオプションです。
+@example
+$ @kbd{casl2 -M16 -mTd addl.casl}
+
+Assemble addl.casl (0)
+
+Assemble addl.casl (1)
+addl.casl:    1:;;; ADDL r,adr
+addl.casl:    2:MAIN    START
+addl.casl:    3:        LD      GR1,A
+    #0000   #1010
+    #0001   #0007
+addl.casl:    4:        ADDL    GR1,B
+    #0002   #2210
+    #0003   #0008
+addl.casl:    5:        ST      GR1,C
+    #0004   #1110
+    #0005   #0009
+addl.casl:    6:        RET
+    #0006   #8100
+addl.casl:    7:A       DC      3
+    #0007   #0003
+addl.casl:    8:B       DC      2
+    #0008   #0002
+addl.casl:    9:C       DS      1
+    #0009   #0000
+addl.casl:   10:        END
+
+#0000: Register::::
+#0000: GR0:      0 = #0000 = 0000000000000000
+#0000: GR1:      0 = #0000 = 0000000000000000
+#0000: GR2:      0 = #0000 = 0000000000000000
+#0000: GR3:      0 = #0000 = 0000000000000000
+#0000: GR4:      0 = #0000 = 0000000000000000
+#0000: GR5:      0 = #0000 = 0000000000000000
+#0000: GR6:      0 = #0000 = 0000000000000000
+#0000: GR7:      0 = #0000 = 0000000000000000
+#0000: SP:      16 = #0010 = 0000000000010000
+#0000: PR:       0 = #0000 = 0000000000000000
+#0000: FR (OF SF ZF): 000
+#0000: Memory::::
+#0000: adr : 0000 0001 0002 0003 0004 0005 0006 0007 0008 0009 000A 000B 000C 000D 000E 000F
+       -------------------------------------------------------------------------------------
+#0000: 0000: 1010 0007 2210 0008 1110 0009 8100 0003 0002 0000 0000 0000 0000 0000 0000 0000
+#0000: Disassemble::::        LD      GR1,#0007       ; #0000: #1010 #0007
+
+COMET II machine code monitor. Type ? for help.
+(comet2 monitor)
+@end example
+プロンプト@code{(comet2 monitor)}で、コマンドを受け付ける状態になります。
+@code{n}（@code{next}）を入力すると、1命令だけ実行し、実行直後のレジスタ・メモリ・
+次に実行される命令の逆アセンブル結果を表示します。
+@code{addl.casl}は4命令だけの単純なプログラムなので、@code{n}を繰り返すだけで
+最後まで確認できます。
+@example
+(comet2 monitor) @kbd{n}
+#0002: Register::::
+#0002: GR0:      0 = #0000 = 0000000000000000
+#0002: GR1:      3 = #0003 = 0000000000000011
+#0002: GR2:      0 = #0000 = 0000000000000000
+#0002: GR3:      0 = #0000 = 0000000000000000
+#0002: GR4:      0 = #0000 = 0000000000000000
+#0002: GR5:      0 = #0000 = 0000000000000000
+#0002: GR6:      0 = #0000 = 0000000000000000
+#0002: GR7:      0 = #0000 = 0000000000000000
+#0002: SP:      16 = #0010 = 0000000000010000
+#0002: PR:       2 = #0002 = 0000000000000010
+#0002: FR (OF SF ZF): 000
+#0002: Memory::::
+#0002: adr : 0000 0001 0002 0003 0004 0005 0006 0007 0008 0009 000A 000B 000C 000D 000E 000F
+       -------------------------------------------------------------------------------------
+#0002: 0000: 1010 0007 2210 0008 1110 0009 8100 0003 0002 0000 0000 0000 0000 0000 0000 0000
+#0002: Disassemble::::        ADDL    GR1,#0008       ; #0002: #2210 #0008
+
+(comet2 monitor) @kbd{n}
+#0004: Register::::
+#0004: GR0:      0 = #0000 = 0000000000000000
+#0004: GR1:      5 = #0005 = 0000000000000101
+#0004: GR2:      0 = #0000 = 0000000000000000
+#0004: GR3:      0 = #0000 = 0000000000000000
+#0004: GR4:      0 = #0000 = 0000000000000000
+#0004: GR5:      0 = #0000 = 0000000000000000
+#0004: GR6:      0 = #0000 = 0000000000000000
+#0004: GR7:      0 = #0000 = 0000000000000000
+#0004: SP:      16 = #0010 = 0000000000010000
+#0004: PR:       4 = #0004 = 0000000000000100
+#0004: FR (OF SF ZF): 000
+#0004: Memory::::
+#0004: adr : 0000 0001 0002 0003 0004 0005 0006 0007 0008 0009 000A 000B 000C 000D 000E 000F
+       -------------------------------------------------------------------------------------
+#0004: 0000: 1010 0007 2210 0008 1110 0009 8100 0003 0002 0000 0000 0000 0000 0000 0000 0000
+#0004: Disassemble::::        ST      GR1,#0009       ; #0004: #1110 #0009
+
+(comet2 monitor) @kbd{n}
+#0006: Register::::
+#0006: GR0:      0 = #0000 = 0000000000000000
+#0006: GR1:      5 = #0005 = 0000000000000101
+#0006: GR2:      0 = #0000 = 0000000000000000
+#0006: GR3:      0 = #0000 = 0000000000000000
+#0006: GR4:      0 = #0000 = 0000000000000000
+#0006: GR5:      0 = #0000 = 0000000000000000
+#0006: GR6:      0 = #0000 = 0000000000000000
+#0006: GR7:      0 = #0000 = 0000000000000000
+#0006: SP:      16 = #0010 = 0000000000010000
+#0006: PR:       6 = #0006 = 0000000000000110
+#0006: FR (OF SF ZF): 000
+#0006: Memory::::
+#0006: adr : 0000 0001 0002 0003 0004 0005 0006 0007 0008 0009 000A 000B 000C 000D 000E 000F
+       -------------------------------------------------------------------------------------
+#0006: 0000: 1010 0007 2210 0008 1110 0009 8100 0003 0002 0005 0000 0000 0000 0000 0000 0000
+#0006: Disassemble::::        RET                     ; #0006: #8100
+
+(comet2 monitor) @kbd{n}
+Return to top.
+(comet2 monitor) @kbd{q}
+Quit: COMET II monitor
+@end example
+GR1に5（3+2）が格納され、@code{ST}によってメモリの@code{#0009}番地
+（@code{C}のアドレス）に書き込まれていることが確認できます。
+これで、出力のない@file{addl.casl}の実行内容も、ステップごとに確認できました。
+
+@node Monitor loop, Monitor continue, Monitor basics, Step execution
+@subsection ループを含むプログラムの実行
+@file{addl.casl}のように命令数が少ないプログラムでは、@code{n}を繰り返すだけで
+最後まで確認できます。
+ループを含むプログラムではどうなるか、1から10までの整数の和を求める
+@file{sum_10.casl}を例に見てみましょう。
 @file{sum_10.casl}は、1から10までの整数の和を求め、GR2に格納してからメモリにストア（書き込み）します。
 @example
 $ @kbd{cat sum_10.casl}
@@ -357,19 +470,9 @@ STEP    DC      1               ; 公差
 RST     DS      1               ; 結果
         END
 @end example
-@menu
-* Monitor basics::              起動とステップ実行
-* Monitor continue::            継続実行とブレークポイント
-@end menu
 
-@node Monitor basics, Monitor continue, Step execution, Step execution
-@subsection 起動とステップ実行
-@option{-m}のあとに続けて@code{T}・@code{d}の文字を指定すると、
-モニターに入った時点で、レジスタ（論理値表示）・メモリダンプの自動表示が、
-それぞれ有効になります。
-逆アセンブル結果の自動表示は、これらのフラグの指定に関わらず常にONです
-（@command{comet2monitor}のデフォルト動作と同じです）。
 @option{-M32}は、メモリサイズを32語に指定するオプションです。
+
 @example
 $ @kbd{casl2 -M32 -mTd sum_10.casl}
 
@@ -435,10 +538,7 @@ sum_10.casl:   17:        END
 COMET II machine code monitor. Type ? for help.
 (comet2 monitor)
 @end example
-アセンブルが終わると、プロンプト@code{(comet2 monitor)}が表示され、
-コマンドを受け付ける状態になります。
-@code{n}（@code{next}）を入力すると、1命令だけ実行し、実行直後のレジスタ・メモリ・
-次に実行される命令の逆アセンブル結果を表示します。
+@code{addl.casl}のときと同じように、@code{n}で1命令ずつ進められます。
 @example
 (comet2 monitor) @kbd{n}
 #0001: Register::::
@@ -482,8 +582,9 @@ COMET II machine code monitor. Type ? for help.
 @end example
 @code{n}を繰り返すたびにPRが進み、GR1・GR2の値が変化していく様子を、
 1命令ずつ確認できます。
+ここから先は、@code{LOOP}をループの回数だけ@code{n}で繰り返すことになります。
 
-@node Monitor continue,  , Monitor basics, Step execution
+@node Monitor continue, Set breakpoints, Monitor loop, Step execution
 @subsection 継続実行とブレークポイント
 @file{sum_10.casl}はループを含むため、@code{n}をループの回数だけ繰り返す必要があります。
 ループの中身を1回ずつ確認したあとは、@code{c}（@code{continue}）でプログラムの終わりまで
@@ -519,7 +620,8 @@ Quit: COMET II monitor
 GR2に55（1から10までの和）が格納されていること、
 その値がメモリの@code{#0012}番地（@code{RST}のアドレス）に書き込まれていることが確認できます。
 
-@subsubheading ブレークポイントでループを1周ずつ確認する
+@node Set breakpoints, , Monitor continue, Step execution
+@subsection ブレークポイントでループを1周ずつ確認する
 ループの先頭、つまり@code{LOOP}（@code{#0003}番地）にブレークポイントを設定すると、
 @code{c}を実行するたびにループを1周だけ進めて、そこで実行を止められます。
 @code{n}をループの回数だけ繰り返さなくても、GR2に合計が積み上がっていく様子を
@@ -590,7 +692,7 @@ GR1がLST（10）を超えると、CPLの結果によりループを抜けて@co
 最後の@code{c}ではブレークポイントに達せず、そのままプログラムの終わり（GR2=55）まで
 実行されて@code{Return to top.}と表示されます。
 
-@node Batch trace, Only assemble, Step execution, Sample usage
+@node Batch trace, Create object file, Step execution, Sample usage
 @section 実行結果をまとめて確認する
 
 前節のモニターは、1命令ずつ実行を止めながら確認するのに向いています。
@@ -765,17 +867,67 @@ $ @kbd{casl2 -t sum_10.casl | grep 'GR2:' | wc -l}
 53
 @end example
 
-@node Only assemble, Analyze word, Batch trace, Sample usage
-@section アセンブルと実行を別に行う
+@node Create object file, Look object file, Batch trace, Sample usage
+@section オブジェクトファイルの作成
 
 @command{casl2}に@option{-O}@file{ファイル名}を指定すると、オブジェクトファイルを作成できます。
+オブジェクトファイルを作成すると、アセンブルと実行を別にできます。
 
 @example
 $ @kbd{casl2 -Ohello.o hello.casl}
 @end example
 
-作成されたオブジェクトファイルの内容は、@command{od}を使って確認できます。
-テキストファイルではないため、@command{cat}などでは確認できません。
+オブジェクトファイルの実行には、@command{comet2}を使います。
+
+@example
+$ @kbd{comet2 hello.o}
+Hello, World!
+@end example
+
+
+すでに作成済みのオブジェクトファイルに対して、@code{casl2 -m}と同じように
+1命令ずつステップ実行を確認したい場合は、@code{comet2 -m} または @command{comet2monitor}を使います（@pxref{comet2monitor-invocation}）。
+
+@node Look object file, Analyze word, Create object file, Sample usage
+@section オブジェクトファイルの確認
+
+オブジェクトファイルは、テキストファイルではないため@command{cat}などでは確認できません。
+@command{casl2rev}で逆アセンブルして内容を確認できます。
+
+@example
+$ @kbd{casl2rev hello.o}
+MAIN    START
+        PUSH    #0000,GR1       ; #0000: #7001 #0000
+        PUSH    #0000,GR2       ; #0002: #7002 #0000
+        LAD     GR1,#0013       ; #0004: #1210 #0013
+        LAD     GR2,#0020       ; #0006: #1220 #0020
+        SVC     #0002           ; #0008: #F000 #0002
+        LAD     GR1,#0021       ; #000A: #1210 #0021
+        LAD     GR2,#0022       ; #000C: #1220 #0022
+        SVC     #0002           ; #000E: #F000 #0002
+        POP     GR2             ; #0010: #7120
+        POP     GR1             ; #0011: #7110
+        RET                     ; #0012: #8100
+        DC      72              ; #0013: #0048 ::    72 = #0048 = 0000000001001000 = 'H'
+        DC      101             ; #0014: #0065 ::   101 = #0065 = 0000000001100101 = 'e'
+        DC      108             ; #0015: #006C ::   108 = #006C = 0000000001101100 = 'l'
+        DC      108             ; #0016: #006C ::   108 = #006C = 0000000001101100 = 'l'
+        DC      111             ; #0017: #006F ::   111 = #006F = 0000000001101111 = 'o'
+        DC      44              ; #0018: #002C ::    44 = #002C = 0000000000101100 = ','
+        DC      32              ; #0019: #0020 ::    32 = #0020 = 0000000000100000 = ' '
+        DC      87              ; #001A: #0057 ::    87 = #0057 = 0000000001010111 = 'W'
+        DC      111             ; #001B: #006F ::   111 = #006F = 0000000001101111 = 'o'
+        DC      114             ; #001C: #0072 ::   114 = #0072 = 0000000001110010 = 'r'
+        DC      108             ; #001D: #006C ::   108 = #006C = 0000000001101100 = 'l'
+        DC      100             ; #001E: #0064 ::   100 = #0064 = 0000000001100100 = 'd'
+        DC      33              ; #001F: #0021 ::    33 = #0021 = 0000000000100001 = '!'
+        DC      13              ; #0020: #000D ::    13 = #000D = 0000000000001101
+        DC      10              ; #0021: #000A ::    10 = #000A = 0000000000001010 = '\n'
+        DC      1               ; #0022: #0001 ::     1 = #0001 = 0000000000000001
+        END
+@end example
+
+また、LinuxやMacなどに標準インストールされていることが多い@command{od}を使っても確認できます。
 
 @example
 $ @kbd{od -t x2 hello.o}
@@ -787,18 +939,7 @@ $ @kbd{od -t x2 hello.o}
 0000106
 @end example
 
-オブジェクトファイルの実行には、@command{comet2}を使います。
-
-@example
-$ @kbd{comet2 hello.o}
-Hello, World!
-@end example
-
-すでに作成済みのオブジェクトファイルに対して、@code{casl2 -m}と同じように
-1命令ずつステップ実行を確認したい場合は、@code{comet2 -m} または @command{comet2monitor}を使います
-（@pxref{comet2monitor-invocation}）。
-
-@node Analyze word, Use CASL2LIB, Only assemble, Sample usage
+@node Analyze word, Use CASL2LIB, Look object file, Sample usage
 @section 1語の解析
 
 CASL IIでは、1語（1 word、16ビット）を単位としてデータが処理されます。
@@ -1013,7 +1154,7 @@ COMET II実行時のクロック周波数@option{<CLOCKS>}を0より大きい整
 @command{casl2}の使用方法を表示して終了します。
 @end table
 
-@node comet2 invocation, dumpword invocation, casl2 invocation, Top
+@node comet2 invocation, casl2rev invocation, casl2 invocation, Top
 @chapter @command{comet2}
 
 @pindex comet2
@@ -1121,7 +1262,60 @@ COMET II実行時のメモリサイズ@option{<MEMORYSIZE>}をWORD（16ビット
 @command{comet2}の使用方法を表示して終了します。
 @end table
 
-@node dumpword invocation, comet2monitor-invocation, comet2 invocation, Top
+@node casl2rev invocation, dumpword invocation, comet2 invocation, Top
+@chapter @command{casl2rev}
+
+@pindex casl2rev
+@cindex casl2rev
+@cindex invoking
+@cindex options
+@cindex usage
+@cindex help
+
+@command{casl2rev}は、引数として指定されたオブジェクトファイルを逆アセンブルして表示します。
+プログラムを実行せず、逆アセンブル結果だけを表示する点が、@command{comet2}や
+@command{comet2monitor}と異なります。
+オブジェクトファイルの内容を、実行せずにざっと確認したいときに使います。
+
+@example
+casl2rev [-vh] FILE
+@end example
+
+引数で指定できるオブジェクトファイルは1つだけです。
+引数が指定されない場合は、エラーメッセージを表示して終了します。
+
+@file{addl.o}を逆アセンブルすると、次のように表示されます。
+
+@example
+$ @kbd{casl2rev addl.o}
+MAIN    START
+        LD      GR1,#0007       ; #0000: #1010 #0007
+        ADDL    GR1,#0008       ; #0002: #2210 #0008
+        ST      GR1,#0009       ; #0004: #1110 #0009
+        RET                     ; #0006: #8100
+        DC      3               ; #0007: #0003 ::     3 = #0003 = 0000000000000011
+        DC      2               ; #0008: #0002 ::     2 = #0002 = 0000000000000010
+        DS      1               ; #0009: #0000
+        END
+@end example
+先頭に@code{MAIN START}、末尾に@code{END}が表示され、
+CASL IIのソースファイルに近い形式で逆アセンブル結果が確認できます。
+
+@unnumberedsec オプション
+
+@command{casl2rev}は、次のオプションを指定できます。
+
+@table @option
+@item -v
+@itemx --version
+@command{casl2rev}のバージョンを表示して終了します。
+
+@item -h
+@itemx --help
+@command{casl2rev}の使用方法を表示して終了します。
+@end table
+
+@node dumpword invocation, comet2monitor-invocation, casl2rev invocation, Top
 @chapter @command{dumpword}
 
 @pindex dumpword
