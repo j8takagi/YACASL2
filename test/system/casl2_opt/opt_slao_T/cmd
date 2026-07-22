@@ -1,2 +1,2 @@
 sh cmd_valgrind
-od -x a.o
+od -x a.o | sed -e 's/  */ /g; s/ $//g'
