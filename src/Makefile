@@ -10,7 +10,7 @@ INCLUDEDIR := ../include
 # コマンド
 CC := gcc
 CFLAGS := -g -Wall -Wextra -Wshadow -I$(INCLUDEDIR)
-LDFLAGS :=  -lreadline
+LDLIBS :=  -lreadline
 CTAGS := ctags
 ETAGS := etags
 ECHO := echo
