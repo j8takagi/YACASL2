@@ -1,2 +1,2 @@
-Assemble error - 123: unclosed quote
+Assemble error - 123: 'Hello, World!: unclosed quote
 ../../../../as/err/err_123.casl:    4:BUF      DC     'Hello, World!
