@@ -36,7 +36,7 @@ extern CERRLIST *cerrlist;
 
 enum {
     CERRSTRSIZE = 10,    /**<エラーメッセージ中に挿入できる文字列のサイズ */
-    CERRMSGSIZE = 70,    /**<エラーメッセージのサイズ */
+    CERRMSGSIZE = 140,    /**<エラーメッセージのサイズ */
 };
 
 /**
